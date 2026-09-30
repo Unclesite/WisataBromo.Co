@@ -5,17 +5,25 @@ import {
 } from 'lucide-react';
 import { StartCity, TripCategory } from '../types';
 import { BromoHeroSlider } from './BromoHeroSlider';
+import { WeatherData } from '../services/weatherService';
+import { TnbtsStatusData } from '../services/tnbtsStatusService';
 
 interface HeroSectionProps {
   onSearch: (city: StartCity, category: TripCategory) => void;
   onOpenBooking: () => void;
   onExplorePackages: () => void;
+  onOpenLiveStatus?: () => void;
+  weather?: WeatherData;
+  tnbtsStatus?: TnbtsStatusData;
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({
   onSearch,
   onOpenBooking,
   onExplorePackages,
+  onOpenLiveStatus,
+  weather,
+  tnbtsStatus,
 }) => {
   const [selectedCity, setSelectedCity] = useState<StartCity>('all');
   const [selectedCat, setSelectedCat] = useState<TripCategory>('open_trip');
@@ -48,10 +56,42 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         />
       </div>
 
-      {/* 2. Traveloka-Style Floating Search & Reservation Engine (Bebas Tabrakan di Mobile & Desktop) */}
+      {/* 2. Traveloka-Style Floating Search & Reservation Engine */}
       <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-3 sm:-mt-6 md:-mt-10 lg:-mt-14 pb-10">
         <div className="bg-[#ffffff] rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-2xl shadow-[#102a56]/15 overflow-hidden">
           
+          {/* Live TNBTS Operational & Meteorological Strip */}
+          <div className="bg-gradient-to-r from-[#0d1f3c] via-[#102a56] to-[#1e3a8a] text-white px-3 sm:px-5 py-2 sm:py-2.5 flex flex-wrap items-center justify-between gap-2 text-xs border-b border-slate-800">
+            <div className="flex items-center gap-2">
+              <span className="flex h-2 w-2 relative">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span className="font-extrabold text-emerald-400 uppercase text-[11px] sm:text-xs">
+                STATUS TNBTS: {tnbtsStatus?.statusBadge || 'BUKA NORMAL'}
+              </span>
+              <span className="text-white/60 hidden sm:inline">· PVMBG {tnbtsStatus?.pvmbgLevel || 'Level II (Waspada)'}</span>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1.5 text-white/90 text-[11px] sm:text-xs">
+                <span className="text-slate-300">Live Cuaca:</span>
+                <strong className="text-[#ffc928] font-mono tabular-nums">{weather?.temperature ?? 12}°C</strong>
+                <span className="text-slate-300 hidden md:inline">({weather?.conditionText || 'Cerah Berawan'})</span>
+              </div>
+              {onOpenLiveStatus && (
+                <button
+                  type="button"
+                  onClick={onOpenLiveStatus}
+                  className="px-2.5 py-0.5 bg-white/10 hover:bg-white/20 text-[#ffc928] hover:text-white rounded-lg font-bold text-[10px] sm:text-[11px] transition-colors cursor-pointer border border-white/20 flex items-center gap-1"
+                >
+                  <span>Cek Cuaca & Status</span>
+                  <span>&rarr;</span>
+                </button>
+              )}
+            </div>
+          </div>
+
           {/* Top OTA Category Tabs (Terbagi Rata 5 Kolom Proporsional, Estetik & Responsif) */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-1.5 sm:gap-2 p-2 sm:p-2.5 bg-[#eaf2ff] border-b border-slate-200/80">
             <button

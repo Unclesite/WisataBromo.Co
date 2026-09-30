@@ -176,7 +176,7 @@ export const generateBookingInvoicePDF = (
   doc.setFontSize(8.5);
   doc.setTextColor(120, 53, 15);
   doc.text('• BANK BCA: 5200888415 a/n PT Global Travel Healing', 20, y + 12);
-  doc.text('• E-WALLET DANA & OVO: 08113212318 a/n PT Global Travel Healing', 20, y + 18);
+  doc.text('• E-WALLET DANA & OVO: 08113212318 a/n Achmad J', 20, y + 18);
 
   // Footer & Important Notes
   y += 29;

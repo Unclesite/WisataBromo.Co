@@ -1,5 +1,6 @@
 import React from 'react';
 import { Mail, Phone, MapPin, ShieldCheck, ExternalLink } from 'lucide-react';
+import { PWAInstallButton } from './PWAInstallButton';
 
 export const Footer: React.FC = () => {
   return (
@@ -18,6 +19,9 @@ export const Footer: React.FC = () => {
             <div className="flex items-center gap-1.5 text-white font-bold pt-1">
               <ShieldCheck className="w-4 h-4 text-[#ffc928]" />
               <span>Legalitas PT Global Travel Healing · TNBTS</span>
+            </div>
+            <div className="pt-2">
+              <PWAInstallButton variant="footer" />
             </div>
           </div>
 

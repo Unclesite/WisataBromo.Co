@@ -45,7 +45,7 @@ export const PackageDetailPage: React.FC<PackageDetailPageProps> = ({
   );
 
   return (
-    <div className="bg-[#f8fafc] min-h-screen py-5 sm:py-10 text-[#111318] animate-fadeIn pb-24 lg:pb-12">
+    <div className="bg-[#f8fafc] min-h-screen py-5 sm:py-10 text-[#111318] animate-fadeIn pb-28 md:pb-12">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Top Navigation Bar: Breadcrumb & Share */}
@@ -127,7 +127,7 @@ export const PackageDetailPage: React.FC<PackageDetailPageProps> = ({
               {packageItem.subtitle}
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs text-[#111318]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs text-[#111318]">
               {/* Box 1: Durasi Trip */}
               <div className="p-3 sm:p-3.5 bg-[#eaf2ff]/70 border border-[#3d72fe]/20 rounded-2xl flex items-start gap-3 min-w-0">
                 <Clock className="w-5 h-5 text-[#3d72fe] shrink-0 mt-0.5" />
@@ -174,10 +174,10 @@ export const PackageDetailPage: React.FC<PackageDetailPageProps> = ({
         </div>
 
         {/* 2-Column Content Grid: Details Left, Sticky Booking Right */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-8 items-start">
           
-          {/* Left Column (8 cols): Tabs, Itinerary, Inclusions, Meeting Point, FAQs */}
-          <div className="lg:col-span-8 space-y-5 sm:space-y-6">
+          {/* Left Column: Tabs, Itinerary, Inclusions, Meeting Point, FAQs */}
+          <div className="md:col-span-7 lg:col-span-8 space-y-5 sm:space-y-6">
             
             {/* Interactive Section Tabs (Horizontal Scroll on Mobile) */}
             <div className="flex items-center gap-1.5 p-1.5 bg-[#ffffff] border border-slate-200 rounded-2xl shadow-xs overflow-x-auto no-scrollbar">
@@ -371,8 +371,8 @@ export const PackageDetailPage: React.FC<PackageDetailPageProps> = ({
             )}
           </div>
 
-          {/* Right Column (4 cols): Sticky Pricing Card & Direct Booking */}
-          <div className="lg:col-span-4 space-y-5 lg:sticky lg:top-24">
+          {/* Right Column: Sticky Pricing Card & Direct Booking */}
+          <div className="md:col-span-5 lg:col-span-4 space-y-5 md:sticky md:top-20 lg:top-24">
             
             {/* Price Box */}
             <div className="bg-[#ffffff] border-2 border-[#3d72fe]/30 rounded-2xl sm:rounded-3xl p-5 sm:p-6 shadow-xl space-y-4">
@@ -451,8 +451,8 @@ export const PackageDetailPage: React.FC<PackageDetailPageProps> = ({
         </div>
       </div>
 
-      {/* Mobile Sticky Quick Booking Bar (Under 15% Mobile Viewport Height Cap) */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#ffffff]/98 backdrop-blur-md border-t border-slate-200/90 px-4 py-3 flex items-center justify-between gap-3 shadow-2xl">
+      {/* Mobile Sticky Quick Booking Bar (Only on phones < 768px) */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#ffffff]/98 backdrop-blur-md border-t border-slate-200/90 px-4 py-3 flex items-center justify-between gap-3 shadow-2xl">
         <div className="min-w-0">
           <div className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">Mulai Dari</div>
           <div className="text-lg font-mono font-black text-[#3d72fe] leading-tight truncate">

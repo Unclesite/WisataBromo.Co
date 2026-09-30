@@ -240,8 +240,8 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
         form.paymentMethod === 'bca' 
           ? 'BCA (5200888415 a/n PT Global Travel Healing)' 
           : form.paymentMethod === 'dana' 
-          ? 'DANA (08113212318 a/n PT Global Travel Healing)' 
-          : 'OVO (08113212318 a/n PT Global Travel Healing)'
+          ? 'DANA (08113212318 a/n Achmad J)' 
+          : 'OVO (08113212318 a/n Achmad J)'
       }`,
       form.paymentProofName ? `*Bukti Transfer:* ${form.paymentProofName} (Terlampir)` : `*Bukti Transfer:* (Akan dikirim di chat ini)`,
       form.specialNotes ? `*Catatan Tambahan:* ${form.specialNotes}` : null,
@@ -847,7 +847,7 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
                     <div>
                       <div className="text-xs font-extrabold text-[#102a56]">DANA & OVO</div>
                       <div className="font-mono font-black text-sm text-emerald-700">08113212318</div>
-                      <div className="text-[10px] text-slate-500">a/n PT Global Travel Healing</div>
+                      <div className="text-[10px] text-slate-500">a/n Achmad J</div>
                     </div>
                     <button
                       type="button"

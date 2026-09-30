@@ -17,10 +17,15 @@ import { TipsAndPreparationSection } from './components/TipsAndPreparationSectio
 import { BromoCultureBlogSection } from './components/BromoCultureBlogSection';
 import { TestimonialsAndFaqSection } from './components/TestimonialsAndFaqSection';
 import { BookingCalculatorModal } from './components/BookingCalculatorModal';
+import { LiveTnbtsWeatherBar } from './components/LiveTnbtsWeatherBar';
+import { LiveStatusModal } from './components/LiveStatusModal';
+import { PWAInstallBanner } from './components/PWAInstallBanner';
 import { Footer } from './components/Footer';
 import { TOUR_PACKAGES } from './data/packagesData';
 import { StartCity, TourPackage, TripCategory } from './types';
 import { MessageCircle } from 'lucide-react';
+import { fetchLiveBromoWeather, FALLBACK_WEATHER_DATA, WeatherData } from './services/weatherService';
+import { getOfficialTnbtsStatus, TnbtsStatusData } from './services/tnbtsStatusService';
 
 export default function App() {
   const [selectedCategory, setSelectedCategory] = useState<TripCategory>('all');
@@ -33,6 +38,31 @@ export default function App() {
   // Booking Modal State
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
   const [bookingInitialPackageId, setBookingInitialPackageId] = useState<string | undefined>(undefined);
+
+  // Live Weather & Official TNBTS Status State
+  const [weather, setWeather] = useState<WeatherData>(FALLBACK_WEATHER_DATA);
+  const [isLoadingWeather, setIsLoadingWeather] = useState(false);
+  const [liveStatusModalOpen, setLiveStatusModalOpen] = useState(false);
+  const [tnbtsStatus] = useState<TnbtsStatusData>(getOfficialTnbtsStatus());
+
+  const handleRefreshWeather = async () => {
+    setIsLoadingWeather(true);
+    try {
+      const data = await fetchLiveBromoWeather();
+      setWeather(data);
+    } catch (err) {
+      console.error('Error fetching live weather:', err);
+    } finally {
+      setIsLoadingWeather(false);
+    }
+  };
+
+  useEffect(() => {
+    handleRefreshWeather();
+    // Auto refresh every 10 minutes for live continuous updates
+    const interval = setInterval(handleRefreshWeather, 10 * 60 * 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Sync hash routing on initial load and hashchange
   useEffect(() => {
@@ -109,6 +139,15 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-white text-[#111318] flex flex-col font-sans selection:bg-[#3d72fe] selection:text-white w-full max-w-full overflow-x-hidden">
+      {/* Top Live Operational & Meteorological Alert Bar */}
+      <LiveTnbtsWeatherBar
+        weather={weather}
+        tnbtsStatus={tnbtsStatus}
+        isLoadingWeather={isLoadingWeather}
+        onRefreshWeather={handleRefreshWeather}
+        onOpenDetails={() => setLiveStatusModalOpen(true)}
+      />
+
       {/* Navigation Top Bar with Classified Menus */}
       <Navbar
         onOpenBooking={() => handleOpenBooking()}
@@ -117,6 +156,8 @@ export default function App() {
           window.location.hash = '';
           setSelectedCategory(cat);
         }}
+        onOpenLiveStatus={() => setLiveStatusModalOpen(true)}
+        weather={weather}
       />
 
       <main className="flex-grow">
@@ -138,6 +179,9 @@ export default function App() {
               onSearch={handleSearchFromHero}
               onOpenBooking={() => handleOpenBooking()}
               onExplorePackages={scrollToPackages}
+              onOpenLiveStatus={() => setLiveStatusModalOpen(true)}
+              weather={weather}
+              tnbtsStatus={tnbtsStatus}
             />
 
             {/* 2. VIP Credentials & Ministry Documentation Video Carousel */}
@@ -202,8 +246,25 @@ export default function App() {
         initialPackageId={bookingInitialPackageId}
       />
 
+      {/* Live Weather & Official TNBTS Operational Status Modal */}
+      <LiveStatusModal
+        isOpen={liveStatusModalOpen}
+        onClose={() => setLiveStatusModalOpen(false)}
+        weather={weather}
+        isLoadingWeather={isLoadingWeather}
+        onRefreshWeather={handleRefreshWeather}
+      />
+
+      {/* Progressive Web App Install Snackbar for Google Chrome */}
+      <PWAInstallBanner />
+
       {/* Floating WhatsApp Quick Action Button */}
-      <aside aria-label="Bantuan WhatsApp" className="fixed bottom-5 right-5 z-40 flex items-center gap-2">
+      <aside
+        aria-label="Bantuan WhatsApp"
+        className={`fixed z-40 flex items-center gap-2 right-5 transition-all ${
+          activeDetailPage ? 'hidden md:flex bottom-5' : 'bottom-5'
+        }`}
+      >
         <a
           href="https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20ingin%20tanya%20informasi%20paket%20trip%20ke%20Bromo."
           target="_blank"
