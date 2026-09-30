@@ -20,13 +20,13 @@ interface SlideItem {
 const SLIDES: SlideItem[] = [
   {
     id: 'penanjakan-batok-semeru',
-    title: 'Panorama Penanjakan 1: Bromo, Batok & Semeru',
-    subtitle: 'Menyaksikan tiga mahakarya vulkanik megah berdiri di atas samudera lautan awan putih abadi.',
+    title: 'Golden Sunrise Penanjakan 1: Bromo, Batok & Semeru',
+    subtitle: 'Mahakarya formasi vulkanik terindah di dunia di atas samudera lautan awan abadi.',
     locationTag: 'Viewpoint Penanjakan 1',
     elevation: '2.770 mdpl',
     highlightLabel: 'Golden Sunrise & Lautan Awan',
     imageUrl: imgSunriseJeep,
-    description: 'Dari ketinggian 2.770 mdpl, formasi kerucut Gunung Batok bergaris dramatis, kawah aktif Gunung Bromo yang mengepulkan asap putih, serta siluet kerucut tertinggi Gunung Semeru (3.676 mdpl) tampak melayang di atas hamparan lautan awan tebal.'
+    description: 'Dari ketinggian 2.770 mdpl, formasi kerucut Gunung Batok bergaris dramatis, kawah aktif Gunung Bromo yang mengepulkan asap putih, serta siluet puncak Gunung Semeru (3.676 mdpl) tampak melayang di atas hamparan lautan awan tebal.'
   },
   {
     id: 'lautan-awan-samudera',
@@ -46,7 +46,7 @@ const SLIDES: SlideItem[] = [
     elevation: '2.680 mdpl',
     highlightLabel: 'Golden Hour 05:14 WIB',
     imageUrl: imgGoldenHour,
-    description: 'Gradasi spektrum warna langit dari biru indigo, ungu fajar, hingga semburat jingga keemasan yang menghangatkan suhu beku 4°C di puncak Penanjakan.'
+    description: 'Gradasi spektrum warna langit dari biru indigo, ungu fajar, hingga semburat jingga keemasan yang menghangatkan suhu sejuk di puncak Penanjakan.'
   },
   {
     id: 'lembah-widodaren-pura-poten',
@@ -62,9 +62,10 @@ const SLIDES: SlideItem[] = [
 
 interface BromoHeroSliderProps {
   onOpenBooking: () => void;
+  onExplorePackages: () => void;
 }
 
-export const BromoHeroSlider: React.FC<BromoHeroSliderProps> = ({ onOpenBooking }) => {
+export const BromoHeroSlider: React.FC<BromoHeroSliderProps> = ({ onOpenBooking, onExplorePackages }) => {
   const [currentIdx, setCurrentIdx] = useState(0);
   const [isAutoPlay, setIsAutoPlay] = useState(true);
   const touchStartX = useRef<number | null>(null);
@@ -111,16 +112,16 @@ export const BromoHeroSlider: React.FC<BromoHeroSliderProps> = ({ onOpenBooking 
 
   return (
     <div
-      className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-slate-200/90 bg-[#102a56] text-white select-none transition-all"
+      className="relative w-full overflow-hidden bg-[#111318] text-white select-none transition-all"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Top Animated Progress Bar */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-white/15 z-20 overflow-hidden">
+      {/* Top Animated Progress Bar in Dominant Blue #3d72fe */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-white/20 z-20 overflow-hidden">
         <div
           key={currentIdx}
-          className="h-full bg-[#ffc928] transition-all ease-linear"
+          className="h-full bg-[#3d72fe] transition-all ease-linear"
           style={{
             animation: isAutoPlay ? 'progress 6s linear infinite' : 'none',
             width: isAutoPlay ? '100%' : `${((currentIdx + 1) / SLIDES.length) * 100}%`
@@ -135,8 +136,8 @@ export const BromoHeroSlider: React.FC<BromoHeroSliderProps> = ({ onOpenBooking 
         }
       `}</style>
 
-      {/* Main Responsive Slide Container */}
-      <div className="relative min-h-[440px] sm:min-h-[480px] md:min-h-[520px] lg:min-h-[540px] flex flex-col justify-between p-4 sm:p-7 md:p-9 lg:p-11">
+      {/* Main Full-Bleed Slide Viewport */}
+      <div className="relative min-h-[500px] sm:min-h-[540px] md:min-h-[580px] lg:min-h-[640px] flex flex-col justify-between pt-6 pb-8 sm:pb-14 lg:pb-24 px-4 sm:px-8 lg:px-16">
         
         {/* Real Photo Background for Golden Sunrise, Sea of Clouds, Golden Hour & Widodaren */}
         <div className="absolute inset-0 pointer-events-none select-none overflow-hidden">
@@ -155,114 +156,109 @@ export const BromoHeroSlider: React.FC<BromoHeroSliderProps> = ({ onOpenBooking 
             </div>
           ))}
 
-          {/* High Contrast Gradient Scrim Overlays */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#102a56] via-[#102a56]/60 to-black/30"></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-[#102a56]/95 via-[#102a56]/70 to-transparent sm:max-w-[75%]"></div>
+          {/* High Contrast Gradient Scrim Overlays - Clean Traveloka Blue Tints */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#111318] via-[#111318]/50 to-black/40"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#111318]/90 via-[#111318]/60 to-transparent max-w-4xl"></div>
         </div>
 
-        {/* Top Header Zone: Badges & Controls */}
-        <div className="relative z-10 flex items-center justify-between gap-2">
-          {/* Badges */}
-          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-            <span className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-extrabold text-[#102a56] bg-[#ffc928] px-2.5 sm:px-3 py-1 rounded-lg shadow-md">
-              <Sparkles className="w-3 sm:w-3.5 h-3 sm:h-3.5 fill-[#102a56]" />
-              <span className="truncate max-w-[150px] sm:max-w-none">{currentSlide.highlightLabel}</span>
+        {/* Top Header Ticker on Slide with Dominant Blue #3d72fe */}
+        <div className="relative z-10 flex flex-wrap items-center justify-between gap-3 max-w-7xl mx-auto w-full">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 text-xs font-black text-white bg-[#3d72fe] px-3.5 py-1.5 rounded-xl shadow-md shadow-[#3d72fe]/40">
+              <Sparkles className="w-3.5 h-3.5 text-[#ffc928]" />
+              <span>{currentSlide.highlightLabel}</span>
             </span>
-            <span className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-semibold text-white/95 bg-[#102a56]/80 backdrop-blur-md px-2.5 sm:px-3 py-1 rounded-lg border border-white/20">
-              <MapPin className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-[#ffc928] shrink-0" />
-              <span className="truncate max-w-[130px] sm:max-w-none">{currentSlide.locationTag} ({currentSlide.elevation})</span>
+            <span className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-black/50 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/20">
+              <MapPin className="w-3.5 h-3.5 text-[#3d72fe]" />
+              <span>{currentSlide.locationTag} · {currentSlide.elevation}</span>
             </span>
           </div>
 
-          {/* Play/Pause & Counter */}
-          <div className="flex items-center gap-1.5 sm:gap-2 bg-black/50 backdrop-blur-md border border-white/20 px-2.5 sm:px-3 py-1 rounded-xl text-xs text-white shrink-0">
+          {/* Slide Auto-Play & Counter */}
+          <div className="flex items-center gap-2 bg-black/50 backdrop-blur-md border border-white/20 px-3 py-1.5 rounded-xl text-xs text-white">
             <button
               onClick={() => setIsAutoPlay(!isAutoPlay)}
-              className="hover:text-[#ffc928] transition-colors p-0.5 cursor-pointer"
+              className="hover:text-[#3d72fe] transition-colors p-0.5 cursor-pointer"
               title={isAutoPlay ? 'Jeda Slide' : 'Putar Otomatis'}
               aria-label={isAutoPlay ? 'Jeda Slide' : 'Putar Otomatis'}
             >
-              {isAutoPlay ? <Pause className="w-3 sm:w-3.5 h-3 sm:h-3.5" /> : <Play className="w-3 sm:w-3.5 h-3 sm:h-3.5" />}
+              {isAutoPlay ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
             </button>
-            <span className="font-mono tabular-nums font-bold text-[11px] sm:text-xs">
+            <span className="font-mono tabular-nums font-bold text-xs">
               0{currentIdx + 1} / 0{SLIDES.length}
             </span>
           </div>
         </div>
 
-        {/* Middle Content Zone: Typography & Information */}
-        <div className="relative z-10 max-w-2xl my-auto py-4 sm:py-6">
-          <div className="text-[11px] sm:text-xs font-extrabold text-[#ffc928] tracking-wider mb-1.5 flex items-center gap-1.5 uppercase drop-shadow-sm">
-            <Mountain className="w-3.5 sm:w-4 h-3.5 sm:h-4" />
-            <span>KESEJUKAN KALDERA TENGGER 2.770 MDPL</span>
+        {/* Middle Content Zone: Typography & Value Proposition in Dominant Blue #3d72fe */}
+        <div className="relative z-10 max-w-4xl my-auto py-6 sm:py-10 max-w-7xl mx-auto w-full">
+          <div className="text-xs sm:text-sm font-black text-[#3d72fe] tracking-wider mb-2 flex items-center gap-2 uppercase">
+            <Mountain className="w-4 h-4 text-[#3d72fe]" />
+            <span>OPERATOR RESMI TAMAN NASIONAL BROMO TENGGER SEMERU (TNBTS)</span>
           </div>
 
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black text-white leading-snug sm:leading-tight mb-2 sm:mb-3 drop-shadow-lg">
+          <h1 className="text-2xl sm:text-4xl lg:text-5xl xl:text-6xl font-black text-white leading-tight sm:leading-[1.15] mb-3 sm:mb-4 drop-shadow-xl text-balance">
             {currentSlide.title}
-          </h2>
+          </h1>
 
-          <p className="text-xs sm:text-sm md:text-base text-slate-100 font-semibold leading-relaxed mb-3 sm:mb-4 drop-shadow-md max-w-xl line-clamp-2 sm:line-clamp-none">
+          <p className="text-sm sm:text-base lg:text-lg text-slate-100 font-medium leading-relaxed mb-6 max-w-2xl drop-shadow-md">
             {currentSlide.subtitle}
           </p>
 
-          <p className="text-[11px] sm:text-xs md:text-sm text-slate-100 leading-relaxed bg-[#102a56]/85 backdrop-blur-md p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border border-white/20 max-w-xl mb-4 sm:mb-6 hidden xs:block line-clamp-3 sm:line-clamp-none shadow-lg">
-            {currentSlide.description}
-          </p>
-
-          {/* Action CTAs */}
-          <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
+          {/* Quick CTA on Banner in Dominant Blue #3d72fe */}
+          <div className="flex flex-wrap items-center gap-3">
             <button
               onClick={onOpenBooking}
-              className="flex-1 sm:flex-none justify-center px-4.5 sm:px-5 py-2.5 sm:py-3 text-xs font-extrabold text-[#102a56] bg-[#ffc928] hover:bg-[#ffb700] rounded-xl transition-all shadow-lg shadow-[#ffc928]/30 flex items-center gap-2 cursor-pointer active:scale-95"
+              className="px-6 py-3.5 text-xs sm:text-sm font-black text-white bg-[#3d72fe] hover:bg-[#2b5ae0] rounded-xl transition-all shadow-xl shadow-[#3d72fe]/40 flex items-center gap-2 cursor-pointer active:scale-95 min-h-[46px]"
             >
-              <Compass className="w-3.5 sm:w-4 h-3.5 sm:h-4" />
-              <span>Pesan Trip Sunrise Penanjakan</span>
+              <Compass className="w-4 h-4 text-white" />
+              <span>Reservasi Trip Bromo Sekarang</span>
             </button>
-            <a
-              href="#tips-dan-panduan"
-              className="px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs font-bold text-white bg-black/40 hover:bg-black/60 backdrop-blur-md border border-white/25 rounded-xl transition-colors text-center"
+            <button
+              onClick={onExplorePackages}
+              className="px-5 py-3.5 text-xs sm:text-sm font-bold text-white bg-white/15 hover:bg-white/25 backdrop-blur-md border border-white/30 rounded-xl transition-all cursor-pointer text-center min-h-[46px]"
             >
-              5 Spot Sunrise
-            </a>
+              Eksplorasi 10 Paket
+            </button>
           </div>
         </div>
 
-        {/* Bottom Slide Navigation & Touch Indicator */}
-        <div className="relative z-10 flex items-center justify-between gap-3 pt-3 border-t border-white/20">
-          {/* Dots / Tabs for mobile and desktop */}
-          <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar py-0.5 max-w-[75%] sm:max-w-none">
+        {/* Bottom Slide Thumbnails & Controls */}
+        <div className="relative z-10 flex items-center justify-between gap-3 pt-4 border-t border-white/15 max-w-7xl mx-auto w-full">
+          {/* Thumbnails */}
+          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5 max-w-[80%] sm:max-w-none">
             {SLIDES.map((slide, idx) => (
               <button
                 key={slide.id}
                 onClick={() => setCurrentIdx(idx)}
-                className={`text-[11px] sm:text-xs px-2.5 sm:px-3 py-1 rounded-lg sm:rounded-xl transition-all font-semibold flex items-center gap-1.5 cursor-pointer shrink-0 ${
+                className={`text-xs px-3 py-1.5 rounded-xl transition-all font-bold flex items-center gap-2 cursor-pointer shrink-0 min-h-[38px] ${
                   currentIdx === idx
-                    ? 'bg-[#ffc928] text-[#102a56] font-extrabold shadow-md'
-                    : 'bg-black/40 hover:bg-black/60 text-white/90 border border-white/20 backdrop-blur-md'
+                    ? 'bg-[#3d72fe] text-white shadow-md shadow-[#3d72fe]/40'
+                    : 'bg-black/50 hover:bg-black/70 text-white/90 border border-white/20 backdrop-blur-md'
                 }`}
                 aria-label={`Pilih slide ${idx + 1}`}
               >
-                <span className="font-mono text-[10px]">0{idx + 1}</span>
-                <span className="hidden md:inline truncate max-w-[120px]">{slide.highlightLabel}</span>
+                <span className="font-mono text-[11px]">0{idx + 1}</span>
+                <span className="hidden sm:inline truncate max-w-[140px]">{slide.highlightLabel}</span>
               </button>
             ))}
           </div>
 
-          {/* Swipe / Arrow Controls */}
-          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          {/* Arrow Buttons */}
+          <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={prevSlide}
-              className="p-2 sm:p-2.5 rounded-xl bg-black/40 hover:bg-black/60 text-white backdrop-blur-md border border-white/25 transition-all cursor-pointer active:scale-90"
+              className="p-2 sm:p-2.5 rounded-xl bg-black/50 hover:bg-black/70 text-white backdrop-blur-md border border-white/25 transition-all cursor-pointer active:scale-90 min-h-[40px] min-w-[40px] flex items-center justify-center"
               aria-label="Slide Sebelumnya"
             >
-              <ChevronLeft className="w-4 sm:w-5 h-4 sm:h-5" />
+              <ChevronLeft className="w-5 h-5" />
             </button>
             <button
               onClick={nextSlide}
-              className="p-2 sm:p-2.5 rounded-xl bg-black/40 hover:bg-black/60 text-white backdrop-blur-md border border-white/25 transition-all cursor-pointer active:scale-90"
+              className="p-2 sm:p-2.5 rounded-xl bg-black/50 hover:bg-black/70 text-white backdrop-blur-md border border-white/25 transition-all cursor-pointer active:scale-90 min-h-[40px] min-w-[40px] flex items-center justify-center"
               aria-label="Slide Selanjutnya"
             >
-              <ChevronRight className="w-4 sm:w-5 h-4 sm:h-5" />
+              <ChevronRight className="w-5 h-5" />
             </button>
           </div>
         </div>

@@ -20,39 +20,39 @@ export const TipsAndPreparationSection: React.FC = () => {
           </p>
         </div>
 
-        {/* Tab Selector */}
-        <div className="flex items-center justify-center gap-2 mb-10">
+        {/* Tab Selector (Responsive Grid on Mobile, Centered Columns on Desktop) */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 max-w-3xl mx-auto mb-8 sm:mb-10 w-full">
           <button
             onClick={() => setActiveTab('pakaian')}
-            className={`px-4.5 py-2.5 text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 min-h-[44px] text-center ${
               activeTab === 'pakaian'
                 ? 'bg-[#3d72fe] text-white shadow-md shadow-[#3d72fe]/20'
-                : 'bg-[#eaf2ff] text-[#102a56] hover:bg-slate-200/70 border border-[#3d72fe]/20'
+                : 'bg-[#eaf2ff] text-[#111318] hover:bg-slate-200/70 border border-[#3d72fe]/20'
             }`}
           >
-            <Layers className="w-3.5 h-3.5" />
+            <Layers className="w-3.5 h-3.5 shrink-0" />
             <span>Sistem Pakaian & Checklist</span>
           </button>
           <button
             onClick={() => setActiveTab('kesehatan')}
-            className={`px-4.5 py-2.5 text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 min-h-[44px] text-center ${
               activeTab === 'kesehatan'
                 ? 'bg-[#3d72fe] text-white shadow-md shadow-[#3d72fe]/20'
-                : 'bg-[#eaf2ff] text-[#102a56] hover:bg-slate-200/70 border border-[#3d72fe]/20'
+                : 'bg-[#eaf2ff] text-[#111318] hover:bg-slate-200/70 border border-[#3d72fe]/20'
             }`}
           >
-            <Heart className="w-3.5 h-3.5" />
+            <Heart className="w-3.5 h-3.5 shrink-0" />
             <span>Kesehatan & Ketinggian</span>
           </button>
           <button
             onClick={() => setActiveTab('etika')}
-            className={`px-4.5 py-2.5 text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 min-h-[44px] text-center ${
               activeTab === 'etika'
                 ? 'bg-[#3d72fe] text-white shadow-md shadow-[#3d72fe]/20'
-                : 'bg-[#eaf2ff] text-[#102a56] hover:bg-slate-200/70 border border-[#3d72fe]/20'
+                : 'bg-[#eaf2ff] text-[#111318] hover:bg-slate-200/70 border border-[#3d72fe]/20'
             }`}
           >
-            <Sparkles className="w-3.5 h-3.5" />
+            <Sparkles className="w-3.5 h-3.5 shrink-0" />
             <span>Etika Adat Suku Tengger</span>
           </button>
         </div>

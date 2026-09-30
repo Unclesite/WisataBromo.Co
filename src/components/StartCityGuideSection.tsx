@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Navigation, Clock, ShieldCheck, ArrowRight, Car, ExternalLink } from 'lucide-react';
+import { MapPin, Navigation, Clock, ArrowRight, ExternalLink } from 'lucide-react';
 import { StartCity } from '../types';
 
 interface StartCityGuideSectionProps {
@@ -75,18 +75,19 @@ const GATES: CityGate[] = [
 
 export const StartCityGuideSection: React.FC<StartCityGuideSectionProps> = ({ onSelectCityFilter }) => {
   return (
-    <section id="titik-start" className="py-14 sm:py-16 bg-[#f8fafc] border-t border-slate-200 text-[#111318]">
+    <section id="titik-start" className="py-14 sm:py-18 bg-[#f8fafc] border-t border-slate-200 text-[#111318]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10">
-          <div className="text-xs font-extrabold text-[#3d72fe] tracking-wider mb-2 flex items-center justify-center gap-1.5 uppercase">
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
+          <div className="text-xs font-black text-[#3d72fe] tracking-wider mb-2 flex items-center justify-center gap-1.5 uppercase">
             <Navigation className="w-4 h-4" />
             <span>JARINGAN PENJEMPUTAN TERLUAS DI JAWA TIMUR</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#102a56] mb-3 text-balance">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#111318] mb-3 text-balance">
             6 Pilihan Titik Start & Pintu Gerbang TNBTS
           </h2>
-          <p className="text-xs sm:text-base text-slate-600 leading-relaxed mb-4">
+          <p className="text-xs sm:text-base text-slate-600 leading-relaxed mb-5">
             WisataBromo.co melayani penjemputan resmi dari seluruh kota utama dan pintu gerbang lingkar Bromo dengan armada terawat dan driver berlisensi resmi.
           </p>
           <div className="inline-flex items-center gap-2">
@@ -94,9 +95,9 @@ export const StartCityGuideSection: React.FC<StartCityGuideSectionProps> = ({ on
               href="https://maps.app.goo.gl/s2RnoqJqDLtZSEvP7"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#eaf2ff] hover:bg-[#3d72fe] text-[#3d72fe] hover:text-white border border-[#3d72fe]/30 rounded-xl text-xs font-bold transition-all shadow-xs"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#3d72fe] hover:bg-[#2b5ae0] text-white rounded-xl text-xs font-black transition-all shadow-md shadow-[#3d72fe]/25 min-h-[42px]"
             >
-              <MapPin className="w-3.5 h-3.5" />
+              <MapPin className="w-4 h-4 text-[#ffc928]" />
               <span>Petunjuk Arah Google Maps Basecamp</span>
               <ExternalLink className="w-3.5 h-3.5" />
             </a>
@@ -104,38 +105,38 @@ export const StartCityGuideSection: React.FC<StartCityGuideSectionProps> = ({ on
         </div>
 
         {/* 6 Gates Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
           {GATES.map((gate) => (
             <div
               key={gate.id}
-              className="bg-white border border-slate-200 hover:border-[#3d72fe] rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:shadow-[#3d72fe]/10"
+              className="bg-[#ffffff] border border-slate-200/90 hover:border-[#3d72fe] rounded-2xl sm:rounded-3xl p-5 sm:p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:shadow-[#3d72fe]/10"
             >
-              <div className="space-y-3.5">
+              <div className="space-y-3">
                 <div className="flex items-center justify-between gap-2">
-                  <span className="text-[11px] font-extrabold text-[#3d72fe] bg-[#eaf2ff] px-2.5 py-1 rounded-lg">
+                  <span className="text-[11px] font-black text-[#3d72fe] bg-[#eaf2ff] px-2.5 py-1 rounded-lg">
                     {gate.badge}
                   </span>
-                  <span className="text-[11px] font-mono text-slate-500 font-medium flex items-center gap-1">
+                  <span className="text-[11px] font-mono text-slate-500 font-semibold flex items-center gap-1">
                     <Clock className="w-3.5 h-3.5 text-[#3d72fe]" />
                     {gate.distanceTime}
                   </span>
                 </div>
 
-                <h3 className="text-base font-extrabold text-[#102a56]">
+                <h3 className="text-base sm:text-lg font-black text-[#111318]">
                   {gate.name}
                 </h3>
 
                 <p className="text-xs text-slate-600 leading-relaxed">
-                  <strong className="text-[#102a56]">Cocok untuk: </strong>{gate.bestFor}
+                  <strong className="text-[#111318]">Cocok untuk: </strong>{gate.bestFor}
                 </p>
 
                 {/* Meeting Point Bullets */}
-                <div className="p-3 bg-slate-50 rounded-2xl space-y-1.5 text-xs text-slate-700 border border-slate-100">
-                  <div className="text-[11px] font-bold text-[#102a56] uppercase tracking-wider">
+                <div className="p-3 bg-[#eaf2ff]/50 rounded-2xl space-y-1.5 text-xs text-[#111318] border border-slate-100">
+                  <div className="text-[10px] sm:text-[11px] font-black text-[#3d72fe] uppercase tracking-wider">
                     Titik Jemput Populer:
                   </div>
                   {gate.meetingPoints.map((mp, i) => (
-                    <div key={i} className="flex items-start gap-1.5 text-[11px]">
+                    <div key={i} className="flex items-start gap-1.5 text-[11px] text-slate-700">
                       <MapPin className="w-3 h-3 text-[#3d72fe] shrink-0 mt-0.5" />
                       <span>{mp}</span>
                     </div>
@@ -143,7 +144,7 @@ export const StartCityGuideSection: React.FC<StartCityGuideSectionProps> = ({ on
                 </div>
               </div>
 
-              {/* Card Action */}
+              {/* Card Action (Mobile Friendly Buttons) */}
               <div className="pt-4 mt-4 border-t border-slate-100 flex flex-col sm:flex-row gap-2">
                 <button
                   type="button"
@@ -152,16 +153,16 @@ export const StartCityGuideSection: React.FC<StartCityGuideSectionProps> = ({ on
                     const el = document.getElementById('paket-wisata');
                     if (el) el.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className="flex-1 py-2.5 text-xs font-bold text-[#102a56] hover:text-white bg-[#eaf2ff] hover:bg-[#3d72fe] rounded-xl transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                  className="flex-1 py-3 px-3 text-xs font-black text-white bg-[#3d72fe] hover:bg-[#2b5ae0] rounded-xl transition-all shadow-md shadow-[#3d72fe]/20 flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 min-h-[42px]"
                 >
                   <span>Paket Start {gate.name.split(' ')[0]}</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  <ArrowRight className="w-3.5 h-3.5 text-[#ffc928]" />
                 </button>
                 <a
                   href="https://maps.app.goo.gl/s2RnoqJqDLtZSEvP7"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-3 py-2.5 text-xs font-bold text-slate-600 hover:text-[#3d72fe] bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors flex items-center justify-center gap-1"
+                  className="px-3.5 py-3 text-xs font-bold text-[#111318] hover:text-[#3d72fe] bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors flex items-center justify-center gap-1 min-h-[42px]"
                   title="Buka Google Maps"
                 >
                   <MapPin className="w-3.5 h-3.5 text-[#3d72fe]" />

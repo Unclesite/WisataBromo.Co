@@ -108,7 +108,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-[#111318] flex flex-col font-sans selection:bg-[#3d72fe] selection:text-white">
+    <div className="min-h-screen bg-white text-[#111318] flex flex-col font-sans selection:bg-[#3d72fe] selection:text-white w-full max-w-full overflow-x-hidden">
       {/* Navigation Top Bar with Classified Menus */}
       <Navbar
         onOpenBooking={() => handleOpenBooking()}
@@ -124,13 +124,11 @@ export default function App() {
           /* DEDICATED PACKAGE DETAIL PAGE VIEW */
           <PackageDetailPage
             packageItem={activeDetailPage}
-            allPackages={TOUR_PACKAGES}
             onBackToHome={handleBackToHome}
             onBookNow={(pkg) => {
               setBookingInitialPackageId(pkg.id);
               setBookingModalOpen(true);
             }}
-            onSelectRelatedPackage={(pkg) => setActiveDetailPage(pkg)}
           />
         ) : (
           /* FULL HOMEPAGE LANDING VIEW */

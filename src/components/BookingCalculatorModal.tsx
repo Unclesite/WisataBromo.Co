@@ -274,20 +274,20 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
         <div className="p-4 sm:p-6 bg-[#eaf2ff] border-b border-slate-200 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="w-9 h-9 rounded-xl bg-[#3d72fe] text-white flex items-center justify-center shadow-xs">
-              <Calculator className="w-5 h-5" />
+              <Calculator className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h3 className="text-base sm:text-lg font-extrabold text-[#102a56]">
+              <h3 className="text-base sm:text-lg font-black text-[#111318]">
                 Formulir Reservasi Resmi & Invoice
               </h3>
-              <p className="text-xs text-slate-600">
+              <p className="text-xs text-slate-600 font-medium">
                 PT Global Travel Healing · Rekening Resmi & Konfirmasi Instan
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-slate-500 hover:text-[#102a56] hover:bg-white rounded-xl transition-colors cursor-pointer"
+            className="p-2 text-slate-500 hover:text-[#111318] hover:bg-white rounded-xl transition-colors cursor-pointer min-h-[40px] min-w-[40px] flex items-center justify-center"
             aria-label="Tutup kalkulator"
           >
             <X className="w-5 h-5" />

@@ -13,11 +13,24 @@
 
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
+    max-width: 100vw;
+    width: 100%;
   }
+
   body {
+    overflow-x: hidden;
+    max-width: 100vw;
+    width: 100%;
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     background-color: #ffffff;
     color: #111318;
+  }
+
+  #root {
+    overflow-x: hidden;
+    max-width: 100vw;
+    width: 100%;
   }
 }
 
