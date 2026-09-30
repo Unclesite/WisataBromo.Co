@@ -156,9 +156,8 @@ export const BromoHeroSlider: React.FC<BromoHeroSliderProps> = ({ onOpenBooking,
             </div>
           ))}
 
-          {/* High Contrast Gradient Scrim Overlays - Clean Traveloka Blue Tints */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#111318] via-[#111318]/50 to-black/40"></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-[#111318]/90 via-[#111318]/60 to-transparent max-w-4xl"></div>
+          {/* Subtle vignette overlay so badges and bottom controls are readable without obstructing header scenery */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30"></div>
         </div>
 
         {/* Top Header Ticker on Slide with Dominant Blue #3d72fe */}
@@ -190,38 +189,8 @@ export const BromoHeroSlider: React.FC<BromoHeroSliderProps> = ({ onOpenBooking,
           </div>
         </div>
 
-        {/* Middle Content Zone: Typography & Value Proposition in Dominant Blue #3d72fe */}
-        <div className="relative z-10 max-w-4xl my-auto py-6 sm:py-10 max-w-7xl mx-auto w-full">
-          <div className="text-xs sm:text-sm font-black text-[#3d72fe] tracking-wider mb-2 flex items-center gap-2 uppercase">
-            <Mountain className="w-4 h-4 text-[#3d72fe]" />
-            <span>OPERATOR RESMI TAMAN NASIONAL BROMO TENGGER SEMERU (TNBTS)</span>
-          </div>
-
-          <h1 className="text-2xl sm:text-4xl lg:text-5xl xl:text-6xl font-black text-white leading-tight sm:leading-[1.15] mb-3 sm:mb-4 drop-shadow-xl text-balance">
-            {currentSlide.title}
-          </h1>
-
-          <p className="text-sm sm:text-base lg:text-lg text-slate-100 font-medium leading-relaxed mb-6 max-w-2xl drop-shadow-md">
-            {currentSlide.subtitle}
-          </p>
-
-          {/* Quick CTA on Banner in Dominant Blue #3d72fe */}
-          <div className="flex flex-wrap items-center gap-3">
-            <button
-              onClick={onOpenBooking}
-              className="px-6 py-3.5 text-xs sm:text-sm font-black text-white bg-[#3d72fe] hover:bg-[#2b5ae0] rounded-xl transition-all shadow-xl shadow-[#3d72fe]/40 flex items-center gap-2 cursor-pointer active:scale-95 min-h-[46px]"
-            >
-              <Compass className="w-4 h-4 text-white" />
-              <span>Reservasi Trip Bromo Sekarang</span>
-            </button>
-            <button
-              onClick={onExplorePackages}
-              className="px-5 py-3.5 text-xs sm:text-sm font-bold text-white bg-white/15 hover:bg-white/25 backdrop-blur-md border border-white/30 rounded-xl transition-all cursor-pointer text-center min-h-[46px]"
-            >
-              Eksplorasi 10 Paket
-            </button>
-          </div>
-        </div>
+        {/* Middle Content Zone removed to keep header background photography 100% clean and unobstructed */}
+        <div className="relative z-10 my-auto py-12 sm:py-20"></div>
 
         {/* Bottom Slide Thumbnails & Controls */}
         <div className="relative z-10 flex items-center justify-between gap-3 pt-4 border-t border-white/15 max-w-7xl mx-auto w-full">
