@@ -43,20 +43,20 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header className="sticky top-0 z-40 w-full bg-white/98 backdrop-blur-md border-b border-slate-200/90 shadow-2xs">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-18 gap-3 sm:gap-6">
-          {/* Brand Wordmark with guaranteed right margin */}
-          <div className="flex items-center shrink-0 mr-2 sm:mr-4 lg:mr-6">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 sm:h-18 gap-2 sm:gap-4 lg:gap-6">
+          {/* Brand Wordmark with guaranteed border divider and spacing */}
+          <div className="flex items-center shrink-0 pr-3 sm:pr-4 lg:pr-6 border-r border-slate-200/80 mr-1 sm:mr-2 lg:mr-4">
             <a
               href="/"
-              className="text-xl sm:text-2xl font-black tracking-tight text-[#111318] hover:text-[#3d72fe] transition-colors whitespace-nowrap"
+              className="text-lg sm:text-xl lg:text-2xl font-black tracking-tight text-[#111318] hover:text-[#3d72fe] transition-colors whitespace-nowrap"
             >
               wisatabromo<span className="text-[#3d72fe]">.co</span>
             </a>
           </div>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-4 xl:gap-6 text-xs xl:text-sm font-bold text-[#111318]/90 whitespace-nowrap">
+          <nav className="hidden lg:flex items-center gap-2.5 xl:gap-4 text-xs xl:text-sm font-bold text-[#111318]/90 whitespace-nowrap">
             {/* Dropdown Paket Wisata */}
             <div
               className="relative"
@@ -119,7 +119,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               )}
             </div>
 
-            {/* Dropdown Panduan Bromo */}
+            {/* Dropdown Panduan Bromo & Info */}
             <div
               className="relative"
               onMouseEnter={() => setGuidesDropdownOpen(true)}
@@ -136,7 +136,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
               {/* Dropdown Panel */}
               {guidesDropdownOpen && (
-                <div className="absolute top-full left-0 w-60 bg-white border border-slate-200 rounded-2xl p-2.5 shadow-xl space-y-1 animate-fadeIn z-50">
+                <div className="absolute top-full left-0 w-64 bg-white border border-slate-200 rounded-2xl p-2.5 shadow-xl space-y-1 animate-fadeIn z-50">
                   <button
                     onClick={() => scrollTo('spot-sunrise')}
                     className="w-full text-left p-2 rounded-xl hover:bg-[#eaf2ff] text-xs font-bold text-[#111318] flex items-center gap-2 cursor-pointer"
@@ -167,6 +167,36 @@ export const Navbar: React.FC<NavbarProps> = ({
                       <div className="text-[10px] text-slate-500 font-normal">Persiapan suhu 2°C – 10°C</div>
                     </div>
                   </button>
+                  {onOpenArticles && (
+                    <button
+                      onClick={() => {
+                        setGuidesDropdownOpen(false);
+                        onOpenArticles();
+                      }}
+                      className="w-full text-left p-2 rounded-xl hover:bg-[#eaf2ff] text-xs font-bold text-[#111318] flex items-center gap-2 cursor-pointer border-t border-slate-100 pt-2"
+                    >
+                      <BookOpen className="w-3.5 h-3.5 text-[#3d72fe] shrink-0" />
+                      <div>
+                        <div>Artikel &amp; Riset Budaya</div>
+                        <div className="text-[10px] text-slate-500 font-normal">20 Panduan &amp; Tradisi Tengger</div>
+                      </div>
+                    </button>
+                  )}
+                  {onOpenAbout && (
+                    <button
+                      onClick={() => {
+                        setGuidesDropdownOpen(false);
+                        onOpenAbout();
+                      }}
+                      className="w-full text-left p-2 rounded-xl hover:bg-[#eaf2ff] text-xs font-bold text-[#111318] flex items-center gap-2 cursor-pointer"
+                    >
+                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                      <div>
+                        <div>Tentang Kami</div>
+                        <div className="text-[10px] text-slate-500 font-normal">PT Global Travel Healing</div>
+                      </div>
+                    </button>
+                  )}
                 </div>
               )}
             </div>
@@ -182,12 +212,12 @@ export const Navbar: React.FC<NavbarProps> = ({
               </span>
             </button>
 
-            {/* Artikel Link */}
+            {/* Artikel Link - Shown on extra large screens */}
             {onOpenArticles && (
               <button
                 type="button"
                 onClick={onOpenArticles}
-                className="hover:text-[#3d72fe] transition-colors cursor-pointer flex items-center gap-1.5 whitespace-nowrap"
+                className="hidden 2xl:flex hover:text-[#3d72fe] transition-colors cursor-pointer items-center gap-1.5 whitespace-nowrap"
               >
                 <span>Artikel</span>
                 <span className="text-[10px] bg-[#3d72fe]/10 text-[#3d72fe] font-black px-1.5 py-0.5 rounded whitespace-nowrap">
@@ -196,12 +226,12 @@ export const Navbar: React.FC<NavbarProps> = ({
               </button>
             )}
 
-            {/* Tentang Kami Link */}
+            {/* Tentang Kami Link - Shown on extra large screens */}
             {onOpenAbout && (
               <button
                 type="button"
                 onClick={onOpenAbout}
-                className="hover:text-[#3d72fe] transition-colors cursor-pointer flex items-center gap-1.5 whitespace-nowrap"
+                className="hidden 2xl:flex hover:text-[#3d72fe] transition-colors cursor-pointer items-center gap-1.5 whitespace-nowrap"
               >
                 <span>Tentang Kami</span>
               </button>
@@ -225,22 +255,23 @@ export const Navbar: React.FC<NavbarProps> = ({
           </nav>
 
           {/* Zone 3: OTA Hotline & Quick Book */}
-          <div className="hidden lg:flex items-center gap-2.5 shrink-0 whitespace-nowrap ml-auto">
-            {/* Hotline Phone */}
+          <div className="hidden lg:flex items-center gap-2 xl:gap-2.5 shrink-0 whitespace-nowrap ml-auto">
+            {/* Hotline Phone - Icon with tooltip on <=xl, text on 2xl+ */}
             <a
               href="https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20mau%20tanya%20informasi%20paket%20trip%20ke%20Bromo"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-xs font-bold text-[#111318] hover:text-[#3d72fe] px-3 py-2 rounded-xl bg-[#eaf2ff] border border-[#3d72fe]/25 hover:border-[#3d72fe]/50 transition-colors whitespace-nowrap shrink-0"
+              className="flex items-center gap-1.5 text-xs font-bold text-[#111318] hover:text-[#3d72fe] p-2 2xl:px-3 2xl:py-2 rounded-xl bg-[#eaf2ff] border border-[#3d72fe]/25 hover:border-[#3d72fe]/50 transition-colors whitespace-nowrap shrink-0"
+              title="Hubungi Hotline WhatsApp 0812-2229-0318"
             >
               <PhoneCall className="w-3.5 h-3.5 text-[#3d72fe] shrink-0" />
-              <span className="font-mono tabular-nums whitespace-nowrap">0812-2229-0318</span>
+              <span className="hidden 2xl:inline font-mono tabular-nums whitespace-nowrap">0812-2229-0318</span>
             </a>
 
-            {/* Primary Booking Button */}
+            {/* Primary Booking Button - Guaranteed never clipped */}
             <button
               onClick={() => onOpenBooking()}
-              className="px-4 xl:px-5 py-2.5 text-xs font-black text-white bg-[#3d72fe] hover:bg-[#2b5ae0] rounded-xl transition-all shadow-md shadow-[#3d72fe]/25 whitespace-nowrap cursor-pointer active:scale-95 shrink-0"
+              className="px-4 xl:px-5 py-2 xl:py-2.5 text-xs font-black text-white bg-[#3d72fe] hover:bg-[#2b5ae0] rounded-xl transition-all shadow-md shadow-[#3d72fe]/25 whitespace-nowrap cursor-pointer active:scale-95 shrink-0 min-w-fit"
             >
               Booking Online
             </button>
