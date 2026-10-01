@@ -6,13 +6,13 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig(() => {
   return {
-    base: './',
+    base: '/',
     plugins: [
       react(),
       tailwindcss(),
       VitePWA({
         registerType: 'autoUpdate',
-        includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'icon.svg', 'pwa-192x192.png', 'pwa-512x512.png'],
+        includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'icon.svg'],
         manifest: {
           id: '/',
           name: 'WisataBromo.co - Paket Tour & Trip Bromo',
@@ -21,28 +21,9 @@ export default defineConfig(() => {
           theme_color: '#102a56',
           background_color: '#ffffff',
           display: 'standalone',
-          display_override: ['window-controls-overlay', 'standalone', 'minimal-ui'],
           orientation: 'any',
           start_url: '/',
           scope: '/',
-          prefer_related_applications: false,
-          categories: ['travel', 'tourism', 'lifestyle'],
-          screenshots: [
-            {
-              src: '/pwa-512x512.png',
-              sizes: '1280x720',
-              type: 'image/png',
-              form_factor: 'wide',
-              label: 'WisataBromo.co Desktop Dashboard'
-            },
-            {
-              src: '/pwa-512x512.png',
-              sizes: '720x1280',
-              type: 'image/png',
-              form_factor: 'narrow',
-              label: 'WisataBromo.co Mobile'
-            }
-          ],
           icons: [
             {
               src: '/pwa-192x192.png',
@@ -65,21 +46,16 @@ export default defineConfig(() => {
           ],
         },
         workbox: {
-          maximumFileSizeToCacheInBytes: 15 * 1024 * 1024,
-          globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg,woff,woff2}'],
+          maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
+          globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest}'],
           runtimeCaching: [
             {
               urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
               handler: 'CacheFirst',
               options: {
                 cacheName: 'google-fonts-cache',
-                expiration: {
-                  maxEntries: 10,
-                  maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
-                },
-                cacheableResponse: {
-                  statuses: [0, 200],
-                },
+                expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 },
+                cacheableResponse: { statuses: [0, 200] },
               },
             },
             {
@@ -87,35 +63,11 @@ export default defineConfig(() => {
               handler: 'CacheFirst',
               options: {
                 cacheName: 'gstatic-fonts-cache',
-                expiration: {
-                  maxEntries: 10,
-                  maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
-                },
-                cacheableResponse: {
-                  statuses: [0, 200],
-                },
-              },
-            },
-            {
-              urlPattern: /^https:\/\/api\.open-meteo\.com\/.*/i,
-              handler: 'NetworkFirst',
-              options: {
-                cacheName: 'weather-api-cache',
-                networkTimeoutSeconds: 5,
-                expiration: {
-                  maxEntries: 5,
-                  maxAgeSeconds: 60 * 15, // 15 mins
-                },
-                cacheableResponse: {
-                  statuses: [0, 200],
-                },
+                expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 },
+                cacheableResponse: { statuses: [0, 200] },
               },
             },
           ],
-        },
-        devOptions: {
-          enabled: true,
-          type: 'module',
         },
       }),
     ],
@@ -129,29 +81,9 @@ export default defineConfig(() => {
       assetsDir: 'assets',
       sourcemap: false,
       chunkSizeWarningLimit: 2000,
-      rollupOptions: {
-        output: {
-          manualChunks(id) {
-            if (id.includes('node_modules')) {
-              if (id.includes('jspdf') || id.includes('html2canvas')) {
-                return 'pdf-generator';
-              }
-              if (id.includes('lucide-react')) {
-                return 'icons';
-              }
-              if (id.includes('react') || id.includes('react-dom')) {
-                return 'vendor-react';
-              }
-            }
-          },
-        },
-      },
     },
     server: {
-      // HMR is disabled in AI Studio via DISABLE_HMR env var.
-      // Do not modify—file watching is disabled to prevent flickering during agent edits.
       hmr: process.env.DISABLE_HMR !== 'true',
-      // Disable file watching when DISABLE_HMR is true to save CPU during agent edits.
       watch: process.env.DISABLE_HMR === 'true' ? null : {},
     },
   };
