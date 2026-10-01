@@ -8,9 +8,9 @@ import imgWidodarenCliff from '../assets/images/bromo_widodaren_cliff_1790774506
 import imgGoldenHour from '../assets/images/bromo_golden_hour_1790774487968.jpg';
 import imgGayaBersarung from '../assets/images/imggayabersarung_wisatabromo.jpg';
 import imgGadisSavana from '../assets/images/gadis_sarung_berkuda_savana.jpg';
-import imgBerkudaBatok from '../assets/images/1000888899-2048x1733.jpg';
-import imgGadisBatokStanding from '../assets/images/1000888911-scaled.jpg';
-import imgBerkudaPanorama from '../assets/images/1000888899-1290x540.jpg';
+import imgBerkudaBatok from '../assets/images/gaya_bersarung_perempuan_tengger_169.jpg';
+import imgGadisBatokStanding from '../assets/images/gadis_sarung_berkuda_savana.jpg';
+import imgBerkudaPanorama from '../assets/images/imgkudabromo_wisatabromo.jpg';
 import imgPerlengkapan from '../assets/images/imgperlengkapan_wisatabromo.png';
 import imgBahasaTengger from '../assets/images/imgbahasatengger_wisatabromo.png';
 import imgAsalUsul from '../assets/images/imgasalusul_wisatabromo.png';
