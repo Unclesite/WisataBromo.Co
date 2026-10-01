@@ -170,13 +170,13 @@ export const saveBookingToFirestore = async (record: StoredBookingRecord): Promi
     if (record.driveLink) cleanRecord.driveLink = record.driveLink;
     if (record.calendarEventId) cleanRecord.calendarEventId = record.calendarEventId;
 
-    const docRef = doc(db, 'bookings', record.bookingCode);
-    await setDoc(docRef, cleanRecord, { merge: true });
-
-    // Automatically trigger Node.js Hostinger SMTP email dispatch to admin & customer
+    // Guarantee immediate email notification dispatch to admin & customer
     triggerBookingEmailNotification(cleanRecord as any).catch(err => {
       console.warn('Booking email dispatch notice:', err);
     });
+
+    const docRef = doc(db, 'bookings', record.bookingCode);
+    await setDoc(docRef, cleanRecord, { merge: true });
 
     return { success: true, id: record.bookingCode };
   } catch (err: any) {

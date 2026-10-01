@@ -59,6 +59,15 @@ app.post('/api/send-booking-email', async (req: Request, res: Response) => {
     const smtpUser = process.env.SMTP_USER || 'cs@wisatabromo.co';
     const smtpPass = process.env.SMTP_PASS || '';
     const adminEmail = process.env.ADMIN_EMAIL || 'wisatabromo.co@gmail.com';
+    const customerEmail = String(booking.email || '').trim();
+
+    // Log email recipient debug information
+    console.log("EMAIL RECIPIENT DEBUG", {
+      bookingCode: booking.bookingCode,
+      customerName: booking.fullName,
+      customerEmail: booking.email,
+      adminEmail: process.env.ADMIN_EMAIL || adminEmail
+    });
 
     // If SMTP_PASS is missing (e.g. initial dev environment), simulate and return clear message
     if (!smtpPass) {
@@ -69,7 +78,7 @@ app.post('/api/send-booking-email', async (req: Request, res: Response) => {
         message: 'SMTP credentials belum diisi di environment. Email simulasi berhasil dicatat.',
         recipients: {
           admin: adminEmail,
-          customer: booking.email
+          customer: customerEmail
         },
         bookingCode: booking.bookingCode
       });
@@ -309,13 +318,13 @@ app.post('/api/send-booking-email', async (req: Request, res: Response) => {
       transporter.sendMail({
         from: `"WisataBromo.co System" <${smtpUser}>`,
         to: adminEmail,
-        replyTo: booking.email,
+        replyTo: customerEmail,
         subject: `[BOOKING BARU] ${booking.bookingCode} - ${booking.fullName} - ${booking.packageTitle}`,
         html: adminHtml
       }),
       transporter.sendMail({
         from: `"WisataBromo.co" <${smtpUser}>`,
-        to: booking.email,
+        to: customerEmail,
         replyTo: `"Customer Service WisataBromo.co" <${smtpUser}>`,
         subject: `Konfirmasi Reservasi Wisata Bromo - ${booking.bookingCode} (PT Global Travel Healing)`,
         html: customerHtml
@@ -341,7 +350,7 @@ app.post('/api/send-booking-email', async (req: Request, res: Response) => {
           error: !adminSuccess ? String((adminResult as PromiseRejectedResult).reason?.message || 'Error') : undefined
         },
         customerEmail: {
-          recipient: booking.email,
+          recipient: customerEmail,
           sent: customerSuccess,
           error: !customerSuccess ? String((customerResult as PromiseRejectedResult).reason?.message || 'Error') : undefined
         }

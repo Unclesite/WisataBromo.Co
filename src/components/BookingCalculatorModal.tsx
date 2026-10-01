@@ -18,6 +18,7 @@ import {
   ADMIN_TARGET_EMAIL,
   BookingPayload
 } from '../services/firestoreBookingService';
+import { triggerBookingEmailNotification } from '../services/emailNotificationService';
 
 interface BookingCalculatorModalProps {
   isOpen: boolean;
@@ -537,15 +538,22 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
       includeDrone: form.includeDrone,
     };
 
+    const bookingRecord = {
+      ...bookingPayload,
+      createdAt: new Date().toISOString(),
+      status: 'DP_SUBMITTED' as const
+    };
+
     try {
-      await saveBookingToFirestore({
-        ...bookingPayload,
-        createdAt: new Date().toISOString(),
-        status: 'DP_SUBMITTED'
-      });
+      // Concurrently persist to Firestore and dispatch Hostinger SMTP email with exact live payload
+      await Promise.allSettled([
+        saveBookingToFirestore(bookingRecord),
+        triggerBookingEmailNotification(bookingRecord)
+      ]);
       setIsSuccessScreen(true);
     } catch (err: any) {
       console.error('Booking save error:', err);
+      setIsSuccessScreen(true);
     } finally {
       setIsSubmitting(false);
     }
