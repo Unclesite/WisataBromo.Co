@@ -137,7 +137,7 @@ export const BromoHeroSlider: React.FC<BromoHeroSliderProps> = ({ onOpenBooking,
       `}</style>
 
       {/* Main Full-Bleed Slide Viewport */}
-      <div className="relative min-h-[500px] sm:min-h-[540px] md:min-h-[580px] lg:min-h-[640px] flex flex-col justify-between pt-6 pb-8 sm:pb-14 lg:pb-24 px-4 sm:px-8 lg:px-16">
+      <div className="relative min-h-[480px] sm:min-h-[540px] md:min-h-[580px] lg:min-h-[640px] flex flex-col justify-between pt-6 pb-16 sm:pb-14 lg:pb-24 px-4 sm:px-8 lg:px-16">
         
         {/* Real Photo Background for Golden Sunrise, Sea of Clouds, Golden Hour & Widodaren */}
         <div className="absolute inset-0 pointer-events-none select-none overflow-hidden">
@@ -207,7 +207,7 @@ export const BromoHeroSlider: React.FC<BromoHeroSliderProps> = ({ onOpenBooking,
         </button>
 
         {/* Bottom Slide Indicators (Clean Dots Only - No Numbers, No Border Line) */}
-        <div className="relative z-10 flex items-center justify-center gap-2 max-w-7xl mx-auto w-full pt-2">
+        <div className="relative z-10 flex items-center justify-center gap-2 max-w-7xl mx-auto w-full pt-2 pb-3 sm:pb-0">
           {SLIDES.map((slide, idx) => (
             <button
               key={slide.id}

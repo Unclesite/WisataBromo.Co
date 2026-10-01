@@ -57,8 +57,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       </div>
 
       {/* 2. Traveloka-Style Floating Search & Reservation Engine */}
-      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-3 sm:-mt-6 md:-mt-10 lg:-mt-14 pb-10">
-        <div className="bg-[#ffffff] rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-2xl shadow-[#102a56]/15 overflow-hidden">
+      <div className="relative z-20 max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 -mt-12 sm:-mt-6 md:-mt-10 lg:-mt-14 pb-10">
+        <div className="bg-[#ffffff] rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-2xl shadow-[#102a56]/20 overflow-hidden">
           
           {/* Live TNBTS Operational & Meteorological Strip */}
           <div className="bg-gradient-to-r from-[#0d1f3c] via-[#102a56] to-[#1e3a8a] text-white px-3 sm:px-5 py-2 sm:py-2.5 flex flex-wrap items-center justify-between gap-2 text-xs border-b border-slate-800">
@@ -68,7 +68,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
               <span className="font-extrabold text-emerald-400 uppercase text-[11px] sm:text-xs">
-                STATUS TNBTS: {tnbtsStatus?.statusBadge || 'BUKA NORMAL'}
+                STATUS BROMO : {tnbtsStatus?.statusBadge || 'BUKA NORMAL'}
               </span>
               <span className="text-white/60 hidden sm:inline">· PVMBG {tnbtsStatus?.pvmbgLevel || 'Level II (Waspada)'}</span>
             </div>

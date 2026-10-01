@@ -39,7 +39,7 @@ export const LiveTnbtsWeatherBar: React.FC<LiveTnbtsWeatherBarProps> = ({
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
             <span className="text-emerald-400 font-extrabold uppercase tracking-tight">
-              <span className="hidden xs:inline">TNBTS: </span>{tnbtsStatus.statusBadge}
+              <span className="hidden xs:inline">STATUS BROMO : </span>{tnbtsStatus.statusBadge}
             </span>
           </div>
 
