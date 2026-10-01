@@ -4,7 +4,7 @@ import {
   X, Calendar, Users, Copy, Check, Calculator, ShieldCheck, MapPin, 
   Send, Camera, Plus, Minus, AlertCircle, Mail, Upload, FileText, 
   Download, CreditCard, Wallet, Smartphone, CheckCircle2, RefreshCw,
-  Sparkles, Clock, Flame, Info, Video, ExternalLink, LogIn, LogOut, CheckCheck, Folder
+  Sparkles, Clock, Flame, Info, Video, CheckCheck
 } from 'lucide-react';
 import { generateBookingInvoicePDF } from '../utils/pdfInvoiceGenerator';
 import { 
