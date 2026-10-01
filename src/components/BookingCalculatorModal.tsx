@@ -3,9 +3,27 @@ import { TourPackage, BookingFormState } from '../types';
 import { 
   X, Calendar, Users, Copy, Check, Calculator, ShieldCheck, MapPin, 
   Send, Camera, Plus, Minus, AlertCircle, Mail, Upload, FileText, 
-  Download, CreditCard, Wallet, Smartphone, CheckCircle2, RefreshCw
+  Download, CreditCard, Wallet, Smartphone, CheckCircle2, RefreshCw,
+  Sparkles, Clock, Flame, Info, Video, ExternalLink, LogIn, LogOut, CheckCheck, Folder
 } from 'lucide-react';
 import { generateBookingInvoicePDF } from '../utils/pdfInvoiceGenerator';
+import { 
+  checkIsHighSeason, 
+  calculateBromoTripSchedule, 
+  HIGH_SEASON_PERIODS, 
+  getOpenTripSurabayaSchedule 
+} from '../utils/highSeasonCalendar';
+import { 
+  initAuth,
+  googleSignIn,
+  googleLogout,
+  getAccessToken,
+  syncAllToGoogleWorkspace,
+  ADMIN_TARGET_EMAIL,
+  BookingPayload,
+  WorkspaceSyncResult
+} from '../services/googleWorkspaceService';
+import type { User } from 'firebase/auth';
 
 interface BookingCalculatorModalProps {
   isOpen: boolean;
@@ -27,22 +45,35 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   const defaultDateStr = tomorrow.toISOString().split('T')[0];
+  const initialHighSeason = checkIsHighSeason(defaultDateStr);
+  const initialDayOfWeek = tomorrow.getDay();
+  const initialDayType: 'weekday' | 'weekend' | 'highseason' = initialHighSeason.isHighSeason
+    ? 'highseason'
+    : initialDayOfWeek === 0 || initialDayOfWeek === 6
+    ? 'weekend'
+    : 'weekday';
+
+  const initialSbySchedule = getOpenTripSurabayaSchedule(defaultDateStr, initialHighSeason.isHighSeason);
+  const isInitialSbyPkg = (initialPackageId || packages[0]?.id) === 'open-trip-surabaya';
+  const initialPaxCount = isInitialSbyPkg && !initialSbySchedule.isSaturday ? 2 : 0;
 
   const [form, setForm] = useState<BookingFormState>({
     packageId: selectedPkgId,
     startCity: 'malang',
     travelDate: defaultDateStr,
-    paxCount: 0, // Starts from 0
+    paxCount: initialPaxCount, // Starts from 2 for SBY via Malang, or 0
     fullName: '',
     whatsappNumber: '',
     email: '', // Required email
     pickupAddress: '',
     specialNotes: '',
     includeDocumentation: true,
-    isHighSeason: false,
+    includeDrone: false,
+    isHighSeason: initialHighSeason.isHighSeason,
     wnaCount: 0,
-    dayType: 'weekday',
+    dayType: initialDayType,
     pickupAreaExtra: 'none',
+    openTripSurabayaRoute: initialSbySchedule.route,
     paymentMethod: 'bca',
     paymentProofName: '',
     paymentProofPreview: '',
@@ -55,11 +86,46 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
   const [isSuccessScreen, setIsSuccessScreen] = useState(false);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
+  const [showHighSeasonCalendar, setShowHighSeasonCalendar] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Google Workspace Sync States (Calendar, Gmail, Sheets)
+  const [googleUser, setGoogleUser] = useState<User | null>(null);
+  const [googleToken, setGoogleToken] = useState<string | null>(null);
+  const [isLoggingInGoogle, setIsLoggingInGoogle] = useState(false);
+  const [showSyncConfirmModal, setShowSyncConfirmModal] = useState(false);
+  const [isGoogleSyncing, setIsGoogleSyncing] = useState(false);
+  const [googleSyncResult, setGoogleSyncResult] = useState<WorkspaceSyncResult | null>(null);
+  const [syncErrorMessage, setSyncErrorMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = initAuth(
+      (user, token) => {
+        setGoogleUser(user);
+        setGoogleToken(token);
+      },
+      () => {
+        setGoogleUser(null);
+        setGoogleToken(null);
+      }
+    );
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     if (initialPackageId) {
       setSelectedPkgId(initialPackageId);
+      const chosen = packages.find((p) => p.id === initialPackageId);
+      const isSby = initialPackageId === 'open-trip-surabaya';
+      const sbySchedule = getOpenTripSurabayaSchedule(form.travelDate, form.isHighSeason);
+      const isPrivate = chosen?.category === 'private_trip' || chosen?.category === 'long_jeep';
+      setForm((prev) => ({
+        ...prev,
+        packageId: initialPackageId,
+        openTripSurabayaRoute: sbySchedule.route,
+        paxCount: isSby && !sbySchedule.isSaturday ? Math.max(2, prev.paxCount) : prev.paxCount,
+        includeDrone: isPrivate ? prev.includeDrone : false,
+      }));
     }
   }, [initialPackageId]);
 
@@ -81,10 +147,57 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
     }
   };
 
+  const handleTravelDateChange = (dateVal: string) => {
+    const hs = checkIsHighSeason(dateVal);
+    let dayType: 'weekday' | 'weekend' | 'highseason' = 'weekday';
+
+    if (dateVal) {
+      const parts = dateVal.split('-');
+      const d = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+      const dayOfWeek = d.getDay();
+      dayType = hs.isHighSeason ? 'highseason' : dayOfWeek === 0 || dayOfWeek === 6 ? 'weekend' : 'weekday';
+    }
+
+    const sbySchedule = getOpenTripSurabayaSchedule(dateVal, hs.isHighSeason);
+
+    setForm((prev) => {
+      const isSbyPkg = selectedPkgId === 'open-trip-surabaya';
+      let newPax = prev.paxCount;
+      if (isSbyPkg) {
+        if (!sbySchedule.isSaturday) {
+          // Minggu s/d Jumat: Minimal 2 orang (peserta dimulai dari 2 orang)
+          newPax = Math.max(2, newPax);
+        } else {
+          // Sabtu: 1 orang tetap bisa gabung
+          if (newPax < 1) newPax = 1;
+        }
+      }
+
+      return {
+        ...prev,
+        travelDate: dateVal,
+        isHighSeason: hs.isHighSeason,
+        dayType,
+        openTripSurabayaRoute: sbySchedule.route,
+        paxCount: newPax,
+      };
+    });
+    clearFieldError('travelDate');
+    clearFieldError('paxCount');
+  };
+
+  const currentPkg = packages.find((p) => p.id === selectedPkgId) || packages[0];
+  const tripSchedule = calculateBromoTripSchedule(form.travelDate);
+  const highSeasonCheck = checkIsHighSeason(form.travelDate);
+  const openTripSbyInfo = getOpenTripSurabayaSchedule(form.travelDate, form.isHighSeason);
+
   const validateBookingForm = (): boolean => {
     const errs: Record<string, string> = {};
+    const isSbyMalang = currentPkg.id === 'open-trip-surabaya' && !openTripSbyInfo.isSaturday;
 
-    if (form.paxCount <= 0) {
+    if (isSbyMalang && form.paxCount < 2) {
+      errs.paxCount = 'Open Trip Surabaya via Malang (keberangkatan Minggu s/d Jumat) minimal 2 orang.';
+    } else if (form.paxCount <= 0) {
       errs.paxCount = 'Jumlah peserta wajib ditentukan minimal 1 ' + (currentPkg.category === 'trail' ? 'motor' : 'orang') + ' menggunakan tombol (+).';
     }
 
@@ -119,9 +232,7 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
 
   if (!isOpen) return null;
 
-  const currentPkg = packages.find((p) => p.id === selectedPkgId) || packages[0];
-
-  // Pricing Calculation Logic (without jacket & horse add-ons)
+  // Pricing Calculation Logic (Direct mapping from official pricelist)
   let basePrice = 0;
 
   if (form.paxCount > 0) {
@@ -130,74 +241,172 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
       const isBatu = form.startCity === 'batu';
       let perPax = 0;
       if (!isBatu) {
-        // Malang
-        perPax = form.includeDocumentation ? 325000 : 275000;
+        // Start: Malang
+        // High Season: tanpa doc 325.000, plus doc 375.000
+        // Low Season: tanpa doc 275.000, plus doc 325.000
+        if (form.isHighSeason) {
+          perPax = form.includeDocumentation ? 375000 : 325000;
+        } else {
+          perPax = form.includeDocumentation ? 325000 : 275000;
+        }
       } else {
-        // Batu
-        perPax = form.includeDocumentation ? 375000 : 325000;
-      }
-      if (form.isHighSeason) {
-        perPax += 50000;
+        // Start: Batu
+        // High Season: tanpa doc 375.000, plus doc 425.000
+        // Low Season: tanpa doc 325.000, plus doc 375.000
+        if (form.isHighSeason) {
+          perPax = form.includeDocumentation ? 425000 : 375000;
+        } else {
+          perPax = form.includeDocumentation ? 375000 : 325000;
+        }
       }
       basePrice = perPax * form.paxCount;
     } else if (currentPkg.id === 'open-trip-surabaya') {
-      // Open Trip Surabaya
-      let perPax = form.isHighSeason ? 425000 : 400000;
+      // Start Surabaya: Connected to calendar!
+      // Hari Sabtu: via Tosari pukul 22.00 WIB, Rp 400.000 (High season: Rp 425.000), 1 orang bisa gabung
+      // Hari Minggu - Jumat: via Malang, Rp 750.000 (High season: Rp 800.000), minimal 2 orang
+      const perPax = form.isHighSeason ? openTripSbyInfo.highSeasonPricePerPax : openTripSbyInfo.pricePerPax;
       basePrice = perPax * form.paxCount;
-    } else if (currentPkg.id === 'private-surabaya') {
-      // Private Trip Surabaya Tiered
-      let perPax = 570000; // default for 6 pax
-      if (form.paxCount <= 2) perPax = 1550000;
-      else if (form.paxCount <= 4) perPax = 800000;
-      else if (form.paxCount <= 6) perPax = 570000;
-      else if (form.paxCount === 7) perPax = 700000;
-      else if (form.paxCount === 8) perPax = 650000;
-      else if (form.paxCount <= 10) perPax = 600000;
-      else if (form.paxCount <= 12) perPax = 470000;
-      else if (form.paxCount <= 14) perPax = 480000;
-      else if (form.paxCount <= 16) perPax = 450000;
-      else if (form.paxCount <= 18) perPax = 400000;
-      else perPax = 370000;
-
-      basePrice = perPax * form.paxCount;
-    } else if (currentPkg.id === 'long-jeep') {
-      // Long Jeep
-      let groupPrice = 1900000;
-      if (form.dayType === 'weekday') {
-        groupPrice = form.includeDocumentation ? 2100000 : 1900000;
-      } else if (form.dayType === 'weekend') {
-        groupPrice = form.includeDocumentation ? 2500000 : 2150000;
-      } else if (form.dayType === 'highseason') {
-        groupPrice = form.includeDocumentation ? 3000000 : 2650000;
-      }
-
-      // Add extra pickup fee if applicable
-      let pickupFee = 0;
-      if (form.pickupAreaExtra === 'malang') {
-        pickupFee = 300000 * Math.ceil(form.paxCount / 6);
-      } else if (form.pickupAreaExtra === 'batu') {
-        pickupFee = 400000 * Math.ceil(form.paxCount / 6);
-      }
-      basePrice = groupPrice + pickupFee;
-    } else if (currentPkg.category === 'private_trip') {
-      // Standard Private trips (Tosari, Sukapura, Gubugklakah, Malang, Batu)
+    } else if (currentPkg.id === 'jeep-tosari') {
+      // Basecamp: Tosari
+      // High Season Tanpa Doc: 1.250.000, Plus Doc foto video: +600.000
+      // Low Season: Tanpa Doc 950.000, Plus Doc: +500.000
       const jeepCount = Math.ceil(form.paxCount / (form.includeDocumentation ? 5 : 6)) || 1;
-      let singleJeepPrice = currentPkg.price;
-      if (form.includeDocumentation) {
-        singleJeepPrice += (currentPkg.docPriceAddon || 500000);
+      let singleJeepPrice = 0;
+      if (form.isHighSeason) {
+        singleJeepPrice = 1250000 + (form.includeDocumentation ? 600000 : 0);
+      } else {
+        singleJeepPrice = 950000 + (form.includeDocumentation ? 500000 : 0);
       }
       basePrice = singleJeepPrice * jeepCount;
+    } else if (currentPkg.id === 'jeep-sukapura') {
+      // Basecamp: Sukapura
+      // High Season Tanpa Doc: 1.300.000, Plus Doc foto video: +600.000
+      // Low Season: Tanpa Doc 1.000.000, Plus Doc: +500.000
+      const jeepCount = Math.ceil(form.paxCount / (form.includeDocumentation ? 5 : 6)) || 1;
+      let singleJeepPrice = 0;
+      if (form.isHighSeason) {
+        singleJeepPrice = 1300000 + (form.includeDocumentation ? 600000 : 0);
+      } else {
+        singleJeepPrice = 1000000 + (form.includeDocumentation ? 500000 : 0);
+      }
+      basePrice = singleJeepPrice * jeepCount;
+    } else if (currentPkg.id === 'jeep-gubugklakah') {
+      // Basecamp: Gubugklakah
+      // High Season Tanpa Doc: 1.700.000, Plus Doc foto video: +600.000
+      // Low Season: Tanpa Doc 1.400.000, Plus Doc: +500.000
+      const jeepCount = Math.ceil(form.paxCount / (form.includeDocumentation ? 5 : 6)) || 1;
+      let singleJeepPrice = 0;
+      if (form.isHighSeason) {
+        singleJeepPrice = 1700000 + (form.includeDocumentation ? 600000 : 0);
+      } else {
+        singleJeepPrice = 1400000 + (form.includeDocumentation ? 500000 : 0);
+      }
+      basePrice = singleJeepPrice * jeepCount;
+    } else if (currentPkg.id === 'long-jeep') {
+      // Long Jeep Start Basecamp Gubugklakah
+      // weekday: 1.900.000 per grup (tanpa doc), 2.100.000 (plus doc)
+      // weekend: 2.150.000 per grup (tanpa doc), 2.500.000 (plus doc)
+      // peak/highseason: 2.650.000 per grup (tanpa doc) + doc = +600.000 (total 3.250.000)
+      // Shuttle per mobil (Avanza dll) untuk long Jeep dari Malang: +300.000 (low season), 400.000 (high/peak season)
+      const isHigh = form.isHighSeason || form.dayType === 'highseason';
+      let groupPrice = 1900000;
+      if (isHigh) {
+        groupPrice = form.includeDocumentation ? 3250000 : 2650000;
+      } else if (form.dayType === 'weekend') {
+        groupPrice = form.includeDocumentation ? 2500000 : 2150000;
+      } else {
+        groupPrice = form.includeDocumentation ? 2100000 : 1900000;
+      }
+
+      let pickupFee = 0;
+      if (form.pickupAreaExtra === 'malang') {
+        pickupFee = (isHigh ? 400000 : 300000) * Math.ceil(form.paxCount / 6);
+      } else if (form.pickupAreaExtra === 'batu') {
+        pickupFee = (isHigh ? 500000 : 400000) * Math.ceil(form.paxCount / 6);
+      }
+      basePrice = groupPrice + pickupFee;
+    } else if (currentPkg.id === 'private-malang') {
+      // Start: Malang
+      // High Season Tanpa Doc: 2.000.000, Plus Doc High Season: +600.000 (total 2.600.000)
+      // Low Season: Tanpa Doc 1.700.000, Plus Doc: +500.000 (total 2.200.000)
+      const jeepCount = Math.ceil(form.paxCount / (form.includeDocumentation ? 5 : 6)) || 1;
+      let singleJeepPrice = 0;
+      if (form.isHighSeason) {
+        singleJeepPrice = 2000000 + (form.includeDocumentation ? 600000 : 0);
+      } else {
+        singleJeepPrice = 1700000 + (form.includeDocumentation ? 500000 : 0);
+      }
+      basePrice = singleJeepPrice * jeepCount;
+    } else if (currentPkg.id === 'private-batu') {
+      // Start: Batu
+      // High Season Tanpa Doc: 2.100.000, Plus Doc High Season: +600.000 (total 2.700.000)
+      // Low Season: Tanpa Doc 1.800.000, Plus Doc: +500.000 (total 2.300.000)
+      const jeepCount = Math.ceil(form.paxCount / (form.includeDocumentation ? 5 : 6)) || 1;
+      let singleJeepPrice = 0;
+      if (form.isHighSeason) {
+        singleJeepPrice = 2100000 + (form.includeDocumentation ? 600000 : 0);
+      } else {
+        singleJeepPrice = 1800000 + (form.includeDocumentation ? 500000 : 0);
+      }
+      basePrice = singleJeepPrice * jeepCount;
+    } else if (currentPkg.id === 'private-surabaya') {
+      // PRIVATE START SURABAYA
+      // > 30 org: High Season 420.000 (Low 370.000)
+      // 18 org: High Season 450.000 (Low 400.000)
+      // 16 org: High Season 500.000 (Low 450.000)
+      // 14 org: High Season 530.000 (Low 480.000)
+      // 12 org: High Season 520.000 (Low 470.000)
+      // 10 org: High Season 650.000 (Low 600.000)
+      // 8 org: High Season 700.000 (Low 650.000)
+      // 7 org: High Season 750.000 (Low 700.000)
+      // 6 org: High Season 620.000 (Low 570.000)
+      // 4 org: High Season 850.000 (Low 800.000)
+      // 2 org: High Season 1.600.000 (Low 1.550.000)
+      let perPax = 570000;
+      if (form.isHighSeason) {
+        if (form.paxCount <= 2) perPax = 1600000;
+        else if (form.paxCount <= 4) perPax = 850000;
+        else if (form.paxCount <= 6) perPax = 620000;
+        else if (form.paxCount === 7) perPax = 750000;
+        else if (form.paxCount === 8) perPax = 700000;
+        else if (form.paxCount <= 10) perPax = 650000;
+        else if (form.paxCount <= 12) perPax = 520000;
+        else if (form.paxCount <= 14) perPax = 530000;
+        else if (form.paxCount <= 16) perPax = 500000;
+        else if (form.paxCount <= 18) perPax = 450000;
+        else perPax = 420000;
+      } else {
+        if (form.paxCount <= 2) perPax = 1550000;
+        else if (form.paxCount <= 4) perPax = 800000;
+        else if (form.paxCount <= 6) perPax = 570000;
+        else if (form.paxCount === 7) perPax = 700000;
+        else if (form.paxCount === 8) perPax = 650000;
+        else if (form.paxCount <= 10) perPax = 600000;
+        else if (form.paxCount <= 12) perPax = 470000;
+        else if (form.paxCount <= 14) perPax = 480000;
+        else if (form.paxCount <= 16) perPax = 450000;
+        else if (form.paxCount <= 18) perPax = 400000;
+        else perPax = 370000;
+      }
+      basePrice = perPax * form.paxCount;
     } else if (currentPkg.category === 'picnic') {
       basePrice = currentPkg.price * form.paxCount;
     } else if (currentPkg.category === 'trail') {
       basePrice = currentPkg.price * form.paxCount;
+    } else {
+      const jeepCount = Math.ceil(form.paxCount / 6) || 1;
+      basePrice = currentPkg.price * jeepCount;
     }
   }
 
   // WNA foreign surcharge
   const wnaSurcharge = form.wnaCount * (currentPkg.wnaChargePerPax || 255000);
 
-  const grandTotal = basePrice + wnaSurcharge;
+  // Drone Add-on (+Rp 1.500.000) for Private Trips
+  const isPrivateTrip = currentPkg.category === 'private_trip' || currentPkg.category === 'long_jeep';
+  const dronePrice = isPrivateTrip && form.includeDrone ? 1500000 : 0;
+
+  const grandTotal = basePrice + wnaSurcharge + dronePrice;
   const downPaymentEstimated = Math.round(grandTotal * 0.3);
 
   const formatRupiah = (val: number) => {
@@ -226,11 +435,13 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
     setTimeout(() => setCopiedEwallet(false), 2500);
   };
 
-  // Helper functions for Increment and Decrement with 0 minimum
+  // Helper functions for Increment and Decrement with 0 minimum (or 2 for SBY via Malang)
   const updatePax = (delta: number) => {
     setForm((prev) => {
-      const nextVal = Math.max(0, Math.min(50, prev.paxCount + delta));
-      if (nextVal > 0) clearFieldError('paxCount');
+      const isSbyMalang = currentPkg.id === 'open-trip-surabaya' && !openTripSbyInfo.isSaturday;
+      const minAllowed = isSbyMalang ? 2 : 0;
+      const nextVal = Math.max(minAllowed, Math.min(50, prev.paxCount + delta));
+      if (nextVal >= (isSbyMalang ? 2 : 1)) clearFieldError('paxCount');
       const adjustedWna = Math.min(prev.wnaCount, nextVal);
       return { ...prev, paxCount: nextVal, wnaCount: adjustedWna };
     });
@@ -244,17 +455,21 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
     });
   };
 
-  // Handle File Upload for Bukti Transfer
+  // Handle File Upload for Bukti Transfer with Base64 conversion for Gmail & Drive
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const previewUrl = URL.createObjectURL(file);
-      setForm((prev) => ({
-        ...prev,
-        paymentProofName: file.name,
-        paymentProofPreview: previewUrl,
-      }));
-      clearFieldError('paymentProof');
+      const reader = new FileReader();
+      reader.onload = (uploadEvent) => {
+        const dataUrl = uploadEvent.target?.result as string;
+        setForm((prev) => ({
+          ...prev,
+          paymentProofName: file.name,
+          paymentProofPreview: dataUrl,
+        }));
+        clearFieldError('paymentProof');
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -285,12 +500,15 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
       `---------------------------------------`,
       `*Paket:* ${currentPkg.title}`,
       `*Titik Start:* ${form.startCity === 'batu' ? 'Kota Batu' : currentPkg.startLocationName}`,
-      `*Tanggal Trip:* ${form.travelDate}`,
+      currentPkg.id === 'open-trip-surabaya' ? `*Rute:* ${form.openTripSurabayaRoute === 'malang' ? 'Via Malang' : 'Via Tosari'}` : null,
+      `*Tanggal Keberangkatan (Jemput):* ${tripSchedule.departureFormatted || form.travelDate} (${currentPkg.id === 'open-trip-surabaya' && openTripSbyInfo.isSaturday ? 'Pukul 22.00 WIB Malam' : 'Pukul 23.00 WIB Malam'})`,
+      `*Jadwal Golden Sunrise Bromo:* ${tripSchedule.sunriseFormatted || '-'} (Pukul 05.00 WIB Pagi Keesokan Harinya)`,
       `*Jumlah Peserta:* ${form.paxCount} ${currentPkg.category === 'trail' ? 'Unit Motor' : 'Orang'}`,
       currentPkg.category !== 'trail' && currentPkg.id !== 'open-trip-surabaya' && currentPkg.id !== 'private-surabaya'
         ? `*Paket Dokumentasi:* ${form.includeDocumentation ? 'Plus Foto & Video DSLR/Mirrorless' : 'Tanpa Dokumentasi'}`
         : null,
-      form.isHighSeason ? `*Status Musim:* High / Peak Season (+Biaya Season)` : null,
+      form.includeDrone ? `*Add-on Drone Video Udara 4K:* Ya, Include Drone (+Rp 1.500.000)` : null,
+      form.isHighSeason ? `*Status Musim:* High / Peak Season (${highSeasonCheck.seasonName || 'Tarif Khusus High Season'})` : null,
       form.wnaCount > 0 ? `*Peserta Asing (WNA):* ${form.wnaCount} Orang (+Rp 255.000/org)` : null,
       currentPkg.id === 'long-jeep' ? `*Tipe Hari:* ${form.dayType} | *Opsi Jemput:* ${form.pickupAreaExtra}` : null,
       `*Nama Pemesan:* ${form.fullName}`,
@@ -316,6 +534,98 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
     return encodeURIComponent(lines.join('\n'));
   };
 
+  const handleGoogleLogin = async () => {
+    setIsLoggingInGoogle(true);
+    setSyncErrorMessage(null);
+    try {
+      const res = await googleSignIn();
+      if (res) {
+        setGoogleUser(res.user);
+        setGoogleToken(res.accessToken);
+      }
+    } catch (err: any) {
+      console.error('Google Sign In failed:', err);
+      setSyncErrorMessage(err.message || 'Gagal menghubungkan Google Workspace.');
+    } finally {
+      setIsLoggingInGoogle(false);
+    }
+  };
+
+  const handleGoogleLogout = async () => {
+    await googleLogout();
+    setGoogleUser(null);
+    setGoogleToken(null);
+    setGoogleSyncResult(null);
+  };
+
+  const handleInitiateSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setHasAttemptedSubmit(true);
+    const isValid = validateBookingForm();
+    if (!isValid) {
+      return;
+    }
+    // Show confirmation dialog before mutating Google Workspace data (Mandatory)
+    setShowSyncConfirmModal(true);
+  };
+
+  const handleConfirmAndSync = async () => {
+    setIsGoogleSyncing(true);
+    setSyncErrorMessage(null);
+
+    const bookingPayload: BookingPayload = {
+      bookingCode,
+      tripDate: form.travelDate,
+      fullName: form.fullName,
+      whatsappNumber: form.whatsappNumber,
+      email: form.email,
+      packageTitle: currentPkg ? currentPkg.title : 'Paket Wisata Bromo',
+      paxCount: form.paxCount,
+      wnaCount: form.wnaCount,
+      pickupAddress: form.pickupAddress,
+      paymentMethod: form.paymentMethod,
+      paymentProofName: form.paymentProofName || 'bukti-transfer',
+      paymentProofDataUrl: form.paymentProofPreview || undefined,
+      grandTotal,
+      downPayment: downPaymentEstimated,
+      specialNotes: form.specialNotes,
+      includeDocumentation: form.includeDocumentation,
+      includeDrone: form.includeDrone,
+    };
+
+    try {
+      let token = googleToken || getAccessToken();
+      if (!token) {
+        const res = await googleSignIn();
+        if (res) {
+          token = res.accessToken;
+          setGoogleUser(res.user);
+          setGoogleToken(res.accessToken);
+        } else {
+          throw new Error('Koneksi akun Google diperlukan untuk sinkronisasi otomatis.');
+        }
+      }
+
+      const syncRes = await syncAllToGoogleWorkspace(bookingPayload, token);
+      setGoogleSyncResult(syncRes);
+      setShowSyncConfirmModal(false);
+      setIsSuccessScreen(true);
+    } catch (err: any) {
+      console.error('Workspace sync error:', err);
+      setSyncErrorMessage(err.message || 'Gagal menyinkronkan data.');
+    } finally {
+      setIsGoogleSyncing(false);
+    }
+  };
+
+  const handleSkipSyncAndWhatsApp = () => {
+    setShowSyncConfirmModal(false);
+    const msg = constructWhatsAppMessage();
+    const waUrl = `https://wa.me/6281222290318?text=${msg}`;
+    window.open(waUrl, '_blank');
+    setIsSuccessScreen(true);
+  };
+
   const handleSubmitWhatsApp = (e: React.FormEvent) => {
     e.preventDefault();
     setHasAttemptedSubmit(true);
@@ -323,10 +633,7 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
     if (!isValid) {
       return;
     }
-    const msg = constructWhatsAppMessage();
-    const waUrl = `https://wa.me/6281222290318?text=${msg}`;
-    window.open(waUrl, '_blank');
-    setIsSuccessScreen(true);
+    setShowSyncConfirmModal(true);
   };
 
   return (
@@ -399,8 +706,118 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
               </div>
             </div>
 
-            {/* Download PDF invoice Action */}
+            {/* Google Workspace Synchronization Status Box */}
+            {googleSyncResult && (
+              <div className="p-4 bg-gradient-to-br from-emerald-50 via-teal-50 to-white border border-emerald-300 rounded-2xl max-w-md mx-auto text-left space-y-2.5 shadow-xs">
+                <div className="flex items-center gap-2 text-xs font-black text-emerald-900 border-b border-emerald-200/60 pb-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>Status Sinkronisasi Google Workspace (wisatabromo.co)</span>
+                </div>
+
+                {/* Calendar Status */}
+                <div className="flex items-start justify-between text-xs gap-2">
+                  <div className="flex items-start gap-1.5">
+                    <Calendar className="w-3.5 h-3.5 text-[#3d72fe] shrink-0 mt-0.5" />
+                    <div>
+                      <div className="font-bold text-[#102a56]">Google Calendar:</div>
+                      <div className="text-[11px] text-slate-600">
+                        {googleSyncResult.calendar.success ? 'Jadwal trip berhasil dibuat di kalender Anda' : 'Belum tersinkron'}
+                      </div>
+                    </div>
+                  </div>
+                  {googleSyncResult.calendar.eventLink && (
+                    <a
+                      href={googleSyncResult.calendar.eventLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[11px] font-bold text-[#3d72fe] hover:underline flex items-center gap-0.5 shrink-0 whitespace-nowrap bg-white px-2 py-1 rounded border border-[#3d72fe]/30"
+                    >
+                      <span>Buka</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  )}
+                </div>
+
+                {/* Gmail Status */}
+                <div className="flex items-start justify-between text-xs gap-2">
+                  <div className="flex items-start gap-1.5">
+                    <Mail className="w-3.5 h-3.5 text-rose-500 shrink-0 mt-0.5" />
+                    <div>
+                      <div className="font-bold text-[#102a56]">Gmail Notifikasi &amp; Bukti Transfer:</div>
+                      <div className="text-[11px] text-slate-600">
+                        {googleSyncResult.gmail.success 
+                          ? `Terkirim ke ${ADMIN_TARGET_EMAIL} beserta lampiran bukti transfer` 
+                          : 'Gagal mengirim email'}
+                      </div>
+                    </div>
+                  </div>
+                  <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded shrink-0">
+                    Terkirim ✓
+                  </span>
+                </div>
+
+                {/* Sheets Status */}
+                <div className="flex items-start justify-between text-xs gap-2">
+                  <div className="flex items-start gap-1.5">
+                    <FileText className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                    <div>
+                      <div className="font-bold text-[#102a56]">Google Sheets Data Booking:</div>
+                      <div className="text-[11px] text-slate-600">
+                        {googleSyncResult.sheets.success ? 'Data otomatis tercatat ke spreadsheet' : 'Belum tersimpan'}
+                      </div>
+                    </div>
+                  </div>
+                  {googleSyncResult.sheets.spreadsheetUrl && (
+                    <a
+                      href={googleSyncResult.sheets.spreadsheetUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[11px] font-bold text-emerald-700 hover:underline flex items-center gap-0.5 shrink-0 whitespace-nowrap bg-white px-2 py-1 rounded border border-emerald-300"
+                    >
+                      <span>Buka Sheets</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  )}
+                </div>
+
+                {/* Google Drive Status (if file uploaded) */}
+                {googleSyncResult.drive?.success && googleSyncResult.drive.webViewLink && (
+                  <div className="flex items-start justify-between text-xs gap-2">
+                    <div className="flex items-start gap-1.5">
+                      <Folder className="w-3.5 h-3.5 text-amber-500 shrink-0 mt-0.5" />
+                      <div>
+                        <div className="font-bold text-[#102a56]">Google Drive (Bukti Transfer):</div>
+                        <div className="text-[11px] text-slate-600">
+                          Tersimpan permanen &amp; tertaut di Sheets
+                        </div>
+                      </div>
+                    </div>
+                    <a
+                      href={googleSyncResult.drive.webViewLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[11px] font-bold text-amber-700 hover:underline flex items-center gap-0.5 shrink-0 whitespace-nowrap bg-white px-2 py-1 rounded border border-amber-300"
+                    >
+                      <span>Buka File</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Action Buttons: WhatsApp & Download PDF */}
             <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+              <a
+                href={`https://wa.me/6281222290318?text=${constructWhatsAppMessage()}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-5 py-3 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl transition-all shadow-md shadow-emerald-600/20 flex items-center gap-2 cursor-pointer"
+              >
+                <Send className="w-4 h-4 text-white" />
+                <span>Konfirmasi via WhatsApp Admin</span>
+              </a>
+
               <button
                 type="button"
                 onClick={handleDownloadInvoice}
@@ -415,7 +832,7 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
                 onClick={onClose}
                 className="px-5 py-3 text-xs font-bold text-[#102a56] hover:bg-slate-100 bg-white border border-slate-300 rounded-xl cursor-pointer"
               >
-                Selesai & Tutup
+                Selesai &amp; Tutup
               </button>
             </div>
           </div>
@@ -431,10 +848,21 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
                 <select
                   value={selectedPkgId}
                   onChange={(e) => {
-                    setSelectedPkgId(e.target.value);
-                    const chosen = packages.find((p) => p.id === e.target.value);
+                    const newId = e.target.value;
+                    setSelectedPkgId(newId);
+                    const chosen = packages.find((p) => p.id === newId);
                     if (chosen) {
-                      setForm((prev) => ({ ...prev, packageId: chosen.id, startCity: chosen.startCity }));
+                      const isSby = newId === 'open-trip-surabaya';
+                      const sbySchedule = getOpenTripSurabayaSchedule(form.travelDate, form.isHighSeason);
+                      const isPrivate = chosen.category === 'private_trip' || chosen.category === 'long_jeep';
+                      setForm((prev) => ({
+                        ...prev,
+                        packageId: chosen.id,
+                        startCity: chosen.startCity,
+                        openTripSurabayaRoute: sbySchedule.route,
+                        paxCount: isSby && !sbySchedule.isSaturday ? Math.max(2, prev.paxCount) : prev.paxCount,
+                        includeDrone: isPrivate ? prev.includeDrone : false,
+                      }));
                     }
                   }}
                   className="w-full bg-[#f8fafc] border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-[#111318] focus:outline-none focus:border-[#3d72fe] focus:bg-white font-medium"
@@ -464,7 +892,9 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
                       }`}
                     >
                       <div>Start Kota Malang</div>
-                      <div className="text-[10px] opacity-80 font-normal">Rp 275rb / Rp 325rb (+Doc)</div>
+                      <div className="text-[10px] opacity-80 font-normal">
+                        {form.isHighSeason ? 'Rp 325rb / Rp 375rb (+Doc)' : 'Rp 275rb / Rp 325rb (+Doc)'}
+                      </div>
                     </button>
                     <button
                       type="button"
@@ -476,9 +906,86 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
                       }`}
                     >
                       <div>Start Kota Batu</div>
-                      <div className="text-[10px] opacity-80 font-normal">Rp 325rb / Rp 375rb (+Doc)</div>
+                      <div className="text-[10px] opacity-80 font-normal">
+                        {form.isHighSeason ? 'Rp 375rb / Rp 425rb (+Doc)' : 'Rp 325rb / Rp 375rb (+Doc)'}
+                      </div>
                     </button>
                   </div>
+                </div>
+              )}
+
+              {/* Start Route Connected to Calendar for Open Trip Surabaya */}
+              {currentPkg.id === 'open-trip-surabaya' && (
+                <div className="p-3.5 bg-gradient-to-br from-blue-50/80 via-indigo-50/50 to-white border border-[#3d72fe]/30 rounded-2xl space-y-2.5 shadow-xs">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-black text-[#102a56] flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-[#3d72fe]" />
+                      <span>Rute Open Trip Surabaya (Otomatis Terhubung Kalender):</span>
+                    </span>
+                    <span className={`text-[10px] font-black px-2.5 py-0.5 rounded-full shadow-2xs ${
+                      openTripSbyInfo.isSaturday 
+                        ? 'bg-amber-100 text-amber-950 border border-amber-300' 
+                        : 'bg-blue-100 text-blue-950 border border-blue-300'
+                    }`}>
+                      {openTripSbyInfo.isSaturday ? '🗓️ Jadwal Hari Sabtu' : '🗓️ Jadwal Minggu s/d Jumat'}
+                    </span>
+                  </div>
+
+                  <div className="bg-white p-3 rounded-xl border border-slate-200/80 shadow-2xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="font-extrabold text-xs text-[#102a56]">
+                          {openTripSbyInfo.isSaturday ? '📍 Surabaya via Tosari (Pasuruan)' : '📍 Surabaya via Malang'}
+                        </span>
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${
+                          openTripSbyInfo.isSaturday ? 'bg-emerald-100 text-emerald-800' : 'bg-indigo-100 text-indigo-800'
+                        }`}>
+                          {openTripSbyInfo.isSaturday ? '1 Orang Bisa Gabung' : 'Minimal 2 Orang'}
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-slate-600">
+                        {openTripSbyInfo.isSaturday
+                          ? 'Berangkat Sabtu pukul 22.00 WIB, nikmati Sunrise Minggu pagi. Dokumentasi Foto Include!'
+                          : `Berangkat hari ${openTripSbyInfo.dayName} pukul 23.00 WIB via Malang. Peserta dimulai dari 2 orang. Dokumentasi Foto Include!`}
+                      </p>
+                    </div>
+
+                    <div className="sm:text-right shrink-0">
+                      <div className="text-[10px] text-slate-500 uppercase font-bold">Tarif Terpilih:</div>
+                      <div className="text-base font-black text-[#3d72fe] font-mono">
+                        {formatRupiah(form.isHighSeason ? openTripSbyInfo.highSeasonPricePerPax : openTripSbyInfo.pricePerPax)}
+                        <span className="text-[10px] font-normal text-slate-500"> / org</span>
+                      </div>
+                      {form.isHighSeason && (
+                        <div className="text-[9px] font-bold text-red-600 flex items-center justify-end gap-0.5">
+                          <Flame className="w-2.5 h-2.5" /> High Season Aktif
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Quick Helper to choose next Saturday */}
+                  {!openTripSbyInfo.isSaturday && (
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between text-[11px] bg-amber-50/90 border border-amber-200/80 p-2.5 rounded-xl text-amber-900 gap-2">
+                      <span className="leading-snug">
+                        Ingin tarif hemat <strong>Rp 400.000/orang</strong> &amp; <strong>1 orang bisa gabung</strong>?
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const curr = form.travelDate ? new Date(form.travelDate) : new Date();
+                          const day = curr.getDay();
+                          const diff = (6 - day + 7) % 7 || 7;
+                          curr.setDate(curr.getDate() + diff);
+                          const nextSatStr = curr.toISOString().split('T')[0];
+                          handleTravelDateChange(nextSatStr);
+                        }}
+                        className="px-3 py-1 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-lg text-[10px] transition-colors cursor-pointer shrink-0 self-start sm:self-auto shadow-2xs"
+                      >
+                        Pilih Hari Sabtu Terdekat (Via Tosari)
+                      </button>
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -491,7 +998,9 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
                       Pilihan Paket Dokumentasi Foto/Video:
                     </span>
                     <span className="text-[11px] font-bold text-[#3d72fe]">
-                      {currentPkg.category === 'open_trip' ? '+Rp 50.000 / org' : '+Rp 500.000 / grup'}
+                      {currentPkg.category === 'open_trip' 
+                        ? '+Rp 50.000 / org' 
+                        : (form.isHighSeason ? '+Rp 600.000 / grup (High Season)' : '+Rp 500.000 / grup')}
                     </span>
                   </div>
                   <div className="grid grid-cols-2 gap-2">
@@ -521,48 +1030,78 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
                 </div>
               )}
 
+              {/* Drone Video Udara 4K (+Rp 1.500.000) Add-on for Private Trips */}
+              {(currentPkg.category === 'private_trip' || currentPkg.category === 'long_jeep') && (
+                <div className={`p-3.5 rounded-2xl border transition-all space-y-2 ${
+                  form.includeDrone
+                    ? 'bg-gradient-to-br from-indigo-50/90 via-blue-50/70 to-purple-50/40 border-[#3d72fe]/40 shadow-xs'
+                    : 'bg-[#eaf2ff]/40 border-slate-200'
+                }`}>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-[#102a56] flex items-center gap-1.5">
+                      <Video className="w-3.5 h-3.5 text-[#3d72fe]" />
+                      <span>Add-on Dokumentasi Drone (Video Udara 4K):</span>
+                    </span>
+                    <span className={`text-[11px] font-black px-2.5 py-0.5 rounded-md ${
+                      form.includeDrone ? 'bg-[#3d72fe] text-white shadow-2xs' : 'bg-slate-200 text-slate-700'
+                    }`}>
+                      +Rp 1.500.000 / trip
+                    </span>
+                  </div>
+
+                  <p className="text-[11px] text-slate-600">
+                    Pengambilan video sinematik udara resolusi 4K dengan pilot drone berlisensi resmi TNBTS. Menghasilkan footage spektakuler lautan awan, kawah aktif, dan tebing kaldera Bromo.
+                  </p>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setForm((prev) => ({ ...prev, includeDrone: false }))}
+                      className={`p-2.5 rounded-xl border text-xs font-bold text-center cursor-pointer transition-all ${
+                        !form.includeDrone
+                          ? 'bg-[#102a56] text-white border-[#102a56]'
+                          : 'bg-white text-[#102a56] border-slate-200 hover:border-slate-300'
+                      }`}
+                    >
+                      Tanpa Drone
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setForm((prev) => ({ ...prev, includeDrone: true }))}
+                      className={`p-2.5 rounded-xl border text-xs font-bold text-center cursor-pointer transition-all flex items-center justify-center gap-1.5 ${
+                        form.includeDrone
+                          ? 'bg-gradient-to-r from-[#3d72fe] to-indigo-600 text-white border-transparent shadow-xs'
+                          : 'bg-white text-[#102a56] border-slate-200 hover:border-[#3d72fe]'
+                      }`}
+                    >
+                      <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                      <span>Include Drone (+1.5 Juta) 🚁</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+
               {/* Long Jeep Options (Weekday / Weekend / High Season & Pickup Addon) */}
               {currentPkg.id === 'long-jeep' && (
                 <div className="p-3.5 bg-[#eaf2ff]/60 border border-[#3d72fe]/20 rounded-2xl space-y-3">
-                  <div>
-                    <label className="block text-xs font-bold text-[#102a56] mb-1.5">
-                      Pilihan Hari Long Jeep:
-                    </label>
-                    <div className="grid grid-cols-3 gap-2 text-xs">
-                      <button
-                        type="button"
-                        onClick={() => setForm((prev) => ({ ...prev, dayType: 'weekday' }))}
-                        className={`p-2 rounded-xl border font-bold text-center cursor-pointer ${
-                          form.dayType === 'weekday'
-                            ? 'bg-[#3d72fe] text-white border-[#3d72fe]'
-                            : 'bg-white text-[#102a56] border-slate-200'
-                        }`}
-                      >
-                        Weekday
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setForm((prev) => ({ ...prev, dayType: 'weekend' }))}
-                        className={`p-2 rounded-xl border font-bold text-center cursor-pointer ${
-                          form.dayType === 'weekend'
-                            ? 'bg-[#3d72fe] text-white border-[#3d72fe]'
-                            : 'bg-white text-[#102a56] border-slate-200'
-                        }`}
-                      >
-                        Weekend
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setForm((prev) => ({ ...prev, dayType: 'highseason' }))}
-                        className={`p-2 rounded-xl border font-bold text-center cursor-pointer ${
-                          form.dayType === 'highseason'
-                            ? 'bg-[#ea0610] text-white border-[#ea0610]'
-                            : 'bg-white text-[#102a56] border-slate-200'
-                        }`}
-                      >
-                        Peak Season
-                      </button>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="text-xs font-bold text-[#102a56]">Kategori Tarif Hari Long Jeep:</span>
+                      <div className="text-[10px] text-slate-500">Ditentukan otomatis berdasarkan tanggal keberangkatan</div>
                     </div>
+                    <span className={`text-[11px] font-black px-3 py-1 rounded-full shadow-xs ${
+                      form.dayType === 'highseason' || form.isHighSeason
+                        ? 'bg-[#ea0610] text-white'
+                        : form.dayType === 'weekend'
+                        ? 'bg-[#3d72fe] text-white'
+                        : 'bg-emerald-600 text-white'
+                    }`}>
+                      {form.dayType === 'highseason' || form.isHighSeason 
+                        ? '🔥 Peak Season' 
+                        : form.dayType === 'weekend' 
+                        ? '🏖️ Weekend' 
+                        : '💼 Weekday'}
+                    </span>
                   </div>
 
                   <div>
@@ -580,8 +1119,8 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
                       className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs text-[#111318]"
                     >
                       <option value="none">Start Basecamp Gubugklakah (Tanpa Tambahan Jemput)</option>
-                      <option value="malang">Jemput Kota Malang (+Rp 300.000 / mobil max 6 pax)</option>
-                      <option value="batu">Jemput Kota Batu (+Rp 400.000 / mobil max 6 pax)</option>
+                      <option value="malang">Jemput Kota Malang ({form.isHighSeason ? '+Rp 400.000 High Season' : '+Rp 300.000'} / mobil max 6 pax)</option>
+                      <option value="batu">Jemput Kota Batu ({form.isHighSeason ? '+Rp 500.000 High Season' : '+Rp 400.000'} / mobil max 6 pax)</option>
                     </select>
                   </div>
                 </div>
@@ -590,19 +1129,26 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
               {/* Date & Interactive Pax Count (+ and - starting from 0) */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <div>
-                  <label className="block text-xs font-bold text-[#102a56] mb-1.5 flex items-center gap-1.5">
-                    <Calendar className="w-3.5 h-3.5 text-[#3d72fe]" />
-                    <span>2. Tanggal Trip</span>
-                    <span className="text-[#ea0610] font-black">*</span>
-                  </label>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="block text-xs font-bold text-[#102a56] flex items-center gap-1.5">
+                      <Calendar className="w-3.5 h-3.5 text-[#3d72fe]" />
+                      <span>2. Tanggal Keberangkatan Trip</span>
+                      <span className="text-[#ea0610] font-black">*</span>
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => setShowHighSeasonCalendar(true)}
+                      className="text-[10px] text-[#3d72fe] hover:underline font-bold flex items-center gap-0.5 cursor-pointer"
+                    >
+                      <Flame className="w-3 h-3 text-red-500" />
+                      <span>Kalender Season</span>
+                    </button>
+                  </div>
                   <input
                     type="date"
                     required
                     value={form.travelDate}
-                    onChange={(e) => {
-                      setForm({ ...form, travelDate: e.target.value });
-                      clearFieldError('travelDate');
-                    }}
+                    onChange={(e) => handleTravelDateChange(e.target.value)}
                     className={`w-full bg-[#f8fafc] border rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-[#111318] focus:outline-none font-medium transition-colors ${
                       formErrors.travelDate ? 'border-rose-500 bg-rose-50/20' : 'border-slate-300 focus:border-[#3d72fe] focus:bg-white'
                     }`}
@@ -630,9 +1176,11 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
                       <button
                         type="button"
                         onClick={() => updatePax(-1)}
-                        disabled={form.paxCount <= 0}
+                        disabled={
+                          form.paxCount <= (currentPkg.id === 'open-trip-surabaya' && !openTripSbyInfo.isSaturday ? 2 : 0)
+                        }
                         className={`w-9 h-9 rounded-lg flex items-center justify-center font-bold transition-all cursor-pointer ${
-                          form.paxCount <= 0
+                          form.paxCount <= (currentPkg.id === 'open-trip-surabaya' && !openTripSbyInfo.isSaturday ? 2 : 0)
                             ? 'opacity-30 text-slate-400 cursor-not-allowed bg-slate-200'
                             : 'bg-white hover:bg-[#eaf2ff] text-[#102a56] hover:text-[#3d72fe] shadow-xs active:scale-95'
                         }`}
@@ -669,21 +1217,92 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
                 </div>
               </div>
 
-              {/* High Season & WNA (+ and - starting from 0) */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                {/* High Season Checkbox */}
-                <label className="flex items-center gap-2 p-3 bg-white rounded-xl border border-slate-200 cursor-pointer hover:border-[#3d72fe]">
-                  <input
-                    type="checkbox"
-                    checked={form.isHighSeason}
-                    onChange={(e) => setForm({ ...form, isHighSeason: e.target.checked })}
-                    className="rounded text-[#3d72fe] focus:ring-0"
-                  />
-                  <div className="text-xs">
-                    <div className="font-bold text-[#102a56]">High / Peak Season</div>
-                    <div className="text-[10px] text-slate-500">Idul Fitri, Nataru, Idul Adha</div>
+              {/* Dynamic Trip & Sunrise Schedule Alert Card */}
+              {tripSchedule.departureFormatted && (
+                <div className="p-3.5 bg-gradient-to-br from-amber-50 via-orange-50/50 to-blue-50/30 border border-amber-200 rounded-2xl text-xs space-y-2.5 shadow-xs">
+                  <div className="flex items-center justify-between">
+                    <span className="font-black text-[#102a56] flex items-center gap-1.5">
+                      <Clock className="w-4 h-4 text-amber-600" />
+                      <span>Jadwal Penjemputan &amp; Golden Sunrise Bromo</span>
+                    </span>
+                    <span className="text-[10px] bg-amber-200/80 text-amber-950 font-bold px-2 py-0.5 rounded-full">
+                      Penting
+                    </span>
                   </div>
-                </label>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <div className="bg-white/95 p-2.5 rounded-xl border border-amber-200/70 shadow-xs">
+                      <div className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">1. Keberangkatan / Jemput:</div>
+                      <div className="font-extrabold text-[#102a56] text-xs mt-0.5">{tripSchedule.departureFormatted}</div>
+                      <div className="text-[11px] text-amber-700 font-black mt-0.5">
+                        {currentPkg.id === 'open-trip-surabaya' && openTripSbyInfo.isSaturday 
+                          ? 'Pukul 22.00 WIB (10 PM Malam)' 
+                          : 'Pukul 23.00 WIB (11 PM Malam)'}
+                      </div>
+                    </div>
+
+                    <div className="bg-white/95 p-2.5 rounded-xl border border-emerald-200/70 shadow-xs">
+                      <div className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">2. Golden Sunrise Bromo:</div>
+                      <div className="font-extrabold text-[#102a56] text-xs mt-0.5">{tripSchedule.sunriseFormatted}</div>
+                      <div className="text-[11px] text-emerald-700 font-black mt-0.5">Pukul 05.00 WIB (Pagi Keesokan Harinya)</div>
+                    </div>
+                  </div>
+
+                  <div className="text-[11px] text-slate-700 bg-white/95 p-3 rounded-xl border border-amber-200 flex items-start gap-2 leading-relaxed">
+                    <Info className="w-4 h-4 text-[#3d72fe] shrink-0 mt-0.5" />
+                    <span>
+                      <strong>Konfirmasi Jadwal Sunrise:</strong> Anda memilih tanggal keberangkatan <strong>{tripSchedule.departureFormatted}</strong> pada <strong>{currentPkg.id === 'open-trip-surabaya' && openTripSbyInfo.isSaturday ? 'pukul 22.00 (10 PM malam)' : 'pukul 23.00 (11 PM malam)'}</strong>, maka jadwal <strong>Golden Sunrise Bromo Anda adalah pada tanggal {tripSchedule.sunriseFormatted} pagi keesokan harinya</strong>.
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {/* High Season Auto-Detected Alert Banner */}
+              {highSeasonCheck.isHighSeason && (
+                <div className="p-3 bg-red-50 border border-red-200 rounded-2xl text-xs flex items-start gap-2.5 text-red-900 shadow-xs animate-fadeIn">
+                  <Flame className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between">
+                      <span className="font-black text-red-700">Periode High / Peak Season Terdeteksi:</span>
+                      <span className="bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-md">Harga High Season Aktif</span>
+                    </div>
+                    <div className="font-bold text-slate-800 text-[11px] mt-0.5">{highSeasonCheck.seasonName}</div>
+                    <div className="text-[10px] text-slate-600 mt-0.5">
+                      {highSeasonCheck.seasonDescription}. Tarif pemesanan otomatis menggunakan harga resmi High Season TNBTS.
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Automatic Season Status & WNA Stepper */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                {/* Automatic Season Status Card (No Checkbox Required) */}
+                <div className={`p-3 rounded-xl border flex items-center gap-2.5 transition-colors ${
+                  form.isHighSeason 
+                    ? 'bg-red-50/80 border-red-200 text-red-900' 
+                    : 'bg-emerald-50/60 border-emerald-200/80 text-emerald-950'
+                }`}>
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
+                    form.isHighSeason ? 'bg-red-100 text-red-600' : 'bg-emerald-100 text-emerald-700'
+                  }`}>
+                    {form.isHighSeason ? <Flame className="w-4 h-4" /> : <Sparkles className="w-4 h-4" />}
+                  </div>
+                  <div className="text-xs min-w-0">
+                    <div className="font-bold flex items-center gap-1.5">
+                      <span>Status Musim:</span>
+                      <span className={`text-[10px] font-black px-1.5 py-0.2 rounded-md ${
+                        form.isHighSeason ? 'bg-red-600 text-white' : 'bg-emerald-600 text-white'
+                      }`}>
+                        {form.isHighSeason ? 'Peak / High Season' : 'Reguler / Normal'}
+                      </span>
+                    </div>
+                    <div className="text-[10px] text-slate-600 truncate mt-0.5">
+                      {form.isHighSeason 
+                        ? (highSeasonCheck.seasonName || 'Tarif Peak Season otomatis aktif') 
+                        : 'Tarif reguler berlaku otomatis'}
+                    </div>
+                  </div>
+                </div>
 
                 {/* Foreigner / WNA Count with Stepper */}
                 <div className="p-3 bg-white rounded-xl border border-slate-200 flex items-center justify-between gap-2">
@@ -988,6 +1607,13 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
                         <span className="font-mono tabular-nums text-[#3d72fe] font-bold">+{formatRupiah(wnaSurcharge)}</span>
                       </div>
                     )}
+
+                    {dronePrice > 0 && (
+                      <div className="flex justify-between text-slate-600">
+                        <span>Add-on Drone Udara 4K:</span>
+                        <span className="font-mono tabular-nums text-[#3d72fe] font-bold">+{formatRupiah(dronePrice)}</span>
+                      </div>
+                    )}
                   </div>
 
                   {/* Total Grand Price */}
@@ -1050,16 +1676,94 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
                     </button>
                   </div>
                 </div>
+                {/* Google Workspace Sync Status & Login Card */}
+                <div className="p-3.5 bg-gradient-to-br from-[#eaf2ff] via-white to-blue-50/60 border border-[#3d72fe]/25 rounded-2xl space-y-2.5">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1.5 text-xs font-black text-[#102a56]">
+                      <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                      </svg>
+                      <span>Sinkronisasi Google Workspace</span>
+                    </div>
+
+                    {googleUser && (
+                      <button
+                        type="button"
+                        onClick={handleGoogleLogout}
+                        className="text-[10px] text-slate-500 hover:text-rose-600 font-bold cursor-pointer"
+                        title="Putuskan akun Google"
+                      >
+                        Putuskan
+                      </button>
+                    )}
+                  </div>
+
+                  {googleUser ? (
+                    <div className="space-y-1.5 text-[11px]">
+                      <div className="flex items-center gap-1.5 text-emerald-800 font-bold bg-emerald-100/80 px-2 py-1 rounded-lg">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                        <span className="truncate">Terhubung: {googleUser.email}</span>
+                      </div>
+                      <div className="text-[10px] text-slate-600 space-y-0.5 pl-1">
+                        <div className="flex items-center gap-1">
+                          <Check className="w-3 h-3 text-emerald-600" />
+                          <span>Google Calendar (Jadwal otomatis tercatat)</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Check className="w-3 h-3 text-emerald-600" />
+                          <span>Gmail ({ADMIN_TARGET_EMAIL} + lampiran bukti transfer)</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Check className="w-3 h-3 text-emerald-600" />
+                          <span>Google Sheets (Spreadsheet Data Booking)</span>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      <p className="text-[10px] text-slate-600 leading-snug">
+                        Hubungkan akun Google agar reservasi dan bukti transfer otomatis masuk ke <strong>Google Calendar</strong>, email <strong>{ADMIN_TARGET_EMAIL}</strong>, dan <strong>Google Sheets</strong>:
+                      </p>
+                      <button
+                        type="button"
+                        onClick={handleGoogleLogin}
+                        disabled={isLoggingInGoogle}
+                        className="w-full py-2 px-3 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 rounded-xl text-xs font-bold transition-all shadow-2xs flex items-center justify-center gap-2 cursor-pointer"
+                      >
+                        <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
+                          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                        </svg>
+                        <span>{isLoggingInGoogle ? 'Menghubungkan...' : 'Hubungkan dengan Google'}</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Action Buttons: WhatsApp & Download PDF */}
               <div className="space-y-2 pt-1">
                 <button
                   type="submit"
-                  className="w-full py-3.5 px-4 text-xs font-bold text-white bg-[#3d72fe] hover:bg-[#2b5ae0] rounded-xl transition-all shadow-lg shadow-[#3d72fe]/25 flex items-center justify-center gap-2 cursor-pointer active:scale-95"
+                  disabled={isGoogleSyncing}
+                  className="w-full py-3.5 px-4 text-xs font-black text-white bg-gradient-to-r from-[#102a56] via-[#3d72fe] to-emerald-600 hover:opacity-95 rounded-xl transition-all shadow-lg shadow-[#3d72fe]/25 flex items-center justify-center gap-2 cursor-pointer active:scale-95"
                 >
-                  <Send className="w-4 h-4" />
-                  <span>Kirim Reservasi & Bukti ke WA (+62 812 2229 0318)</span>
+                  {isGoogleSyncing ? (
+                    <>
+                      <RefreshCw className="w-4 h-4 animate-spin text-white" />
+                      <span>Menyinkronkan ke Google Workspace...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="w-4 h-4 text-[#ffc928]" />
+                      <span>Kirim Bukti Transfer &amp; Konfirmasi Reservasi</span>
+                    </>
+                  )}
                 </button>
 
                 <button
@@ -1073,13 +1777,170 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
 
                 <div className="text-[10px] text-slate-500 text-center flex items-center justify-center gap-1">
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                  <span>E-Tiket & Invoice PDF resmi otomatis dikirimkan ke email & WhatsApp Anda</span>
+                  <span>E-Tiket &amp; Invoice PDF resmi otomatis dikirimkan ke email &amp; WhatsApp Anda</span>
                 </div>
               </div>
             </div>
           </form>
         )}
       </div>
+
+      {/* Confirmation Modal before mutating Google Workspace data (Mandatory) */}
+      {showSyncConfirmModal && (
+        <div className="fixed inset-0 z-[75] flex items-center justify-center bg-black/65 backdrop-blur-xs p-4 animate-fadeIn">
+          <div className="w-full max-w-lg bg-white rounded-3xl p-6 shadow-2xl relative border border-slate-200 text-[#111318] space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-[#eaf2ff] border border-[#3d72fe]/30 flex items-center justify-center text-[#3d72fe] shrink-0">
+                <Sparkles className="w-6 h-6 text-[#3d72fe]" />
+              </div>
+              <div>
+                <h3 className="text-base sm:text-lg font-black text-[#102a56]">
+                  Konfirmasi Sinkronisasi Google Workspace
+                </h3>
+                <p className="text-xs text-slate-500">
+                  PT Global Travel Healing (wisatabromo.co)
+                </p>
+              </div>
+            </div>
+
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              Dengan melanjutkan, sistem reservasi akan melakukan sinkronisasi otomatis berikut:
+            </p>
+
+            <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl space-y-2.5 text-xs">
+              <div className="flex items-start gap-2">
+                <Calendar className="w-4 h-4 text-[#3d72fe] shrink-0 mt-0.5" />
+                <div>
+                  <span className="font-bold text-[#102a56]">Google Calendar:</span>
+                  <div className="text-slate-600">
+                    Menambahkan jadwal <strong>Trip {currentPkg.title}</strong> pada tanggal <strong>{form.travelDate}</strong> dengan pengingat otomatis.
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-2">
+                <Mail className="w-4 h-4 text-rose-500 shrink-0 mt-0.5" />
+                <div>
+                  <span className="font-bold text-[#102a56]">Gmail Notifikasi &amp; Bukti Transfer:</span>
+                  <div className="text-slate-600">
+                    Mengirim rincian pemesanan dan melampirkan file bukti transfer (<strong>{form.paymentProofName}</strong>) langsung ke email resmi <strong>{ADMIN_TARGET_EMAIL}</strong>.
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-2">
+                <FileText className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                <div>
+                  <span className="font-bold text-[#102a56]">Google Sheets:</span>
+                  <div className="text-slate-600">
+                    Memasukkan data lengkap reservasi ke spreadsheet <strong>"Data Booking WisataBromo.co"</strong>.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {syncErrorMessage && (
+              <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-700 flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 shrink-0" />
+                <span>{syncErrorMessage}</span>
+              </div>
+            )}
+
+            <div className="space-y-2 pt-2">
+              <button
+                type="button"
+                onClick={handleConfirmAndSync}
+                disabled={isGoogleSyncing}
+                className="w-full py-3 px-4 text-xs font-black text-white bg-gradient-to-r from-[#102a56] to-[#3d72fe] hover:bg-[#2b5ae0] rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+              >
+                {isGoogleSyncing ? (
+                  <>
+                    <RefreshCw className="w-4 h-4 animate-spin" />
+                    <span>Menyinkronkan ke Calendar, Gmail &amp; Sheets...</span>
+                  </>
+                ) : (
+                  <>
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                    <span>Ya, Konfirmasi &amp; Sinkronkan Sekarang</span>
+                  </>
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={handleSkipSyncAndWhatsApp}
+                className="w-full py-2.5 px-4 text-xs font-bold text-slate-700 hover:bg-slate-100 bg-white border border-slate-300 rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <Send className="w-3.5 h-3.5 text-emerald-600" />
+                <span>Kirim via WhatsApp Tanpa Sinkronisasi Google</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setShowSyncConfirmModal(false)}
+                className="w-full py-2 text-xs font-medium text-slate-500 hover:text-slate-700 cursor-pointer"
+              >
+                Batal &amp; Kembali ke Formulir
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Kalender Resmi High Season TNBTS */}
+      {showHighSeasonCalendar && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-xs p-3 sm:p-4 animate-fadeIn">
+          <div className="w-full max-w-lg bg-white rounded-3xl p-5 sm:p-6 shadow-2xl relative border border-slate-200 text-[#111318] max-h-[85vh] overflow-y-auto">
+            <button
+              type="button"
+              onClick={() => setShowHighSeasonCalendar(false)}
+              className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100 transition-colors cursor-pointer"
+              aria-label="Tutup"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-red-600 to-orange-500 flex items-center justify-center text-white shadow-md">
+                <Flame className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="text-base font-black text-[#102a56]">Kalender High / Peak Season TNBTS</h3>
+                <p className="text-xs text-slate-500">Pemetaan Resmi Jadwal Musim Libur Wisata Bromo</p>
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-600 mb-3 leading-relaxed">
+              Jika tanggal keberangkatan yang Anda pilih berada dalam salah satu rentang tanggal di bawah ini, kalkulator pemesanan akan <strong>secara otomatis menerapkan tarif High Season resmi</strong>:
+            </p>
+
+            <div className="space-y-2.5 max-h-[50vh] overflow-y-auto pr-1">
+              {HIGH_SEASON_PERIODS.map((period, idx) => (
+                <div key={idx} className="p-3 bg-slate-50 hover:bg-red-50/50 rounded-2xl border border-slate-200 transition-colors">
+                  <div className="flex items-center justify-between text-xs font-bold text-[#102a56]">
+                    <span>{period.name}</span>
+                    <span className="text-[10px] bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-black">Peak Season</span>
+                  </div>
+                  <div className="text-xs font-mono font-bold text-red-600 mt-1">
+                    📅 {period.startDate} s/d {period.endDate}
+                  </div>
+                  <div className="text-[11px] text-slate-500 mt-0.5">
+                    {period.description}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setShowHighSeasonCalendar(false)}
+              className="mt-5 w-full py-2.5 bg-[#3d72fe] hover:bg-[#2b5ae0] text-white text-xs font-bold rounded-xl transition-colors cursor-pointer shadow-md"
+            >
+              Tutup Kalender
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

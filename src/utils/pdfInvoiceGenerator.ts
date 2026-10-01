@@ -1,5 +1,6 @@
 import jsPDF from 'jspdf';
 import { TourPackage, BookingFormState } from '../types';
+import { calculateBromoTripSchedule, checkIsHighSeason } from './highSeasonCalendar';
 
 export const generateBookingInvoicePDF = (
   pkg: TourPackage,
@@ -13,6 +14,9 @@ export const generateBookingInvoicePDF = (
     unit: 'mm',
     format: 'a4',
   });
+
+  const schedule = calculateBromoTripSchedule(form.travelDate);
+  const hsInfo = checkIsHighSeason(form.travelDate);
 
   const formatRupiah = (val: number) => {
     return new Intl.NumberFormat('id-ID', {
@@ -95,13 +99,14 @@ export const generateBookingInvoicePDF = (
   doc.setTextColor(16, 42, 86);
   doc.text('RINCIAN JADWAL TRIP:', 114, y + 7);
 
-  doc.setFontSize(8.5);
+  doc.setFontSize(8);
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(30, 41, 59);
-  doc.text(`Paket: ${pkg.title}`, 114, y + 15, { maxWidth: 76 });
-  doc.text(`Tanggal Trip: ${form.travelDate}`, 114, y + 26);
-  doc.text(`Titik Start: ${form.startCity === 'batu' ? 'Kota Batu' : pkg.startLocationName}`, 114, y + 33);
-  doc.text(`Jumlah Peserta: ${form.paxCount} Orang`, 114, y + 40);
+  doc.text(`Paket: ${pkg.title}`, 114, y + 14, { maxWidth: 76 });
+  doc.text(`Jemput: ${schedule.departureFormatted || form.travelDate} (23.00 WIB)`, 114, y + 21, { maxWidth: 76 });
+  doc.text(`Sunrise: ${schedule.sunriseFormatted || '-'} (05.00 WIB)`, 114, y + 28, { maxWidth: 76 });
+  doc.text(`Titik Start: ${form.startCity === 'batu' ? 'Kota Batu' : pkg.startLocationName}`, 114, y + 35);
+  doc.text(`Peserta: ${form.paxCount} Orang ${form.isHighSeason ? '(High Season)' : ''}`, 114, y + 41);
 
   // Table Rincian Biaya
   y += 53;
@@ -121,19 +126,31 @@ export const generateBookingInvoicePDF = (
 
   // Rows
   y += 7;
+  const droneAmount = form.includeDrone ? 1500000 : 0;
+  const wnaAmount = form.wnaCount * 255000;
+  const baseTripSubtotal = totalPrice - wnaAmount - droneAmount;
+
   const rows = [
     {
       item: `${pkg.title} (${form.includeDocumentation ? 'Include Doc Foto/Video' : 'Tanpa Doc'})`,
       qty: `${form.paxCount} Pax`,
-      subtotal: formatRupiah(totalPrice - (form.wnaCount * 255000)),
+      subtotal: formatRupiah(baseTripSubtotal),
     },
   ];
+
+  if (droneAmount > 0) {
+    rows.push({
+      item: 'Add-on Dokumentasi Drone (Video Udara 4K Cinematic + Pilot TNBTS)',
+      qty: '1 Grup',
+      subtotal: formatRupiah(droneAmount),
+    });
+  }
 
   if (form.wnaCount > 0) {
     rows.push({
       item: 'Surcharge Tiket Masuk TNBTS Wisatawan Asing (WNA / Foreigner)',
       qty: `${form.wnaCount} Pax`,
-      subtotal: formatRupiah(form.wnaCount * 255000),
+      subtotal: formatRupiah(wnaAmount),
     });
   }
 

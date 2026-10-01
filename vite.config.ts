@@ -20,10 +20,28 @@ export default defineConfig(() => {
           theme_color: '#102a56',
           background_color: '#ffffff',
           display: 'standalone',
+          display_override: ['window-controls-overlay', 'standalone', 'minimal-ui'],
           orientation: 'any',
           start_url: '/',
           scope: '/',
+          prefer_related_applications: false,
           categories: ['travel', 'tourism', 'lifestyle'],
+          screenshots: [
+            {
+              src: '/pwa-512x512.png',
+              sizes: '1280x720',
+              type: 'image/png',
+              form_factor: 'wide',
+              label: 'WisataBromo.co Desktop Dashboard'
+            },
+            {
+              src: '/pwa-512x512.png',
+              sizes: '720x1280',
+              type: 'image/png',
+              form_factor: 'narrow',
+              label: 'WisataBromo.co Mobile'
+            }
+          ],
           icons: [
             {
               src: '/pwa-192x192.png',
@@ -46,6 +64,7 @@ export default defineConfig(() => {
           ],
         },
         workbox: {
+          maximumFileSizeToCacheInBytes: 15 * 1024 * 1024,
           globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg,woff,woff2}'],
           runtimeCaching: [
             {

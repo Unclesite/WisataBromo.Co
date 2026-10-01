@@ -61,6 +61,16 @@ export const Footer: React.FC = () => {
                   Paket Sewa Trail Start Sukapura
                 </a>
               </li>
+              <li className="pt-1.5 border-t border-white/20">
+                <a href="#tentang-kami" className="text-white hover:text-[#ffc928] hover:underline transition-colors block py-0.5 flex items-center gap-1 font-bold">
+                  <span>🏢 Tentang Kami &amp; Legalitas PT</span>
+                </a>
+              </li>
+              <li>
+                <a href="#artikel" className="text-[#ffc928] font-extrabold hover:underline transition-colors block py-0.5 flex items-center gap-1">
+                  <span>📖 20 Artikel &amp; Ensiklopedia Bromo</span>
+                </a>
+              </li>
             </ul>
           </div>
 

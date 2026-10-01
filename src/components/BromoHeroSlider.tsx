@@ -173,63 +173,53 @@ export const BromoHeroSlider: React.FC<BromoHeroSliderProps> = ({ onOpenBooking,
             </span>
           </div>
 
-          {/* Slide Auto-Play & Counter */}
-          <div className="flex items-center gap-2 bg-black/50 backdrop-blur-md border border-white/20 px-3 py-1.5 rounded-xl text-xs text-white">
+          {/* Slide Auto-Play Toggle (No Numbers) */}
+          <div className="flex items-center bg-black/50 backdrop-blur-md border border-white/20 p-1.5 rounded-xl text-xs text-white">
             <button
               onClick={() => setIsAutoPlay(!isAutoPlay)}
-              className="hover:text-[#3d72fe] transition-colors p-0.5 cursor-pointer"
-              title={isAutoPlay ? 'Jeda Slide' : 'Putar Otomatis'}
-              aria-label={isAutoPlay ? 'Jeda Slide' : 'Putar Otomatis'}
+              className="hover:text-[#3d72fe] transition-colors p-1 cursor-pointer"
+              title={isAutoPlay ? 'Jeda Slide Otomatis' : 'Putar Slide Otomatis'}
+              aria-label={isAutoPlay ? 'Jeda Slide Otomatis' : 'Putar Slide Otomatis'}
             >
-              {isAutoPlay ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
+              {isAutoPlay ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
             </button>
-            <span className="font-mono tabular-nums font-bold text-xs">
-              0{currentIdx + 1} / 0{SLIDES.length}
-            </span>
           </div>
         </div>
 
         {/* Middle Content Zone removed to keep header background photography 100% clean and unobstructed */}
         <div className="relative z-10 my-auto py-12 sm:py-20"></div>
 
-        {/* Bottom Slide Thumbnails & Controls */}
-        <div className="relative z-10 flex items-center justify-between gap-3 pt-4 border-t border-white/15 max-w-7xl mx-auto w-full">
-          {/* Thumbnails */}
-          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5 max-w-[80%] sm:max-w-none">
-            {SLIDES.map((slide, idx) => (
-              <button
-                key={slide.id}
-                onClick={() => setCurrentIdx(idx)}
-                className={`text-xs px-3 py-1.5 rounded-xl transition-all font-bold flex items-center gap-2 cursor-pointer shrink-0 min-h-[38px] ${
-                  currentIdx === idx
-                    ? 'bg-[#3d72fe] text-white shadow-md shadow-[#3d72fe]/40'
-                    : 'bg-black/50 hover:bg-black/70 text-white/90 border border-white/20 backdrop-blur-md'
-                }`}
-                aria-label={`Pilih slide ${idx + 1}`}
-              >
-                <span className="font-mono text-[11px]">0{idx + 1}</span>
-                <span className="hidden sm:inline truncate max-w-[140px]">{slide.highlightLabel}</span>
-              </button>
-            ))}
-          </div>
+        {/* Floating Slide Navigation Arrows on the Left and Right */}
+        <button
+          onClick={prevSlide}
+          className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/40 hover:bg-black/75 text-white backdrop-blur-md border border-white/25 flex items-center justify-center transition-all active:scale-90 cursor-pointer shadow-xl hover:border-white/60"
+          aria-label="Slide Sebelumnya"
+        >
+          <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+        </button>
 
-          {/* Arrow Buttons */}
-          <div className="flex items-center gap-2 shrink-0">
+        <button
+          onClick={nextSlide}
+          className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/40 hover:bg-black/75 text-white backdrop-blur-md border border-white/25 flex items-center justify-center transition-all active:scale-90 cursor-pointer shadow-xl hover:border-white/60"
+          aria-label="Slide Selanjutnya"
+        >
+          <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+        </button>
+
+        {/* Bottom Slide Indicators (Clean Dots Only - No Numbers, No Border Line) */}
+        <div className="relative z-10 flex items-center justify-center gap-2 max-w-7xl mx-auto w-full pt-2">
+          {SLIDES.map((slide, idx) => (
             <button
-              onClick={prevSlide}
-              className="p-2 sm:p-2.5 rounded-xl bg-black/50 hover:bg-black/70 text-white backdrop-blur-md border border-white/25 transition-all cursor-pointer active:scale-90 min-h-[40px] min-w-[40px] flex items-center justify-center"
-              aria-label="Slide Sebelumnya"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button
-              onClick={nextSlide}
-              className="p-2 sm:p-2.5 rounded-xl bg-black/50 hover:bg-black/70 text-white backdrop-blur-md border border-white/25 transition-all cursor-pointer active:scale-90 min-h-[40px] min-w-[40px] flex items-center justify-center"
-              aria-label="Slide Selanjutnya"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
+              key={slide.id}
+              onClick={() => setCurrentIdx(idx)}
+              className={`transition-all duration-300 rounded-full cursor-pointer min-h-[14px] flex items-center justify-center p-1 ${
+                currentIdx === idx
+                  ? 'w-8 h-2.5 bg-[#3d72fe] shadow-md shadow-[#3d72fe]/50'
+                  : 'w-2.5 h-2.5 bg-white/40 hover:bg-white/80'
+              }`}
+              aria-label={`Pindah ke slide ${idx + 1}`}
+            />
+          ))}
         </div>
       </div>
     </div>

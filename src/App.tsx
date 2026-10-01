@@ -15,6 +15,8 @@ import { PackageDetailModal } from './components/PackageDetailModal';
 import { PicnicAndTrailSection } from './components/PicnicAndTrailSection';
 import { TipsAndPreparationSection } from './components/TipsAndPreparationSection';
 import { BromoCultureBlogSection } from './components/BromoCultureBlogSection';
+import { BlogDirectoryPage } from './components/BlogDirectoryPage';
+import { TentangKamiPage } from './components/TentangKamiPage';
 import { TestimonialsAndFaqSection } from './components/TestimonialsAndFaqSection';
 import { BookingCalculatorModal } from './components/BookingCalculatorModal';
 import { LiveTnbtsWeatherBar } from './components/LiveTnbtsWeatherBar';
@@ -34,6 +36,13 @@ export default function App() {
   // Dedicated Page View State
   const [activeDetailPage, setActiveDetailPage] = useState<TourPackage | null>(null);
   const [activePackageModal, setActivePackageModal] = useState<TourPackage | null>(null);
+  
+  // Dedicated Articles / Blog Page View State (20 Articles)
+  const [isArticlesPageOpen, setIsArticlesPageOpen] = useState(false);
+  const [selectedArticleId, setSelectedArticleId] = useState<string | undefined>(undefined);
+
+  // Dedicated Tentang Kami (About Us) Page View State
+  const [isAboutPageOpen, setIsAboutPageOpen] = useState(false);
   
   // Booking Modal State
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
@@ -68,16 +77,43 @@ export default function App() {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash;
+      if (hash === '#tentang-kami' || hash === '#about') {
+        setIsAboutPageOpen(true);
+        setIsArticlesPageOpen(false);
+        setActiveDetailPage(null);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        document.title = 'Tentang Kami - WisataBromo.co · PT Global Travel Healing';
+        return;
+      }
+      if (hash.startsWith('#artikel-')) {
+        const artId = hash.replace('#artikel-', '');
+        setSelectedArticleId(artId);
+        setIsArticlesPageOpen(true);
+        setIsAboutPageOpen(false);
+        setActiveDetailPage(null);
+        return;
+      }
+      if (hash === '#artikel' || hash === '#blog') {
+        setSelectedArticleId(undefined);
+        setIsArticlesPageOpen(true);
+        setIsAboutPageOpen(false);
+        setActiveDetailPage(null);
+        return;
+      }
       if (hash.startsWith('#paket-')) {
         const pkgId = hash.replace('#paket-', '');
         const match = TOUR_PACKAGES.find((p) => p.id === pkgId);
         if (match) {
+          setIsArticlesPageOpen(false);
+          setIsAboutPageOpen(false);
           setActiveDetailPage(match);
           return;
         }
       }
       if (hash === '' || hash === '#') {
         setActiveDetailPage(null);
+        setIsArticlesPageOpen(false);
+        setIsAboutPageOpen(false);
       }
     };
 
@@ -128,6 +164,7 @@ export default function App() {
 
   const scrollToPackages = () => {
     setActiveDetailPage(null);
+    setIsArticlesPageOpen(false);
     window.location.hash = '';
     setTimeout(() => {
       const element = document.getElementById('paket-wisata');
@@ -135,6 +172,40 @@ export default function App() {
         element.scrollIntoView({ behavior: 'smooth' });
       }
     }, 50);
+  };
+
+  const handleOpenArticles = (articleId?: string) => {
+    setActiveDetailPage(null);
+    setIsAboutPageOpen(false);
+    setSelectedArticleId(articleId);
+    setIsArticlesPageOpen(true);
+    window.location.hash = articleId ? `#artikel-${articleId}` : '#artikel';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.title = 'Ensiklopedia & 20 Artikel Lengkap Wisata Bromo - WisataBromo.co';
+  };
+
+  const handleBackFromArticles = () => {
+    setIsArticlesPageOpen(false);
+    setSelectedArticleId(undefined);
+    window.location.hash = '';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.title = 'WisataBromo.co - Spesialis Paket Wisata & Sewa Jeep Bromo Resmi';
+  };
+
+  const handleOpenAbout = () => {
+    setActiveDetailPage(null);
+    setIsArticlesPageOpen(false);
+    setIsAboutPageOpen(true);
+    window.location.hash = '#tentang-kami';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.title = 'Tentang Kami - WisataBromo.co · PT Global Travel Healing';
+  };
+
+  const handleBackFromAbout = () => {
+    setIsAboutPageOpen(false);
+    window.location.hash = '';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.title = 'WisataBromo.co - Spesialis Paket Wisata & Sewa Jeep Bromo Resmi';
   };
 
   return (
@@ -153,15 +224,33 @@ export default function App() {
         onOpenBooking={() => handleOpenBooking()}
         onFilterCategory={(cat) => {
           setActiveDetailPage(null);
+          setIsArticlesPageOpen(false);
+          setIsAboutPageOpen(false);
           window.location.hash = '';
           setSelectedCategory(cat);
         }}
         onOpenLiveStatus={() => setLiveStatusModalOpen(true)}
+        onOpenArticles={() => handleOpenArticles()}
+        onOpenAbout={handleOpenAbout}
         weather={weather}
       />
 
       <main className="flex-grow">
-        {activeDetailPage ? (
+        {isAboutPageOpen ? (
+          /* DEDICATED TENTANG KAMI (ABOUT US) PAGE VIEW */
+          <TentangKamiPage
+            onBackToHome={handleBackFromAbout}
+            onOpenBooking={handleOpenBooking}
+            onOpenArticles={handleOpenArticles}
+          />
+        ) : isArticlesPageOpen ? (
+          /* DEDICATED BLOG & ARTICLES DIRECTORY / READER VIEW (20 ARTICLES) */
+          <BlogDirectoryPage
+            onBackToHome={handleBackFromArticles}
+            onOpenBooking={handleOpenBooking}
+            initialPostId={selectedArticleId}
+          />
+        ) : activeDetailPage ? (
           /* DEDICATED PACKAGE DETAIL PAGE VIEW */
           <PackageDetailPage
             packageItem={activeDetailPage}
@@ -202,6 +291,7 @@ export default function App() {
             <StartCityGuideSection
               onSelectCityFilter={(city) => {
                 setActiveDetailPage(null);
+                setIsArticlesPageOpen(false);
                 window.location.hash = '';
                 setSelectedCity(city);
               }}
@@ -219,8 +309,11 @@ export default function App() {
             {/* 7. Cold Weather Tips & Packing Checklist (2°C - 10°C) */}
             <TipsAndPreparationSection />
 
-            {/* 8. Tengger Culture, Kasada & Bromo Blog Articles */}
-            <BromoCultureBlogSection />
+            {/* 8. Tengger Culture, Kasada & Bromo Blog Articles (3-4 on Home, with Full Articles Column) */}
+            <BromoCultureBlogSection
+              onOpenAllArticles={() => handleOpenArticles()}
+              onSelectArticle={(post) => handleOpenArticles(post.id)}
+            />
 
             {/* 9. Destination Highlights, Testimonials, & FAQ */}
             <TestimonialsAndFaqSection />

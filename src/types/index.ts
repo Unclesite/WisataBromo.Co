@@ -42,16 +42,29 @@ export interface TourPackage {
   docPriceAddon?: number;
   highSeasonAddon?: number;
   wnaChargePerPax?: number;
+  droneAddonPrice?: number; // Add-on include drone video 4K (+Rp 1.500.000)
   pricingTiers?: PricingTier[];
   imageUrl?: string;
 }
+
+export type BlogCategory = 
+  | 'all' 
+  | 'budaya_tengger' 
+  | 'tips_wisata' 
+  | 'spot_sunrise' 
+  | 'panduan_lengkap' 
+  | 'sejarah_spiritual' 
+  | 'pengalaman_bromo' 
+  | 'destinasi_alam'
+  | 'transportasi'
+  | 'liputan_resmi';
 
 export interface BlogPost {
   id: string;
   slug: string;
   title: string;
-  subtitle: string;
-  category: 'budaya_tengger' | 'tips_wisata' | 'spot_sunrise' | 'panduan_lengkap';
+  subtitle?: string;
+  category: BlogCategory;
   categoryLabel: string;
   readTime: string;
   publishDate: string;
@@ -60,6 +73,11 @@ export interface BlogPost {
   content: string[];
   keyTakeaways: string[];
   tags: string[];
+  footnotes?: string[];
+  references?: string[];
+  ratesTable?: { item: string; price: string; note: string }[];
+  imageUrl?: string;
+  galleryImages?: { url: string; caption: string; alt: string }[];
 }
 
 export interface DestinationSpot {
@@ -94,10 +112,12 @@ export interface BookingFormState {
   pickupAddress: string;
   specialNotes: string;
   includeDocumentation: boolean;
+  includeDrone?: boolean; // Add-on drone video 4K (+Rp 1.500.000) for private trip
   isHighSeason: boolean;
   wnaCount: number;
   dayType?: 'weekday' | 'weekend' | 'highseason'; // for long jeep
   pickupAreaExtra?: 'none' | 'malang' | 'batu'; // for long jeep
+  openTripSurabayaRoute?: 'tosari' | 'malang'; // for open trip surabaya
   paymentMethod: 'bca' | 'dana' | 'ovo';
   paymentProofName?: string;
   paymentProofPreview?: string;
