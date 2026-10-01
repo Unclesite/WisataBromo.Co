@@ -20,7 +20,7 @@ export default defineConfig(() => {
           theme_color: '#102a56',
           background_color: '#ffffff',
           display: 'standalone',
-          orientation: 'portrait-primary',
+          orientation: 'any',
           start_url: '/',
           scope: '/',
           categories: ['travel', 'tourism', 'lifestyle'],
