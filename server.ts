@@ -103,6 +103,44 @@ app.post('/api/send-booking-email', async (req: Request, res: Response) => {
     const waNumberFinal = cleanWa.startsWith('0') ? '62' + cleanWa.slice(1) : (cleanWa.startsWith('62') ? cleanWa : '62' + cleanWa);
     const waLink = `https://wa.me/${waNumberFinal}`;
 
+    // Process Payment Proof Attachment for Admin Email
+    const adminAttachments: Array<{ filename: string; content: Buffer; contentType: string; contentDisposition: 'attachment' }> = [];
+    let hasPaymentProof = false;
+    let paymentProofFilename = booking.paymentProofName || `bukti-transfer-${booking.bookingCode}.jpg`;
+    let isImageProof = true;
+
+    if (booking.paymentProofDataUrl && typeof booking.paymentProofDataUrl === 'string') {
+      const match = booking.paymentProofDataUrl.match(/^data:([^;]+);base64,(.+)$/);
+      if (match) {
+        const mimeType = match[1];
+        const base64Content = match[2];
+        const ext = mimeType.split('/')[1]?.split('+')[0] || 'jpg';
+        
+        if (!paymentProofFilename.includes('.')) {
+          paymentProofFilename = `${paymentProofFilename}.${ext}`;
+        }
+        
+        isImageProof = mimeType.startsWith('image/');
+        hasPaymentProof = true;
+
+        const fileBuffer = Buffer.from(base64Content, 'base64');
+
+        adminAttachments.push({
+          filename: paymentProofFilename,
+          content: fileBuffer,
+          contentType: mimeType,
+          contentDisposition: 'attachment'
+        });
+
+        console.log("PAYMENT PROOF ATTACHMENT CREATED", {
+          filename: paymentProofFilename,
+          contentType: mimeType,
+          sizeBytes: fileBuffer.length,
+          contentDisposition: 'attachment'
+        });
+      }
+    }
+
     // 1. Admin Email HTML Template
     const adminHtml = `
       <!DOCTYPE html>
@@ -139,7 +177,7 @@ app.post('/api/send-booking-email', async (req: Request, res: Response) => {
                 </tr>
                 <tr>
                   <td style="color: #64748b; font-weight: 500;">Email Customer</td>
-                  <td><a href="mailto:${escapeHtml(booking.email)}" style="color: #2563eb; text-decoration: none;">${escapeHtml(booking.email)}</a></td>
+                  <td><a href="mailto:${escapeHtml(customerEmail)}" style="color: #2563eb; text-decoration: none;">${escapeHtml(customerEmail)}</a></td>
                 </tr>
                 <tr>
                   <td style="color: #64748b; font-weight: 500;">Titik Penjemputan</td>
@@ -189,6 +227,33 @@ app.post('/api/send-booking-email', async (req: Request, res: Response) => {
                 <tr>
                   <td style="color: #64748b; font-weight: 500;">Waktu Booking</td>
                   <td style="color: #64748b; font-size: 13px;">${escapeHtml(booking.createdAt || new Date().toLocaleString('id-ID'))}</td>
+                </tr>
+              </table>
+
+              <h2 style="font-size: 16px; font-weight: 700; color: #0f172a; margin: 0 0 12px 0; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px;">4. Bukti Transfer Pembayaran DP</h2>
+              <table width="100%" cellpadding="12" cellspacing="0" style="font-size: 14px; background-color: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 12px; margin-bottom: 18px;">
+                <tr>
+                  <td align="center">
+                    ${hasPaymentProof ? `
+                      <div style="margin-bottom: 8px;">
+                        <span style="display: inline-block; background-color: #dcfce7; color: #15803d; font-weight: 700; font-size: 12px; padding: 4px 10px; border-radius: 6px;">
+                          ✓ File Terlampir: ${escapeHtml(paymentProofFilename)}
+                        </span>
+                      </div>
+                      ${isImageProof ? `
+                        <div style="margin: 12px 0; text-align: center;">
+                          <img src="${booking.paymentProofDataUrl}" alt="Bukti Transfer DP" style="max-width: 100%; max-height: 450px; border-radius: 8px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);" />
+                        </div>
+                      ` : ''}
+                      <p style="margin: 8px 0 0 0; font-size: 12px; color: #64748b;">
+                        File bukti transfer telah dilampirkan sebagai attachment resmi email ini dan dapat langsung diunduh / disimpan ke Google Drive oleh Admin.
+                      </p>
+                    ` : `
+                      <div style="color: #dc2626; font-size: 13px; font-weight: 600;">
+                        ⚠ Bukti transfer belum diunggah atau tidak disertakan pada saat booking.
+                      </div>
+                    `}
+                  </td>
                 </tr>
               </table>
 
@@ -320,7 +385,8 @@ app.post('/api/send-booking-email', async (req: Request, res: Response) => {
         to: adminEmail,
         replyTo: customerEmail,
         subject: `[BOOKING BARU] ${booking.bookingCode} - ${booking.fullName} - ${booking.packageTitle}`,
-        html: adminHtml
+        html: adminHtml,
+        attachments: adminAttachments
       }),
       transporter.sendMail({
         from: `"WisataBromo.co" <${smtpUser}>`,
@@ -333,6 +399,8 @@ app.post('/api/send-booking-email', async (req: Request, res: Response) => {
 
     const adminSuccess = adminResult.status === 'fulfilled';
     const customerSuccess = customerResult.status === 'fulfilled';
+    const adminValue = adminSuccess ? (adminResult as PromiseFulfilledResult<any>).value : null;
+    const customerValue = customerSuccess ? (customerResult as PromiseFulfilledResult<any>).value : null;
 
     if (!adminSuccess) {
       console.error('Gagal kirim email admin:', (adminResult as PromiseRejectedResult).reason);
@@ -343,15 +411,26 @@ app.post('/api/send-booking-email', async (req: Request, res: Response) => {
 
     return res.status(200).json({
       success: true,
+      hasPaymentProofAttachment: hasPaymentProof,
+      paymentProofFilename: hasPaymentProof ? paymentProofFilename : undefined,
       results: {
         adminEmail: {
           recipient: adminEmail,
           sent: adminSuccess,
+          messageId: adminValue?.messageId,
+          response: adminValue?.response,
+          attachments: adminAttachments.map(a => ({
+            filename: a.filename,
+            contentType: a.contentType,
+            sizeBytes: a.content.length,
+            contentDisposition: a.contentDisposition
+          })),
           error: !adminSuccess ? String((adminResult as PromiseRejectedResult).reason?.message || 'Error') : undefined
         },
         customerEmail: {
           recipient: customerEmail,
           sent: customerSuccess,
+          messageId: customerValue?.messageId,
           error: !customerSuccess ? String((customerResult as PromiseRejectedResult).reason?.message || 'Error') : undefined
         }
       }
