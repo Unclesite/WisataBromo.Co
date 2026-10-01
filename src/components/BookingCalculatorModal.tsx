@@ -14,16 +14,10 @@ import {
   getOpenTripSurabayaSchedule 
 } from '../utils/highSeasonCalendar';
 import { 
-  initAuth,
-  googleSignIn,
-  googleLogout,
-  getAccessToken,
-  syncAllToGoogleWorkspace,
+  saveBookingToFirestore,
   ADMIN_TARGET_EMAIL,
-  BookingPayload,
-  WorkspaceSyncResult
-} from '../services/googleWorkspaceService';
-import type { User } from 'firebase/auth';
+  BookingPayload
+} from '../services/firestoreBookingService';
 
 interface BookingCalculatorModalProps {
   isOpen: boolean;
@@ -87,30 +81,8 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
   const [showHighSeasonCalendar, setShowHighSeasonCalendar] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  // Google Workspace Sync States (Calendar, Gmail, Sheets)
-  const [googleUser, setGoogleUser] = useState<User | null>(null);
-  const [googleToken, setGoogleToken] = useState<string | null>(null);
-  const [isLoggingInGoogle, setIsLoggingInGoogle] = useState(false);
-  const [showSyncConfirmModal, setShowSyncConfirmModal] = useState(false);
-  const [isGoogleSyncing, setIsGoogleSyncing] = useState(false);
-  const [googleSyncResult, setGoogleSyncResult] = useState<WorkspaceSyncResult | null>(null);
-  const [syncErrorMessage, setSyncErrorMessage] = useState<string | null>(null);
-
-  useEffect(() => {
-    const unsubscribe = initAuth(
-      (user, token) => {
-        setGoogleUser(user);
-        setGoogleToken(token);
-      },
-      () => {
-        setGoogleUser(null);
-        setGoogleToken(null);
-      }
-    );
-    return () => unsubscribe();
-  }, []);
 
   useEffect(() => {
     if (initialPackageId) {
@@ -534,44 +506,15 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
     return encodeURIComponent(lines.join('\n'));
   };
 
-  const handleGoogleLogin = async () => {
-    setIsLoggingInGoogle(true);
-    setSyncErrorMessage(null);
-    try {
-      const res = await googleSignIn();
-      if (res) {
-        setGoogleUser(res.user);
-        setGoogleToken(res.accessToken);
-      }
-    } catch (err: any) {
-      console.error('Google Sign In failed:', err);
-      setSyncErrorMessage(err.message || 'Gagal menghubungkan Google Workspace.');
-    } finally {
-      setIsLoggingInGoogle(false);
-    }
-  };
-
-  const handleGoogleLogout = async () => {
-    await googleLogout();
-    setGoogleUser(null);
-    setGoogleToken(null);
-    setGoogleSyncResult(null);
-  };
-
-  const handleInitiateSubmit = (e: React.FormEvent) => {
+  const handleSubmitBooking = async (e: React.FormEvent) => {
     e.preventDefault();
     setHasAttemptedSubmit(true);
     const isValid = validateBookingForm();
     if (!isValid) {
       return;
     }
-    // Show confirmation dialog before mutating Google Workspace data (Mandatory)
-    setShowSyncConfirmModal(true);
-  };
 
-  const handleConfirmAndSync = async () => {
-    setIsGoogleSyncing(true);
-    setSyncErrorMessage(null);
+    setIsSubmitting(true);
 
     const bookingPayload: BookingPayload = {
       bookingCode,
@@ -580,6 +523,7 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
       whatsappNumber: form.whatsappNumber,
       email: form.email,
       packageTitle: currentPkg ? currentPkg.title : 'Paket Wisata Bromo',
+      packageId: currentPkg?.id,
       paxCount: form.paxCount,
       wnaCount: form.wnaCount,
       pickupAddress: form.pickupAddress,
@@ -594,46 +538,23 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
     };
 
     try {
-      let token = googleToken || getAccessToken();
-      if (!token) {
-        const res = await googleSignIn();
-        if (res) {
-          token = res.accessToken;
-          setGoogleUser(res.user);
-          setGoogleToken(res.accessToken);
-        } else {
-          throw new Error('Koneksi akun Google diperlukan untuk sinkronisasi otomatis.');
-        }
-      }
-
-      const syncRes = await syncAllToGoogleWorkspace(bookingPayload, token);
-      setGoogleSyncResult(syncRes);
-      setShowSyncConfirmModal(false);
+      await saveBookingToFirestore({
+        ...bookingPayload,
+        createdAt: new Date().toISOString(),
+        status: 'DP_SUBMITTED'
+      });
       setIsSuccessScreen(true);
     } catch (err: any) {
-      console.error('Workspace sync error:', err);
-      setSyncErrorMessage(err.message || 'Gagal menyinkronkan data.');
+      console.error('Booking save error:', err);
     } finally {
-      setIsGoogleSyncing(false);
+      setIsSubmitting(false);
     }
   };
 
-  const handleSkipSyncAndWhatsApp = () => {
-    setShowSyncConfirmModal(false);
+  const handleOpenWhatsApp = () => {
     const msg = constructWhatsAppMessage();
     const waUrl = `https://wa.me/6281222290318?text=${msg}`;
     window.open(waUrl, '_blank');
-    setIsSuccessScreen(true);
-  };
-
-  const handleSubmitWhatsApp = (e: React.FormEvent) => {
-    e.preventDefault();
-    setHasAttemptedSubmit(true);
-    const isValid = validateBookingForm();
-    if (!isValid) {
-      return;
-    }
-    setShowSyncConfirmModal(true);
   };
 
   return (
@@ -706,106 +627,6 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
               </div>
             </div>
 
-            {/* Google Workspace Synchronization Status Box */}
-            {googleSyncResult && (
-              <div className="p-4 bg-gradient-to-br from-emerald-50 via-teal-50 to-white border border-emerald-300 rounded-2xl max-w-md mx-auto text-left space-y-2.5 shadow-xs">
-                <div className="flex items-center gap-2 text-xs font-black text-emerald-900 border-b border-emerald-200/60 pb-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>Status Sinkronisasi Google Workspace (wisatabromo.co)</span>
-                </div>
-
-                {/* Calendar Status */}
-                <div className="flex items-start justify-between text-xs gap-2">
-                  <div className="flex items-start gap-1.5">
-                    <Calendar className="w-3.5 h-3.5 text-[#3d72fe] shrink-0 mt-0.5" />
-                    <div>
-                      <div className="font-bold text-[#102a56]">Google Calendar:</div>
-                      <div className="text-[11px] text-slate-600">
-                        {googleSyncResult.calendar.success ? 'Jadwal trip berhasil dibuat di kalender Anda' : 'Belum tersinkron'}
-                      </div>
-                    </div>
-                  </div>
-                  {googleSyncResult.calendar.eventLink && (
-                    <a
-                      href={googleSyncResult.calendar.eventLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[11px] font-bold text-[#3d72fe] hover:underline flex items-center gap-0.5 shrink-0 whitespace-nowrap bg-white px-2 py-1 rounded border border-[#3d72fe]/30"
-                    >
-                      <span>Buka</span>
-                      <ExternalLink className="w-3 h-3" />
-                    </a>
-                  )}
-                </div>
-
-                {/* Gmail Status */}
-                <div className="flex items-start justify-between text-xs gap-2">
-                  <div className="flex items-start gap-1.5">
-                    <Mail className="w-3.5 h-3.5 text-rose-500 shrink-0 mt-0.5" />
-                    <div>
-                      <div className="font-bold text-[#102a56]">Gmail Notifikasi &amp; Bukti Transfer:</div>
-                      <div className="text-[11px] text-slate-600">
-                        {googleSyncResult.gmail.success 
-                          ? `Terkirim ke ${ADMIN_TARGET_EMAIL} beserta lampiran bukti transfer` 
-                          : 'Gagal mengirim email'}
-                      </div>
-                    </div>
-                  </div>
-                  <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded shrink-0">
-                    Terkirim ✓
-                  </span>
-                </div>
-
-                {/* Sheets Status */}
-                <div className="flex items-start justify-between text-xs gap-2">
-                  <div className="flex items-start gap-1.5">
-                    <FileText className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
-                    <div>
-                      <div className="font-bold text-[#102a56]">Google Sheets Data Booking:</div>
-                      <div className="text-[11px] text-slate-600">
-                        {googleSyncResult.sheets.success ? 'Data otomatis tercatat ke spreadsheet' : 'Belum tersimpan'}
-                      </div>
-                    </div>
-                  </div>
-                  {googleSyncResult.sheets.spreadsheetUrl && (
-                    <a
-                      href={googleSyncResult.sheets.spreadsheetUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[11px] font-bold text-emerald-700 hover:underline flex items-center gap-0.5 shrink-0 whitespace-nowrap bg-white px-2 py-1 rounded border border-emerald-300"
-                    >
-                      <span>Buka Sheets</span>
-                      <ExternalLink className="w-3 h-3" />
-                    </a>
-                  )}
-                </div>
-
-                {/* Google Drive Status (if file uploaded) */}
-                {googleSyncResult.drive?.success && googleSyncResult.drive.webViewLink && (
-                  <div className="flex items-start justify-between text-xs gap-2">
-                    <div className="flex items-start gap-1.5">
-                      <Folder className="w-3.5 h-3.5 text-amber-500 shrink-0 mt-0.5" />
-                      <div>
-                        <div className="font-bold text-[#102a56]">Google Drive (Bukti Transfer):</div>
-                        <div className="text-[11px] text-slate-600">
-                          Tersimpan permanen &amp; tertaut di Sheets
-                        </div>
-                      </div>
-                    </div>
-                    <a
-                      href={googleSyncResult.drive.webViewLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[11px] font-bold text-amber-700 hover:underline flex items-center gap-0.5 shrink-0 whitespace-nowrap bg-white px-2 py-1 rounded border border-amber-300"
-                    >
-                      <span>Buka File</span>
-                      <ExternalLink className="w-3 h-3" />
-                    </a>
-                  </div>
-                )}
-              </div>
-            )}
-
             {/* Action Buttons: WhatsApp & Download PDF */}
             <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
               <a
@@ -837,7 +658,7 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
             </div>
           </div>
         ) : (
-          <form onSubmit={handleSubmitWhatsApp} className="p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 max-h-[78vh] overflow-y-auto">
+          <form onSubmit={handleSubmitBooking} className="p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 max-h-[78vh] overflow-y-auto">
             {/* Left 7 Columns: Form Inputs */}
             <div className="lg:col-span-7 space-y-4 sm:space-y-5">
               {/* Package Selection */}
@@ -1676,87 +1497,19 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
                     </button>
                   </div>
                 </div>
-                {/* Google Workspace Sync Status & Login Card */}
-                <div className="p-3.5 bg-gradient-to-br from-[#eaf2ff] via-white to-blue-50/60 border border-[#3d72fe]/25 rounded-2xl space-y-2.5">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1.5 text-xs font-black text-[#102a56]">
-                      <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
-                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-                      </svg>
-                      <span>Sinkronisasi Google Workspace</span>
-                    </div>
-
-                    {googleUser && (
-                      <button
-                        type="button"
-                        onClick={handleGoogleLogout}
-                        className="text-[10px] text-slate-500 hover:text-rose-600 font-bold cursor-pointer"
-                        title="Putuskan akun Google"
-                      >
-                        Putuskan
-                      </button>
-                    )}
-                  </div>
-
-                  {googleUser ? (
-                    <div className="space-y-1.5 text-[11px]">
-                      <div className="flex items-center gap-1.5 text-emerald-800 font-bold bg-emerald-100/80 px-2 py-1 rounded-lg">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                        <span className="truncate">Terhubung: {googleUser.email}</span>
-                      </div>
-                      <div className="text-[10px] text-slate-600 space-y-0.5 pl-1">
-                        <div className="flex items-center gap-1">
-                          <Check className="w-3 h-3 text-emerald-600" />
-                          <span>Google Calendar (Jadwal otomatis tercatat)</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Check className="w-3 h-3 text-emerald-600" />
-                          <span>Gmail ({ADMIN_TARGET_EMAIL} + lampiran bukti transfer)</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Check className="w-3 h-3 text-emerald-600" />
-                          <span>Google Sheets (Spreadsheet Data Booking)</span>
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="space-y-2">
-                      <p className="text-[10px] text-slate-600 leading-snug">
-                        Hubungkan akun Google agar reservasi dan bukti transfer otomatis masuk ke <strong>Google Calendar</strong>, email <strong>{ADMIN_TARGET_EMAIL}</strong>, dan <strong>Google Sheets</strong>:
-                      </p>
-                      <button
-                        type="button"
-                        onClick={handleGoogleLogin}
-                        disabled={isLoggingInGoogle}
-                        className="w-full py-2 px-3 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 rounded-xl text-xs font-bold transition-all shadow-2xs flex items-center justify-center gap-2 cursor-pointer"
-                      >
-                        <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
-                          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-                          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-                        </svg>
-                        <span>{isLoggingInGoogle ? 'Menghubungkan...' : 'Hubungkan dengan Google'}</span>
-                      </button>
-                    </div>
-                  )}
-                </div>
               </div>
 
-              {/* Action Buttons: WhatsApp & Download PDF */}
+              {/* Action Buttons: Submit & Download PDF */}
               <div className="space-y-2 pt-1">
                 <button
                   type="submit"
-                  disabled={isGoogleSyncing}
+                  disabled={isSubmitting}
                   className="w-full py-3.5 px-4 text-xs font-black text-white bg-gradient-to-r from-[#102a56] via-[#3d72fe] to-emerald-600 hover:opacity-95 rounded-xl transition-all shadow-lg shadow-[#3d72fe]/25 flex items-center justify-center gap-2 cursor-pointer active:scale-95"
                 >
-                  {isGoogleSyncing ? (
+                  {isSubmitting ? (
                     <>
                       <RefreshCw className="w-4 h-4 animate-spin text-white" />
-                      <span>Menyinkronkan ke Google Workspace...</span>
+                      <span>Menyimpan Reservasi &amp; Mengirim Email...</span>
                     </>
                   ) : (
                     <>
@@ -1784,108 +1537,6 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
           </form>
         )}
       </div>
-
-      {/* Confirmation Modal before mutating Google Workspace data (Mandatory) */}
-      {showSyncConfirmModal && (
-        <div className="fixed inset-0 z-[75] flex items-center justify-center bg-black/65 backdrop-blur-xs p-4 animate-fadeIn">
-          <div className="w-full max-w-lg bg-white rounded-3xl p-6 shadow-2xl relative border border-slate-200 text-[#111318] space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-[#eaf2ff] border border-[#3d72fe]/30 flex items-center justify-center text-[#3d72fe] shrink-0">
-                <Sparkles className="w-6 h-6 text-[#3d72fe]" />
-              </div>
-              <div>
-                <h3 className="text-base sm:text-lg font-black text-[#102a56]">
-                  Konfirmasi Sinkronisasi Google Workspace
-                </h3>
-                <p className="text-xs text-slate-500">
-                  PT Global Travel Healing (wisatabromo.co)
-                </p>
-              </div>
-            </div>
-
-            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-              Dengan melanjutkan, sistem reservasi akan melakukan sinkronisasi otomatis berikut:
-            </p>
-
-            <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl space-y-2.5 text-xs">
-              <div className="flex items-start gap-2">
-                <Calendar className="w-4 h-4 text-[#3d72fe] shrink-0 mt-0.5" />
-                <div>
-                  <span className="font-bold text-[#102a56]">Google Calendar:</span>
-                  <div className="text-slate-600">
-                    Menambahkan jadwal <strong>Trip {currentPkg.title}</strong> pada tanggal <strong>{form.travelDate}</strong> dengan pengingat otomatis.
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-2">
-                <Mail className="w-4 h-4 text-rose-500 shrink-0 mt-0.5" />
-                <div>
-                  <span className="font-bold text-[#102a56]">Gmail Notifikasi &amp; Bukti Transfer:</span>
-                  <div className="text-slate-600">
-                    Mengirim rincian pemesanan dan melampirkan file bukti transfer (<strong>{form.paymentProofName}</strong>) langsung ke email resmi <strong>{ADMIN_TARGET_EMAIL}</strong>.
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-2">
-                <FileText className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                <div>
-                  <span className="font-bold text-[#102a56]">Google Sheets:</span>
-                  <div className="text-slate-600">
-                    Memasukkan data lengkap reservasi ke spreadsheet <strong>"Data Booking WisataBromo.co"</strong>.
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {syncErrorMessage && (
-              <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-700 flex items-center gap-2">
-                <AlertCircle className="w-4 h-4 shrink-0" />
-                <span>{syncErrorMessage}</span>
-              </div>
-            )}
-
-            <div className="space-y-2 pt-2">
-              <button
-                type="button"
-                onClick={handleConfirmAndSync}
-                disabled={isGoogleSyncing}
-                className="w-full py-3 px-4 text-xs font-black text-white bg-gradient-to-r from-[#102a56] to-[#3d72fe] hover:bg-[#2b5ae0] rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
-              >
-                {isGoogleSyncing ? (
-                  <>
-                    <RefreshCw className="w-4 h-4 animate-spin" />
-                    <span>Menyinkronkan ke Calendar, Gmail &amp; Sheets...</span>
-                  </>
-                ) : (
-                  <>
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                    <span>Ya, Konfirmasi &amp; Sinkronkan Sekarang</span>
-                  </>
-                )}
-              </button>
-
-              <button
-                type="button"
-                onClick={handleSkipSyncAndWhatsApp}
-                className="w-full py-2.5 px-4 text-xs font-bold text-slate-700 hover:bg-slate-100 bg-white border border-slate-300 rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <Send className="w-3.5 h-3.5 text-emerald-600" />
-                <span>Kirim via WhatsApp Tanpa Sinkronisasi Google</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setShowSyncConfirmModal(false)}
-                className="w-full py-2 text-xs font-medium text-slate-500 hover:text-slate-700 cursor-pointer"
-              >
-                Batal &amp; Kembali ke Formulir
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Modal Kalender Resmi High Season TNBTS */}
       {showHighSeasonCalendar && (

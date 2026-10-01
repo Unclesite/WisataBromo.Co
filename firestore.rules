@@ -1,0 +1,86 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global default-deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Hardened Helper Functions
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'wisatabromo.co@gmail.com' ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isValidBooking(data) {
+      return data.bookingCode is string && data.bookingCode.size() > 0 && data.bookingCode.size() <= 64 &&
+             data.fullName is string && data.fullName.size() >= 2 && data.fullName.size() <= 150 &&
+             data.whatsappNumber is string && data.whatsappNumber.size() >= 8 && data.whatsappNumber.size() <= 30 &&
+             data.email is string && data.email.size() >= 5 && data.email.size() <= 150 &&
+             data.tripDate is string && data.tripDate.size() >= 8 && data.tripDate.size() <= 32 &&
+             data.packageTitle is string && data.packageTitle.size() > 0 && data.packageTitle.size() <= 200 &&
+             data.paxCount is number && data.paxCount > 0 && data.paxCount <= 100 &&
+             data.pickupAddress is string && data.pickupAddress.size() >= 3 && data.pickupAddress.size() <= 500 &&
+             data.grandTotal is number && data.grandTotal >= 0 &&
+             data.downPayment is number && data.downPayment >= 0 &&
+             data.status is string && (data.status in ['WAITING_DP', 'DP_SUBMITTED', 'VERIFIED', 'CANCELLED']);
+    }
+
+    // Match bookings collection
+    match /bookings/{bookingId} {
+      // Allow single document get (e.g. for customer booking status verification & invoice)
+      allow get: if isValidId(bookingId);
+
+      // Allow list for admin to manage & synchronize bookings
+      allow list: if isAdmin();
+
+      // Allow public creation of new booking with strict validation
+      allow create: if isValidId(bookingId) && 
+                      isValidBooking(incoming()) &&
+                      (incoming().status == 'WAITING_DP' || incoming().status == 'DP_SUBMITTED');
+
+      // Allow customer to submit transfer proof or update status, or admin to verify
+      allow update: if isValidId(bookingId) &&
+                      isValidBooking(incoming()) &&
+                      (
+                        isAdmin() ||
+                        (
+                          // Customer action: updating transfer proof and moving status to DP_SUBMITTED
+                          existing().status == 'WAITING_DP' &&
+                          incoming().status == 'DP_SUBMITTED' &&
+                          incoming().bookingCode == existing().bookingCode &&
+                          incoming().grandTotal == existing().grandTotal &&
+                          incoming().downPayment == existing().downPayment
+                        )
+                      );
+
+      // Deletion is strictly reserved for Admin
+      allow delete: if isValidId(bookingId) && isAdmin();
+    }
+
+    // Match admins collection
+    match /admins/{adminId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+  }
+}
