@@ -53,97 +53,6 @@ app.get('/api/health', (req, res) => {
 });
 
 /**
- * Endpoint: POST /api/auth/admin-login
- * Direct server-side authentication for WisataBromo.co Admin
- */
-app.post('/api/auth/admin-login', (req, res) => {
-  const { email, password } = req.body || {};
-  const cleanEmail = String(email || '').toLowerCase().trim();
-  const cleanPass = String(password || '').trim();
-
-  const validMasterKeys = [
-    'BromoAdmin2026!',
-    'wisatabromo2026',
-    'AdminBromo2026',
-    'wisatabromo',
-    'admin123456',
-    process.env.ADMIN_PASSWORD
-  ].filter(Boolean);
-
-  if (cleanEmail === 'wisatabromo.co@gmail.com' && validMasterKeys.includes(cleanPass)) {
-    return res.status(200).json({
-      success: true,
-      user: {
-        uid: 'master_super_admin_wisatabromo',
-        email: 'wisatabromo.co@gmail.com',
-        displayName: 'Super Administrator WisataBromo.co',
-        photoURL: null,
-        role: 'super_admin',
-        lastLogin: new Date().toISOString()
-      },
-      token: 'admin_session_auth_' + Date.now()
-    });
-  }
-
-  return res.status(401).json({
-    success: false,
-    error: 'Email atau kata sandi tidak valid. Pastikan email wisatabromo.co@gmail.com dan sandi benar.'
-  });
-});
-
-/**
- * Endpoint: POST /api/auth/verify-google
- * Verifies Google Sign-In tokens or direct authorized admin Google account
- */
-app.post('/api/auth/verify-google', (req, res) => {
-  try {
-    const { credential, email, user } = req.body || {};
-    let targetEmail = String(email || '').toLowerCase().trim();
-
-    // If Google JWT is provided, parse it
-    if (credential) {
-      const parts = String(credential).split('.');
-      if (parts.length === 3) {
-        const payloadJson = Buffer.from(parts[1], 'base64').toString('utf8');
-        const payload = JSON.parse(payloadJson);
-        if (payload.email) {
-          targetEmail = String(payload.email).toLowerCase().trim();
-        }
-      }
-    }
-
-    if (user && user.email) {
-      targetEmail = String(user.email).toLowerCase().trim();
-    }
-
-    if (targetEmail === 'wisatabromo.co@gmail.com') {
-      return res.status(200).json({
-        success: true,
-        user: {
-          uid: 'google_super_admin_wisatabromo',
-          email: 'wisatabromo.co@gmail.com',
-          displayName: user?.displayName || 'Administrator (Google)',
-          photoURL: user?.photoURL || null,
-          role: 'super_admin',
-          lastLogin: new Date().toISOString()
-        },
-        token: 'google_verified_auth_' + Date.now()
-      });
-    }
-
-    return res.status(403).json({
-      success: false,
-      error: `Akses ditolak. Email (${targetEmail || 'unknown'}) bukan akun administrator resmi.`
-    });
-  } catch (err) {
-    return res.status(400).json({
-      success: false,
-      error: 'Gagal memproses autentikasi Google: ' + err.message
-    });
-  }
-});
-
-/**
  * Endpoint: POST /api/booking & POST /api/send-booking-email
  * Sends email notifications to Admin (wisatabromo.co@gmail.com) and Customer via Nodemailer
  */
@@ -458,12 +367,10 @@ const handleBookingEmail = async (req, res) => {
                 </div>
               </div>
 
-              <div style="background-color: #fefce8; border: 1px solid #fef08a; border-radius: 8px; padding: 14px; margin-bottom: 24px; font-size: 13px; color: #854d0e; line-height: 1.6;">
-                📌 <strong>Syarat &amp; Ketentuan Pembayaran:</strong><br>
-                1. DP dibayar saat pendaftaran.<br>
-                2. Apabila terjadi pembatalan dari peserta maka DP dinyatakan hangus, Apabila terjadi pembatalan dari wisatabromo.co karena cuaca atau bencana alam atau kondisi lain dalam bentuk apapun maka DP dikembalikan 100%.<br>
-                3. Ketentuan Sisa Pembayaran: Untuk keberangkatan Start Surabaya wajib dilunasi maksimal H-1 sebelum keberangkatan. Untuk Start Malang dan Basecamp Jeep (Tosari, Sukapura, Gubugklakah) pelunasan dapat dilakukan pada hari H saat penjemputan (khusus di luar periode High Season), sedangkan pada periode High Season wajib lunas maksimal H-2 sebelum keberangkatan.<br>
-                4. Driver dan tim operasional kami akan menghubungi Anda via WhatsApp H-1 sebelum keberangkatan untuk konfirmasi jam penjemputan &amp; plat nomor Jeep.
+              <div style="background-color: #fefce8; border: 1px solid #fef08a; border-radius: 8px; padding: 14px; margin-bottom: 24px; font-size: 13px; color: #854d0e; line-height: 1.5;">
+                📌 <strong>Langkah Selanjutnya:</strong><br>
+                1. Mohon transfer nominal DP sesuai yang tertera ke rekening resmi di atas.<br>
+                2. Driver dan tim operasional kami akan menghubungi Anda via WhatsApp H-1 sebelum keberangkatan untuk konfirmasi jam penjemputan & plat nomor Jeep.
               </div>
 
               <div style="text-align: center; margin-top: 20px;">
@@ -695,7 +602,7 @@ const distPath = path.join(__dirname, 'dist');
 const isProduction = process.env.NODE_ENV === 'production';
 
 async function startServer() {
-  if (!isProduction) {
+  if (!isProduction && !fs.existsSync(path.join(publicPath, 'index.html')) && !fs.existsSync(path.join(distPath, 'index.html'))) {
     try {
       const { createServer: createViteServer } = await import('vite');
       const vite = await createViteServer({
@@ -709,14 +616,15 @@ async function startServer() {
     }
   }
 
-  // Serve static files from public folder (Hostinger Express standard)
-  app.use(express.static('public'));
-  app.use(express.static(publicPath));
+  // Read static files directly from public directory (Hostinger standard)
+  app.use(express.static(path.join(__dirname, 'public')));
+  
+  // Secondary fallback for dist if present
   if (fs.existsSync(distPath)) {
     app.use(express.static(distPath));
   }
 
-  // Fallback routing app.get('*', ...) to public/index.html (Hostinger standard) or dist/index.html
+  // Fallback routing app.get('*', ...) to public/index.html
   app.get('*', (_req, res) => {
     const publicIndex = path.join(publicPath, 'index.html');
     if (fs.existsSync(publicIndex)) {

@@ -16,7 +16,7 @@ export const generateBookingInvoicePDF = (
   });
 
   const schedule = calculateBromoTripSchedule(form.travelDate);
-  checkIsHighSeason(form.travelDate);
+  const hsInfo = checkIsHighSeason(form.travelDate);
 
   const formatRupiah = (val: number) => {
     return new Intl.NumberFormat('id-ID', {
@@ -49,17 +49,16 @@ export const generateBookingInvoicePDF = (
   doc.setFont('helvetica', 'normal');
   doc.text('PT GLOBAL TRAVEL HEALING · Operator Resmi TNBTS Jawa Timur', 15, 21);
 
-  // 1. Title: INVOICE RESMI (Tanpa E-Tiket)
-  doc.setFontSize(13);
+  doc.setFontSize(11);
   doc.setFont('helvetica', 'bold');
-  doc.text('INVOICE RESMI', 195, 17, { align: 'right' });
+  doc.text('OFFICIAL INVOICE & E-TIKET SLIP', 195, 17, { align: 'right' });
 
   // Invoice Meta Box
   doc.setTextColor(17, 19, 24);
   doc.setFontSize(9);
   doc.setFont('helvetica', 'normal');
 
-  let y = 37;
+  let y = 40;
   doc.setFillColor(234, 242, 255);
   doc.roundedRect(15, y, 180, 20, 2, 2, 'F');
 
@@ -74,7 +73,7 @@ export const generateBookingInvoicePDF = (
   doc.text('Customer Service: +62 812 2229 0318', 190, y + 14, { align: 'right' });
 
   // 2 Columns: Data Pemesan & Rincian Trip
-  y += 26;
+  y += 28;
 
   // Box Left: Data Pemesan
   doc.setFillColor(248, 250, 252);
@@ -110,7 +109,7 @@ export const generateBookingInvoicePDF = (
   doc.text(`Peserta: ${form.paxCount} Orang ${form.isHighSeason ? '(High Season)' : ''}`, 114, y + 41);
 
   // Table Rincian Biaya
-  y += 51;
+  y += 53;
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(10);
   doc.setTextColor(16, 42, 86);
@@ -168,101 +167,53 @@ export const generateBookingInvoicePDF = (
     y += 8;
   });
 
-  // 2. Grand Total Box (Total, Uang Muka DP, Sisa Pembayaran)
-  const remainingPrice = Math.max(0, totalPrice - dpPrice);
-
+  // Grand Total Box
   doc.setFillColor(234, 242, 255);
-  doc.roundedRect(15, y, 180, 25, 2, 2, 'F');
-
-  // Row 1: TOTAL
+  doc.rect(15, y, 180, 18, 'F');
   doc.setTextColor(16, 42, 86);
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(9);
-  doc.text('TOTAL:', 20, y + 6);
+  doc.text('TOTAL TAGIHAN:', 20, y + 6);
   doc.text(formatRupiah(totalPrice), 190, y + 6, { align: 'right' });
 
-  // Divider 1
-  doc.setDrawColor(203, 213, 225);
-  doc.setLineWidth(0.2);
-  doc.line(20, y + 8.5, 190, y + 8.5);
-
-  // Row 2: UANG MUKA (DP)
-  doc.setTextColor(5, 150, 105); // emerald-600
-  doc.text('UANG MUKA (DP):', 20, y + 14);
-  doc.text(formatRupiah(dpPrice), 190, y + 14, { align: 'right' });
-
-  // Divider 2
-  doc.line(20, y + 16.8, 190, y + 16.8);
-
-  // Row 3: SISA PEMBAYARAN
-  doc.setTextColor(180, 83, 9); // amber-700
-  doc.text('SISA PEMBAYARAN:', 20, y + 22);
-  doc.text(formatRupiah(remainingPrice), 190, y + 22, { align: 'right' });
+  doc.setTextColor(5, 150, 105);
+  doc.text('UANG MUKA PEMESANAN (DP 30%):', 20, y + 13);
+  doc.text(formatRupiah(dpPrice), 190, y + 13, { align: 'right' });
 
   // Payment Accounts Box
-  y += 29;
+  y += 24;
   doc.setFillColor(254, 243, 199);
-  doc.roundedRect(15, y, 180, 22, 2, 2, 'F');
+  doc.roundedRect(15, y, 180, 24, 2, 2, 'F');
   doc.setTextColor(146, 64, 14);
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(9);
-  doc.text('REKENING PEMBAYARAN RESMI WISATABROMO.CO:', 20, y + 5.5);
+  doc.text('REKENING PEMBAYARAN RESMI WISATABROMO.CO:', 20, y + 6);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8.5);
   doc.setTextColor(120, 53, 15);
-  doc.text('• BANK BCA: 5200888415 a/n PT Global Travel Healing', 20, y + 11.5);
-  doc.text('• E-WALLET DANA & OVO: 08113212318 a/n Achmad J', 20, y + 17);
+  doc.text('• BANK BCA: 5200888415 a/n PT Global Travel Healing', 20, y + 12);
+  doc.text('• E-WALLET DANA & OVO: 08113212318 a/n Achmad J', 20, y + 18);
 
-  // 4. Syarat & Ketentuan Penting
-  y += 27;
+  // Footer & Important Notes
+  y += 29;
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(8.5);
-  doc.setTextColor(100, 116, 139);
-  doc.text('SYARAT & KETENTUAN PENTING:', 15, y);
-  y += 4.5;
-
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(7.5);
-  doc.setTextColor(51, 65, 85);
-
-  const terms = [
-    '1. DP di bayar saat pendaftaran.',
-    '2. Apabila terjadi pembatalan dari peserta maka DP dinyatakan hangus, Apabila terjadi pembatalan dari wisatabromo.co karena cuaca atau bencana alam atau kondisi lain dalam bentuk apapun maka DP di kembalikan 100%.',
-    '3. Ketentuan Sisa Pembayaran: Untuk keberangkatan Start Surabaya wajib dilunasi maksimal H-1 sebelum keberangkatan. Untuk Start Malang dan Basecamp Jeep (Tosari, Sukapura, Gubugklakah) pelunasan dapat dilakukan pada hari H saat penjemputan (khusus di luar periode High Season), sedangkan pada periode High Season wajib lunas maksimal H-2 sebelum keberangkatan.',
-    '4. Invoice ini adalah bukti pemesanan resmi yang dikonfirmasi oleh sistem WisataBromo.co.',
-    '5. Mohon persiapkan pakaian hangat (jaket tebal, sarung tangan, syal, masker) karena suhu fajar Bromo mencapai 2°C – 10°C.',
-  ];
-
-  terms.forEach((term) => {
-    const lines = doc.splitTextToSize(term, 180);
-    doc.text(lines, 15, y);
-    y += lines.length * 3.6 + 1;
-  });
-
-  // TTD / Customer Support ditaruh sepenuhnya di bagian bawah Syarat & Ketentuan
-  y += 6;
-  doc.setDrawColor(226, 232, 240);
-  doc.setLineWidth(0.3);
-  doc.line(15, y, 195, y);
-  y += 5;
-
-  doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
   doc.setTextColor(100, 116, 139);
-  doc.text('Hormat Kami,', 190, y, { align: 'right' });
-  y += 4.5;
+  doc.text('SYARAT & KETENTUAN PENTING:', 15, y);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(7.5);
+  doc.text('1. Invoice ini adalah bukti pemesanan resmi yang dikonfirmasi oleh sistem WisataBromo.co.', 15, y + 4.5);
+  doc.text('2. Sisa pelunasan (70%) dibayarkan secara langsung saat hari H bertemu driver/guide di lokasi penjemputan.', 15, y + 8.5);
+  doc.text('3. Mohon persiapkan pakaian hangat (jaket tebal, sarung tangan, syal, masker) karena suhu fajar Bromo mencapai 2°C – 10°C.', 15, y + 12.5);
 
+  // Bottom Signature Stamp
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(16, 42, 86);
-  doc.setFontSize(9);
-  doc.text('WisataBromo.co Customer Support', 190, y, { align: 'right' });
-  y += 4;
-
+  doc.setFontSize(8);
+  doc.text('WisataBromo.co Customer Support', 190, y + 10, { align: 'right' });
   doc.setFont('helvetica', 'normal');
-  doc.setTextColor(71, 85, 105);
-  doc.setFontSize(7.5);
-  doc.text('WhatsApp: +62 812 2229 0318 · Email: cs@wisatabromo.co', 190, y, { align: 'right' });
+  doc.text('WhatsApp: +62 812 2229 0318', 190, y + 14, { align: 'right' });
 
   // Save the PDF
   doc.save(`Invoice_${bookingCode}_WisataBromo.pdf`);

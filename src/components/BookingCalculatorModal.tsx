@@ -1533,12 +1533,12 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
                   className="w-full py-2.5 px-4 text-xs font-bold text-[#102a56] hover:bg-[#eaf2ff] bg-white border border-slate-300 rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Download className="w-4 h-4 text-[#3d72fe]" />
-                  <span>Unduh Invoice Resmi PDF (Bukti Reservasi)</span>
+                  <span>Unduh E-Invoice PDF (Bukti Reservasi Resmi)</span>
                 </button>
 
                 <div className="text-[10px] text-slate-500 text-center flex items-center justify-center gap-1">
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                  <span>Invoice resmi otomatis dikirimkan ke email &amp; WhatsApp Anda</span>
+                  <span>E-Tiket &amp; Invoice PDF resmi otomatis dikirimkan ke email &amp; WhatsApp Anda</span>
                 </div>
               </div>
             </div>
