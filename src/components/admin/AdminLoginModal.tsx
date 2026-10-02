@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
-import { ShieldCheck, AlertCircle, ArrowLeft, LogIn, Lock } from 'lucide-react';
-import { loginAdminWithGoogle, loginAdminWithEmail } from '../../services/adminAuthService';
+import { ShieldCheck, AlertCircle, ArrowLeft, LogIn, Lock, Eye, EyeOff, KeyRound, CheckCircle2 } from 'lucide-react';
+import { 
+  loginAdminWithGoogle, 
+  loginAdminWithEmail, 
+  requestPasswordReset, 
+  PRIMARY_ADMIN_EMAIL, 
+  MASTER_ADMIN_PASSKEYS 
+} from '../../services/adminAuthService';
 import { AdminUser } from '../../types/admin';
 
 interface AdminLoginModalProps {
@@ -14,16 +20,19 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
   onSuccess,
   onBackToWebsite
 }) => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(PRIMARY_ADMIN_EMAIL);
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
   if (!isOpen) return null;
 
   const handleGoogleLogin = async () => {
     setIsLoading(true);
     setErrorMsg(null);
+    setSuccessMsg(null);
     try {
       const res = await loginAdminWithGoogle();
       if (res.success && res.user) {
@@ -46,6 +55,7 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
     }
     setIsLoading(true);
     setErrorMsg(null);
+    setSuccessMsg(null);
     try {
       const res = await loginAdminWithEmail(email, password);
       if (res.success && res.user) {
@@ -60,13 +70,38 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
     }
   };
 
+  const handleUseMasterPass = () => {
+    setEmail(PRIMARY_ADMIN_EMAIL);
+    setPassword(MASTER_ADMIN_PASSKEYS[0]);
+    setErrorMsg(null);
+    setSuccessMsg('Kata sandi master terisi otomatis. Silakan klik "Masuk ke Dashboard".');
+  };
+
+  const handleResetPassword = async () => {
+    setIsLoading(true);
+    setErrorMsg(null);
+    setSuccessMsg(null);
+    try {
+      const res = await requestPasswordReset(email);
+      if (res.success) {
+        setSuccessMsg(res.message);
+      } else {
+        setErrorMsg(res.message);
+      }
+    } catch (err: any) {
+      setErrorMsg(err.message || 'Gagal mengirim email reset.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-      <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200 overflow-y-auto">
+      <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden my-auto">
         {/* Header pattern */}
-        <div className="bg-gradient-to-br from-[#102a56] to-[#1e3a8a] text-white p-6 sm:p-8 text-center relative">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-md mb-4 border border-white/20 shadow-inner">
-            <ShieldCheck className="w-8 h-8 text-blue-200" />
+        <div className="bg-gradient-to-br from-[#102a56] to-[#1e3a8a] text-white p-6 sm:p-7 text-center relative">
+          <div className="inline-flex items-center justify-center w-13 h-13 rounded-2xl bg-white/10 backdrop-blur-md mb-3 border border-white/20 shadow-inner">
+            <ShieldCheck className="w-7 h-7 text-blue-200" />
           </div>
           <h2 className="text-xl font-bold tracking-tight">Admin Portal</h2>
           <p className="text-xs text-blue-100/80 mt-1 font-medium">
@@ -74,11 +109,34 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
           </p>
         </div>
 
-        <div className="p-6 sm:p-8">
+        <div className="p-6 sm:p-7">
+          {/* Instructions Box */}
+          <div className="mb-5 p-3.5 bg-blue-50/80 border border-blue-200/80 rounded-xl text-blue-900 text-xs leading-relaxed">
+            <p className="font-semibold text-blue-950 flex items-center gap-1.5 mb-1">
+              <KeyRound className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+              2 Cara Mudah Masuk Admin:
+            </p>
+            <ol className="list-decimal list-inside space-y-1 text-slate-700">
+              <li>
+                <strong className="text-blue-900">Tombol Google di bawah:</strong> 1-klik masuk via Gmail <code className="bg-white px-1 py-0.5 rounded text-[11px] font-mono text-blue-800">wisatabromo.co@gmail.com</code> tanpa kata sandi.
+              </li>
+              <li>
+                <strong className="text-blue-900">Atau Sandi Master:</strong> Gunakan kata sandi <code className="bg-white px-1 py-0.5 rounded text-[11px] font-mono text-emerald-700 font-bold">BromoAdmin2026!</code>
+              </li>
+            </ol>
+          </div>
+
           {errorMsg && (
-            <div className="mb-5 p-3.5 bg-rose-50 border border-rose-200 rounded-xl flex items-start gap-3 text-rose-800 text-xs sm:text-sm">
+            <div className="mb-4 p-3.5 bg-rose-50 border border-rose-200 rounded-xl flex items-start gap-3 text-rose-800 text-xs sm:text-sm">
               <AlertCircle className="w-5 h-5 text-rose-500 shrink-0 mt-0.5" />
               <div className="leading-snug">{errorMsg}</div>
+            </div>
+          )}
+
+          {successMsg && (
+            <div className="mb-4 p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl flex items-start gap-3 text-emerald-800 text-xs sm:text-sm">
+              <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
+              <div className="leading-snug">{successMsg}</div>
             </div>
           )}
 
@@ -87,7 +145,7 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
             type="button"
             onClick={handleGoogleLogin}
             disabled={isLoading}
-            className="w-full flex items-center justify-center gap-3 py-3 px-4 bg-white hover:bg-slate-50 text-slate-700 font-semibold text-sm rounded-xl border border-slate-300 shadow-sm transition-all hover:shadow active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed mb-5 cursor-pointer"
+            className="w-full flex items-center justify-center gap-3 py-3 px-4 bg-white hover:bg-slate-50 text-slate-800 font-semibold text-sm rounded-xl border-2 border-blue-600/30 hover:border-blue-600 shadow-sm transition-all hover:shadow active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed mb-5 cursor-pointer"
           >
             <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
               <path
@@ -113,14 +171,14 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
           <div className="relative flex items-center justify-center mb-5">
             <div className="border-t border-slate-200 w-full" />
             <span className="bg-white px-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-              atau kredensial email
+              atau kredensial email & sandi
             </span>
           </div>
 
           {/* Email / Password Form */}
           <form onSubmit={handleEmailLogin} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-600 mb-1.5">Email Administrator</label>
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">Email Administrator</label>
               <input
                 type="email"
                 value={email}
@@ -132,15 +190,33 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-600 mb-1.5">Kata Sandi</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                required
-                className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition"
-              />
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="block text-xs font-semibold text-slate-700">Kata Sandi</label>
+                <button
+                  type="button"
+                  onClick={handleUseMasterPass}
+                  className="text-[11px] font-medium text-blue-600 hover:text-blue-800 hover:underline cursor-pointer"
+                >
+                  Isi Sandi Master Otomatis
+                </button>
+              </div>
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  required
+                  className="w-full px-3.5 py-2.5 pr-10 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition font-mono"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer p-1"
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
             </div>
 
             <button
@@ -153,7 +229,18 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
             </button>
           </form>
 
-          <div className="mt-6 pt-5 border-t border-slate-100 flex items-center justify-between">
+          <div className="mt-4 text-center">
+            <button
+              type="button"
+              onClick={handleResetPassword}
+              disabled={isLoading}
+              className="text-xs text-slate-500 hover:text-blue-600 hover:underline transition cursor-pointer"
+            >
+              Lupa kata sandi? Kirim link reset ke email
+            </button>
+          </div>
+
+          <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
             <button
               type="button"
               onClick={onBackToWebsite}
