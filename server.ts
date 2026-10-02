@@ -56,10 +56,10 @@ const escapeHtml = (unsafe: string | number | undefined | null) => {
 };
 
 /**
- * Endpoint: POST /api/send-booking-email
- * Sends email notifications to Admin (wisatabromo.co@gmail.com) and Customer
+ * Endpoint: POST /api/booking & POST /api/send-booking-email
+ * Sends email notifications to Admin (wisatabromo.co@gmail.com) and Customer via Nodemailer
  */
-app.post('/api/send-booking-email', async (req: Request, res: Response) => {
+const handleBookingEmail = async (req: Request, res: Response) => {
   try {
     const booking = req.body;
 
@@ -493,7 +493,11 @@ app.post('/api/send-booking-email', async (req: Request, res: Response) => {
       error: error.message || 'Internal Server Error'
     });
   }
-});
+};
+
+// Register booking endpoints
+app.post('/api/booking', handleBookingEmail);
+app.post('/api/send-booking-email', handleBookingEmail);
 
 /**
  * Endpoint: GET /api/admin/emails/sent
@@ -593,24 +597,14 @@ app.get('/api/admin/system-status', (_req: Request, res: Response) => {
   });
 });
 
-// Multi-directory candidate detection for Hostinger deployment (dist, public, app/dist, or public_html)
-const candidateDirs = [
-  path.resolve(__dirname, 'dist'),
-  path.resolve(__dirname, 'public'),
-  path.resolve(__dirname, 'app/dist'),
-  path.resolve(__dirname, 'app/public'),
-  path.resolve(__dirname, '../public_html'),
-  path.resolve(__dirname, 'public_html'),
-  path.resolve(process.cwd(), 'dist'),
-  path.resolve(process.cwd(), 'public')
-];
-
-let staticPath = candidateDirs.find(dir => fs.existsSync(path.join(dir, 'index.html'))) || path.resolve(__dirname, 'dist');
+// Static files & SPA Routing for Hostinger Preset Express
+const publicPath = path.join(__dirname, 'public');
+const distPath = path.join(__dirname, 'dist');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
 async function startServer() {
-  if (!isProduction && !fs.existsSync(path.join(staticPath, 'index.html'))) {
+  if (!isProduction && !fs.existsSync(path.join(publicPath, 'index.html')) && !fs.existsSync(path.join(distPath, 'index.html'))) {
     try {
       const { createServer: createViteServer } = await import('vite');
       const vite = await createViteServer({
@@ -624,24 +618,25 @@ async function startServer() {
     }
   }
 
-  // Static files & SPA Routing Fallback
-  app.use(express.static(staticPath));
+  // Read static files directly from public directory (Hostinger standard)
+  app.use(express.static(path.join(__dirname, 'public')));
   
-  // Secondary static fallback to public folder if it exists separately
-  const publicDir = path.resolve(__dirname, 'public');
-  if (fs.existsSync(publicDir) && publicDir !== staticPath) {
-    app.use(express.static(publicDir));
+  // Secondary fallback for dist if present
+  if (fs.existsSync(distPath)) {
+    app.use(express.static(distPath));
   }
 
-  app.get('*', (_req, res) => {
-    const activeIndex = [staticPath, ...candidateDirs]
-      .map(dir => path.join(dir, 'index.html'))
-      .find(file => fs.existsSync(file));
-
-    if (activeIndex) {
-      return res.sendFile(activeIndex);
+  // Fallback routing app.get('*', ...) to public/index.html
+  app.get('*', (_req: Request, res: Response) => {
+    const publicIndex = path.join(publicPath, 'index.html');
+    if (fs.existsSync(publicIndex)) {
+      return res.sendFile(publicIndex);
     }
-    return res.status(200).send('WisataBromo.co server is running. Frontend build not detected yet. Please run npm run build or npm run build:hostinger.');
+    const distIndex = path.join(distPath, 'index.html');
+    if (fs.existsSync(distIndex)) {
+      return res.sendFile(distIndex);
+    }
+    return res.status(200).send('WisataBromo.co server is running. Frontend build not detected yet. Please run npm run build.');
   });
 
   app.listen(PORT, () => {

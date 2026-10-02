@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "tsx server.ts",
-    "build": "vite build",
-    "build:hostinger": "node scripts/build-hostinger.js",
+    "build": "vite build && node scripts/copy-build.js",
+    "build:hostinger": "vite build && node scripts/copy-build.js",
     "start": "node server.js",
     "preview": "node server.js",
     "lint": "tsc --noEmit"
@@ -15,6 +15,7 @@
     "@google/genai": "^2.4.0",
     "@tailwindcss/vite": "^4.3.3",
     "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.21",
     "dotenv": "^17.2.3",
     "express": "^4.21.2",
     "firebase": "^12.19.0",
@@ -25,7 +26,10 @@
     "nodemailer": "^10.0.13",
     "react": "^19.0.1",
     "react-dom": "^19.0.1",
-    "vite": "^6.0.0"
+    "tailwindcss": "^4.3.3",
+    "typescript": "^7.0.2",
+    "vite": "^6.0.0",
+    "vite-plugin-pwa": "^1.3.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
@@ -33,12 +37,10 @@
     "@types/nodemailer": "^8.0.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "autoprefixer": "^10.4.21",
+    "cpx": "^1.5.0",
     "esbuild": "^0.28.0",
+    "mkdirp": "^3.0.1",
     "sharp": "^0.35.5",
-    "tailwindcss": "^4.3.3",
-    "tsx": "^4.21.0",
-    "typescript": "^7.0.2",
-    "vite-plugin-pwa": "^1.3.0"
+    "tsx": "^4.21.0"
   }
 }
