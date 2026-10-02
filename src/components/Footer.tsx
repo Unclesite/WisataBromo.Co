@@ -172,6 +172,10 @@ export const Footer: React.FC = () => {
               <span>Google Maps</span>
               <ExternalLink className="w-2.5 h-2.5" />
             </a>
+            <span aria-hidden="true">·</span>
+            <a href="#admin" className="hover:text-[#ffc928] text-white/70 flex items-center gap-1 font-semibold">
+              <span>Admin Portal</span>
+            </a>
           </div>
         </div>
       </div>

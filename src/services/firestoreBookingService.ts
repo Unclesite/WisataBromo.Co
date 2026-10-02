@@ -11,7 +11,8 @@ import {
   query,
   getDocs,
   where,
-  orderBy
+  orderBy,
+  onSnapshot
 } from 'firebase/firestore';
 import firebaseConfig from '../../firebase-applet-config.json';
 import { triggerBookingEmailNotification } from './emailNotificationService';
@@ -248,3 +249,79 @@ export const getBookingFromFirestore = async (bookingCode: string): Promise<Stor
     return local || null;
   }
 };
+
+/**
+ * Fetch all bookings from Firestore collection 'bookings'
+ * (Restricted to authenticated Admins by Security Rules)
+ */
+export const getAllBookingsFromFirestore = async (): Promise<StoredBookingRecord[]> => {
+  const path = 'bookings';
+  try {
+    const colRef = collection(db, 'bookings');
+    const q = query(colRef, orderBy('createdAt', 'desc'));
+    const snapshot = await getDocs(q);
+
+    const bookings: StoredBookingRecord[] = [];
+    snapshot.forEach(docSnap => {
+      bookings.push(docSnap.data() as StoredBookingRecord);
+    });
+
+    // Update local cache
+    if (bookings.length > 0) {
+      localStorage.setItem('wisatabromo_bookings_db', JSON.stringify(bookings));
+    }
+
+    return bookings;
+  } catch (err: any) {
+    console.error('Error fetching all bookings from Firestore:', err);
+    try {
+      handleFirestoreError(err, OperationType.LIST, path);
+    } catch {
+      // ignore
+    }
+    // Fallback to local storage if network or permissions fail
+    return getStoredBookingsFromDb();
+  }
+};
+
+/**
+ * Listen to realtime updates of bookings collection
+ * Used by Admin Panel to see bookings live
+ */
+export const listenToBookingsRealtime = (
+  callback: (bookings: StoredBookingRecord[]) => void,
+  errorCallback?: (error: Error) => void
+): (() => void) => {
+  const path = 'bookings';
+  try {
+    const colRef = collection(db, 'bookings');
+    const q = query(colRef, orderBy('createdAt', 'desc'));
+
+    return onSnapshot(
+      q,
+      (snapshot) => {
+        const bookings: StoredBookingRecord[] = [];
+        snapshot.forEach(docSnap => {
+          bookings.push(docSnap.data() as StoredBookingRecord);
+        });
+
+        // Sync to local cache
+        localStorage.setItem('wisatabromo_bookings_db', JSON.stringify(bookings));
+        callback(bookings);
+      },
+      (error) => {
+        console.error('Realtime bookings listener error:', error);
+        try {
+          handleFirestoreError(error, OperationType.LIST, path);
+        } catch (e: any) {
+          if (errorCallback) errorCallback(e);
+        }
+      }
+    );
+  } catch (err: any) {
+    console.error('Failed to attach realtime booking listener:', err);
+    if (errorCallback) errorCallback(err);
+    return () => {};
+  }
+};
+

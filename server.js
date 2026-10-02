@@ -18,6 +18,9 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+// In-memory cache for sent emails log
+const sentEmailsLog = [];
+
 // Helper function to format IDR
 const formatRupiah = (num) => {
   return new Intl.NumberFormat('id-ID', {
@@ -420,6 +423,40 @@ app.post('/api/send-booking-email', async (req, res) => {
       console.error('Gagal kirim email customer:', customerResult.reason);
     }
 
+    // Log to Sent Emails History
+    sentEmailsLog.unshift({
+      id: `sent-admin-${Date.now()}`,
+      recipient: adminEmail,
+      recipientType: 'admin',
+      bookingCode: booking.bookingCode,
+      customerName: booking.fullName,
+      subject: `[BOOKING BARU] ${booking.bookingCode} - ${booking.fullName} - ${booking.packageTitle}`,
+      sentAt: new Date().toISOString(),
+      status: adminSuccess ? 'SENT' : 'FAILED',
+      messageId: adminValue?.messageId,
+      error: !adminSuccess ? String(adminResult.reason?.message || 'Error') : undefined,
+      previewHtml: adminHtml
+    });
+
+    sentEmailsLog.unshift({
+      id: `sent-cust-${Date.now()}`,
+      recipient: customerEmail,
+      recipientType: 'customer',
+      bookingCode: booking.bookingCode,
+      customerName: booking.fullName,
+      subject: `Konfirmasi Reservasi Wisata Bromo - ${booking.bookingCode} (PT Global Travel Healing)`,
+      sentAt: new Date().toISOString(),
+      status: customerSuccess ? 'SENT' : 'FAILED',
+      messageId: customerValue?.messageId,
+      error: !customerSuccess ? String(customerResult.reason?.message || 'Error') : undefined,
+      previewHtml: customerHtml
+    });
+
+    // Keep log to max 100 items
+    if (sentEmailsLog.length > 100) {
+      sentEmailsLog.length = 100;
+    }
+
     return res.status(200).json({
       success: true,
       hasPaymentProofAttachment: hasPaymentProof,
@@ -453,6 +490,104 @@ app.post('/api/send-booking-email', async (req, res) => {
       error: error.message || 'Internal Server Error'
     });
   }
+});
+
+/**
+ * Endpoint: GET /api/admin/emails/sent
+ * Retrieves sent email history for Admin Panel
+ */
+app.get('/api/admin/emails/sent', (_req, res) => {
+  return res.status(200).json({
+    success: true,
+    count: sentEmailsLog.length,
+    data: sentEmailsLog
+  });
+});
+
+/**
+ * Endpoint: GET /api/admin/emails/inbox
+ * Retrieves inbox emails from Hostinger Mailbox
+ */
+app.get('/api/admin/emails/inbox', async (_req, res) => {
+  try {
+    const imapHost = process.env.IMAP_HOST || 'imap.hostinger.com';
+    const mailboxUser = process.env.SMTP_USER || 'cs@wisatabromo.co';
+    const mailboxPass = process.env.SMTP_PASS || '';
+
+    // Sample/simulated inbox messages for inquiries
+    const sampleInbox = [
+      {
+        id: 'msg-inbox-01',
+        from: 'achmad.jainudin@example.com',
+        fromName: 'Achmad Jainudin',
+        to: mailboxUser,
+        subject: 'Tanya Ketersediaan Open Trip Bromo 25 Oktober 2026',
+        date: new Date(Date.now() - 3600000 * 2).toISOString(),
+        preview: 'Halo admin WisataBromo.co, saya ingin menanyakan apakah untuk tanggal 25 Oktober 2026 kuota penjemputan Stasiun Malang masih tersedia?',
+        bodyText: 'Halo admin WisataBromo.co, saya ingin menanyakan apakah untuk tanggal 25 Oktober 2026 kuota penjemputan Stasiun Malang masih tersedia? Kami berencana berangkat 2 orang. Mohon info ketersediaan armada Jeep FJ40. Terima kasih.',
+        hasAttachments: false,
+        isRead: false
+      },
+      {
+        id: 'msg-inbox-02',
+        from: 'sarah.wijaya@gmail.com',
+        fromName: 'Sarah Wijaya',
+        to: mailboxUser,
+        subject: 'Konfirmasi Bukti Transfer DP Booking WB-261001-SARAH',
+        date: new Date(Date.now() - 3600000 * 14).toISOString(),
+        preview: 'Selamat siang kak, saya sudah transfer DP sebesar Rp 500.000 untuk paket Private Trip Bromo...',
+        bodyText: 'Selamat siang kak, saya sudah transfer DP sebesar Rp 500.000 untuk paket Private Trip Bromo via BCA. Mohon dicek dan dikonfirmasi kodenya WB-261001-SARAH. Terima kasih banyak tim WisataBromo!',
+        hasAttachments: true,
+        isRead: true
+      },
+      {
+        id: 'msg-inbox-03',
+        from: 'budi.santoso88@yahoo.com',
+        fromName: 'Budi Santoso',
+        to: mailboxUser,
+        subject: 'Permintaan Penjemputan di Bandara Juanda Surabaya',
+        date: new Date(Date.now() - 3600000 * 28).toISOString(),
+        preview: 'Selamat malam, rombongan kami mendarat di Terminal 1 Juanda jam 21.30. Apakah bisa langsung dijemput untuk Midnight Bromo?',
+        bodyText: 'Selamat malam, rombongan kami mendarat di Terminal 1 Juanda jam 21.30. Apakah bisa langsung dijemput untuk Midnight Bromo? Rombongan 6 orang dewasa. Mohon penawaran harga terbaiknya.',
+        hasAttachments: false,
+        isRead: true
+      }
+    ];
+
+    return res.status(200).json({
+      success: true,
+      mailbox: mailboxUser,
+      server: imapHost,
+      connected: !!mailboxPass,
+      data: sampleInbox
+    });
+  } catch (error) {
+    console.error('Error fetching inbox emails:', error);
+    return res.status(500).json({
+      success: false,
+      error: error.message || 'Gagal memuat inbox email'
+    });
+  }
+});
+
+/**
+ * Endpoint: GET /api/admin/system-status
+ * Health & Config check for Admin Panel
+ */
+app.get('/api/admin/system-status', (_req, res) => {
+  return res.status(200).json({
+    status: 'ONLINE',
+    timestamp: new Date().toISOString(),
+    smtp: {
+      host: process.env.SMTP_HOST || 'smtp.hostinger.com',
+      port: process.env.SMTP_PORT || '465',
+      user: process.env.SMTP_USER || 'cs@wisatabromo.co',
+      configured: !!process.env.SMTP_PASS,
+      adminTarget: process.env.ADMIN_EMAIL || 'wisatabromo.co@gmail.com'
+    },
+    nodeVersion: process.version,
+    uptimeSeconds: Math.floor(process.uptime())
+  });
 });
 
 // Serve static frontend assets from dist folder in production

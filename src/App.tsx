@@ -28,11 +28,19 @@ import { StartCity, TourPackage, TripCategory } from './types';
 import { MessageCircle } from 'lucide-react';
 import { fetchLiveBromoWeather, FALLBACK_WEATHER_DATA, WeatherData } from './services/weatherService';
 import { getOfficialTnbtsStatus, TnbtsStatusData } from './services/tnbtsStatusService';
+import { AdminLayout } from './components/admin/AdminLayout';
+import { AdminLoginModal } from './components/admin/AdminLoginModal';
+import { AdminUser } from './types/admin';
+import { onAdminAuthStateChanged } from './services/adminAuthService';
 
 export default function App() {
   const [selectedCategory, setSelectedCategory] = useState<TripCategory>('all');
   const [selectedCity, setSelectedCity] = useState<StartCity>('all');
   
+  // Admin Portal State
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const [currentAdmin, setCurrentAdmin] = useState<AdminUser | null>(null);
+
   // Dedicated Page View State
   const [activeDetailPage, setActiveDetailPage] = useState<TourPackage | null>(null);
   const [activePackageModal, setActivePackageModal] = useState<TourPackage | null>(null);
@@ -73,10 +81,35 @@ export default function App() {
     return () => clearInterval(interval);
   }, []);
 
+  // Admin auth state listener
+  useEffect(() => {
+    const unsub = onAdminAuthStateChanged((adminUser, isAdmin) => {
+      if (isAdmin && adminUser) {
+        setCurrentAdmin(adminUser);
+      } else {
+        setCurrentAdmin(null);
+      }
+    });
+    return () => unsub();
+  }, []);
+
   // Sync hash routing on initial load and hashchange
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash;
+      const path = window.location.pathname;
+
+      if (hash === '#admin' || path === '/admin') {
+        setIsAdminOpen(true);
+        setIsAboutPageOpen(false);
+        setIsArticlesPageOpen(false);
+        setActiveDetailPage(null);
+        document.title = 'Admin Panel - WisataBromo.co';
+        return;
+      } else {
+        setIsAdminOpen(false);
+      }
+
       if (hash === '#tentang-kami' || hash === '#about') {
         setIsAboutPageOpen(true);
         setIsArticlesPageOpen(false);
@@ -207,6 +240,32 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     document.title = 'WisataBromo.co - Spesialis Paket Wisata & Sewa Jeep Bromo Resmi';
   };
+
+  // Render Admin Portal if active
+  if (isAdminOpen) {
+    if (currentAdmin) {
+      return (
+        <AdminLayout
+          admin={currentAdmin}
+          onLogout={() => setCurrentAdmin(null)}
+          onBackToWebsite={() => {
+            window.location.hash = '';
+            setIsAdminOpen(false);
+          }}
+        />
+      );
+    }
+    return (
+      <AdminLoginModal
+        isOpen={true}
+        onSuccess={(admin) => setCurrentAdmin(admin)}
+        onBackToWebsite={() => {
+          window.location.hash = '';
+          setIsAdminOpen(false);
+        }}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white text-[#111318] flex flex-col font-sans selection:bg-[#3d72fe] selection:text-white w-full max-w-full overflow-x-hidden">

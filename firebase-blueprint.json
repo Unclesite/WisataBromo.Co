@@ -119,12 +119,45 @@
         "downPayment",
         "status"
       ]
+    },
+    "WebsiteContent": {
+      "title": "WebsiteContent",
+      "description": "Pengaturan konten dinamis website WisataBromo.co",
+      "type": "object",
+      "properties": {
+        "hero": {
+          "type": "object",
+          "description": "Teks dan informasi hero section homepage"
+        },
+        "contact": {
+          "type": "object",
+          "description": "Kontak WhatsApp, email CS, dan alamat kantor"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Waktu terakhir pembaruan konten",
+          "maxLength": 100
+        },
+        "updatedBy": {
+          "type": "string",
+          "description": "Email admin yang melakukan perubahan",
+          "maxLength": 150
+        }
+      }
     }
   },
   "firestore": {
     "/bookings/{bookingId}": {
       "schema": "Booking",
       "description": "Koleksi data seluruh reservasi dan bukti pembayaran pelanggan WisataBromo.co"
+    },
+    "/website_content/{docId}": {
+      "schema": "WebsiteContent",
+      "description": "Koleksi konfigurasi konten dinamis website yang dikelola oleh Admin"
+    },
+    "/admins/{adminId}": {
+      "schema": "WebsiteContent",
+      "description": "Koleksi profil dan hak akses administrator"
     }
   }
 }
