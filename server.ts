@@ -721,21 +721,22 @@ async function startServer() {
     }
   }
 
-  // Read static files from dist first (freshest production build), then public
+  // Serve static files from public folder (Hostinger Express standard)
+  app.use(express.static('public'));
+  app.use(express.static(publicPath));
   if (fs.existsSync(distPath)) {
     app.use(express.static(distPath));
   }
-  app.use(express.static(publicPath));
 
-  // Fallback routing app.get('*', ...) to dist/index.html or public/index.html
+  // Fallback routing app.get('*', ...) to public/index.html (Hostinger standard) or dist/index.html
   app.get('*', (_req: Request, res: Response) => {
-    const distIndex = path.join(distPath, 'index.html');
-    if (fs.existsSync(distIndex)) {
-      return res.sendFile(distIndex);
-    }
     const publicIndex = path.join(publicPath, 'index.html');
     if (fs.existsSync(publicIndex)) {
       return res.sendFile(publicIndex);
+    }
+    const distIndex = path.join(distPath, 'index.html');
+    if (fs.existsSync(distIndex)) {
+      return res.sendFile(distIndex);
     }
     return res.status(200).send('WisataBromo.co server is running. Frontend build not detected yet. Please run npm run build.');
   });
