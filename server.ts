@@ -471,10 +471,12 @@ const handleBookingEmail = async (req: Request, res: Response) => {
                 </div>
               </div>
 
-              <div style="background-color: #fefce8; border: 1px solid #fef08a; border-radius: 8px; padding: 14px; margin-bottom: 24px; font-size: 13px; color: #854d0e; line-height: 1.5;">
-                📌 <strong>Langkah Selanjutnya:</strong><br>
-                1. Mohon transfer nominal DP sesuai yang tertera ke rekening resmi di atas.<br>
-                2. Driver dan tim operasional kami akan menghubungi Anda via WhatsApp H-1 sebelum keberangkatan untuk konfirmasi jam penjemputan & plat nomor Jeep.
+              <div style="background-color: #fefce8; border: 1px solid #fef08a; border-radius: 8px; padding: 14px; margin-bottom: 24px; font-size: 13px; color: #854d0e; line-height: 1.6;">
+                📌 <strong>Syarat &amp; Ketentuan Pembayaran:</strong><br>
+                1. DP dibayar saat pendaftaran.<br>
+                2. Apabila terjadi pembatalan dari peserta maka DP dinyatakan hangus, Apabila terjadi pembatalan dari wisatabromo.co karena cuaca atau bencana alam atau kondisi lain dalam bentuk apapun maka DP dikembalikan 100%.<br>
+                3. Ketentuan Sisa Pembayaran: Untuk keberangkatan Start Surabaya wajib dilunasi maksimal H-1 sebelum keberangkatan. Untuk Start Malang dan Basecamp Jeep (Tosari, Sukapura, Gubugklakah) pelunasan dapat dilakukan pada hari H saat penjemputan (khusus di luar periode High Season), sedangkan pada periode High Season wajib lunas maksimal H-2 sebelum keberangkatan.<br>
+                4. Driver dan tim operasional kami akan menghubungi Anda via WhatsApp H-1 sebelum keberangkatan untuk konfirmasi jam penjemputan &amp; plat nomor Jeep.
               </div>
 
               <div style="text-align: center; margin-top: 20px;">
