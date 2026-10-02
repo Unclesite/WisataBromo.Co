@@ -1,11 +1,11 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import dotenv from 'dotenv';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import nodemailer from 'nodemailer';
 
-// Load environment variables
+// Load environment variables (.env)
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -14,29 +14,15 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Body parser
+// Body parser configuration for JSON & Base64 attachments
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // In-memory cache for sent emails log
-interface SentEmailRecord {
-  id: string;
-  recipient: string;
-  recipientType: 'admin' | 'customer';
-  bookingCode?: string;
-  customerName?: string;
-  subject: string;
-  sentAt: string;
-  status: 'SENT' | 'FAILED' | 'SIMULATED';
-  messageId?: string;
-  error?: string;
-  previewHtml?: string;
-}
-
-const sentEmailsLog: SentEmailRecord[] = [];
+const sentEmailsLog = [];
 
 // Helper function to format IDR
-const formatRupiah = (num: number) => {
+const formatRupiah = (num) => {
   return new Intl.NumberFormat('id-ID', {
     style: 'currency',
     currency: 'IDR',
@@ -44,8 +30,8 @@ const formatRupiah = (num: number) => {
   }).format(num || 0);
 };
 
-// Helper function to sanitize text
-const escapeHtml = (unsafe: string | number | undefined | null) => {
+// Helper function to sanitize HTML text
+const escapeHtml = (unsafe) => {
   if (unsafe === undefined || unsafe === null) return '';
   return String(unsafe)
     .replace(/&/g, '&amp;')
@@ -56,10 +42,21 @@ const escapeHtml = (unsafe: string | number | undefined | null) => {
 };
 
 /**
+ * Health Check Endpoint
+ */
+app.get('/api/health', (req, res) => {
+  res.status(200).json({
+    status: 'ok',
+    service: 'WisataBromo.co Backend',
+    timestamp: new Date().toISOString()
+  });
+});
+
+/**
  * Endpoint: POST /api/send-booking-email
  * Sends email notifications to Admin (wisatabromo.co@gmail.com) and Customer
  */
-app.post('/api/send-booking-email', async (req: Request, res: Response) => {
+app.post('/api/send-booking-email', async (req, res) => {
   try {
     const booking = req.body;
 
@@ -121,7 +118,7 @@ app.post('/api/send-booking-email', async (req: Request, res: Response) => {
     const waLink = `https://wa.me/${waNumberFinal}`;
 
     // Process Payment Proof Attachment for Admin Email
-    const adminAttachments: Array<{ filename: string; content: Buffer; contentType: string; contentDisposition: 'attachment' }> = [];
+    const adminAttachments = [];
     let hasPaymentProof = false;
     let paymentProofFilename = booking.paymentProofName || `bukti-transfer-${booking.bookingCode}.jpg`;
     let isImageProof = true;
@@ -416,14 +413,14 @@ app.post('/api/send-booking-email', async (req: Request, res: Response) => {
 
     const adminSuccess = adminResult.status === 'fulfilled';
     const customerSuccess = customerResult.status === 'fulfilled';
-    const adminValue = adminSuccess ? (adminResult as PromiseFulfilledResult<any>).value : null;
-    const customerValue = customerSuccess ? (customerResult as PromiseFulfilledResult<any>).value : null;
+    const adminValue = adminSuccess ? adminResult.value : null;
+    const customerValue = customerSuccess ? customerResult.value : null;
 
     if (!adminSuccess) {
-      console.error('Gagal kirim email admin:', (adminResult as PromiseRejectedResult).reason);
+      console.error('Gagal kirim email admin:', adminResult.reason);
     }
     if (!customerSuccess) {
-      console.error('Gagal kirim email customer:', (customerResult as PromiseRejectedResult).reason);
+      console.error('Gagal kirim email customer:', customerResult.reason);
     }
 
     // Log to Sent Emails History
@@ -437,7 +434,7 @@ app.post('/api/send-booking-email', async (req: Request, res: Response) => {
       sentAt: new Date().toISOString(),
       status: adminSuccess ? 'SENT' : 'FAILED',
       messageId: adminValue?.messageId,
-      error: !adminSuccess ? String((adminResult as PromiseRejectedResult).reason?.message || 'Error') : undefined,
+      error: !adminSuccess ? String(adminResult.reason?.message || 'Error') : undefined,
       previewHtml: adminHtml
     });
 
@@ -451,7 +448,7 @@ app.post('/api/send-booking-email', async (req: Request, res: Response) => {
       sentAt: new Date().toISOString(),
       status: customerSuccess ? 'SENT' : 'FAILED',
       messageId: customerValue?.messageId,
-      error: !customerSuccess ? String((customerResult as PromiseRejectedResult).reason?.message || 'Error') : undefined,
+      error: !customerSuccess ? String(customerResult.reason?.message || 'Error') : undefined,
       previewHtml: customerHtml
     });
 
@@ -476,17 +473,17 @@ app.post('/api/send-booking-email', async (req: Request, res: Response) => {
             sizeBytes: a.content.length,
             contentDisposition: a.contentDisposition
           })),
-          error: !adminSuccess ? String((adminResult as PromiseRejectedResult).reason?.message || 'Error') : undefined
+          error: !adminSuccess ? String(adminResult.reason?.message || 'Error') : undefined
         },
         customerEmail: {
           recipient: customerEmail,
           sent: customerSuccess,
           messageId: customerValue?.messageId,
-          error: !customerSuccess ? String((customerResult as PromiseRejectedResult).reason?.message || 'Error') : undefined
+          error: !customerSuccess ? String(customerResult.reason?.message || 'Error') : undefined
         }
       }
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error('Server error on /api/send-booking-email:', error);
     return res.status(500).json({
       success: false,
@@ -499,7 +496,7 @@ app.post('/api/send-booking-email', async (req: Request, res: Response) => {
  * Endpoint: GET /api/admin/emails/sent
  * Retrieves sent email history for Admin Panel
  */
-app.get('/api/admin/emails/sent', (_req: Request, res: Response) => {
+app.get('/api/admin/emails/sent', (_req, res) => {
   return res.status(200).json({
     success: true,
     count: sentEmailsLog.length,
@@ -511,7 +508,7 @@ app.get('/api/admin/emails/sent', (_req: Request, res: Response) => {
  * Endpoint: GET /api/admin/emails/inbox
  * Retrieves inbox emails from Hostinger Mailbox
  */
-app.get('/api/admin/emails/inbox', async (_req: Request, res: Response) => {
+app.get('/api/admin/emails/inbox', async (_req, res) => {
   try {
     const imapHost = process.env.IMAP_HOST || 'imap.hostinger.com';
     const mailboxUser = process.env.SMTP_USER || 'cs@wisatabromo.co';
@@ -564,7 +561,7 @@ app.get('/api/admin/emails/inbox', async (_req: Request, res: Response) => {
       connected: !!mailboxPass,
       data: sampleInbox
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error fetching inbox emails:', error);
     return res.status(500).json({
       success: false,
@@ -577,7 +574,7 @@ app.get('/api/admin/emails/inbox', async (_req: Request, res: Response) => {
  * Endpoint: GET /api/admin/system-status
  * Health & Config check for Admin Panel
  */
-app.get('/api/admin/system-status', (_req: Request, res: Response) => {
+app.get('/api/admin/system-status', (_req, res) => {
   return res.status(200).json({
     status: 'ONLINE',
     timestamp: new Date().toISOString(),
@@ -593,14 +590,14 @@ app.get('/api/admin/system-status', (_req: Request, res: Response) => {
   });
 });
 
-// Production static assets & Vite Dev server middleware
+// Serve static frontend assets from dist folder in production
+const distPath = path.resolve(__dirname, 'dist');
+
+// If in development and dist doesn't exist yet, try to mount Vite middleware
 const isProduction = process.env.NODE_ENV === 'production';
-const distPath = fs.existsSync(path.resolve(__dirname, 'dist'))
-  ? path.resolve(__dirname, 'dist')
-  : path.resolve(process.cwd(), 'dist');
 
 async function startServer() {
-  if (!isProduction) {
+  if (!isProduction && !fs.existsSync(distPath)) {
     try {
       const { createServer: createViteServer } = await import('vite');
       const vite = await createViteServer({
@@ -610,24 +607,23 @@ async function startServer() {
       });
       app.use(vite.middlewares);
     } catch (err) {
-      console.warn('Vite dev server middleware initialization warning, falling back to static files:', err);
-      if (fs.existsSync(distPath)) {
-        app.use(express.static(distPath));
-        app.get('*', (_req, res) => {
-          res.sendFile(path.join(distPath, 'index.html'));
-        });
-      }
+      console.warn('Vite dev server middleware initialization notice:', err.message);
     }
-  } else {
-    // Serve static files in production (dist folder)
-    app.use(express.static(distPath));
-    app.get('*', (_req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
-    });
   }
 
+  // Static files & SPA Routing Fallback
+  app.use(express.static(distPath));
+  app.get('*', (_req, res) => {
+    const indexPath = path.join(distPath, 'index.html');
+    if (fs.existsSync(indexPath)) {
+      res.sendFile(indexPath);
+    } else {
+      res.send('WisataBromo.co server is running. Please run npm run build to generate the frontend.');
+    }
+  });
+
   app.listen(PORT, () => {
-    console.log(`🚀 Server WisataBromo.co running on http://localhost:${PORT} (${isProduction ? 'production' : 'development'})`);
+    console.log(`🚀 WisataBromo.co Production Server running on port ${PORT}`);
   });
 }
 
