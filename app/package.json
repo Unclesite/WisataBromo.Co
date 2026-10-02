@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "tsx server.ts",
     "build": "vite build",
+    "build:hostinger": "node scripts/build-hostinger.js",
     "start": "node server.js",
     "preview": "node server.js",
     "lint": "tsc --noEmit"

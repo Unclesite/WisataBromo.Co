@@ -590,14 +590,25 @@ app.get('/api/admin/system-status', (_req, res) => {
   });
 });
 
-// Serve static frontend assets from dist folder in production
-const distPath = path.resolve(__dirname, 'dist');
+// Multi-directory candidate detection for Hostinger deployment (dist, public, app/dist, or public_html)
+const candidateDirs = [
+  path.resolve(__dirname, 'dist'),
+  path.resolve(__dirname, 'public'),
+  path.resolve(__dirname, 'app/dist'),
+  path.resolve(__dirname, 'app/public'),
+  path.resolve(__dirname, '../public_html'),
+  path.resolve(__dirname, 'public_html'),
+  path.resolve(process.cwd(), 'dist'),
+  path.resolve(process.cwd(), 'public')
+];
+
+let staticPath = candidateDirs.find(dir => fs.existsSync(path.join(dir, 'index.html'))) || path.resolve(__dirname, 'dist');
 
 // If in development and dist doesn't exist yet, try to mount Vite middleware
 const isProduction = process.env.NODE_ENV === 'production';
 
 async function startServer() {
-  if (!isProduction && !fs.existsSync(distPath)) {
+  if (!isProduction && !fs.existsSync(path.join(staticPath, 'index.html'))) {
     try {
       const { createServer: createViteServer } = await import('vite');
       const vite = await createViteServer({
@@ -612,14 +623,24 @@ async function startServer() {
   }
 
   // Static files & SPA Routing Fallback
-  app.use(express.static(distPath));
+  app.use(express.static(staticPath));
+  
+  // Secondary static fallback to public folder if it exists separately
+  const publicDir = path.resolve(__dirname, 'public');
+  if (fs.existsSync(publicDir) && publicDir !== staticPath) {
+    app.use(express.static(publicDir));
+  }
+
   app.get('*', (_req, res) => {
-    const indexPath = path.join(distPath, 'index.html');
-    if (fs.existsSync(indexPath)) {
-      res.sendFile(indexPath);
-    } else {
-      res.send('WisataBromo.co server is running. Please run npm run build to generate the frontend.');
+    // Dynamic re-evaluation of index.html path
+    const activeIndex = [staticPath, ...candidateDirs]
+      .map(dir => path.join(dir, 'index.html'))
+      .find(file => fs.existsSync(file));
+
+    if (activeIndex) {
+      return res.sendFile(activeIndex);
     }
+    return res.status(200).send('WisataBromo.co server is running. Frontend build not detected yet. Please run npm run build or npm run build:hostinger.');
   });
 
   app.listen(PORT, () => {

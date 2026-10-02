@@ -593,14 +593,24 @@ app.get('/api/admin/system-status', (_req: Request, res: Response) => {
   });
 });
 
-// Production static assets & Vite Dev server middleware
+// Multi-directory candidate detection for Hostinger deployment (dist, public, app/dist, or public_html)
+const candidateDirs = [
+  path.resolve(__dirname, 'dist'),
+  path.resolve(__dirname, 'public'),
+  path.resolve(__dirname, '../dist'),
+  path.resolve(__dirname, '../public'),
+  path.resolve(__dirname, '../public_html'),
+  path.resolve(__dirname, 'public_html'),
+  path.resolve(process.cwd(), 'dist'),
+  path.resolve(process.cwd(), 'public')
+];
+
+let staticPath = candidateDirs.find(dir => fs.existsSync(path.join(dir, 'index.html'))) || path.resolve(__dirname, 'dist');
+
 const isProduction = process.env.NODE_ENV === 'production';
-const distPath = fs.existsSync(path.resolve(__dirname, 'dist'))
-  ? path.resolve(__dirname, 'dist')
-  : path.resolve(process.cwd(), 'dist');
 
 async function startServer() {
-  if (!isProduction) {
+  if (!isProduction && !fs.existsSync(path.join(staticPath, 'index.html'))) {
     try {
       const { createServer: createViteServer } = await import('vite');
       const vite = await createViteServer({
@@ -611,20 +621,28 @@ async function startServer() {
       app.use(vite.middlewares);
     } catch (err) {
       console.warn('Vite dev server middleware initialization warning, falling back to static files:', err);
-      if (fs.existsSync(distPath)) {
-        app.use(express.static(distPath));
-        app.get('*', (_req, res) => {
-          res.sendFile(path.join(distPath, 'index.html'));
-        });
-      }
     }
-  } else {
-    // Serve static files in production (dist folder)
-    app.use(express.static(distPath));
-    app.get('*', (_req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
-    });
   }
+
+  // Static files & SPA Routing Fallback
+  app.use(express.static(staticPath));
+  
+  // Secondary static fallback to public folder if it exists separately
+  const publicDir = path.resolve(__dirname, 'public');
+  if (fs.existsSync(publicDir) && publicDir !== staticPath) {
+    app.use(express.static(publicDir));
+  }
+
+  app.get('*', (_req, res) => {
+    const activeIndex = [staticPath, ...candidateDirs]
+      .map(dir => path.join(dir, 'index.html'))
+      .find(file => fs.existsSync(file));
+
+    if (activeIndex) {
+      return res.sendFile(activeIndex);
+    }
+    return res.status(200).send('WisataBromo.co server is running. Frontend build not detected yet. Please run npm run build or npm run build:hostinger.');
+  });
 
   app.listen(PORT, () => {
     console.log(`🚀 Server WisataBromo.co running on http://localhost:${PORT} (${isProduction ? 'production' : 'development'})`);

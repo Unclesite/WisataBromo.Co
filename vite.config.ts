@@ -81,7 +81,7 @@ export default defineConfig(() => {
       },
     },
     build: {
-      outDir: 'dist',
+      outDir: process.env.BUILD_OUT_DIR || 'dist',
       assetsDir: 'assets',
       sourcemap: false,
       chunkSizeWarningLimit: 2000,
