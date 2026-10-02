@@ -132,12 +132,16 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
           {/* Brand Logo & Header */}
           <div className="p-6 border-b border-white/10 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center font-black text-white shadow-inner">
-                WB
+              <div className="w-10 h-10 rounded-xl bg-white/10 p-1.5 flex items-center justify-center border border-white/20 shadow-inner">
+                <img
+                  src="/wisatabromo-mountain.svg"
+                  alt="WisataBromo"
+                  className="w-full h-full object-contain brightness-0 invert"
+                />
               </div>
               <div>
                 <div className="font-extrabold text-base tracking-tight leading-none text-white">
-                  WISATABROMO
+                  WISATABROMO<span className="text-[#60a5fa]">.CO</span>
                 </div>
                 <div className="text-[10px] text-blue-200/80 font-medium tracking-wide mt-1">
                   ADMINISTRATOR PANEL

@@ -174,11 +174,11 @@ export const generateBookingInvoicePDF = (
   doc.setFillColor(234, 242, 255);
   doc.roundedRect(15, y, 180, 25, 2, 2, 'F');
 
-  // Row 1: TOTAL TAGIHAN
+  // Row 1: TOTAL
   doc.setTextColor(16, 42, 86);
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(9);
-  doc.text('TOTAL TAGIHAN:', 20, y + 6);
+  doc.text('TOTAL:', 20, y + 6);
   doc.text(formatRupiah(totalPrice), 190, y + 6, { align: 'right' });
 
   // Divider 1
@@ -227,7 +227,7 @@ export const generateBookingInvoicePDF = (
   doc.setTextColor(51, 65, 85);
 
   const terms = [
-    '1. DP dibayar saat pendaftaran.',
+    '1. DP di bayar saat pendaftaran.',
     '2. Apabila terjadi pembatalan dari peserta maka DP dinyatakan hangus, Apabila terjadi pembatalan dari wisatabromo.co karena cuaca atau bencana alam atau kondisi lain dalam bentuk apapun maka DP di kembalikan 100%.',
     '3. Ketentuan Sisa Pembayaran: Untuk keberangkatan Start Surabaya wajib dilunasi maksimal H-1 sebelum keberangkatan. Untuk Start Malang dan Basecamp Jeep (Tosari, Sukapura, Gubugklakah) pelunasan dapat dilakukan pada hari H saat penjemputan (khusus di luar periode High Season), sedangkan pada periode High Season wajib lunas maksimal H-2 sebelum keberangkatan.',
     '4. Invoice ini adalah bukti pemesanan resmi yang dikonfirmasi oleh sistem WisataBromo.co.',
@@ -240,22 +240,29 @@ export const generateBookingInvoicePDF = (
     y += lines.length * 3.6 + 1;
   });
 
-  // 3. Customer Support Signature Bar (Placed below terms with separation line to prevent overlap)
-  y += 3;
+  // TTD / Customer Support ditaruh sepenuhnya di bagian bawah Syarat & Ketentuan
+  y += 6;
   doc.setDrawColor(226, 232, 240);
-  doc.setLineWidth(0.2);
+  doc.setLineWidth(0.3);
   doc.line(15, y, 195, y);
+  y += 5;
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8);
+  doc.setTextColor(100, 116, 139);
+  doc.text('Hormat Kami,', 190, y, { align: 'right' });
   y += 4.5;
 
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(16, 42, 86);
-  doc.setFontSize(8.5);
-  doc.text('WisataBromo.co Customer Support', 195, y, { align: 'right' });
+  doc.setFontSize(9);
+  doc.text('WisataBromo.co Customer Support', 190, y, { align: 'right' });
+  y += 4;
 
   doc.setFont('helvetica', 'normal');
-  doc.setTextColor(100, 116, 139);
+  doc.setTextColor(71, 85, 105);
   doc.setFontSize(7.5);
-  doc.text('WhatsApp: +62 812 2229 0318 · Email: cs@wisatabromo.co', 195, y + 4.2, { align: 'right' });
+  doc.text('WhatsApp: +62 812 2229 0318 · Email: cs@wisatabromo.co', 190, y, { align: 'right' });
 
   // Save the PDF
   doc.save(`Invoice_${bookingCode}_WisataBromo.pdf`);

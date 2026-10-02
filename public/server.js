@@ -687,27 +687,52 @@ app.get('/api/admin/system-status', (_req, res) => {
   });
 });
 
-// Static files & SPA Routing for Hostinger (Works when Root Directory is public)
-const publicDir = fs.existsSync(path.join(__dirname, 'index.html'))
-  ? __dirname
-  : (fs.existsSync(path.join(__dirname, 'public', 'index.html')) ? path.join(__dirname, 'public') : __dirname);
+// Static files & SPA Routing for Hostinger Preset Express
+const publicPath = path.join(__dirname, 'public');
+const distPath = path.join(__dirname, 'dist');
 
-app.use(express.static(publicDir));
-if (fs.existsSync(path.join(publicDir, 'assets'))) {
-  app.use('/assets', express.static(path.join(publicDir, 'assets')));
+// If in development and public/dist doesn't exist yet, try to mount Vite middleware
+const isProduction = process.env.NODE_ENV === 'production';
+
+async function startServer() {
+  if (!isProduction) {
+    try {
+      const { createServer: createViteServer } = await import('vite');
+      const vite = await createViteServer({
+        server: { middlewareMode: true },
+        appType: 'spa',
+        root: process.cwd(),
+      });
+      app.use(vite.middlewares);
+    } catch (err) {
+      console.warn('Vite dev server middleware initialization notice:', err.message);
+    }
+  }
+
+  // Read static files from dist first (freshest production build), then public
+  if (fs.existsSync(distPath)) {
+    app.use(express.static(distPath));
+  }
+  app.use(express.static(publicPath));
+
+  // Fallback routing app.get('*', ...) to dist/index.html or public/index.html
+  app.get('*', (_req, res) => {
+    const distIndex = path.join(distPath, 'index.html');
+    if (fs.existsSync(distIndex)) {
+      return res.sendFile(distIndex);
+    }
+    const publicIndex = path.join(publicPath, 'index.html');
+    if (fs.existsSync(publicIndex)) {
+      return res.sendFile(publicIndex);
+    }
+    return res.status(200).send('WisataBromo.co server is running. Frontend build not detected yet. Please run npm run build.');
+  });
+
+  app.listen(PORT, () => {
+    console.log(`🚀 WisataBromo.co Production Server running on port ${PORT}`);
+  });
 }
 
-// Fallback routing app.get('*', ...) to index.html
-app.get('*', (_req, res) => {
-  const indexFile = path.join(publicDir, 'index.html');
-  if (fs.existsSync(indexFile)) {
-    return res.sendFile(indexFile);
-  }
-  return res.status(200).send('WisataBromo.co server is running.');
-});
-
-app.listen(PORT, () => {
-  console.log(`🚀 WisataBromo.co Server (public root) running on port ${PORT}`);
-});
+startServer();
 
 export default app;

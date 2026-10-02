@@ -1,56 +1,40 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <defs>
     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0d1f3c" />
+      <stop offset="0%" stop-color="#0a1931" />
       <stop offset="50%" stop-color="#102a56" />
       <stop offset="100%" stop-color="#1e3a8a" />
+    </linearGradient>
+    <linearGradient id="mtnGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60a5fa" />
+      <stop offset="50%" stop-color="#3d72fe" />
+      <stop offset="100%" stop-color="#2563eb" />
     </linearGradient>
     <linearGradient id="sunGrad" x1="0%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" stop-color="#ffe066" />
       <stop offset="100%" stop-color="#ffc928" />
     </linearGradient>
-    <linearGradient id="mtnGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#3d72fe" />
-      <stop offset="100%" stop-color="#2563eb" />
-    </linearGradient>
-    <linearGradient id="mtnGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#60a5fa" />
-      <stop offset="100%" stop-color="#3b82f6" />
-    </linearGradient>
     <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="12" result="blur" />
+      <feGaussianBlur stdDeviation="16" result="blur" />
       <feComposite in="SourceGraphic" in2="blur" operator="over" />
     </filter>
   </defs>
 
-  <!-- Background Rounded Canvas -->
+  <!-- Rounded App Icon Background -->
   <rect width="512" height="512" rx="112" fill="url(#bgGrad)" />
-  <rect width="504" height="504" x="4" y="4" rx="108" fill="none" stroke="#3d72fe" stroke-width="6" stroke-opacity="0.4" />
+  <rect width="504" height="504" x="4" y="4" rx="108" fill="none" stroke="#3d72fe" stroke-width="4" stroke-opacity="0.3" />
 
   <!-- Golden Sunrise Sun -->
-  <circle cx="256" cy="200" r="88" fill="url(#sunGrad)" filter="url(#glow)" />
-  <circle cx="256" cy="200" r="76" fill="#ffc928" />
+  <circle cx="340" cy="180" r="54" fill="url(#sunGrad)" filter="url(#glow)" />
+  <circle cx="340" cy="180" r="46" fill="#ffc928" />
 
-  <!-- Stars / Sparkles -->
-  <circle cx="120" cy="120" r="4" fill="#ffffff" opacity="0.8" />
-  <circle cx="390" cy="110" r="5" fill="#ffffff" opacity="0.9" />
-  <circle cx="360" cy="160" r="3" fill="#ffe066" opacity="0.8" />
+  <!-- Mountain Silhouette based on user's logo -->
+  <g transform="translate(16, 120) scale(0.48)">
+    <path d="M 20 180 C 55 138, 105 78, 185 66 C 255 56, 300 128, 328 210 C 340 188, 390 98, 445 46 C 505 -4, 570 -4, 625 50 C 685 106, 735 220, 780 178 C 805 155, 825 116, 860 122 C 905 130, 945 190, 992 242 C 974 244, 952 226, 928 200 C 898 168, 878 150, 854 150 C 826 150, 806 185, 784 220 C 748 272, 705 288, 665 254 C 625 220, 595 144, 555 92 C 505 30, 455 30, 405 82 C 348 145, 305 258, 255 274 C 210 285, 175 232, 145 190 C 110 144, 75 122, 40 154 C 30 165, 24 176, 20 180 Z" fill="url(#mtnGrad)" />
+  </g>
 
-  <!-- Mountain Peak 1 (Batok / Bromo Ridge Back) -->
-  <polygon points="120,380 256,190 392,380" fill="url(#mtnGrad1)" opacity="0.9" />
-  <!-- Snow / Light highlight on peak -->
-  <polygon points="256,190 286,234 256,220 226,234" fill="#ffffff" opacity="0.85" />
-
-  <!-- Mountain Peak 2 (Foreground Volcano) -->
-  <polygon points="40,420 180,240 320,420" fill="url(#mtnGrad2)" />
-  <polygon points="180,240 206,276 180,266 154,276" fill="#ffffff" opacity="0.9" />
-
-  <!-- Caldera Sand Dunes / Waves -->
-  <path d="M0,380 Q140,340 260,370 T512,360 L512,512 L0,512 Z" fill="#0b172a" opacity="0.95" />
-  <path d="M0,410 Q160,380 300,410 T512,400 L512,512 L0,512 Z" fill="#070e1b" />
-
-  <!-- Branding Text -->
-  <text x="256" y="470" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-weight="900" font-size="34" fill="#ffffff" text-anchor="middle" letter-spacing="1">
+  <!-- Brand Wordmark -->
+  <text x="256" y="445" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-weight="900" font-size="38" fill="#ffffff" text-anchor="middle" letter-spacing="0.5">
     WISATABROMO<tspan fill="#3d72fe">.CO</tspan>
   </text>
 </svg>

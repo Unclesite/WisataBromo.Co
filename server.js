@@ -695,7 +695,7 @@ const distPath = path.join(__dirname, 'dist');
 const isProduction = process.env.NODE_ENV === 'production';
 
 async function startServer() {
-  if (!isProduction && !fs.existsSync(path.join(publicPath, 'index.html')) && !fs.existsSync(path.join(distPath, 'index.html'))) {
+  if (!isProduction) {
     try {
       const { createServer: createViteServer } = await import('vite');
       const vite = await createViteServer({
@@ -709,23 +709,21 @@ async function startServer() {
     }
   }
 
-  // Read static files directly from public directory (Hostinger standard)
-  app.use(express.static(path.join(__dirname, 'public')));
-  
-  // Secondary fallback for dist if present
+  // Read static files from dist first (freshest production build), then public
   if (fs.existsSync(distPath)) {
     app.use(express.static(distPath));
   }
+  app.use(express.static(publicPath));
 
-  // Fallback routing app.get('*', ...) to public/index.html
+  // Fallback routing app.get('*', ...) to dist/index.html or public/index.html
   app.get('*', (_req, res) => {
-    const publicIndex = path.join(publicPath, 'index.html');
-    if (fs.existsSync(publicIndex)) {
-      return res.sendFile(publicIndex);
-    }
     const distIndex = path.join(distPath, 'index.html');
     if (fs.existsSync(distIndex)) {
       return res.sendFile(distIndex);
+    }
+    const publicIndex = path.join(publicPath, 'index.html');
+    if (fs.existsSync(publicIndex)) {
+      return res.sendFile(publicIndex);
     }
     return res.status(200).send('WisataBromo.co server is running. Frontend build not detected yet. Please run npm run build.');
   });
