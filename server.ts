@@ -56,104 +56,14 @@ const escapeHtml = (unsafe: string | number | undefined | null) => {
 };
 
 /**
-  * Health Check Endpoint
-  */
+ * Health Check Endpoint
+ */
 app.get('/api/health', (_req: Request, res: Response) => {
   res.status(200).json({
     status: 'ok',
     service: 'WisataBromo.co Backend',
     timestamp: new Date().toISOString()
   });
-});
-
-/**
- * Endpoint: POST /api/auth/admin-login
- * Direct server-side authentication for WisataBromo.co Admin
- */
-app.post('/api/auth/admin-login', (req: Request, res: Response) => {
-  const { email, password } = req.body || {};
-  const cleanEmail = String(email || '').toLowerCase().trim();
-  const cleanPass = String(password || '').trim();
-
-  const validMasterKeys = [
-    'BromoAdmin2026!',
-    'wisatabromo2026',
-    'AdminBromo2026',
-    'wisatabromo',
-    'admin123456',
-    process.env.ADMIN_PASSWORD
-  ].filter(Boolean);
-
-  if (cleanEmail === 'wisatabromo.co@gmail.com' && validMasterKeys.includes(cleanPass)) {
-    return res.status(200).json({
-      success: true,
-      user: {
-        uid: 'master_super_admin_wisatabromo',
-        email: 'wisatabromo.co@gmail.com',
-        displayName: 'Super Administrator WisataBromo.co',
-        photoURL: null,
-        role: 'super_admin',
-        lastLogin: new Date().toISOString()
-      },
-      token: 'admin_session_auth_' + Date.now()
-    });
-  }
-
-  return res.status(401).json({
-    success: false,
-    error: 'Email atau kata sandi tidak valid. Pastikan email wisatabromo.co@gmail.com dan sandi benar.'
-  });
-});
-
-/**
- * Endpoint: POST /api/auth/verify-google
- * Verifies Google Sign-In tokens or direct authorized admin Google account
- */
-app.post('/api/auth/verify-google', (req: Request, res: Response) => {
-  try {
-    const { credential, email, user } = req.body || {};
-    let targetEmail = String(email || '').toLowerCase().trim();
-
-    if (credential) {
-      const parts = String(credential).split('.');
-      if (parts.length === 3) {
-        const payloadJson = Buffer.from(parts[1], 'base64').toString('utf8');
-        const payload = JSON.parse(payloadJson);
-        if (payload.email) {
-          targetEmail = String(payload.email).toLowerCase().trim();
-        }
-      }
-    }
-
-    if (user && user.email) {
-      targetEmail = String(user.email).toLowerCase().trim();
-    }
-
-    if (targetEmail === 'wisatabromo.co@gmail.com') {
-      return res.status(200).json({
-        success: true,
-        user: {
-          uid: 'google_super_admin_wisatabromo',
-          email: 'wisatabromo.co@gmail.com',
-          displayName: user?.displayName || 'Administrator (Google)',
-          photoURL: user?.photoURL || null,
-          role: 'super_admin',
-          lastLogin: new Date().toISOString()
-        },
-        token: 'google_verified_auth_' + Date.now()
-      });
-    }
-
-    return res.status(403).json({
-      success: false,
-      error: `Akses ditolak. Email (${targetEmail || 'unknown'}) bukan akun administrator resmi.`
-    });
-  } catch (err: any) {
-    return res.status(400).json({
-      success: false,
-      error: 'Gagal memproses autentikasi Google: ' + err.message
-    });
-  }
 });
 
 /**
@@ -247,13 +157,6 @@ const handleBookingEmail = async (req: Request, res: Response) => {
           filename: paymentProofFilename,
           content: fileBuffer,
           contentType: mimeType,
-          contentDisposition: 'attachment'
-        });
-
-        console.log("PAYMENT PROOF ATTACHMENT CREATED", {
-          filename: paymentProofFilename,
-          contentType: mimeType,
-          sizeBytes: fileBuffer.length,
           contentDisposition: 'attachment'
         });
       }
@@ -364,7 +267,7 @@ const handleBookingEmail = async (req: Request, res: Response) => {
                         </div>
                       ` : ''}
                       <p style="margin: 8px 0 0 0; font-size: 12px; color: #64748b;">
-                        File bukti transfer telah dilampirkan sebagai attachment resmi email ini dan dapat langsung diunduh / disimpan ke Google Drive oleh Admin.
+                        File bukti transfer telah dilampirkan sebagai attachment resmi email ini.
                       </p>
                     ` : `
                       <div style="color: #dc2626; font-size: 13px; font-weight: 600;">
@@ -471,12 +374,10 @@ const handleBookingEmail = async (req: Request, res: Response) => {
                 </div>
               </div>
 
-              <div style="background-color: #fefce8; border: 1px solid #fef08a; border-radius: 8px; padding: 14px; margin-bottom: 24px; font-size: 13px; color: #854d0e; line-height: 1.6;">
-                📌 <strong>Syarat &amp; Ketentuan Pembayaran:</strong><br>
-                1. DP dibayar saat pendaftaran.<br>
-                2. Apabila terjadi pembatalan dari peserta maka DP dinyatakan hangus, Apabila terjadi pembatalan dari wisatabromo.co karena cuaca atau bencana alam atau kondisi lain dalam bentuk apapun maka DP dikembalikan 100%.<br>
-                3. Ketentuan Sisa Pembayaran: Untuk keberangkatan Start Surabaya wajib dilunasi maksimal H-1 sebelum keberangkatan. Untuk Start Malang dan Basecamp Jeep (Tosari, Sukapura, Gubugklakah) pelunasan dapat dilakukan pada hari H saat penjemputan (khusus di luar periode High Season), sedangkan pada periode High Season wajib lunas maksimal H-2 sebelum keberangkatan.<br>
-                4. Driver dan tim operasional kami akan menghubungi Anda via WhatsApp H-1 sebelum keberangkatan untuk konfirmasi jam penjemputan &amp; plat nomor Jeep.
+              <div style="background-color: #fefce8; border: 1px solid #fef08a; border-radius: 8px; padding: 14px; margin-bottom: 24px; font-size: 13px; color: #854d0e; line-height: 1.5;">
+                📌 <strong>Langkah Selanjutnya:</strong><br>
+                1. Mohon transfer nominal DP sesuai yang tertera ke rekening resmi di atas.<br>
+                2. Driver dan tim operasional kami akan menghubungi Anda via WhatsApp H-1 sebelum keberangkatan untuk konfirmasi jam penjemputan & plat nomor Jeep.
               </div>
 
               <div style="text-align: center; margin-top: 20px;">
@@ -522,13 +423,6 @@ const handleBookingEmail = async (req: Request, res: Response) => {
     const adminValue = adminSuccess ? (adminResult as PromiseFulfilledResult<any>).value : null;
     const customerValue = customerSuccess ? (customerResult as PromiseFulfilledResult<any>).value : null;
 
-    if (!adminSuccess) {
-      console.error('Gagal kirim email admin:', (adminResult as PromiseRejectedResult).reason);
-    }
-    if (!customerSuccess) {
-      console.error('Gagal kirim email customer:', (customerResult as PromiseRejectedResult).reason);
-    }
-
     // Log to Sent Emails History
     sentEmailsLog.unshift({
       id: `sent-admin-${Date.now()}`,
@@ -558,7 +452,6 @@ const handleBookingEmail = async (req: Request, res: Response) => {
       previewHtml: customerHtml
     });
 
-    // Keep log to max 100 items
     if (sentEmailsLog.length > 100) {
       sentEmailsLog.length = 100;
     }
@@ -572,13 +465,6 @@ const handleBookingEmail = async (req: Request, res: Response) => {
           recipient: adminEmail,
           sent: adminSuccess,
           messageId: adminValue?.messageId,
-          response: adminValue?.response,
-          attachments: adminAttachments.map(a => ({
-            filename: a.filename,
-            contentType: a.contentType,
-            sizeBytes: a.content.length,
-            contentDisposition: a.contentDisposition
-          })),
           error: !adminSuccess ? String((adminResult as PromiseRejectedResult).reason?.message || 'Error') : undefined
         },
         customerEmail: {
@@ -604,7 +490,6 @@ app.post('/api/send-booking-email', handleBookingEmail);
 
 /**
  * Endpoint: GET /api/admin/emails/sent
- * Retrieves sent email history for Admin Panel
  */
 app.get('/api/admin/emails/sent', (_req: Request, res: Response) => {
   return res.status(200).json({
@@ -615,74 +500,7 @@ app.get('/api/admin/emails/sent', (_req: Request, res: Response) => {
 });
 
 /**
- * Endpoint: GET /api/admin/emails/inbox
- * Retrieves inbox emails from Hostinger Mailbox
- */
-app.get('/api/admin/emails/inbox', async (_req: Request, res: Response) => {
-  try {
-    const imapHost = process.env.IMAP_HOST || 'imap.hostinger.com';
-    const mailboxUser = process.env.SMTP_USER || 'cs@wisatabromo.co';
-    const mailboxPass = process.env.SMTP_PASS || '';
-
-    // Sample/simulated inbox messages for inquiries
-    const sampleInbox = [
-      {
-        id: 'msg-inbox-01',
-        from: 'achmad.jainudin@example.com',
-        fromName: 'Achmad Jainudin',
-        to: mailboxUser,
-        subject: 'Tanya Ketersediaan Open Trip Bromo 25 Oktober 2026',
-        date: new Date(Date.now() - 3600000 * 2).toISOString(),
-        preview: 'Halo admin WisataBromo.co, saya ingin menanyakan apakah untuk tanggal 25 Oktober 2026 kuota penjemputan Stasiun Malang masih tersedia?',
-        bodyText: 'Halo admin WisataBromo.co, saya ingin menanyakan apakah untuk tanggal 25 Oktober 2026 kuota penjemputan Stasiun Malang masih tersedia? Kami berencana berangkat 2 orang. Mohon info ketersediaan armada Jeep FJ40. Terima kasih.',
-        hasAttachments: false,
-        isRead: false
-      },
-      {
-        id: 'msg-inbox-02',
-        from: 'sarah.wijaya@gmail.com',
-        fromName: 'Sarah Wijaya',
-        to: mailboxUser,
-        subject: 'Konfirmasi Bukti Transfer DP Booking WB-261001-SARAH',
-        date: new Date(Date.now() - 3600000 * 14).toISOString(),
-        preview: 'Selamat siang kak, saya sudah transfer DP sebesar Rp 500.000 untuk paket Private Trip Bromo...',
-        bodyText: 'Selamat siang kak, saya sudah transfer DP sebesar Rp 500.000 untuk paket Private Trip Bromo via BCA. Mohon dicek dan dikonfirmasi kodenya WB-261001-SARAH. Terima kasih banyak tim WisataBromo!',
-        hasAttachments: true,
-        isRead: true
-      },
-      {
-        id: 'msg-inbox-03',
-        from: 'budi.santoso88@yahoo.com',
-        fromName: 'Budi Santoso',
-        to: mailboxUser,
-        subject: 'Permintaan Penjemputan di Bandara Juanda Surabaya',
-        date: new Date(Date.now() - 3600000 * 28).toISOString(),
-        preview: 'Selamat malam, rombongan kami mendarat di Terminal 1 Juanda jam 21.30. Apakah bisa langsung dijemput untuk Midnight Bromo?',
-        bodyText: 'Selamat malam, rombongan kami mendarat di Terminal 1 Juanda jam 21.30. Apakah bisa langsung dijemput untuk Midnight Bromo? Rombongan 6 orang dewasa. Mohon penawaran harga terbaiknya.',
-        hasAttachments: false,
-        isRead: true
-      }
-    ];
-
-    return res.status(200).json({
-      success: true,
-      mailbox: mailboxUser,
-      server: imapHost,
-      connected: !!mailboxPass,
-      data: sampleInbox
-    });
-  } catch (error: any) {
-    console.error('Error fetching inbox emails:', error);
-    return res.status(500).json({
-      success: false,
-      error: error.message || 'Gagal memuat inbox email'
-    });
-  }
-});
-
-/**
  * Endpoint: GET /api/admin/system-status
- * Health & Config check for Admin Panel
  */
 app.get('/api/admin/system-status', (_req: Request, res: Response) => {
   return res.status(200).json({
@@ -700,36 +518,51 @@ app.get('/api/admin/system-status', (_req: Request, res: Response) => {
   });
 });
 
-// Static files & SPA Routing for Hostinger Preset Express
+// Static files & SPA Routing
 const publicPath = path.join(__dirname, 'public');
 const distPath = path.join(__dirname, 'dist');
-
 const isProduction = process.env.NODE_ENV === 'production';
 
 async function startServer() {
+  let vite: any = null;
+
   if (!isProduction) {
     try {
       const { createServer: createViteServer } = await import('vite');
-      const vite = await createViteServer({
+      vite = await createViteServer({
         server: { middlewareMode: true },
         appType: 'spa',
         root: process.cwd(),
       });
       app.use(vite.middlewares);
     } catch (err) {
-      console.warn('Vite dev server middleware initialization warning, falling back to static files:', err);
+      console.warn('Vite dev server middleware initialization notice:', err);
+    }
+  } else {
+    app.use(express.static(publicPath));
+    if (fs.existsSync(distPath)) {
+      app.use(express.static(distPath));
     }
   }
 
-  // Serve static files from public folder (Hostinger Express standard)
-  app.use(express.static('public'));
-  app.use(express.static(publicPath));
-  if (fs.existsSync(distPath)) {
-    app.use(express.static(distPath));
-  }
+  // SPA fallback routing
+  app.get('*', async (req: Request, res: Response, next) => {
+    if (req.originalUrl.startsWith('/api')) {
+      return next();
+    }
 
-  // Fallback routing app.get('*', ...) to public/index.html (Hostinger standard) or dist/index.html
-  app.get('*', (_req: Request, res: Response) => {
+    if (!isProduction && vite) {
+      try {
+        const rawIndex = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf-8');
+        const transformedHtml = await vite.transformIndexHtml(req.originalUrl, rawIndex);
+        return res.status(200).set({ 'Content-Type': 'text/html' }).end(transformedHtml);
+      } catch (e: any) {
+        vite.ssrFixStacktrace(e);
+        console.error('Vite transform error:', e);
+        return res.status(500).end(e.message);
+      }
+    }
+
     const publicIndex = path.join(publicPath, 'index.html');
     if (fs.existsSync(publicIndex)) {
       return res.sendFile(publicIndex);
@@ -738,12 +571,14 @@ async function startServer() {
     if (fs.existsSync(distIndex)) {
       return res.sendFile(distIndex);
     }
-    return res.status(200).send('WisataBromo.co server is running. Frontend build not detected yet. Please run npm run build.');
+    return res.sendFile(path.join(__dirname, 'index.html'));
   });
 
   app.listen(PORT, () => {
-    console.log(`🚀 Server WisataBromo.co running on http://localhost:${PORT} (${isProduction ? 'production' : 'development'})`);
+    console.log(`🚀 WisataBromo.co Server running on port ${PORT} (${isProduction ? 'production' : 'development'})`);
   });
 }
 
 startServer();
+
+export default app;
