@@ -45,13 +45,21 @@ export const Navbar: React.FC<NavbarProps> = ({
     <header className="sticky top-0 z-40 w-full bg-white/98 backdrop-blur-md border-b border-slate-200/90 shadow-2xs">
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-18 gap-2 sm:gap-4 lg:gap-6">
-          {/* Brand Wordmark with guaranteed border divider and spacing */}
+          {/* Brand Wordmark & Official Mountain Logo */}
           <div className="flex items-center shrink-0 pr-3 sm:pr-4 lg:pr-6 border-r border-slate-200/80 mr-1 sm:mr-2 lg:mr-4">
             <a
               href="/"
-              className="text-lg sm:text-xl lg:text-2xl font-black tracking-tight text-[#111318] hover:text-[#3d72fe] transition-colors whitespace-nowrap"
+              className="flex items-center gap-2 sm:gap-2.5 group transition-transform active:scale-95"
+              aria-label="WisataBromo.co - Beranda"
             >
-              wisatabromo<span className="text-[#3d72fe]">.co</span>
+              <img
+                src="/wisatabromo-mountain.svg"
+                alt="Logo WisataBromo.co"
+                className="h-7 sm:h-8.5 w-auto object-contain transition-transform group-hover:scale-105"
+              />
+              <span className="text-lg sm:text-xl lg:text-2xl font-black tracking-tight text-[#111318] group-hover:text-[#3d72fe] transition-colors whitespace-nowrap">
+                wisatabromo<span className="text-[#3d72fe]">.co</span>
+              </span>
             </a>
           </div>
 

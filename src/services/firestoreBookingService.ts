@@ -14,7 +14,7 @@ import {
   orderBy,
   onSnapshot
 } from 'firebase/firestore';
-import firebaseConfig from '../../firebase-applet-config.json';
+import firebaseConfig from './firebaseConfig';
 import { triggerBookingEmailNotification } from './emailNotificationService';
 
 export const ADMIN_TARGET_EMAIL = 'wisatabromo.co@gmail.com';

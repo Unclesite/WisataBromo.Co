@@ -80,7 +80,10 @@ const handleBookingEmail = async (req, res) => {
       bookingCode: booking.bookingCode,
       customerName: booking.fullName,
       customerEmail: booking.email,
-      adminEmail: process.env.ADMIN_EMAIL || adminEmail
+      adminEmail: process.env.ADMIN_EMAIL || adminEmail,
+      smtpHost,
+      smtpPort,
+      smtpUser
     });
 
     // If SMTP_PASS is missing (e.g. initial dev environment), simulate and return clear message
@@ -594,27 +597,27 @@ app.get('/api/admin/system-status', (_req, res) => {
   });
 });
 
-// Static files & SPA Routing for Hostinger (Works when Root Directory is public)
-const publicDir = fs.existsSync(path.join(__dirname, 'index.html'))
-  ? __dirname
-  : (fs.existsSync(path.join(__dirname, 'public', 'index.html')) ? path.join(__dirname, 'public') : __dirname);
-
-app.use(express.static(publicDir));
-if (fs.existsSync(path.join(publicDir, 'assets'))) {
-  app.use('/assets', express.static(path.join(publicDir, 'assets')));
+// Static files handling for Hostinger (Root: public)
+app.use(express.static(__dirname));
+if (fs.existsSync(path.join(__dirname, 'dist'))) {
+  app.use(express.static(path.join(__dirname, 'dist')));
 }
 
 // Fallback routing app.get('*', ...) to index.html
-app.get('*', (_req, res) => {
-  const indexFile = path.join(publicDir, 'index.html');
-  if (fs.existsSync(indexFile)) {
-    return res.sendFile(indexFile);
+app.get('*', (req, res) => {
+  const primaryIndex = path.join(__dirname, 'index.html');
+  if (fs.existsSync(primaryIndex)) {
+    return res.sendFile(primaryIndex);
   }
-  return res.status(200).send('WisataBromo.co server is running.');
+  const distIndex = path.join(__dirname, 'dist', 'index.html');
+  if (fs.existsSync(distIndex)) {
+    return res.sendFile(distIndex);
+  }
+  res.sendFile(primaryIndex);
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 WisataBromo.co Server (public root) running on port ${PORT}`);
+  console.log(`🚀 WisataBromo.co Production Server (Hostinger Root) running on port ${PORT}`);
 });
 
 export default app;

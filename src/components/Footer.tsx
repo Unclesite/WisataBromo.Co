@@ -10,8 +10,15 @@ export const Footer: React.FC = () => {
           
           {/* Brand Info */}
           <div className="space-y-3.5">
-            <div className="text-xl font-black text-white">
-              wisatabromo<span className="text-[#ffc928]">.co</span>
+            <div className="flex items-center gap-2.5">
+              <img
+                src="/wisatabromo-mountain.svg"
+                alt="WisataBromo Logo"
+                className="h-7 w-auto brightness-0 invert drop-shadow-xs"
+              />
+              <span className="text-xl font-black text-white tracking-tight">
+                wisatabromo<span className="text-[#ffc928]">.co</span>
+              </span>
             </div>
             <p className="text-white/85 leading-relaxed text-xs">
               Portal resmi penyedia paket tour Gunung Bromo, Open Trip & Private Trip terpercaya dengan armada Jeep 4x4 berizin resmi Taman Nasional Bromo Tengger Semeru.

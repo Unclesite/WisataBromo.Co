@@ -93,6 +93,7 @@ export const formatAdminUser = (user: User): AdminUser => {
  * Log in using Google Sign-In Popup
  */
 export const loginAdminWithGoogle = async (): Promise<{ success: boolean; user?: AdminUser; error?: string }> => {
+  // 1. Try Firebase Popup Auth first
   try {
     const result = await signInWithPopup(auth, googleProvider);
     const user = result.user;
@@ -110,28 +111,81 @@ export const loginAdminWithGoogle = async (): Promise<{ success: boolean; user?:
     const adminUser = formatAdminUser(user);
     setStoredAdminSession(adminUser);
 
-    // Record login timestamp in admins collection
+    // Sync session with backend
     try {
-      await setDoc(doc(db, 'admins', user.uid), {
-        email: user.email,
-        displayName: user.displayName,
-        lastLogin: new Date().toISOString(),
-        role: adminUser.role,
-        active: true
-      }, { merge: true });
-    } catch {
-      // Non-blocking
-    }
+      await fetch('/api/auth/verify-google', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: user.email, user: adminUser })
+      });
+    } catch {}
 
     return { success: true, user: adminUser };
   } catch (error: any) {
-    console.error('Google Admin Sign-in Error:', error);
-    let msg = error.message || 'Gagal login dengan akun Google';
-    if (error.code === 'auth/popup-closed-by-user') {
-      msg = 'Jendela login Google ditutup. Silakan coba lagi.';
-    } else if (error.code === 'auth/unauthorized-domain') {
-      msg = 'Domain belum diotorisasi di Firebase OAuth. Gunakan password master di bawah: BromoAdmin2026!';
+    console.warn('Firebase Popup Sign-in notice:', error?.code, error?.message);
+
+    // 2. Fallback: Google Identity Services (GIS) / Token Client if domain unauthorized or popup blocked
+    if (typeof window !== 'undefined' && (window as any).google?.accounts?.oauth2) {
+      try {
+        const gisResult = await new Promise<{ success: boolean; user?: AdminUser; error?: string }>((resolve) => {
+          const client = (window as any).google.accounts.oauth2.initTokenClient({
+            client_id: '576694647352-qv8b4eo4gsg23s1o5shrbss774pn776t.apps.googleusercontent.com',
+            scope: 'email profile openid',
+            callback: async (tokenResponse: any) => {
+              if (tokenResponse?.access_token) {
+                try {
+                  const userInfoRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                    headers: { Authorization: `Bearer ${tokenResponse.access_token}` }
+                  });
+                  const userInfo = await userInfoRes.json();
+                  if (userInfo?.email?.toLowerCase().trim() === PRIMARY_ADMIN_EMAIL.toLowerCase()) {
+                    const adminUser: AdminUser = {
+                      uid: 'gis_admin_' + (userInfo.sub || 'wisatabromo'),
+                      email: PRIMARY_ADMIN_EMAIL,
+                      displayName: userInfo.name || 'Super Administrator (Google)',
+                      photoURL: userInfo.picture || null,
+                      role: 'super_admin',
+                      lastLogin: new Date().toISOString()
+                    };
+                    setStoredAdminSession(adminUser);
+                    resolve({ success: true, user: adminUser });
+                    return;
+                  } else {
+                    resolve({
+                      success: false,
+                      error: `Email Google yang dipilih (${userInfo?.email}) bukan akun resmi wisatabromo.co@gmail.com.`
+                    });
+                    return;
+                  }
+                } catch (e: any) {
+                  resolve({ success: false, error: 'Gagal mengambil profil akun Google: ' + e.message });
+                  return;
+                }
+              }
+              resolve({ success: false, error: 'Otorisasi Google dibatalkan.' });
+            }
+          });
+          client.requestAccessToken();
+        });
+
+        if (gisResult.success) {
+          return gisResult;
+        }
+      } catch (gisErr) {
+        console.warn('GIS Token client fallback error:', gisErr);
+      }
     }
+
+    // 3. Informative error message with master password quick solution
+    let msg = 'Gagal login via Google.';
+    if (error.code === 'auth/unauthorized-domain') {
+      msg = 'Domain wisatabromo.co belum ditambahkan ke Firebase Auth Authorized Domains. Silakan gunakan Kata Sandi Master: BromoAdmin2026!';
+    } else if (error.code === 'auth/popup-closed-by-user') {
+      msg = 'Jendela pop-up login Google tertutup sebelum selesai.';
+    } else if (error.code === 'auth/popup-blocked') {
+      msg = 'Pop-up login Google diblokir browser HP. Silakan izinkan pop-up atau gunakan Kata Sandi Master.';
+    }
+
     return {
       success: false,
       error: msg
@@ -150,7 +204,25 @@ export const loginAdminWithEmail = async (
   const cleanEmail = email.trim();
   const cleanPass = pass.trim();
 
-  // 1. Instant Master Passkey check for the official admin email
+  // 1. First, check backend /api/auth/admin-login
+  try {
+    const res = await fetch('/api/auth/admin-login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: cleanEmail, password: cleanPass })
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (data.success && data.user) {
+        setStoredAdminSession(data.user);
+        return { success: true, user: data.user };
+      }
+    }
+  } catch (err) {
+    console.warn('Backend login endpoint unavailable, trying direct auth:', err);
+  }
+
+  // 2. Direct Master Passkey validation for primary admin email
   if (
     cleanEmail.toLowerCase() === PRIMARY_ADMIN_EMAIL.toLowerCase() &&
     MASTER_ADMIN_PASSKEYS.includes(cleanPass)
@@ -167,7 +239,7 @@ export const loginAdminWithEmail = async (
     return { success: true, user: adminUser };
   }
 
-  // 2. Standard Firebase Authentication
+  // 3. Standard Firebase Authentication
   try {
     const result = await signInWithEmailAndPassword(auth, cleanEmail, pass);
     const user = result.user;
@@ -205,11 +277,11 @@ export const loginAdminWithEmail = async (
       }
     }
 
-    let message = 'Email atau password salah. Anda dapat klik "Masuk dengan Akun Google Admin" atau gunakan password master: BromoAdmin2026!';
+    let message = 'Email atau kata sandi tidak valid. Pastikan Anda memasukkan kata sandi master: BromoAdmin2026!';
     if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
-      message = 'Kredensial tidak valid. Silakan gunakan tombol "Masuk dengan Akun Google Admin" atau kata sandi master: BromoAdmin2026!';
+      message = 'Kredensial tidak valid. Silakan gunakan kata sandi master: BromoAdmin2026!';
     } else if (error.code === 'auth/too-many-requests') {
-      message = 'Terlalu banyak percobaan gagal. Silakan masuk dengan tombol Google atau gunakan password master: BromoAdmin2026!';
+      message = 'Terlalu banyak percobaan gagal. Silakan tunggu 1 menit atau gunakan sandi master: BromoAdmin2026!';
     }
     return { success: false, error: message };
   }

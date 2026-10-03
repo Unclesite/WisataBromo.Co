@@ -11,7 +11,7 @@ import {
   Lock,
   ExternalLink
 } from 'lucide-react';
-import firebaseConfig from '../../../firebase-applet-config.json';
+import firebaseConfig from '../../services/firebaseConfig';
 
 export const AdminSettingsTab: React.FC = () => {
   const [systemStatus, setSystemStatus] = useState<any>(null);
