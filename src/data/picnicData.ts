@@ -1,6 +1,4 @@
 import { PicnicPackage, PicnicLocation, PicnicAddon } from '../types/picnic';
-import imgPicnicPaket1 from '../assets/images/bromo_picnic_paket1_20261008.png';
-import imgPicnicPaket2 from '../assets/images/20261008_023909_0001.png';
 import imgPicnicSavana from '../assets/images/bromo_picnic_experience_aesthetic.png';
 import imgGoldenHour from '../assets/images/bromo_golden_hour_1790774487968.jpg';
 import imgWidodaren from '../assets/images/bromo_widodaren_cliff_1790774506404.jpg';
@@ -54,7 +52,7 @@ export const PICNIC_PACKAGES: PicnicPackage[] = [
     type: 'selectable',
     shortDescription: 'Pilihan sarapan santai dengan kombinasi 2 jenis snack gurih & minuman hangat favorit.',
     highlights: ['Snack 1', 'Snack 2', 'Minuman', 'Free Teh & Mineral'],
-    imageUrl: imgPicnicPaket1,
+    imageUrl: imgPicnicSavana,
     freeItems: ['Teh', 'Mineral'],
     active: true,
     selectionGroups: [
@@ -115,7 +113,7 @@ export const PICNIC_PACKAGES: PicnicPackage[] = [
     type: 'selectable',
     shortDescription: 'Santap siang lengkap dengan hidangan utama khas Jawa Timur, snack hangat, dan minuman segar.',
     highlights: ['Snack', 'Makanan Utama', 'Minuman', 'Free Teh & Mineral'],
-    imageUrl: imgPicnicPaket2,
+    imageUrl: imgGoldenHour,
     freeItems: ['Teh', 'Mineral'],
     active: true,
     selectionGroups: [

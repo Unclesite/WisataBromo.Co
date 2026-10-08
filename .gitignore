@@ -1,33 +1,9 @@
-# Dependencies
 node_modules/
-
-# Build caches & logs
 build/
+dist/
+!public/dist/
 coverage/
 .DS_Store
 *.log
-
-# Environment variables
 .env*
 !.env.example
-
-# Production build artifacts (dist folder if generated)
-dist/
-
-# Ensure source assets and public folders are ALWAYS tracked in Git
-!src/assets/
-!src/assets/**
-!public/
-!public/images/
-!public/images/**
-!public/index.html
-!public/index.template.html
-!public/package.json
-!public/server.js
-!public/.htaccess
-!public/manifest.webmanifest
-!public/favicon.ico
-!public/icon.svg
-!public/apple-touch-icon.png
-!public/pwa-*.png
-

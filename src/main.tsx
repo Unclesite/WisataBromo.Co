@@ -1,18 +1,17 @@
-import React from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './App';
+import App from './App.tsx';
 import './index.css';
 
-const mountElement = document.getElementById('root');
+const mountApp = () => {
+  const container = document.getElementById('root');
+  if (container) {
+    const root = createRoot(container);
+    root.render(<App />);
+  }
+};
 
-if (mountElement) {
-  const root = createRoot(mountElement);
-  root.render(<App />);
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', mountApp);
 } else {
-  // Safe fallback if #root is somehow missing or delayed in DOM
-  const fallbackDiv = document.createElement('div');
-  fallbackDiv.id = 'root';
-  document.body.appendChild(fallbackDiv);
-  const root = createRoot(fallbackDiv);
-  root.render(<App />);
+  mountApp();
 }

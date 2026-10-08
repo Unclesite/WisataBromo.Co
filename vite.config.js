@@ -9,15 +9,14 @@ const __dirname = path.dirname(__filename);
 
 export default defineConfig(async ({ command }) => {
   const isBuild = command === 'build';
+  const { VitePWA } = await import('vite-plugin-pwa');
 
-  const plugins = [
-    react(),
-    tailwindcss(),
-  ];
-
-  if (isBuild) {
-    const { VitePWA } = await import('vite-plugin-pwa');
-    plugins.push(
+  return {
+    base: '/',
+    publicDir: false,
+    plugins: [
+      react(),
+      tailwindcss(),
       VitePWA({
         registerType: 'autoUpdate',
         devOptions: { enabled: false },
@@ -63,21 +62,15 @@ export default defineConfig(async ({ command }) => {
             },
           ],
         },
-      })
-    );
-  }
-
-  return {
-    base: '/',
-    publicDir: false,
-    plugins,
+      }),
+    ],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),
       },
     },
     build: {
-      outDir: 'public',
+      outDir: process.env.BUILD_OUT_DIR || 'public',
       emptyOutDir: false,
       assetsDir: 'assets',
       sourcemap: false,

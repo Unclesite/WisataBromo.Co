@@ -13,7 +13,7 @@ if [ -z "$TOKEN" ]; then
 fi
 
 echo "🚀 Menghubungkan ke https://github.com/Unclesite/WisataBromo.Co..."
-git remote set-url origin "https://Unclesite:${TOKEN}@github.com/Unclesite/WisataBromo.Co.git"
+git remote add origin "https://Unclesite:${TOKEN}@github.com/Unclesite/WisataBromo.Co.git" 2>/dev/null || git remote set-url origin "https://Unclesite:${TOKEN}@github.com/Unclesite/WisataBromo.Co.git"
 git branch -M main
 
 echo "📦 Memulai git push ke branch main..."

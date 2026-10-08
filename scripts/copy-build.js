@@ -6,68 +6,93 @@ try {
   const distDir = path.resolve(rootDir, 'dist');
   const publicDir = path.resolve(rootDir, 'public');
   const srcDir = path.resolve(rootDir, 'src');
-  const srcImagesDir = path.resolve(srcDir, 'assets', 'images');
-  const publicImagesDir = path.resolve(publicDir, 'images');
   const publicSrcDir = path.resolve(publicDir, 'src');
   const publicDistDir = path.resolve(publicDir, 'dist');
   const publicAssetsDir = path.resolve(publicDir, 'assets');
 
-  // Ensure directories exist
+  // Ensure public directory exists
   if (!fs.existsSync(publicDir)) {
     fs.mkdirSync(publicDir, { recursive: true });
   }
-  if (!fs.existsSync(publicImagesDir)) {
-    fs.mkdirSync(publicImagesDir, { recursive: true });
+
+  // Ensure source code NEVER gets copied to public
+  if (fs.existsSync(publicSrcDir)) {
+    fs.rmSync(publicSrcDir, { recursive: true, force: true });
   }
 
-  // 1. Synchronize source images to public/images/ so they are never lost on build
-  if (fs.existsSync(srcImagesDir)) {
-    fs.cpSync(srcImagesDir, publicImagesDir, { recursive: true, force: true });
-    console.log('✅ [Image Sync] Source images copied to public/images/');
+  // 3. Clean up any accidental nested dist directories
+  const nestedDist = path.resolve(publicDistDir, 'dist');
+  if (fs.existsSync(nestedDist)) {
+    fs.rmSync(nestedDist, { recursive: true, force: true });
   }
 
-  // 2. Sync src/ to public/src/
-  if (fs.existsSync(srcDir)) {
-    fs.cpSync(srcDir, publicSrcDir, { recursive: true, force: true });
-    console.log('✅ [Hostinger Sync] Source files synchronized to public/src/');
-  }
-
-  // 3. Ensure template HTML exists for fallback
-  const rootHtml = path.resolve(rootDir, 'index.html');
-  const publicTemplateHtml = path.resolve(publicDir, 'index.template.html');
-  if (fs.existsSync(rootHtml)) {
-    fs.copyFileSync(rootHtml, publicTemplateHtml);
-  }
-
-  // 4. Ensure public/index.html is valid; if Vite just generated it, mirror it to dist/
-  const publicIndex = path.resolve(publicDir, 'index.html');
-  if (fs.existsSync(publicIndex)) {
-    // If public/index.html exists from Vite build, also update dist/ so legacy deployment scripts stay in sync
-    if (!fs.existsSync(distDir)) {
-      fs.mkdirSync(distDir, { recursive: true });
-    }
-    const distIndex = path.resolve(distDir, 'index.html');
-    fs.copyFileSync(publicIndex, distIndex);
-
-    // Sync public/assets to dist/assets
-    if (fs.existsSync(publicAssetsDir)) {
-      const distAssetsDir = path.resolve(distDir, 'assets');
-      if (!fs.existsSync(distAssetsDir)) {
-        fs.mkdirSync(distAssetsDir, { recursive: true });
-      }
-      fs.cpSync(publicAssetsDir, distAssetsDir, { recursive: true, force: true });
-    }
-
-    // Also mirror to public/dist/
+  // 4. Sync compiled dist/ to public/dist/
+  if (fs.existsSync(distDir)) {
     if (!fs.existsSync(publicDistDir)) {
       fs.mkdirSync(publicDistDir, { recursive: true });
     }
-    fs.copyFileSync(publicIndex, path.resolve(publicDistDir, 'index.html'));
+    const distEntries = fs.readdirSync(distDir);
+    for (const entry of distEntries) {
+      if (entry === 'dist') continue;
+      const srcPath = path.resolve(distDir, entry);
+      const destPath = path.resolve(publicDistDir, entry);
+      fs.cpSync(srcPath, destPath, { recursive: true, force: true });
+    }
 
-    console.log('✅ [Hostinger Sync] Latest Vite build output synchronized across public/ and dist/');
+    // Clean up unnecessary config files from dist folders so Vite doesn't trigger cache invalidation
+    const unneededInDist = ['tsconfig.json', 'vite.config.ts', 'vite.config.js', 'package.json'];
+    for (const f of unneededInDist) {
+      const p1 = path.resolve(publicDistDir, f);
+      const p2 = path.resolve(distDir, f);
+      if (fs.existsSync(p1)) fs.rmSync(p1, { force: true });
+      if (fs.existsSync(p2)) fs.rmSync(p2, { force: true });
+    }
+
+    // 5. Position build output (index.html & assets/) parallel to public/server.js and public/package.json
+    const distAssets = path.resolve(distDir, 'assets');
+    if (fs.existsSync(distAssets)) {
+      if (fs.existsSync(publicAssetsDir)) {
+        // Purge obsolete hashed bundles so public/assets only contains fresh build files
+        const existingAssets = fs.readdirSync(publicAssetsDir);
+        for (const file of existingAssets) {
+          if (file.endsWith('.js') || file.endsWith('.css') || file.endsWith('.map')) {
+            fs.rmSync(path.resolve(publicAssetsDir, file), { force: true });
+          }
+        }
+      } else {
+        fs.mkdirSync(publicAssetsDir, { recursive: true });
+      }
+      fs.cpSync(distAssets, publicAssetsDir, { recursive: true, force: true });
+      console.log('✅ [Hostinger Sync] assets/ positioned parallel to public/server.js');
+    }
+
+    const distIndex = path.resolve(distDir, 'index.html');
+    const publicIndex = path.resolve(publicDir, 'index.html');
+    if (fs.existsSync(distIndex)) {
+      fs.copyFileSync(distIndex, publicIndex);
+      console.log('✅ [Hostinger Sync] index.html positioned parallel to public/server.js');
+    }
+
+    // 6. Copy PWA and root static files from dist to public root
+    const rootFiles = ['sw.js', 'manifest.webmanifest', 'registerSW.js'];
+    for (const rf of rootFiles) {
+      const sp = path.resolve(distDir, rf);
+      const dp = path.resolve(publicDir, rf);
+      if (fs.existsSync(sp)) {
+        fs.copyFileSync(sp, dp);
+      }
+    }
+    // Copy any workbox files
+    for (const entry of distEntries) {
+      if (entry.startsWith('workbox-')) {
+        fs.copyFileSync(path.resolve(distDir, entry), path.resolve(publicDir, entry));
+      }
+    }
+
+    console.log('✅ [Hostinger Sync] Production bundle synchronized to public/ root (flat layout)');
   }
 
-  // 5. Synchronize production server files to public/ for self-contained Hostinger deployment
+  // 7. Synchronize production server files to public/ for self-contained Hostinger deployment
   const rootServerJs = path.resolve(rootDir, 'server.js');
   const publicServerJs = path.resolve(publicDir, 'server.js');
   if (fs.existsSync(rootServerJs)) {
@@ -92,25 +117,6 @@ try {
   const publicEnv = path.resolve(publicDir, '.env.example');
   if (fs.existsSync(rootEnv)) {
     fs.copyFileSync(rootEnv, publicEnv);
-  }
-
-  // Sync package.json for Hostinger deployment
-  const rootPkg = path.resolve(rootDir, 'package.json');
-  const publicPkg = path.resolve(publicDir, 'package.json');
-  if (fs.existsSync(rootPkg)) {
-    try {
-      const pkgJson = JSON.parse(fs.readFileSync(rootPkg, 'utf-8'));
-      pkgJson.main = 'server.js';
-      pkgJson.scripts = {
-        start: 'node server.js',
-        dev: 'node server.js',
-        build: 'vite build'
-      };
-      fs.writeFileSync(publicPkg, JSON.stringify(pkgJson, null, 2) + '\n');
-      console.log('✅ [Hostinger Sync] package.json synchronized to public/package.json');
-    } catch (e) {
-      fs.copyFileSync(rootPkg, publicPkg);
-    }
   }
 
   // Sync root image assets

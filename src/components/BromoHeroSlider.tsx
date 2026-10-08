@@ -7,8 +7,7 @@ import imgSegaraWedhi from '../assets/images/bromo_segara_wedhi_1791386575556.jp
 import imgLandscapeBromo from '../assets/images/bromo_landscape_panoramic.png';
 import imgMistyHorsemen from '../assets/images/bromo_misty_horsemen_ridge.png';
 import imgGrandPanorama from '../assets/images/bromo_panoramic_sunrise_lightroom.jpg';
-import imgCakrawalaBromo from '../assets/images/bromo_panoramic_horizon_20261008.png';
-import imgKaldera9c28 from '../assets/images/bromo_panoramic_horizon_9c28.jpg';
+import imgCakrawalaBromo from '../assets/images/bromo_panoramic_horizon_9c28.jpg';
 import imgPanoramicVista from '../assets/images/bromo_panoramic_vista_img1.jpg';
 
 interface SlideItem {
@@ -24,16 +23,6 @@ interface SlideItem {
 
 const SLIDES: SlideItem[] = [
   {
-    id: 'cakrawala-kaldera-bromo',
-    title: 'Cakrawala Megah Kaldera Bromo Tengger',
-    subtitle: 'Perspektif luas lanskap pegunungan vulkanis yang memukau di bawah langit cerah pegunungan.',
-    locationTag: 'Kaldera Bromo Tengger',
-    elevation: '2.329 mdpl',
-    highlightLabel: 'Header Eksklusif 2026',
-    imageUrl: imgCakrawalaBromo,
-    description: 'Panorama luas yang memperlihatkan keasrian alam pegunungan Tengger dengan perbukitan vulkanik dan kaldera pasir yang membentang mempesona.'
-  },
-  {
     id: 'vista-kaldera-tengger',
     title: 'Vista Megah Kaldera Purba Bromo',
     subtitle: 'Lansekap dramatis bentang alam vulkanis Jawa Timur dengan panorama terbuka tak tertandingi.',
@@ -44,14 +33,14 @@ const SLIDES: SlideItem[] = [
     description: 'Keindahan visual kaldera pasir berbisik dan kerucut vulkanik yang diselimuti kabut tipis fajar, menciptakan latar petualangan yang tak terlupakan.'
   },
   {
-    id: 'kaldera-horizon-eksklusif',
-    title: 'Panorama Horizon Kaldera Vulkanis Bromo',
-    subtitle: 'Kemegahan bentang alam vulkanis kaldera Bromo dengan cakrawala fajar yang mempesona.',
+    id: 'cakrawala-kaldera-bromo',
+    title: 'Cakrawala Megah Kaldera Bromo Tengger',
+    subtitle: 'Perspektif luas lanskap pegunungan vulkanis yang memukau di bawah langit cerah pegunungan.',
     locationTag: 'Kaldera Bromo Tengger',
     elevation: '2.329 mdpl',
     highlightLabel: 'Lanskap Kaldera Eksklusif',
-    imageUrl: imgKaldera9c28,
-    description: 'Bentang alam kaldera pasir berbisik dan perbukitan eksotis Bromo yang mempesona di segala musim liburan.'
+    imageUrl: imgCakrawalaBromo,
+    description: 'Panorama luas yang memperlihatkan keasrian alam pegunungan Tengger dengan perbukitan vulkanik dan kaldera pasir yang membentang mempesona.'
   },
   {
     id: 'grand-panorama-bromo-lightroom',
@@ -207,25 +196,6 @@ export const BromoHeroSlider: React.FC<BromoHeroSliderProps> = ({ onOpenBooking,
                 src={slide.imageUrl}
                 alt={slide.title}
                 className="w-full h-full object-cover object-center"
-                onError={(e) => {
-                  const target = e.currentTarget;
-                  target.onerror = null;
-                  const fallbackMap: Record<string, string> = {
-                    'cakrawala-kaldera-bromo': '/images/bromo_panoramic_horizon_20261008.png',
-                    'vista-kaldera-tengger': '/images/bromo_panoramic_vista_img1.jpg',
-                    'kaldera-horizon-eksklusif': '/images/bromo_panoramic_horizon_9c28.jpg',
-                    'grand-panorama-bromo-lightroom': '/images/bromo_panoramic_sunrise_lightroom.jpg',
-                    'landscape-bromo-tengger': '/images/bromo_landscape_panoramic.png',
-                    'misty-horsemen-ridge': '/images/bromo_misty_horsemen_ridge.png',
-                    'lautan-awan-samudera': '/images/bromo_sea_clouds_1790773968204.jpg',
-                    'fajar-emas-golden-hour': '/images/bromo_golden_hour_1790774487968.jpg',
-                    'lembah-widodaren-pura-poten': '/images/bromo_segara_wedhi_1791386575556.jpg',
-                  };
-                  const fallbackUrl = fallbackMap[slide.id];
-                  if (fallbackUrl && target.src !== fallbackUrl) {
-                    target.src = fallbackUrl;
-                  }
-                }}
               />
             </div>
           ))}

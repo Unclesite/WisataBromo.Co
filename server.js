@@ -763,6 +763,11 @@ app.get('/api/admin/system-status', (_req, res) => {
 // Static files & SPA Routing for Hostinger Preset Express
 const isProduction = process.env.NODE_ENV === 'production';
 
+// Absolute path resolution for public directory (Hostinger Node.js standard)
+const publicDir = fs.existsSync(path.resolve(__dirname, 'public'))
+  ? path.resolve(__dirname, 'public')
+  : path.resolve(process.cwd(), 'public');
+
 async function startServer() {
   if (!isProduction) {
     try {
@@ -778,22 +783,31 @@ async function startServer() {
     }
   }
 
-  // 1. Atur express.static untuk menyajikan semua file statis dari folder 'public'
-  const publicDirCandidates = [
-    path.join(__dirname, 'public'),
-    path.join(process.cwd(), 'public'),
-    path.join(__dirname, '..', 'public'),
-  ];
-  if (path.basename(__dirname) === 'public') {
-    publicDirCandidates.push(__dirname);
-  }
-  for (const dir of publicDirCandidates) {
-    if (fs.existsSync(dir)) {
-      app.use(express.static(dir, { index: false }));
-    }
+  // 1. Assets directory (immutable caching + strict 404 on missing assets)
+  const assetsDir = path.join(publicDir, 'assets');
+  if (fs.existsSync(assetsDir)) {
+    app.use('/assets', express.static(assetsDir, {
+      immutable: true,
+      maxAge: '1y',
+      fallthrough: false
+    }));
   }
 
-  // 2. Tambahkan catch-all route agar mengarahkan semua request non-API ke 'public/index.html'
+  // 2. Serve static files from public folder (Hostinger Express standard)
+  app.use(express.static(publicDir, {
+    setHeaders: (res, filePath) => {
+      if (
+        filePath.endsWith('index.html') ||
+        filePath.endsWith('sw.js') ||
+        filePath.endsWith('registerSW.js') ||
+        filePath.endsWith('manifest.webmanifest')
+      ) {
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      }
+    }
+  }));
+
+  // 3. Fallback routing to public/index.html (Hostinger standard)
   app.get('*', (req, res, next) => {
     if (req.originalUrl.startsWith('/api')) {
       return next();
@@ -802,61 +816,12 @@ async function startServer() {
     if (path.extname(req.path)) {
       return res.status(404).type('text/plain').send('Not Found');
     }
-
-    const candidateIndexPaths = [
-      path.join(__dirname, 'public', 'index.html'),
-      path.join(__dirname, 'index.html'),
-      path.join(process.cwd(), 'public', 'index.html'),
-      path.join(process.cwd(), 'index.html'),
-      path.join(__dirname, '..', 'public', 'index.html'),
-      path.join(__dirname, 'dist', 'index.html'),
-      path.join(process.cwd(), 'dist', 'index.html'),
-      path.join(__dirname, 'public', 'index.template.html'),
-      path.join(__dirname, 'index.template.html'),
-      path.join(process.cwd(), 'public', 'index.template.html')
-    ];
-
-    let resolvedIndexPath = null;
-    for (const cand of candidateIndexPaths) {
-      try {
-        if (fs.existsSync(cand) && fs.statSync(cand).isFile()) {
-          resolvedIndexPath = cand;
-          break;
-        }
-      } catch (e) {
-        // Continue checking other candidates
-      }
-    }
-
-    if (resolvedIndexPath) {
+    const publicIndex = path.join(publicDir, 'index.html');
+    if (fs.existsSync(publicIndex)) {
       res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-      return res.sendFile(resolvedIndexPath);
+      return res.sendFile(publicIndex);
     }
-
-    // Safe fallback HTML page (never 404 raw text error "index.html not found")
-    res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    return res.status(200).send(`<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WisataBromo.co - Tour & Travel Gunung Bromo</title>
-  <style>
-    body { font-family: system-ui, -apple-system, sans-serif; background: #071A2B; color: #fff; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 20px; box-sizing: border-box; text-align: center; }
-    .box { background: rgba(255,255,255,0.06); padding: 32px 24px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.15); max-width: 440px; }
-    h1 { font-size: 20px; color: #0996F5; margin: 0 0 12px; }
-    p { font-size: 14px; color: #cbd5e1; line-height: 1.6; margin: 0 0 20px; }
-    .btn { display: inline-block; padding: 12px 24px; background: #0996F5; color: white; border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 14px; cursor: pointer; border: none; }
-  </style>
-</head>
-<body>
-  <div class="box">
-    <h1>WisataBromo.co</h1>
-    <p>Aplikasi sedang menginisialisasi atau memproses file build produksi. Silakan muat ulang halaman dalam beberapa detik.</p>
-    <button class="btn" onclick="location.reload()">Muat Ulang Halaman</button>
-  </div>
-</body>
-</html>`);
+    return res.status(404).type('text/plain').send('index.html not found');
   });
 
   app.listen(PORT, () => {
