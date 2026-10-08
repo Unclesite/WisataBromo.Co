@@ -763,10 +763,8 @@ app.get('/api/admin/system-status', (_req, res) => {
 // Static files & SPA Routing for Hostinger Preset Express
 const isProduction = process.env.NODE_ENV === 'production';
 
-// Absolute path resolution for public directory (Hostinger Node.js standard)
-const publicDir = fs.existsSync(path.resolve(__dirname, 'public'))
-  ? path.resolve(__dirname, 'public')
-  : __dirname;
+// Local directory resolution for Hostinger locked inside 'public' folder
+const publicDir = __dirname;
 
 async function startServer() {
   if (!isProduction) {
