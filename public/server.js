@@ -760,73 +760,32 @@ app.get('/api/admin/system-status', (_req, res) => {
   });
 });
 
-// Static files & SPA Routing for Hostinger Preset Express
-const isProduction = process.env.NODE_ENV === 'production';
-
-// Local directory resolution for Hostinger locked inside 'public' folder
+// Static files & SPA Routing for Hostinger Express
 const publicDir = __dirname;
 
-async function startServer() {
-  if (!isProduction) {
-    try {
-      const { createServer: createViteServer } = await import('vite');
-      const vite = await createViteServer({
-        server: { middlewareMode: true },
-        appType: 'spa',
-        root: process.cwd(),
-      });
-      app.use(vite.middlewares);
-    } catch (err) {
-      console.warn('Vite dev server middleware initialization notice:', err.message);
-    }
-  }
-
-  // 1. Assets directory (immutable caching + strict 404 on missing assets)
-  const assetsDir = path.join(publicDir, 'assets');
-  if (fs.existsSync(assetsDir)) {
-    app.use('/assets', express.static(assetsDir, {
-      immutable: true,
-      maxAge: '1y',
-      fallthrough: false
-    }));
-  }
-
-  // 2. Serve static files from public folder (Hostinger Express standard)
-  app.use(express.static(publicDir, {
-    setHeaders: (res, filePath) => {
-      if (
-        filePath.endsWith('index.html') ||
-        filePath.endsWith('sw.js') ||
-        filePath.endsWith('registerSW.js') ||
-        filePath.endsWith('manifest.webmanifest')
-      ) {
-        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-      }
-    }
+// 1. Assets directory caching
+const assetsDir = path.join(publicDir, 'assets');
+if (fs.existsSync(assetsDir)) {
+  app.use('/assets', express.static(assetsDir, {
+    immutable: true,
+    maxAge: '1y'
   }));
-
-  // 3. Fallback routing to public/index.html (Hostinger standard)
-  app.get('*', (req, res, next) => {
-    if (req.originalUrl.startsWith('/api')) {
-      return next();
-    }
-    // Never return index.html for static asset requests with file extensions
-    if (path.extname(req.path)) {
-      return res.status(404).type('text/plain').send('Not Found');
-    }
-    const publicIndex = path.join(publicDir, 'index.html');
-    if (fs.existsSync(publicIndex)) {
-      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-      return res.sendFile(publicIndex);
-    }
-    return res.status(404).type('text/plain').send('index.html not found');
-  });
-
-  app.listen(PORT, () => {
-    console.log(`🚀 WisataBromo.co Production Server running on port ${PORT}`);
-  });
 }
 
-startServer();
+// 2. Serve static files from local directory
+app.use(express.static(publicDir));
+
+// 3. Catch-all route di penghujung server.js agar semua navigasi URL mengarah ke index.html
+app.get('*', (req, res, next) => {
+  if (req.originalUrl.startsWith('/api')) {
+    return next();
+  }
+  const indexPath = path.join(publicDir, 'index.html');
+  res.sendFile(indexPath);
+});
+
+app.listen(PORT, () => {
+  console.log(`🚀 WisataBromo.co Production Server running on port ${PORT}`);
+});
 
 export default app;
