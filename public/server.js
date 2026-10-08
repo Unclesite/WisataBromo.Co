@@ -761,10 +761,7 @@ app.get('/api/admin/system-status', (_req, res) => {
 });
 
 // Static files & SPA Routing for Hostinger Express
-const publicDir = __dirname;
-
-// 1. Assets directory caching
-const assetsDir = path.join(publicDir, 'assets');
+const assetsDir = path.join(__dirname, 'assets');
 if (fs.existsSync(assetsDir)) {
   app.use('/assets', express.static(assetsDir, {
     immutable: true,
@@ -772,16 +769,24 @@ if (fs.existsSync(assetsDir)) {
   }));
 }
 
-// 2. Serve static files from local directory
-app.use(express.static(publicDir));
+// 1. Sajikan static files dari __dirname (folder public)
+app.use(express.static(__dirname));
 
-// 3. Catch-all route di penghujung server.js agar semua navigasi URL mengarah ke index.html
+// 2. Catch-all route di penghujung server.js agar semua navigasi URL mengarah ke index.html
 app.get('*', (req, res, next) => {
   if (req.originalUrl.startsWith('/api')) {
     return next();
   }
-  const indexPath = path.join(publicDir, 'index.html');
-  res.sendFile(indexPath);
+  const indexPath = path.join(__dirname, 'index.html');
+  console.log("Serving index.html from:", indexPath);
+  res.sendFile(indexPath, (err) => {
+    if (err) {
+      console.error("Error serving index.html:", err);
+      if (!res.headersSent) {
+        res.status(500).send("Error serving index.html: " + err.message);
+      }
+    }
+  });
 });
 
 app.listen(PORT, () => {

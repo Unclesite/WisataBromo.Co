@@ -788,7 +788,15 @@ app.get('*', (req, res, next) => {
   const indexPath = fs.existsSync(path.join(__dirname, 'public', 'index.html'))
     ? path.join(__dirname, 'public', 'index.html')
     : path.join(__dirname, 'index.html');
-  res.sendFile(indexPath);
+  console.log("Serving index.html from:", indexPath);
+  res.sendFile(indexPath, (err) => {
+    if (err) {
+      console.error("Error serving index.html:", err);
+      if (!res.headersSent) {
+        res.status(500).send("Error serving index.html: " + err.message);
+      }
+    }
+  });
 });
 
 app.listen(PORT, () => {
