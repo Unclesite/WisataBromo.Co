@@ -12,7 +12,7 @@ export default defineConfig(async ({ command }) => {
   const { VitePWA } = await import('vite-plugin-pwa');
 
   return {
-    base: '/',
+    base: './',
     publicDir: false,
     plugins: [
       react(),

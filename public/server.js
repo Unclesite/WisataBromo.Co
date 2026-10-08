@@ -4,6 +4,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Sajikan file statis dari folder public ini sendiri
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.use('*/assets', express.static(path.join(__dirname, 'assets')));
 app.use(express.static(__dirname));
 
 // Health check endpoint

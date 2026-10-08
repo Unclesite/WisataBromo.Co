@@ -80,7 +80,7 @@ export default defineConfig(async ({ command }) => {
   ];
 
   return {
-    base: '/',
+    base: './',
     publicDir: false as const,
     plugins,
     resolve: {
