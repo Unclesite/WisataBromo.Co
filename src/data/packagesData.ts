@@ -34,13 +34,10 @@ export const TOUR_PACKAGES: TourPackage[] = [
     rating: 4.9,
     reviewsCount: 342,
     badge: '1 Orang Pasti Berangkat',
-    description: 'Paket sharing trip hemat dan terfavorit keliling 5 destinasi utama Bromo. Berangkat setiap hari tengah malam dari Malang atau Batu, 1 orang tetap bisa gabung!',
+    description: 'Paket sharing trip hemat dan terfavorit keliling destinasi utama Bromo. Berangkat setiap hari tengah malam dari Malang atau Batu, 1 orang tetap bisa gabung!',
     destinations: [
-      'Sunrise Point Penanjakan 1 / Kingkong Hill',
-      'Lembah Widodaren Cliff & Dinasty Wall',
-      'Kawah Bromo & Seruni Point (Gunung Batok & Pasir Kaldera)',
-      'Pasir Berbisik (Segara Wedhi)',
-      'Savana Bukit Teletubbies'
+      'Sunrise Point (Bukit Cinta / Prau / Kingkong / Penanjakan)',
+      'Widodaren, Kawah Gunung Batok, Pura, Pasir Berbisik, Savana Teletubbies'
     ],
     pricingTiers: [
       { pax: 'Malang Reguler', price: 'Rp 275.000 / org' },
@@ -54,7 +51,7 @@ export const TOUR_PACKAGES: TourPackage[] = [
       'Shuttle Car Penjemputan & Pengantaran Area Malang / Batu PP',
       'Driver shuttle profesional, ramah & berpengalaman',
       'Bahan Bakar Minyak (BBM) Shuttle & Jeep PP',
-      'Jeep Bromo 4x4 (Toyota Land Cruiser FJ40) ke 5 Destinasi',
+      'Jeep Bromo 4x4 (Toyota Land Cruiser FJ40) ke Destinasi Wisata',
       'Tiket Masuk Resmi TNBTS (Taman Nasional Bromo Tengger Semeru) WNI',
       'Retribusi Kawasan & Parkir Resmi',
       'Dokumentasi Foto DSLR/Mirrorless (khusus paket dokumentasi)'
@@ -87,8 +84,8 @@ export const TOUR_PACKAGES: TourPackage[] = [
     itinerary: [
       { time: '23:00 - 01:30', activity: 'Penjemputan Malang / Batu', description: 'Driver menjemput di stasiun, hotel, rumah, atau bandara area Malang & Batu.' },
       { time: '02:00 - 03:00', activity: 'Jeep ke Sunrise Point', description: 'Perjalanan Jeep 4x4 dari Basecamp Gubugklakah/Tumpang ke view point.' },
-      { time: '03:30 - 06:00', activity: 'Golden Sunrise Bromo', description: 'Menikmati fajar spektakuler di Penanjakan 1 / Kingkong Hill.' },
-      { time: '06:00 - 10:00', activity: 'Explore Kaldera Bromo', description: 'Explore Widodaren, Kawah Bromo, Seruni Point, Pasir Berbisik, dan Savana Teletubbies.' },
+      { time: '03:30 - 06:00', activity: 'Golden Sunrise Bromo', description: 'Menikmati fajar spektakuler di Sunrise Point.' },
+      { time: '06:00 - 09:30', activity: 'Explore Widodaren, Kawah Gunung Batok, Pura, Pasir Berbisik, Savana Teletubbies', description: 'Menjelajahi Widodaren, Kawah Gunung Batok, Pura Poten, Pasir Berbisik, dan Savana Teletubbies.' },
       { time: '10:00 - 11:00', activity: 'Kembali ke Basecamp', description: 'Perjalanan kembali menuju basecamp transit jeep.' },
       { time: '11:00 - 13:00', activity: 'Drop Off Malang / Batu', description: 'Pengantaran kembali ke hotel, stasiun, atau alamat penjemputan.' }
     ]
@@ -113,10 +110,8 @@ export const TOUR_PACKAGES: TourPackage[] = [
     badge: 'Include Dokumentasi',
     description: 'Trip sharing harian dari Surabaya & Sidoarjo. 1 orang tetap bisa gabung! Sudah INCLUDE dokumentasi foto DSLR/Mirrorless, BBM, dan Tol PP.',
     destinations: [
-      'Sunrise Point Penanjakan / Bukit Kingkong',
-      'Kawah Bromo & Seruni Point (Gunung Batok & Kaldera)',
-      'Pasir Berbisik',
-      'Savana Teletubbies'
+      'Sunrise Point (Bukit Cinta / Prau / Kingkong / Penanjakan)',
+      'Widodaren, Kawah Gunung Batok, Pura, Pasir Berbisik, Savana Teletubbies'
     ],
     pricingTiers: [
       { pax: 'Weekend via Tosari', price: 'Rp 400.000 / org' },
@@ -128,7 +123,7 @@ export const TOUR_PACKAGES: TourPackage[] = [
       'Shuttle Car AC Prima (Hiace / Elf / Innova / Bus Pariwisata) Surabaya - Bromo PP',
       'Driver profesional & ramah',
       'Bahan Bakar Minyak (BBM) & Tol Trans Jawa PP',
-      'Jeep Bromo 4x4 (Toyota Land Cruiser FJ40) ke 5 Destinasi',
+      'Jeep Bromo 4x4 (Toyota Land Cruiser FJ40) ke Destinasi Wisata',
       'Tiket Masuk Resmi Taman Nasional Bromo Tengger Semeru WNI',
       'Retribusi Kawasan & Parkir Resmi',
       'Dokumentasi Foto DSLR/Mirrorless Profesional (Sudah INCLUDE!)'
@@ -161,10 +156,8 @@ export const TOUR_PACKAGES: TourPackage[] = [
       { time: '00:00 - 02:00', activity: 'Perjalanan ke Tosari / Malang', description: 'Perjalanan via tol menuju rest area / basecamp jeep.' },
       { time: '02:00 - 03:00', activity: 'Jeep ke Sunrise Point', description: 'Perjalanan Jeep 4x4 menuju view point golden sunrise.' },
       { time: '03:00 - 04:30', activity: 'Menunggu Golden Sunrise', description: 'Istirahat dan menikmati minuman hangat di warung puncak.' },
-      { time: '04:30 - 06:00', activity: 'Sunrise & Sesi Foto', description: 'Menikmati fajar kaldera dan sesi foto bersama fotografer.' },
-      { time: '06:00 - 07:30', activity: 'Kawah Bromo & Widodaren', description: 'Explore bibir kawah Bromo dan tebing Widodaren.' },
-      { time: '07:30 - 09:00', activity: 'Bukit Savana Teletubbies', description: 'Foto-foto di hamparan savana hijau yang asri.' },
-      { time: '09:00 - 10:30', activity: 'Lautan Pasir Berbisik', description: 'Explore Segara Wedhi dan formasi kaldera purba.' },
+      { time: '04:30 - 06:00', activity: 'Sunrise & Sesi Foto', description: 'Menikmati fajar di Sunrise Point bersama tim fotografer.' },
+      { time: '06:00 - 09:30', activity: 'Explore Widodaren, Kawah Gunung Batok, Pura, Pasir Berbisik, Savana Teletubbies', description: 'Menjelajahi Widodaren, Kawah Gunung Batok, Pura Poten, Pasir Berbisik, dan Savana Teletubbies.' },
       { time: '10:30 - 11:30', activity: 'Kembali ke Rest Area', description: 'Perjalanan kembali menuju basecamp jeep.' },
       { time: '11:30 - 13:30', activity: 'Drop Off Surabaya', description: 'Perjalanan pulang dan drop off kembali ke Surabaya.' }
     ]
@@ -190,11 +183,8 @@ export const TOUR_PACKAGES: TourPackage[] = [
     mapUrl: 'https://maps.app.goo.gl/TwSVpM7rx6itdX4A6',
     description: 'Sewa 1 unit Jeep Toyota Land Cruiser FJ40 eksklusif tanpa digabung peserta lain. Berangkat setiap hari: Paket Sunrise start 03.00 dini hari atau Paket Panorama start 11.00 siang. Kapasitas per jeep: 1 Driver + 6 peserta (tanpa dokumentasi) atau 1 Driver + 1 Fotografer + 5 peserta (plus dokumentasi).',
     destinations: [
-      'Puncak Penanjakan 1 / Kingkong Hill',
-      'Lembah Tebing Widodaren',
-      'Kawah Bromo & Seruni Point (Gunung Batok & Kaldera Bromo)',
-      'Lautan Pasir Berbisik',
-      'Savana Bukit Teletubbies'
+      'Sunrise Point (Bukit Cinta / Prau / Kingkong / Penanjakan)',
+      'Widodaren, Kawah Gunung Batok, Pura, Pasir Berbisik, Savana Teletubbies'
     ],
     pricingTiers: [
       { pax: 'Reguler (Maks 6 Orang)', price: 'Rp 950.000 / jeep' },
@@ -234,8 +224,8 @@ export const TOUR_PACKAGES: TourPackage[] = [
     ],
     itinerary: [
       { time: '02:30 - 03:00', activity: 'Meet up di Basecamp Tosari', description: 'Briefing dan naik armada Jeep 4x4.' },
-      { time: '03:30 - 06:00', activity: 'Sunrise Penanjakan 1', description: 'Spot panorama sunrise legendaris kaldera Tengger.' },
-      { time: '06:30 - 09:30', activity: 'Kawah Bromo & Savana', description: 'Eksplorasi spot kaldera pasir dan bukit Teletubbies.' },
+      { time: '03:30 - 06:00', activity: 'Sunrise Point', description: 'Spot panorama sunrise legendaris kaldera Tengger.' },
+      { time: '06:00 - 09:30', activity: 'Explore Widodaren, Kawah Gunung Batok, Pura, Pasir Berbisik, Savana Teletubbies', description: 'Menjelajahi Widodaren, Kawah Gunung Batok, Pura Poten, Pasir Berbisik, dan Savana Teletubbies.' },
       { time: '10:00', activity: 'Kembali ke Tosari', description: 'Kembali ke rest area / basecamp Tosari.' }
     ]
   },
@@ -259,11 +249,8 @@ export const TOUR_PACKAGES: TourPackage[] = [
     badge: 'Basecamp Sukapura',
     description: 'Sewa 1 unit Jeep Toyota Land Cruiser FJ40 eksklusif dari Sukapura Probolinggo tanpa digabung rombongan lain. Berangkat setiap hari: Paket Sunrise start 03.00 dini hari atau Paket Panorama start 11.00 siang. Kapasitas: 1 Driver + 6 peserta (tanpa doc) atau 1 Driver + 1 Fotografer + 5 peserta (plus doc).',
     destinations: [
-      'Puncak Penanjakan 1 / Seruni Point',
-      'Lembah Tebing Widodaren',
-      'Kawah Bromo & Seruni Point (Gunung Batok & Kaldera Bromo)',
-      'Lautan Pasir Berbisik',
-      'Savana Bukit Teletubbies'
+      'Sunrise Point (Bukit Cinta / Prau / Kingkong / Penanjakan)',
+      'Widodaren, Kawah Gunung Batok, Pura, Pasir Berbisik, Savana Teletubbies'
     ],
     pricingTiers: [
       { pax: 'Reguler (Maks 6 Orang)', price: 'Rp 1.000.000 / jeep' },
@@ -302,8 +289,8 @@ export const TOUR_PACKAGES: TourPackage[] = [
     ],
     itinerary: [
       { time: '02:30 - 03:00', activity: 'Kumpul di Basecamp Sukapura', description: 'Briefing dan naik ke Jeep 4x4 yang telah disiapkan.' },
-      { time: '03:45 - 06:00', activity: 'Sunrise Penanjakan / Seruni', description: 'Menyaksikan fajar di spot view kaldera.' },
-      { time: '06:30 - 09:30', activity: 'Kawah Bromo & Savana', description: 'Eksplorasi spot kaldera pasir berbisik dan tebing purba.' },
+      { time: '03:45 - 06:00', activity: 'Sunrise Point', description: 'Menyaksikan fajar di Sunrise Point.' },
+      { time: '06:00 - 09:30', activity: 'Explore Widodaren, Kawah Gunung Batok, Pura, Pasir Berbisik, Savana Teletubbies', description: 'Menjelajahi Widodaren, Kawah Gunung Batok, Pura Poten, Pasir Berbisik, dan Savana Teletubbies.' },
       { time: '10:00', activity: 'Kembali ke Sukapura', description: 'Trip selesai, kembali ke basecamp jeep Sukapura.' }
     ]
   },
@@ -328,11 +315,8 @@ export const TOUR_PACKAGES: TourPackage[] = [
     mapUrl: 'https://maps.app.goo.gl/acEeroMVi9jzLv8S7',
     description: 'Sewa 1 unit Jeep Toyota Land Cruiser FJ40 eksklusif dari Basecamp Gubugklakah Kab. Malang. Berangkat setiap hari pukul 03.00 Dini Hari (opsional pagi/siang). Kapasitas: 1 Driver + 6 peserta (tanpa doc) atau 1 Driver + 1 Fotografer + 5 peserta (plus doc).',
     destinations: [
-      'Sunrise Point Penanjakan / Bukit Kingkong',
-      'Lembah Tebing Widodaren',
-      'Kawah Bromo & Seruni Point (Gunung Batok & Kaldera Bromo)',
-      'Lautan Pasir Berbisik',
-      'Savana Bukit Teletubbies'
+      'Sunrise Point (Bukit Cinta / Prau / Kingkong / Penanjakan)',
+      'Widodaren, Kawah Gunung Batok, Pura, Pasir Berbisik, Savana Teletubbies'
     ],
     pricingTiers: [
       { pax: 'Reguler (Maks 6 Orang)', price: 'Rp 1.400.000 / jeep' },
@@ -371,8 +355,8 @@ export const TOUR_PACKAGES: TourPackage[] = [
     ],
     itinerary: [
       { time: '02:30 - 03:00', activity: 'Meet up di Basecamp Gubugklakah', description: 'Briefing dan berangkat via jalur Gubugklakah - Ngadas.' },
-      { time: '03:30 - 06:00', activity: 'Sunrise Kaldera Bromo', description: 'Menikmati fajar pagi nan menakjubkan.' },
-      { time: '06:30 - 09:30', activity: 'Kawah Bromo & Savana', description: 'Foto-foto di Lautan Pasir dan Padang Savana.' },
+      { time: '03:30 - 06:00', activity: 'Sunrise Point', description: 'Menikmati fajar pagi nan menakjubkan di Sunrise Point.' },
+      { time: '06:00 - 09:30', activity: 'Explore Widodaren, Kawah Gunung Batok, Pura, Pasir Berbisik, Savana Teletubbies', description: 'Menjelajahi Widodaren, Kawah Gunung Batok, Pura Poten, Pasir Berbisik, dan Savana Teletubbies.' },
       { time: '10:30', activity: 'Kembali ke Gubugklakah', description: 'Drop off kembali ke basecamp Gubugklakah.' }
     ]
   },
@@ -396,11 +380,8 @@ export const TOUR_PACKAGES: TourPackage[] = [
     badge: 'Door to Door Malang',
     description: 'Sewa private all-in tanpa digabung peserta lain. Dijemput langsung di stasiun, hotel, villa, atau alamat Anda di Kota Malang. Berangkat setiap hari pukul 23.00 - 01.00 tengah malam. Kapasitas: maks 6 orang (tanpa doc) atau maks 5 orang (plus fotografer).',
     destinations: [
-      'Puncak Penanjakan 1 / Kingkong Hill',
-      'Lembah Tebing Widodaren',
-      'Kawah Bromo & Seruni Point (Gunung Batok & Kaldera Bromo)',
-      'Lautan Pasir Berbisik',
-      'Savana Bukit Teletubbies'
+      'Sunrise Point (Bukit Cinta / Prau / Kingkong / Penanjakan)',
+      'Widodaren, Kawah Gunung Batok, Pura, Pasir Berbisik, Savana Teletubbies'
     ],
     pricingTiers: [
       { pax: 'Reguler (Maks 6 Orang)', price: 'Rp 1.700.000 / grup' },
@@ -440,8 +421,8 @@ export const TOUR_PACKAGES: TourPackage[] = [
     ],
     itinerary: [
       { time: '23:00 - 01:00', activity: 'Jemput Rombongan di Malang', description: 'Driver menjemput langsung di alamat/hotel Anda.' },
-      { time: '03:30 - 06:00', activity: 'Golden Sunrise Penanjakan', description: 'Spot sunrise terbaik tanpa terburu-buru.' },
-      { time: '06:30 - 09:30', activity: 'Jelajah Kaldera & Savana', description: 'Foto eksklusif di Kawah, Widodaren, Pasir Berbisik, dan Savana.' },
+      { time: '03:30 - 06:00', activity: 'Sunrise Point', description: 'Spot sunrise terbaik di Sunrise Point tanpa terburu-buru.' },
+      { time: '06:00 - 09:30', activity: 'Explore Widodaren, Kawah Gunung Batok, Pura, Pasir Berbisik, Savana Teletubbies', description: 'Menjelajahi Widodaren, Kawah Gunung Batok, Pura Poten, Pasir Berbisik, dan Savana Teletubbies.' },
       { time: '10:00 - 12:30', activity: 'Kembali ke Kota Malang', description: 'Pengantaran kembali ke hotel atau alamat asal di Malang.' }
     ]
   },
@@ -465,11 +446,8 @@ export const TOUR_PACKAGES: TourPackage[] = [
     badge: 'Door to Door Batu',
     description: 'Sewa private all-in tanpa digabung peserta lain. Dijemput langsung di hotel, resort, villa, atau alamat Anda di Kota Wisata Batu. Berangkat setiap hari pukul 23.00 - 01.00 tengah malam. Kapasitas: maks 6 orang (tanpa doc) atau maks 5 orang (plus fotografer).',
     destinations: [
-      'Puncak Penanjakan 1 / Kingkong Hill',
-      'Lembah Tebing Widodaren',
-      'Kawah Bromo & Seruni Point (Gunung Batok & Kaldera Bromo)',
-      'Lautan Pasir Berbisik',
-      'Savana Bukit Teletubbies'
+      'Sunrise Point (Bukit Cinta / Prau / Kingkong / Penanjakan)',
+      'Widodaren, Kawah Gunung Batok, Pura, Pasir Berbisik, Savana Teletubbies'
     ],
     pricingTiers: [
       { pax: 'Reguler (Maks 6 Orang)', price: 'Rp 1.800.000 / grup' },
@@ -508,8 +486,8 @@ export const TOUR_PACKAGES: TourPackage[] = [
     ],
     itinerary: [
       { time: '23:00 - 01:00', activity: 'Penjemputan di Villa/Resort Batu', description: 'Driver menjemput di akomodasi Anda di Kota Batu.' },
-      { time: '03:30 - 06:00', activity: 'Sunrise Puncak Penanjakan', description: 'Menyaksikan fajar menakjubkan di atas awan Bromo.' },
-      { time: '06:30 - 09:30', activity: 'Eksplorasi Kaldera & Widodaren', description: 'Foto-foto eksklusif di Widodaren, Pasir Berbisik, dan Savana.' },
+      { time: '03:30 - 06:00', activity: 'Sunrise Point', description: 'Menyaksikan fajar menakjubkan di Sunrise Point.' },
+      { time: '06:00 - 09:30', activity: 'Explore Widodaren, Kawah Gunung Batok, Pura, Pasir Berbisik, Savana Teletubbies', description: 'Menjelajahi Widodaren, Kawah Gunung Batok, Pura Poten, Pasir Berbisik, dan Savana Teletubbies.' },
       { time: '10:00 - 13:00', activity: 'Kembali ke Kota Batu', description: 'Drop off santai kembali ke penginapan di Batu.' }
     ]
   },
@@ -533,11 +511,8 @@ export const TOUR_PACKAGES: TourPackage[] = [
     badge: 'VVIP Surabaya (Include Doc)',
     description: 'Layanan VIP eksklusif dari Surabaya Raya dengan shuttle car (Innova Reborn / Hiace / Elf / Bus) dilanjutkan Jeep 4x4 privat di Bromo. Bebas menentukan titik jemput & waktu berangkat. Dokumentasi Foto Video DSLR/Mirrorless SUDAH INCLUDE!',
     destinations: [
-      'Sunrise Point Penanjakan 1 / Kingkong Hill',
-      'Lembah Tebing Widodaren',
-      'Kawah Bromo & Seruni Point (Gunung Batok & Kaldera Bromo)',
-      'Lautan Pasir Berbisik',
-      'Savana Bukit Teletubbies'
+      'Sunrise Point (Bukit Cinta / Prau / Kingkong / Penanjakan)',
+      'Widodaren, Kawah Gunung Batok, Pura, Pasir Berbisik, Savana Teletubbies'
     ],
     pricingTiers: [
       { pax: '2 Pax', price: 'Rp 1.550.000 / orang' },
@@ -588,8 +563,8 @@ export const TOUR_PACKAGES: TourPackage[] = [
     itinerary: [
       { time: '23:00 - 23:30', activity: 'Jemput di Alamat Surabaya', description: 'Mobil private AC menjemput di titik lokasi pilihan Anda.' },
       { time: '02:00 - 02:30', activity: 'Transfer Jeep 4x4', description: 'Pindah ke armada Jeep 4x4 di rest area transit resmi.' },
-      { time: '03:30 - 06:00', activity: 'Sunrise Spektakuler', description: 'Menikmati fajar kaldera Tengger bersama tim fotografer.' },
-      { time: '06:30 - 09:30', activity: 'Keliling 5 Spot Utama Bromo', description: 'Kawah Bromo, Widodaren, Pasir Berbisik, dan Savana.' },
+      { time: '03:30 - 06:00', activity: 'Sunrise Spektakuler', description: 'Menikmati fajar di Sunrise Point bersama tim fotografer.' },
+      { time: '06:00 - 09:30', activity: 'Explore Widodaren, Kawah Gunung Batok, Pura, Pasir Berbisik, Savana Teletubbies', description: 'Menjelajahi Widodaren, Kawah Gunung Batok, Pura Poten, Pasir Berbisik, dan Savana Teletubbies.' },
       { time: '10:30 - 13:30', activity: 'Drop Off Surabaya', description: 'Perjalanan kembali via tol dan diantar kembali ke lokasi Anda.' }
     ]
   },
@@ -613,11 +588,8 @@ export const TOUR_PACKAGES: TourPackage[] = [
     badge: 'Kapasitas 9 Orang',
     description: 'Armada Long Chassis Jeep 4x4 berkapasitas besar hingga 9 penumpang dewasa. Meeting point start dari Basecamp Jln. Raya Gubugklakah no 147 Kab. Malang. Weekday 1.9jt (tanpa doc) / 2.1jt (plus doc). Weekend 2.15jt (tanpa doc) / 2.5jt (plus doc). Peak/High Season 2.65jt (tanpa doc) / 3jt (plus doc). Bisa tambah penjemputan Malang (+300rb/mobil) atau Batu (+400rb/mobil).',
     destinations: [
-      'Puncak Penanjakan 1 / Kingkong Hill',
-      'Lembah Tebing Widodaren',
-      'Kawah Bromo & Seruni Point (Gunung Batok & Kaldera Bromo)',
-      'Pasir Berbisik',
-      'Savana Bukit Teletubbies'
+      'Sunrise Point (Bukit Cinta / Prau / Kingkong / Penanjakan)',
+      'Widodaren, Kawah Gunung Batok, Pura, Pasir Berbisik, Savana Teletubbies'
     ],
     pricingTiers: [
       { pax: 'Weekday (Senin-Kamis)', price: 'Rp 1.900.000 / unit' },
@@ -659,8 +631,8 @@ export const TOUR_PACKAGES: TourPackage[] = [
     ],
     itinerary: [
       { time: '00:00 - 02:30', activity: 'Kumpul / Penjemputan', description: 'Kumpul di basecamp Gubugklakah atau penjemputan Malang/Batu.' },
-      { time: '03:30 - 06:00', activity: 'Golden Sunrise Bromo', description: 'Menikmati fajar di puncak Penanjakan.' },
-      { time: '06:30 - 09:30', activity: 'Kawah & Savana', description: 'Eksplorasi spot kaldera pasir dan padang savana.' },
+      { time: '03:30 - 06:00', activity: 'Sunrise Point', description: 'Menikmati fajar di Sunrise Point.' },
+      { time: '06:00 - 09:30', activity: 'Explore Widodaren, Kawah Gunung Batok, Pura, Pasir Berbisik, Savana Teletubbies', description: 'Menjelajahi Widodaren, Kawah Gunung Batok, Pura Poten, Pasir Berbisik, dan Savana Teletubbies.' },
       { time: '10:00 - 12:30', activity: 'Kembali ke Basecamp / Malang', description: 'Perjalanan kembali drop off rombongan.' }
     ]
   },
