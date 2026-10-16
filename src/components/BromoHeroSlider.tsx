@@ -480,24 +480,6 @@ export const BromoHeroSlider: React.FC<BromoHeroSliderProps> = ({
           </>
         )}
 
-        {/* 5. Bottom Navigation Indicator Dots (Responsive Wrapping) */}
-        {slidesCount > 1 && (
-          <div className="absolute bottom-16 sm:bottom-20 inset-x-0 z-20 flex items-center justify-center gap-1.5 max-w-xl mx-auto px-4 flex-wrap">
-            {safeSlides.map((slide, idx) => (
-              <button
-                type="button"
-                key={slide.id || `dot-${idx}`}
-                onClick={() => setCurrentIdx(idx)}
-                className={`transition-all duration-300 rounded-full cursor-pointer p-0.5 ${
-                  safeIdx === idx
-                    ? 'w-6 sm:w-8 h-2 bg-[#0996F5] shadow-md shadow-[#0996F5]/50 ring-1 ring-white/50'
-                    : 'w-2 h-2 bg-white/40 hover:bg-white/80'
-                }`}
-                aria-label={`Pindah ke slide ${idx + 1}`}
-              />
-            ))}
-          </div>
-        )}
       </div>
     </div>
   );
