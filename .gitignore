@@ -1,6 +1,5 @@
 # Dependencies
 node_modules/
-public/node_modules/
 
 # Build caches & logs
 build/
@@ -32,6 +31,5 @@ coverage/
 !public/icon.svg
 !public/apple-touch-icon.png
 !public/pwa-*.png
-
-.github/
-.github/
+.aistudio/
+bun.lock

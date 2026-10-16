@@ -60,12 +60,12 @@ const SPOTS: SpotDetail[] = [
   },
   {
     id: 'kawah-bromo',
-    name: 'Kawah Aktif Bromo & Pura Luhur Poten',
+    name: 'Kawah Aktif Bromo & Seruni Point',
     elevation: '2.329 mdpl',
     category: 'caldera',
     bestTime: '06.30 – 09.00 WIB',
-    description: 'Kawah aktif vulkanik dengan tangga 250 anak tangga beton menuju bibir kawah. Di kaki kawah berdiri Pura Luhur Poten, tempat suci ibadah umat Hindu suku Tengger.',
-    highlights: ['Mendengar gemuruh magma kawah aktif', 'Sensasi menaiki tangga 250 trap', 'Kemegahan arsitektur suci Pura Luhur Poten'],
+    description: 'Kawah aktif vulkanik dengan tangga 250 anak tangga beton menuju bibir kawah. Di kawasan kaldera berdiri Seruni Point yang megah.',
+    highlights: ['Mendengar gemuruh magma kawah aktif', 'Sensasi menaiki tangga 250 trap', 'Kemegahan panorama Seruni Point'],
     tips: 'Gunakan masker debu atau buff untuk menyaring bau belerang dan debu pasir vulkanik.',
     jeepAccess: 'Parkir jeep di Segara Wedhi (Lautan Pasir), dilanjutkan jalan kaki/sewa kuda.'
   },

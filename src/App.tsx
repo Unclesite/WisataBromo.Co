@@ -136,6 +136,8 @@ export default function App() {
     window.location.hash = '';
   };
 
+  const isAnyModalOpen = isBookingModalOpen || isPicnicBookingOpen || isLiveStatusModalOpen || !!detailModalPackage || isAdminLoginOpen;
+
   // Render Admin View
   if (currentView === 'admin' && adminUser) {
     return (
@@ -209,8 +211,8 @@ export default function App() {
             window.location.hash = '';
           }}
         />
-        {/* Floating WhatsApp Bubble */}
-        <FloatingWhatsApp />
+        {/* Floating WhatsApp Bubble (Elevated above sticky mobile booking bar, hidden when modal open) */}
+        <FloatingWhatsApp hasBottomBar={true} hidden={isAnyModalOpen} />
       </div>
     );
   }
@@ -511,7 +513,10 @@ export default function App() {
       <PWAInstallBanner />
 
       {/* 18. Floating WhatsApp Customer Service Bubble */}
-      <FloatingWhatsApp />
+      <FloatingWhatsApp
+        hasBottomBar={currentView === 'package-detail'}
+        hidden={isAnyModalOpen}
+      />
     </div>
   );
 }

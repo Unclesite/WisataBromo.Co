@@ -140,7 +140,7 @@ export const generatePicnicInvoicePDF = (data: PicnicInvoiceData) => {
   
   // 1) Selected choices
   Object.entries(data.selectedMenus || {}).forEach(([cat, items]) => {
-    const itemSummaries = items.map(i => `${i.quantity}x ${i.name}`);
+    const itemSummaries = (items || []).map((i: any) => `${i.quantity}x ${i.name || i.itemName}`);
     if (itemSummaries.length > 0) {
       let categoryName = cat.toUpperCase();
       if (cat === 'snack' || cat === 'snack-1' || cat === 'snack-2') categoryName = 'PILIHAN SNACK';
@@ -156,10 +156,10 @@ export const generatePicnicInvoicePDF = (data: PicnicInvoiceData) => {
 
   // 2) Included fixed sections (for BBQ, Suki, Ngemie, Ultimate)
   if (data.packageItem.includedSections && data.packageItem.includedSections.length > 0) {
-    data.packageItem.includedSections.forEach(sec => {
+    data.packageItem.includedSections.forEach((sec: any) => {
       menuSections.push({
-        category: sec.sectionTitle.toUpperCase(),
-        items: sec.items.join(', ')
+        category: (sec.sectionTitle || '').toUpperCase(),
+        items: (sec.items || []).join(', ')
       });
     });
   }

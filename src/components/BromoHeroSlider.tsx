@@ -79,13 +79,13 @@ export const DEFAULT_SLIDES: SlideItem[] = [
   },
   {
     id: 'slide-mystical-temple',
-    title: 'Pura Luhur Poten: Kuil Suci di Dasar Kaldera',
-    subtitle: 'Tempat peribadatan suci masyarakat suku Tengger yang berdiri kokoh di tengah lautan pasir.',
-    locationTag: 'Dasar Kawah Segara Wedhi',
-    elevation: '2.200 mdpl',
-    highlightLabel: 'Warisan Sakral Tengger',
+    title: 'Seruni Point: Gardu Pandang Megah di Kaldera',
+    subtitle: 'Destinasi wisata panorama spektakuler dengan arsitektur 4 pilar megah di kawasan Bromo.',
+    locationTag: 'Seruni Point Bromo',
+    elevation: '2.400 mdpl',
+    highlightLabel: 'Panorama Seruni Point',
     imageUrl: header05,
-    description: 'Pusat upacara adat Yadnya Kasada yang memancarkan aura mistis dan spiritualitas luhur masyarakat Hindu Tengger.'
+    description: 'Gardu pandang ikonik dengan pemandangan menakjubkan menghadap langsung ke arah kawah aktif dan lautan pasir Bromo.'
   },
   {
     id: 'slide-362a1c07',
@@ -259,13 +259,13 @@ export const DEFAULT_SLIDES: SlideItem[] = [
   },
   {
     id: 'slide-golden-sunrise-shrine',
-    title: 'Pura Luhur Poten Berselimut Kabut Pagi Emas',
-    subtitle: 'Kesakralan tempat ibadah suku Tengger di tengah lautan pasir dengan latar sinar fajar keemasan.',
-    locationTag: 'Pura Luhur Poten Tengger',
-    elevation: '2.100 mdpl',
-    highlightLabel: 'Pura Sakral Kaldera',
+    title: 'Seruni Point Berselimut Kabut Pagi Emas',
+    subtitle: 'Keindahan panorama gardu pandang Seruni Point di tengah lautan pasir dengan latar sinar fajar keemasan.',
+    locationTag: 'Seruni Point Tengger',
+    elevation: '2.400 mdpl',
+    highlightLabel: 'Panorama Seruni Point',
     imageUrl: header23,
-    description: 'Situs peribadatan suci umat Hindu Tengger yang berdiri kokoh di tengah keheningan pasir vulkanis kaldera Bromo.'
+    description: 'Spot panorama terfavorit para wisatawan untuk menikmati keindahan fajar dan lanskap kaldera Bromo dari ketinggian.'
   }
 ];
 

@@ -29,9 +29,16 @@ export interface TourPackage {
   badge?: string;
   destinations: string[];
   includes: string[];
+  inclusions?: string[];
   excludes?: string[];
+  exclusions?: string[];
   highlights?: string[];
   meetingPoints?: string[];
+  meetingPoint?: string;
+  recommendedFor?: string;
+  pricingTiers?: any;
+  mapUrl?: string;
+  wnaChargePerPax?: number;
   tips?: string[];
   itinerary?: PackageItineraryItem[];
 }
@@ -47,10 +54,11 @@ export interface BookingFormState {
   pickupAddress: string;
   specialNotes?: string;
   includeDocumentation?: boolean;
+  photographerCount?: number;
   includeDrone?: boolean;
   isHighSeason?: boolean;
   wnaCount?: number;
-  dayType?: 'weekday' | 'weekend';
+  dayType?: 'weekday' | 'weekend' | 'highseason';
   pickupAreaExtra?: string;
   openTripSurabayaRoute?: 'malang' | 'tosari';
   paymentMethod?: string;
@@ -61,11 +69,46 @@ export interface BookingFormState {
 export interface BlogPost {
   id: string;
   title: string;
+  subtitle?: string;
   summary: string;
+  excerpt?: string;
   date: string;
+  publishDate?: string;
   author: string;
   tag: string;
+  tags?: string[];
+  category?: string;
+  categoryLabel?: string;
   readTime: string;
   imageUrl: string;
-  content: string;
+  content: string | string[];
+  keyTakeaways?: string[];
+  ratesTable?: Array<any>;
+  galleryImages?: Array<any>;
+  footnotes?: string[];
+  references?: string[];
 }
+
+export type BlogCategory = 'all' | 'tips_wisata' | 'budaya_tengger' | 'sejarah_spiritual' | 'destinasi_alam' | 'transportasi' | string;
+
+export interface DestinationSpot {
+  id: string;
+  name: string;
+  elevation: string;
+  bestTime: string;
+  speciality: string;
+  description: string;
+  iconName: string;
+}
+
+export interface ReviewItem {
+  id: string;
+  author: string;
+  city: string;
+  tripTaken: string;
+  rating: number;
+  date: string;
+  comment: string;
+  verified: boolean;
+}
+

@@ -107,7 +107,7 @@ export const PicnicDedicatedPage: React.FC<PicnicDedicatedPageProps> = ({
 
   // Handle quantity change for a specific item in a group
   const handleMenuQuantityChange = (groupId: string, itemName: string, newQty: number) => {
-    setMenuQuantities(prev => {
+    setMenuQuantities((prev: SelectedMenuQuantities) => {
       const groupPrev = prev[groupId] || {};
       const updatedGroup = { ...groupPrev, [itemName]: newQty };
       if (newQty <= 0) {
@@ -157,8 +157,8 @@ export const PicnicDedicatedPage: React.FC<PicnicDedicatedPageProps> = ({
     const errors: string[] = [];
 
     groups.forEach(g => {
-      const gQuantities = menuQuantities[g.id] || {};
-      const totalInGroup = Object.values(gQuantities).reduce((sum, q) => sum + (Number(q) || 0), 0);
+      const gQuantities = menuQuantities[g.id || ''] || {};
+      const totalInGroup = Object.values(gQuantities).reduce((sum: number, q: number) => sum + (Number(q) || 0), 0);
       
       if (totalInGroup < paxCount) {
         errors.push(`Pilihan "${g.title}" kurang ${paxCount - totalInGroup} porsi (saat ini ${totalInGroup}/${paxCount})`);
@@ -251,15 +251,16 @@ export const PicnicDedicatedPage: React.FC<PicnicDedicatedPageProps> = ({
     const flatSelectedItemsList: string[] = [];
 
     (selectedPackage.selectionGroups || []).forEach(g => {
-      const gQuantities = menuQuantities[g.id] || {};
+      const gQuantities = menuQuantities[g.id || ''] || {};
       const list: SelectedMenuItemQuantity[] = [];
       Object.entries(gQuantities).forEach(([name, qty]) => {
-        if (qty > 0) {
-          list.push({ id: name.toLowerCase().replace(/\s+/g, '-'), name, quantity: qty });
-          flatSelectedItemsList.push(`${qty}x ${name}`);
+        const qtyNum = Number(qty) || 0;
+        if (qtyNum > 0) {
+          list.push({ itemName: name, name, quantity: qtyNum });
+          flatSelectedItemsList.push(`${qtyNum}x ${name}`);
         }
       });
-      structuredSelectedMenus[g.category || g.id] = list;
+      structuredSelectedMenus[(g.category || g.id || '') as string] = list;
     });
 
     const addonsPayload = selectedAddons.map(a => {
@@ -357,15 +358,16 @@ export const PicnicDedicatedPage: React.FC<PicnicDedicatedPageProps> = ({
       const flatSelectedItemsList: string[] = [];
 
       (selectedPackage.selectionGroups || []).forEach(g => {
-        const gQuantities = menuQuantities[g.id] || {};
+        const gQuantities = menuQuantities[g.id || ''] || {};
         const list: SelectedMenuItemQuantity[] = [];
         Object.entries(gQuantities).forEach(([name, qty]) => {
-          if (qty > 0) {
-            list.push({ id: name.toLowerCase().replace(/\s+/g, '-'), name, quantity: qty });
-            flatSelectedItemsList.push(`${qty}x ${name}`);
+          const qtyNum = Number(qty) || 0;
+          if (qtyNum > 0) {
+            list.push({ itemName: name, name, quantity: qtyNum });
+            flatSelectedItemsList.push(`${qtyNum}x ${name}`);
           }
         });
-        structuredSelectedMenus[g.category || g.id] = list;
+        structuredSelectedMenus[(g.category || g.id || '') as string] = list;
       });
 
       const addonsPayload = selectedAddons.map(a => ({
@@ -441,14 +443,15 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
   const handleDownloadPicnicInvoice = () => {
     const structuredSelectedMenus: Record<string, SelectedMenuItemQuantity[]> = {};
     (selectedPackage.selectionGroups || []).forEach(g => {
-      const gQuantities = menuQuantities[g.id] || {};
+      const gQuantities = menuQuantities[g.id || ''] || {};
       const list: SelectedMenuItemQuantity[] = [];
       Object.entries(gQuantities).forEach(([name, qty]) => {
-        if (qty > 0) {
-          list.push({ id: name.toLowerCase().replace(/\s+/g, '-'), name, quantity: qty });
+        const qtyNum = Number(qty) || 0;
+        if (qtyNum > 0) {
+          list.push({ itemName: name, name, quantity: qtyNum });
         }
       });
-      structuredSelectedMenus[g.category || g.id] = list;
+      structuredSelectedMenus[(g.category || g.id || '') as string] = list;
     });
 
     generatePicnicInvoicePDF({
@@ -917,7 +920,7 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
 
                         {/* Highlights */}
                         <div className="space-y-1 mb-4">
-                          {Array.isArray(pkg?.highlights) && pkg.highlights.slice(0, 3).map((hl, idx) => (
+                          {Array.isArray(pkg?.highlights) && pkg.highlights.slice(0, 3).map((hl: string, idx: number) => (
                             <div key={idx} className="flex items-center gap-1.5 text-[11px] text-slate-600">
                               <CheckCircle2 className="w-3 h-3 text-[#0996F5] shrink-0" />
                               <span className="truncate">{hl}</span>
@@ -1033,8 +1036,8 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                         key={group.id}
                         group={group}
                         paxCount={paxCount}
-                        currentQuantities={menuQuantities[group.id] || {}}
-                        onChangeQuantity={(itemName, newQty) => handleMenuQuantityChange(group.id, itemName, newQty)}
+                        currentQuantities={menuQuantities[group.id || ''] || {}}
+                        onChangeQuantity={(itemName, newQty) => handleMenuQuantityChange(group.id || '', itemName, newQty)}
                       />
                     ))}
                   </div>
@@ -1285,7 +1288,7 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                   {Object.entries(menuQuantities).length > 0 ? (
                     <div className="space-y-1 text-[11px] text-slate-600">
                       {Object.entries(menuQuantities).map(([groupId, items]) => {
-                        const entries = Object.entries(items).filter(([_, q]) => q > 0);
+                        const entries = Object.entries((items as Record<string, number>) || {}).filter(([_, q]) => Number(q) > 0);
                         if (entries.length === 0) return null;
                         return (
                           <div key={groupId} className="pt-0.5">

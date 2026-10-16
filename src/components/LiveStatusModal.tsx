@@ -272,7 +272,7 @@ export const LiveStatusModal: React.FC<LiveStatusModalProps> = ({
                   {Array.isArray(tnbtsStatus?.allowedSpots) && tnbtsStatus.allowedSpots.map((spot, i) => (
                     <div key={i} className="flex items-center gap-2 p-2.5 bg-emerald-50/70 border border-emerald-200 rounded-xl text-emerald-900 font-medium">
                       <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                      <span>{spot}</span>
+                      <span>{typeof spot === 'string' ? spot : (spot as any)?.name || String(spot)}</span>
                     </div>
                   ))}
                 </div>

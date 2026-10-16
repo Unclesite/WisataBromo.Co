@@ -1,11 +1,15 @@
-const express = require('express');
-const dotenv = require('dotenv');
-const path = require('path');
-const fs = require('fs');
-const nodemailer = require('nodemailer');
+import express from 'express';
+import dotenv from 'dotenv';
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+import nodemailer from 'nodemailer';
 
-// Load environment variables (.env) if present
+// Load environment variables (.env)
 dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -39,7 +43,6 @@ const escapeHtml = (unsafe) => {
 
 /**
  * Health Check Endpoint
- * Returns HTTP 200 with service status
  */
 app.get('/api/health', (req, res) => {
   res.status(200).json({
@@ -190,7 +193,7 @@ const handleBookingEmail = async (req, res) => {
     const transporter = nodemailer.createTransport({
       host: smtpHost,
       port: smtpPort,
-      secure: smtpPort === 465,
+      secure: smtpPort === 465, // True for 465 SSL, false for 587 TLS
       auth: {
         user: smtpUser,
         pass: smtpPass
@@ -209,6 +212,7 @@ const handleBookingEmail = async (req, res) => {
     const adminAttachments = [];
     let hasPaymentProof = false;
     let paymentProofFilename = booking.paymentProofName || `bukti-transfer-${booking.bookingCode}.jpg`;
+    let isImageProof = true;
 
     if (booking.paymentProofDataUrl && typeof booking.paymentProofDataUrl === 'string') {
       const match = booking.paymentProofDataUrl.match(/^data:([^;]+);base64,(.+)$/);
@@ -221,13 +225,22 @@ const handleBookingEmail = async (req, res) => {
           paymentProofFilename = `${paymentProofFilename}.${ext}`;
         }
         
+        isImageProof = mimeType.startsWith('image/');
         hasPaymentProof = true;
+
         const fileBuffer = Buffer.from(base64Content, 'base64');
 
         adminAttachments.push({
           filename: paymentProofFilename,
           content: fileBuffer,
           contentType: mimeType,
+          contentDisposition: 'attachment'
+        });
+
+        console.log("PAYMENT PROOF ATTACHMENT CREATED", {
+          filename: paymentProofFilename,
+          contentType: mimeType,
+          sizeBytes: fileBuffer.length,
           contentDisposition: 'attachment'
         });
       }
@@ -276,11 +289,6 @@ const handleBookingEmail = async (req, res) => {
             <td width="35%" style="color: #166534; font-weight: 600; vertical-align: top;">Spot Lokasi Piknik</td>
             <td width="65%" style="color: #0f172a; font-weight: 700;">${escapeHtml(booking.locationName)}</td>
           </tr>` : ''}
-          ${booking.decorationColor ? `
-          <tr>
-            <td width="35%" style="color: #166534; font-weight: 600; vertical-align: top;">Warna Dekorasi</td>
-            <td width="65%" style="color: #0f172a; font-weight: 700;">${escapeHtml(booking.decorationColor)}</td>
-          </tr>` : ''}
           ${menuItemsRows ? `
           <tr>
             <td style="color: #166534; font-weight: 600; vertical-align: top;">Menu Terpilih (Porsi Tamu)</td>
@@ -328,98 +336,113 @@ const handleBookingEmail = async (req, res) => {
             <td style="padding: 24px;">
               <div style="background-color: #eff6ff; border-left: 4px solid #3b82f6; padding: 14px 18px; border-radius: 8px; margin-bottom: 20px;">
                 <span style="font-size: 13px; color: #1e40af; font-weight: 600; text-transform: uppercase;">Kode Reservasi</span>
-                <div style="font-size: 20px; font-weight: 800; color: #1e3a8a; letter-spacing: 0.5px; margin-top: 4px;">${escapeHtml(booking.bookingCode)}</div>
-                <div style="font-size: 12px; color: #64748b; margin-top: 2px;">Waktu Pemesanan: ${new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' })} WIB</div>
+                <div style="font-size: 20px; font-weight: 800; color: #1e3a8a; margin-top: 2px;">${escapeHtml(booking.bookingCode)}</div>
               </div>
 
-              <h2 style="font-size: 16px; font-weight: 700; color: #0f172a; margin: 0 0 12px 0; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px;">Data Kontak Tamu</h2>
-              <table width="100%" cellpadding="6" cellspacing="0" style="font-size: 14px; margin-bottom: 20px;">
+              <h2 style="font-size: 16px; font-weight: 700; color: #0f172a; margin: 0 0 12px 0; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px;">1. Detail Pemesan</h2>
+              <table width="100%" cellpadding="6" cellspacing="0" style="font-size: 14px; margin-bottom: 18px;">
                 <tr>
-                  <td width="35%" style="color: #64748b;">Nama Lengkap</td>
-                  <td width="65%" style="color: #0f172a; font-weight: 600;">${escapeHtml(booking.fullName)}</td>
+                  <td width="35%" style="color: #64748b; font-weight: 500;">Nama Customer</td>
+                  <td width="65%" style="color: #0f172a; font-weight: 700;">${escapeHtml(booking.fullName)}</td>
                 </tr>
                 <tr>
-                  <td style="color: #64748b;">Nomor WhatsApp</td>
-                  <td style="color: #0f172a; font-weight: 600;">
-                    <a href="${waLink}" style="color: #2563eb; text-decoration: none;">${escapeHtml(booking.whatsappNumber)} (Klik Kirim WA)</a>
-                  </td>
+                  <td style="color: #64748b; font-weight: 500;">WhatsApp</td>
+                  <td><a href="${waLink}" style="color: #2563eb; font-weight: 600; text-decoration: none;">+${waNumberFinal} (Chat WhatsApp)</a></td>
                 </tr>
                 <tr>
-                  <td style="color: #64748b;">Email Tamu</td>
-                  <td style="color: #0f172a;">${escapeHtml(booking.email)}</td>
+                  <td style="color: #64748b; font-weight: 500;">Email Customer</td>
+                  <td><a href="mailto:${escapeHtml(customerEmail)}" style="color: #2563eb; text-decoration: none;">${escapeHtml(customerEmail)}</a></td>
+                </tr>
+                <tr>
+                  <td style="color: #64748b; font-weight: 500;">Titik Penjemputan</td>
+                  <td style="color: #0f172a;">${escapeHtml(booking.pickupAddress)}</td>
                 </tr>
               </table>
 
-              <h2 style="font-size: 16px; font-weight: 700; color: #0f172a; margin: 0 0 12px 0; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px;">Rincian Paket &amp; Jadwal</h2>
-              <table width="100%" cellpadding="6" cellspacing="0" style="font-size: 14px; margin-bottom: 20px;">
+              <h2 style="font-size: 16px; font-weight: 700; color: #0f172a; margin: 0 0 12px 0; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px;">2. Detail Paket &amp; Jadwal Trip</h2>
+              <table width="100%" cellpadding="6" cellspacing="0" style="font-size: 14px; margin-bottom: 18px;">
                 <tr>
-                  <td width="35%" style="color: #64748b;">Paket Dipilih</td>
-                  <td width="65%" style="color: #0f172a; font-weight: 600;">${escapeHtml(booking.packageTitle)}</td>
+                  <td width="35%" style="color: #64748b; font-weight: 500;">Paket Wisata</td>
+                  <td width="65%" style="color: #0f172a; font-weight: 700;">${escapeHtml(booking.packageTitle)}</td>
                 </tr>
                 <tr>
-                  <td style="color: #64748b;">Tanggal Perjalanan</td>
+                  <td style="color: #64748b; font-weight: 500;">Tanggal Trip</td>
                   <td style="color: #0f172a; font-weight: 700; color: #0284c7;">${escapeHtml(booking.tripDate)}</td>
                 </tr>
-                ${booking.pickupScheduleFull ? `
                 <tr>
-                  <td style="color: #64748b;">Jadwal Penjemputan</td>
-                  <td style="color: #0f172a;">${escapeHtml(booking.pickupScheduleFull)}</td>
-                </tr>` : ''}
-                ${booking.startCity ? `
-                <tr>
-                  <td style="color: #64748b;">Titik Start / Kota</td>
-                  <td style="color: #0f172a;">${escapeHtml(booking.startCity)}</td>
-                </tr>` : ''}
-                <tr>
-                  <td style="color: #64748b;">Alamat Jemput</td>
-                  <td style="color: #0f172a;">${escapeHtml(booking.pickupAddress)}</td>
+                  <td style="color: #64748b; font-weight: 500;">Jumlah Peserta</td>
+                  <td style="color: #0f172a;">${booking.paxCount} Domestik ${booking.wnaCount ? `+ ${booking.wnaCount} WNA` : ''} (Total: ${totalPax} Pax)</td>
                 </tr>
+                ${booking.specialNotes ? `
                 <tr>
-                  <td style="color: #64748b;">Jumlah Peserta</td>
-                  <td style="color: #0f172a; font-weight: 600;">${totalPax} Orang (WNI: ${booking.paxCount || 0}, WNA: ${booking.wnaCount || 0})</td>
-                </tr>
+                  <td style="color: #64748b; font-weight: 500;">Catatan Tambahan</td>
+                  <td style="color: #0f172a; font-style: italic;">${escapeHtml(booking.specialNotes)}</td>
+                </tr>` : ''}
               </table>
 
               ${picnicMenuHtml}
 
-              <h2 style="font-size: 16px; font-weight: 700; color: #0f172a; margin: 0 0 12px 0; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px;">Rincian Biaya &amp; Pembayaran</h2>
-              <table width="100%" cellpadding="6" cellspacing="0" style="font-size: 14px; margin-bottom: 20px;">
+              <h2 style="font-size: 16px; font-weight: 700; color: #0f172a; margin: 0 0 12px 0; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px;">3. Rincian Keuangan &amp; Pembayaran</h2>
+              <table width="100%" cellpadding="6" cellspacing="0" style="font-size: 14px; background-color: #f8fafc; border-radius: 8px; padding: 10px; margin-bottom: 18px;">
                 <tr>
-                  <td width="35%" style="color: #64748b;">Metode Bayar</td>
-                  <td width="65%" style="color: #0f172a; font-weight: 600;">${String(booking.paymentMethod || 'bca').toUpperCase()} Transfer</td>
+                  <td width="40%" style="color: #64748b; font-weight: 500;">Total Biaya Trip</td>
+                  <td width="60%" style="color: #0f172a; font-weight: 700;">${formatRupiah(booking.grandTotal)}</td>
                 </tr>
                 <tr>
-                  <td style="color: #64748b;">Estimasi DP (Down Payment)</td>
-                  <td style="color: #16a34a; font-weight: 800; font-size: 16px;">${formatRupiah(booking.downPayment)}</td>
+                  <td style="color: #64748b; font-weight: 500;">Nominal DP 30%</td>
+                  <td style="color: #16a34a; font-weight: 800; font-size: 15px;">${formatRupiah(booking.downPayment)}</td>
                 </tr>
                 <tr>
-                  <td style="color: #64748b;">Total Tarif Keseluruhan</td>
-                  <td style="color: #0f172a; font-weight: 800; font-size: 16px;">${formatRupiah(booking.grandTotal)}</td>
+                  <td style="color: #64748b; font-weight: 500;">Metode Pembayaran</td>
+                  <td style="color: #0f172a; text-transform: uppercase; font-weight: 600;">${escapeHtml(booking.paymentMethod)}</td>
                 </tr>
-                ${booking.specialNotes ? `
                 <tr>
-                  <td style="color: #64748b; vertical-align: top;">Catatan Tambahan</td>
-                  <td style="color: #475569; font-style: italic;">"${escapeHtml(booking.specialNotes)}"</td>
-                </tr>` : ''}
+                  <td style="color: #64748b; font-weight: 500;">Status Reservasi</td>
+                  <td style="color: #d97706; font-weight: 700;">${escapeHtml(booking.status || 'DP_SUBMITTED')}</td>
+                </tr>
+                <tr>
+                  <td style="color: #64748b; font-weight: 500;">Waktu Booking</td>
+                  <td style="color: #64748b; font-size: 13px;">${escapeHtml(booking.createdAt || new Date().toLocaleString('id-ID'))}</td>
+                </tr>
               </table>
 
-              ${hasPaymentProof ? `
-              <div style="background-color: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 8px; padding: 14px 18px; margin-bottom: 20px;">
-                <div style="color: #065f46; font-weight: 700; font-size: 14px; margin-bottom: 4px;">📎 Bukti Pembayaran Dilampirkan</div>
-                <div style="color: #047857; font-size: 13px;">Tamu telah melampirkan file bukti transfer DP: <strong>${escapeHtml(paymentProofFilename)}</strong>. File terlampir pada email ini.</div>
-              </div>` : `
-              <div style="background-color: #fefce8; border: 1px solid #fef08a; border-radius: 8px; padding: 12px 16px; margin-bottom: 20px;">
-                <div style="color: #854d0e; font-size: 13px;">ℹ️ Bukti transfer belum diunggah / menunggu pembayaran DP dari tamu.</div>
-              </div>`}
+              <h2 style="font-size: 16px; font-weight: 700; color: #0f172a; margin: 0 0 12px 0; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px;">4. Bukti Transfer Pembayaran DP</h2>
+              <table width="100%" cellpadding="12" cellspacing="0" style="font-size: 14px; background-color: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 12px; margin-bottom: 18px;">
+                <tr>
+                  <td align="center">
+                    ${hasPaymentProof ? `
+                      <div style="margin-bottom: 8px;">
+                        <span style="display: inline-block; background-color: #dcfce7; color: #15803d; font-weight: 700; font-size: 12px; padding: 4px 10px; border-radius: 6px;">
+                          ✓ File Terlampir: ${escapeHtml(paymentProofFilename)}
+                        </span>
+                      </div>
+                      ${isImageProof ? `
+                        <div style="margin: 12px 0; text-align: center;">
+                          <img src="${booking.paymentProofDataUrl}" alt="Bukti Transfer DP" style="max-width: 100%; max-height: 450px; border-radius: 8px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);" />
+                        </div>
+                      ` : ''}
+                      <p style="margin: 8px 0 0 0; font-size: 12px; color: #64748b;">
+                        File bukti transfer telah dilampirkan sebagai attachment resmi email ini dan dapat langsung diunduh / disimpan ke Google Drive oleh Admin.
+                      </p>
+                    ` : `
+                      <div style="color: #dc2626; font-size: 13px; font-weight: 600;">
+                        ⚠ Bukti transfer belum diunggah atau tidak disertakan pada saat booking.
+                      </div>
+                    `}
+                  </td>
+                </tr>
+              </table>
 
               <div style="text-align: center; margin-top: 24px;">
-                <a href="${waLink}" style="background-color: #25d366; color: #ffffff; padding: 12px 24px; border-radius: 8px; font-weight: 700; text-decoration: none; display: inline-block; font-size: 14px;">Hubungi Tamu via WhatsApp</a>
+                <a href="${waLink}" style="display: inline-block; background-color: #25d366; color: #ffffff; padding: 12px 24px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 14px;">
+                  Hubungi Customer via WhatsApp
+                </a>
               </div>
             </td>
           </tr>
           <tr>
             <td style="background-color: #f1f5f9; padding: 16px; text-align: center; font-size: 12px; color: #64748b;">
-              Email otomatis dari Sistem Pemesanan WisataBromo.co &bull; PT Global Travel Healing
+              Email otomatis dari sistem reservasi WisataBromo.co · PT Global Travel Healing
             </td>
           </tr>
         </table>
@@ -434,87 +457,100 @@ const handleBookingEmail = async (req, res) => {
       <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Konfirmasi Pemesanan - WisataBromo.co</title>
+        <title>Konfirmasi Reservasi Wisata Bromo</title>
       </head>
       <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; margin: 0; padding: 20px; color: #1e293b;">
         <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.06); border: 1px solid #e2e8f0;">
           <tr>
-            <td style="background: linear-gradient(135deg, #0996f5, #102a56); padding: 28px 24px; text-align: center; color: #ffffff;">
-              <h1 style="margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -0.5px;">WISATABROMO.CO</h1>
-              <p style="margin: 6px 0 0 0; font-size: 14px; opacity: 0.9;">Invoice Resmi &amp; Konfirmasi Reservasi Wisata Bromo</p>
+            <td style="background: linear-gradient(135deg, #1e3a8a, #0284c7); padding: 32px 24px; text-align: center; color: #ffffff;">
+              <h1 style="margin: 0; font-size: 24px; font-weight: 800;">WISATABROMO.CO</h1>
+              <p style="margin: 8px 0 0 0; font-size: 14px; opacity: 0.95;">Konfirmasi Reservasi &amp; Rincian Pembayaran DP</p>
             </td>
           </tr>
           <tr>
             <td style="padding: 24px;">
-              <p style="font-size: 15px; line-height: 1.6; margin-top: 0;">Halo, <strong>${escapeHtml(booking.fullName)}</strong>!</p>
-              <p style="font-size: 14px; line-height: 1.6; color: #475569;">
-                Terima kasih telah mempercayakan liburan Bromo Anda kepada <strong>WisataBromo.co (PT Global Travel Healing)</strong>. Pesanan Anda telah tercatat dengan rincian sebagai berikut:
+              <p style="font-size: 15px; line-height: 1.6; margin: 0 0 16px 0;">
+                Halo <strong>${escapeHtml(booking.fullName)}</strong>,
+              </p>
+              <p style="font-size: 14px; line-height: 1.6; color: #475569; margin: 0 0 20px 0;">
+                Terima kasih telah mempercayakan perjalanan liburan Bromo Anda kepada <strong>WisataBromo.co (PT Global Travel Healing)</strong>. Reservasi Anda telah berhasil kami terima dalam sistem.
               </p>
 
-              <div style="background-color: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; padding: 16px; margin: 20px 0; text-align: center;">
-                <span style="font-size: 12px; color: #0369a1; font-weight: 600; text-transform: uppercase;">Kode Reservasi Anda</span>
-                <div style="font-size: 22px; font-weight: 800; color: #0284c7; letter-spacing: 1px; margin-top: 4px;">${escapeHtml(booking.bookingCode)}</div>
-                <div style="font-size: 12px; color: #0284c7; margin-top: 4px;">Simpan kode ini untuk verifikasi saat penjemputan oleh driver/guide</div>
+              <div style="background-color: #eff6ff; border: 1px solid #bfdbfe; border-radius: 12px; padding: 16px; margin-bottom: 24px; text-align: center;">
+                <div style="font-size: 12px; color: #3b82f6; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Kode Reservasi Anda</div>
+                <div style="font-size: 24px; font-weight: 900; color: #1e3a8a; letter-spacing: 1px; margin: 4px 0;">${escapeHtml(booking.bookingCode)}</div>
+                <div style="font-size: 13px; color: #64748b;">Simpan kode ini untuk pengecekan status dan konfirmasi</div>
               </div>
 
-              <h2 style="font-size: 15px; font-weight: 700; color: #0f172a; margin: 0 0 10px 0; border-bottom: 2px solid #f1f5f9; padding-bottom: 6px;">Detail Perjalanan</h2>
-              <table width="100%" cellpadding="6" cellspacing="0" style="font-size: 14px; margin-bottom: 16px;">
+              <h2 style="font-size: 16px; font-weight: 700; color: #0f172a; margin: 0 0 12px 0; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px;">Ringkasan Paket Wisata</h2>
+              <table width="100%" cellpadding="6" cellspacing="0" style="font-size: 14px; margin-bottom: 20px;">
                 <tr>
-                  <td width="40%" style="color: #64748b;">Paket Wisata</td>
-                  <td width="60%" style="color: #0f172a; font-weight: 600;">${escapeHtml(booking.packageTitle)}</td>
+                  <td width="38%" style="color: #64748b;">Paket Tour</td>
+                  <td width="62%" style="color: #0f172a; font-weight: 700;">${escapeHtml(booking.packageTitle)}</td>
                 </tr>
                 <tr>
-                  <td style="color: #64748b;">Tanggal Trip</td>
-                  <td style="color: #0f172a; font-weight: 700; color: #0284c7;">${escapeHtml(booking.tripDate)}</td>
-                </tr>
-                ${booking.pickupScheduleFull ? `
-                <tr>
-                  <td style="color: #64748b;">Jadwal Penjemputan</td>
-                  <td style="color: #0f172a;">${escapeHtml(booking.pickupScheduleFull)}</td>
-                </tr>` : ''}
-                <tr>
-                  <td style="color: #64748b;">Lokasi Penjemputan</td>
-                  <td style="color: #0f172a;">${escapeHtml(booking.pickupAddress)}</td>
+                  <td style="color: #64748b;">Tanggal Keberangkatan</td>
+                  <td style="color: #0284c7; font-weight: 700;">${escapeHtml(booking.tripDate)}</td>
                 </tr>
                 <tr>
                   <td style="color: #64748b;">Jumlah Peserta</td>
-                  <td style="color: #0f172a;">${totalPax} Orang</td>
+                  <td style="color: #0f172a; font-weight: 600;">${totalPax} Orang (${booking.paxCount} Domestik ${booking.wnaCount ? `+ ${booking.wnaCount} WNA` : ''})</td>
+                </tr>
+                <tr>
+                  <td style="color: #64748b;">Titik Penjemputan / Lokasi</td>
+                  <td style="color: #0f172a;">${escapeHtml(booking.pickupAddress)}</td>
                 </tr>
               </table>
 
               ${picnicMenuHtml}
 
-              <h2 style="font-size: 15px; font-weight: 700; color: #0f172a; margin: 0 0 10px 0; border-bottom: 2px solid #f1f5f9; padding-bottom: 6px;">Rincian Pembayaran</h2>
-              <table width="100%" cellpadding="6" cellspacing="0" style="font-size: 14px; margin-bottom: 16px;">
-                <tr>
-                  <td width="40%" style="color: #64748b;">Total Biaya Paket</td>
-                  <td width="60%" style="color: #0f172a; font-weight: 700;">${formatRupiah(booking.grandTotal)}</td>
-                </tr>
-                <tr>
-                  <td style="color: #64748b;">Down Payment (DP)</td>
-                  <td style="color: #16a34a; font-weight: 800; font-size: 16px;">${formatRupiah(booking.downPayment)}</td>
-                </tr>
-                <tr>
-                  <td style="color: #64748b;">Sisa Pelunasan</td>
-                  <td style="color: #475569;">${formatRupiah((booking.grandTotal || 0) - (booking.downPayment || 0))} (Dibayar tunai saat penjemputan)</td>
-                </tr>
-              </table>
+              <h2 style="font-size: 16px; font-weight: 700; color: #0f172a; margin: 0 0 12px 0; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px;">Rincian Biaya & Rekening Transfer</h2>
+              <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; margin-bottom: 24px;">
+                <table width="100%" cellpadding="6" cellspacing="0" style="font-size: 14px;">
+                  <tr>
+                    <td style="color: #64748b;">Total Biaya Trip</td>
+                    <td align="right" style="color: #0f172a; font-weight: 700;">${formatRupiah(booking.grandTotal)}</td>
+                  </tr>
+                  <tr>
+                    <td style="color: #16a34a; font-weight: 700; font-size: 15px;">Uang Muka (DP 30%)</td>
+                    <td align="right" style="color: #16a34a; font-weight: 900; font-size: 16px;">${formatRupiah(booking.downPayment)}</td>
+                  </tr>
+                  <tr>
+                    <td style="color: #64748b; font-size: 13px;">Sisa Pelunasan (70%)</td>
+                    <td align="right" style="color: #64748b; font-size: 13px;">${formatRupiah((booking.grandTotal || 0) - (booking.downPayment || 0))} (saat penjemputan)</td>
+                  </tr>
+                </table>
 
-              <div style="background-color: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 8px; padding: 14px; margin: 16px 0;">
-                <div style="font-size: 13px; font-weight: 700; color: #0f172a; margin-bottom: 4px;">Informasi Rekening Resmi Pembayaran DP:</div>
-                <div style="font-size: 14px; color: #0f172a;">Bank: <strong>BCA (Bank Central Asia)</strong></div>
-                <div style="font-size: 14px; color: #0f172a;">No. Rekening: <strong>5200888415</strong></div>
-                <div style="font-size: 14px; color: #0f172a;">Atas Nama: <strong>PT Global Travel Healing</strong></div>
+                <div style="margin-top: 16px; padding-top: 16px; border-top: 1px dashed #cbd5e1;">
+                  <div style="font-size: 12px; color: #475569; font-weight: 700; text-transform: uppercase; margin-bottom: 6px;">Rekening Resmi Pembayaran:</div>
+                  <div style="background-color: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 12px;">
+                    <div style="font-size: 13px; color: #64748b;">Bank Central Asia (BCA)</div>
+                    <div style="font-size: 18px; font-weight: 800; color: #1e3a8a; letter-spacing: 0.5px;">5200888415</div>
+                    <div style="font-size: 13px; color: #0f172a; font-weight: 600;">a/n PT Global Travel Healing</div>
+                  </div>
+                </div>
               </div>
 
-              <p style="font-size: 13px; color: #64748b; line-height: 1.5;">
-                Jika Anda telah mentransfer DP, konfirmasi via WhatsApp ke CS kami di <a href="https://wa.me/6281222290318" style="color: #0996f5; text-decoration: none; font-weight: 600;">+62 812-2229-0318</a> dengan menyertakan kode booking <strong>${escapeHtml(booking.bookingCode)}</strong>.
-              </p>
+              <div style="background-color: #fefce8; border: 1px solid #fef08a; border-radius: 8px; padding: 14px; margin-bottom: 24px; font-size: 13px; color: #854d0e; line-height: 1.6;">
+                📌 <strong>Syarat &amp; Ketentuan Pembayaran:</strong><br>
+                1. DP dibayar saat pendaftaran.<br>
+                2. Apabila terjadi pembatalan dari peserta maka DP dinyatakan hangus, Apabila terjadi pembatalan dari wisatabromo.co karena cuaca atau bencana alam atau kondisi lain dalam bentuk apapun maka DP dikembalikan 100%.<br>
+                3. Ketentuan Sisa Pembayaran: Untuk keberangkatan Start Surabaya wajib dilunasi maksimal H-1 sebelum keberangkatan. Untuk Start Malang dan Basecamp Jeep (Tosari, Sukapura, Gubugklakah) pelunasan dapat dilakukan pada hari H saat penjemputan (khusus di luar periode High Season), sedangkan pada periode High Season wajib lunas maksimal H-2 sebelum keberangkatan.<br>
+                4. Driver dan tim operasional kami akan menghubungi Anda via WhatsApp H-1 sebelum keberangkatan untuk konfirmasi jam penjemputan &amp; plat nomor Jeep.
+              </div>
+
+              <div style="text-align: center; margin-top: 20px;">
+                <a href="https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co%2C%20saya%20sudah%20reservasi%20dengan%20Kode%20Booking%3A%20${encodeURIComponent(booking.bookingCode)}" style="display: inline-block; background-color: #25d366; color: #ffffff; padding: 12px 24px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 14px;">
+                  Konfirmasi ke WhatsApp CS (+62 812-2229-0318)
+                </a>
+              </div>
             </td>
           </tr>
           <tr>
-            <td style="background-color: #f1f5f9; padding: 16px; text-align: center; font-size: 12px; color: #64748b;">
-              WisataBromo.co &bull; PT Global Travel Healing &bull; Izin Resmi TNBTS Jawa Timur
+            <td style="background-color: #f1f5f9; padding: 20px; text-align: center; font-size: 12px; color: #64748b; line-height: 1.5;">
+              <strong>PT Global Travel Healing · WisataBromo.co</strong><br>
+              Layanan Tour & Travel Resmi Gunung Bromo Jawa Timur<br>
+              WhatsApp Hotline: +62 812 2229 0318 · Email: cs@wisatabromo.co
             </td>
           </tr>
         </table>
@@ -522,63 +558,95 @@ const handleBookingEmail = async (req, res) => {
       </html>
     `;
 
-    // Send email to Administrator
-    const adminMailOptions = {
-      from: `"WisataBromo.co System" <${smtpUser}>`,
-      to: adminEmail,
-      subject: `🚨 [BOOKING BARU] ${booking.bookingCode} - ${booking.fullName} (${booking.tripDate})`,
-      html: adminHtml,
-      attachments: adminAttachments
-    };
+    // Dispatch emails concurrently
+    const [adminResult, customerResult] = await Promise.allSettled([
+      transporter.sendMail({
+        from: `"WisataBromo.co System" <${smtpUser}>`,
+        to: adminEmail,
+        replyTo: customerEmail,
+        subject: `[BOOKING BARU] ${booking.bookingCode} - ${booking.fullName} - ${booking.packageTitle}`,
+        html: adminHtml,
+        attachments: adminAttachments
+      }),
+      transporter.sendMail({
+        from: `"WisataBromo.co" <${smtpUser}>`,
+        to: customerEmail,
+        replyTo: `"Customer Service WisataBromo.co" <${smtpUser}>`,
+        subject: `Konfirmasi Reservasi Wisata Bromo - ${booking.bookingCode} (PT Global Travel Healing)`,
+        html: customerHtml
+      })
+    ]);
 
-    const adminResult = await transporter.sendMail(adminMailOptions);
-    console.log('✅ Email terkirim ke Admin:', adminResult.messageId);
+    const adminSuccess = adminResult.status === 'fulfilled';
+    const customerSuccess = customerResult.status === 'fulfilled';
+    const adminValue = adminSuccess ? adminResult.value : null;
+    const customerValue = customerSuccess ? customerResult.value : null;
 
-    // Record in memory sent log
+    if (!adminSuccess) {
+      console.error('Gagal kirim email admin:', adminResult.reason);
+    }
+    if (!customerSuccess) {
+      console.error('Gagal kirim email customer:', customerResult.reason);
+    }
+
+    // Log to Sent Emails History
     sentEmailsLog.unshift({
-      id: 'admin-' + Date.now(),
+      id: `sent-admin-${Date.now()}`,
       recipient: adminEmail,
       recipientType: 'admin',
       bookingCode: booking.bookingCode,
       customerName: booking.fullName,
-      subject: adminMailOptions.subject,
+      subject: `[BOOKING BARU] ${booking.bookingCode} - ${booking.fullName} - ${booking.packageTitle}`,
       sentAt: new Date().toISOString(),
-      status: 'SENT',
-      messageId: adminResult.messageId
+      status: adminSuccess ? 'SENT' : 'FAILED',
+      messageId: adminValue?.messageId,
+      error: !adminSuccess ? String(adminResult.reason?.message || 'Error') : undefined,
+      previewHtml: adminHtml
     });
 
-    // Send email to Customer
-    let customerResult = null;
-    if (customerEmail && customerEmail.includes('@')) {
-      const customerMailOptions = {
-        from: `"WisataBromo.co" <${smtpUser}>`,
-        to: customerEmail,
-        subject: `Konfirmasi Pemesanan Wisata Bromo [${booking.bookingCode}]`,
-        html: customerHtml
-      };
+    sentEmailsLog.unshift({
+      id: `sent-cust-${Date.now()}`,
+      recipient: customerEmail,
+      recipientType: 'customer',
+      bookingCode: booking.bookingCode,
+      customerName: booking.fullName,
+      subject: `Konfirmasi Reservasi Wisata Bromo - ${booking.bookingCode} (PT Global Travel Healing)`,
+      sentAt: new Date().toISOString(),
+      status: customerSuccess ? 'SENT' : 'FAILED',
+      messageId: customerValue?.messageId,
+      error: !customerSuccess ? String(customerResult.reason?.message || 'Error') : undefined,
+      previewHtml: customerHtml
+    });
 
-      customerResult = await transporter.sendMail(customerMailOptions);
-      console.log('✅ Email terkirim ke Customer:', customerResult.messageId);
-
-      sentEmailsLog.unshift({
-        id: 'cust-' + Date.now(),
-        recipient: customerEmail,
-        recipientType: 'customer',
-        bookingCode: booking.bookingCode,
-        customerName: booking.fullName,
-        subject: customerMailOptions.subject,
-        sentAt: new Date().toISOString(),
-        status: 'SENT',
-        messageId: customerResult.messageId
-      });
+    // Keep log to max 100 items
+    if (sentEmailsLog.length > 100) {
+      sentEmailsLog.length = 100;
     }
 
     return res.status(200).json({
       success: true,
-      message: 'Notifikasi email berhasil dikirim',
+      hasPaymentProofAttachment: hasPaymentProof,
+      paymentProofFilename: hasPaymentProof ? paymentProofFilename : undefined,
       results: {
-        adminEmail: { recipient: adminEmail, sent: true, messageId: adminResult.messageId },
-        customerEmail: customerResult ? { recipient: customerEmail, sent: true, messageId: customerResult.messageId } : undefined
+        adminEmail: {
+          recipient: adminEmail,
+          sent: adminSuccess,
+          messageId: adminValue?.messageId,
+          response: adminValue?.response,
+          attachments: adminAttachments.map(a => ({
+            filename: a.filename,
+            contentType: a.contentType,
+            sizeBytes: a.content.length,
+            contentDisposition: a.contentDisposition
+          })),
+          error: !adminSuccess ? String(adminResult.reason?.message || 'Error') : undefined
+        },
+        customerEmail: {
+          recipient: customerEmail,
+          sent: customerSuccess,
+          messageId: customerValue?.messageId,
+          error: !customerSuccess ? String(customerResult.reason?.message || 'Error') : undefined
+        }
       }
     });
   } catch (error) {
@@ -616,6 +684,7 @@ app.get('/api/admin/emails/inbox', async (_req, res) => {
     const mailboxUser = process.env.SMTP_USER || 'cs@wisatabromo.co';
     const mailboxPass = process.env.SMTP_PASS || '';
 
+    // Sample/simulated inbox messages for inquiries
     const sampleInbox = [
       {
         id: 'msg-inbox-01',
@@ -691,22 +760,13 @@ app.get('/api/admin/system-status', (_req, res) => {
   });
 });
 
-/**
- * Endpoint: Catch-all 404 for unknown /api routes
- * Prevents unknown API calls from falling through to the HTML index SPA fallback
- */
-app.all('/api/*', (req, res) => {
-  res.status(404).json({
-    error: 'Endpoint API tidak ditemukan',
-    path: req.originalUrl
-  });
-});
+// Static files & SPA Routing for Hostinger Express
+const publicDir = fs.existsSync(path.join(__dirname, 'public'))
+  ? path.join(__dirname, 'public')
+  : __dirname;
 
-/**
- * Static files serving from the deployment directory (__dirname = public)
- */
-// 1. Assets directory caching (immutable hashed chunks & CSS)
-const assetsDir = path.join(__dirname, 'assets');
+// 1. Assets directory caching
+const assetsDir = path.join(publicDir, 'assets');
 if (fs.existsSync(assetsDir)) {
   app.use('/assets', express.static(assetsDir, {
     immutable: true,
@@ -714,27 +774,35 @@ if (fs.existsSync(assetsDir)) {
   }));
 }
 
-// 2. Serve static files from root public directory (images, icons, manifest, sw.js)
-app.use(express.static(__dirname, {
-  index: false
-}));
+// 2. Serve static files from folder public
+app.use(express.static(path.join(__dirname, 'public')));
+if (publicDir !== path.join(__dirname, 'public')) {
+  app.use(express.static(publicDir));
+}
 
-/**
- * SPA fallback route for React
- * Catches all valid frontend URLs (e.g. /, /paket-open-trip-malang, /booking)
- * Does NOT catch requests with file extensions (returns 404 for missing assets)
- */
+// 3. Catch-all 404 for unknown /api routes
+app.all('/api/*', (req, res) => {
+  res.status(404).json({
+    error: 'Endpoint API tidak ditemukan',
+    path: req.originalUrl
+  });
+});
+
+// 4. Catch-all route di penghujung server.js agar semua navigasi URL mengarah ke index.html
 app.get('*', (req, res) => {
-  // If request has a file extension (e.g. .js, .css, .png, .jpg), it's a missing asset, NOT an SPA route
+  // Aset yang hilang dengan ekstensi file tidak boleh disamarkan sebagai HTML homepage
   if (path.extname(req.path)) {
     return res.status(404).send('Aset tidak ditemukan: ' + req.path);
   }
 
-  const indexPath = path.join(__dirname, 'index.html');
+  const indexPath = fs.existsSync(path.join(__dirname, 'public', 'index.html'))
+    ? path.join(__dirname, 'public', 'index.html')
+    : path.join(__dirname, 'index.html');
   res.sendFile(indexPath, (err) => {
     if (err) {
+      console.error("Error serving index.html:", err);
       if (!res.headersSent) {
-        res.status(500).send('Error loading page: ' + err.message);
+        res.status(500).send("Error serving index.html: " + err.message);
       }
     }
   });
@@ -744,4 +812,4 @@ app.listen(PORT, () => {
   console.log(`🚀 WisataBromo.co Production Server running on port ${PORT}`);
 });
 
-module.exports = app;
+export default app;

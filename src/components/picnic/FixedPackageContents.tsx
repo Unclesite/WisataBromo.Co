@@ -39,7 +39,7 @@ export const FixedPackageContents: React.FC<FixedPackageContentsProps> = ({
                 </span>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                {sec.items.map((item, i) => (
+                {sec.items.map((item: string, i: number) => (
                   <div key={i} className="flex items-center gap-2 text-xs text-[#0B1220]">
                     <span className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
                       <Check className="w-2.5 h-2.5 stroke-[3]" />

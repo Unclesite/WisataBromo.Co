@@ -109,6 +109,7 @@ export interface BookingPayload {
   downPayment: number;
   specialNotes?: string;
   includeDocumentation?: boolean;
+  photographerCount?: number;
   includeDrone?: boolean;
   bookingType?: string;
   packageName?: string;

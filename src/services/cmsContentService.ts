@@ -36,9 +36,9 @@ export const DEFAULT_WEBSITE_CONTENT: WebsiteContentConfig = {
     priceWithDoc: pkg.priceWithDoc,
     priceUnit: pkg.priceUnit,
     badge: pkg.badge,
-    highlights: pkg.highlights,
-    inclusions: pkg.inclusions,
-    exclusions: pkg.exclusions
+    highlights: pkg.highlights || [],
+    inclusions: pkg.inclusions || pkg.includes || [],
+    exclusions: pkg.exclusions || pkg.excludes || []
   })),
   faqs: [
     {

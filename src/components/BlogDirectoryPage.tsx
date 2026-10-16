@@ -44,7 +44,7 @@ export const BlogDirectoryPage: React.FC<BlogDirectoryPageProps> = ({
         !q ||
         post.title.toLowerCase().includes(q) ||
         (post.subtitle && post.subtitle.toLowerCase().includes(q)) ||
-        post.excerpt.toLowerCase().includes(q) ||
+        (post.excerpt || post.summary || '').toLowerCase().includes(q) ||
         (Array.isArray(post.tags) && post.tags.some((t) => t.toLowerCase().includes(q))) ||
         (post.author && post.author.toLowerCase().includes(q));
       return matchCategory && matchSearch;
@@ -217,7 +217,7 @@ export const BlogDirectoryPage: React.FC<BlogDirectoryPageProps> = ({
 
               {/* Main Content Paragraphs */}
               <div className="space-y-4 text-sm sm:text-base text-slate-700 leading-relaxed font-normal">
-                {selectedPost.content.map((paragraph, idx) => {
+                {(Array.isArray(selectedPost.content) ? selectedPost.content : [selectedPost.content]).map((paragraph: string, idx: number) => {
                   // Format 4 knots bullet items with distinctive badge
                   if (paragraph.startsWith('• Simpul')) {
                     const [knotLabel, meaning] = paragraph.replace('• ', '').split('→');
@@ -366,7 +366,7 @@ export const BlogDirectoryPage: React.FC<BlogDirectoryPageProps> = ({
               {/* Tags */}
               <div className="pt-4 border-t border-slate-100 flex flex-wrap items-center gap-1.5 text-xs text-slate-600">
                 <Tag className="w-3.5 h-3.5 text-slate-400 mr-1" />
-                {selectedPost.tags.map((tag, idx) => (
+                {(selectedPost.tags || (selectedPost.tag ? [selectedPost.tag] : [])).map((tag: string, idx: number) => (
                   <span
                     key={idx}
                     className="px-2.5 py-1 bg-slate-100 hover:bg-[#e5f4ff] hover:text-[#0996f5] border border-slate-200 rounded-lg text-xs font-medium transition-colors cursor-pointer"

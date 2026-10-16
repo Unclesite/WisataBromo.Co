@@ -108,7 +108,7 @@ export const PackageDetailModal: React.FC<PackageDetailModalProps> = ({
               <MapPin className="w-4 h-4 text-[#0996f5] shrink-0 mt-0.5" />
               <div>
                 <span className="font-bold text-[#102a56]">Meeting Point: </span>
-                {packageItem.meetingPoint}
+                {packageItem.meetingPoint || packageItem.meetingPoints?.join(', ') || packageItem.startLocationName}
               </div>
             </div>
             {packageItem.mapUrl && (
@@ -152,7 +152,7 @@ export const PackageDetailModal: React.FC<PackageDetailModalProps> = ({
                 Fasilitas Termasuk (Include):
               </div>
               <ul className="space-y-2 text-xs text-[#111318]/85">
-                {Array.isArray(packageItem?.inclusions) && packageItem.inclusions.map((inc, i) => (
+                {(packageItem.inclusions || packageItem.includes || []).map((inc: string, i: number) => (
                   <li key={i} className="flex items-start gap-2">
                     <span className="text-emerald-600 font-bold">✓</span>
                     <span>{inc}</span>
@@ -168,7 +168,7 @@ export const PackageDetailModal: React.FC<PackageDetailModalProps> = ({
                 Tidak Termasuk (Exclude):
               </div>
               <ul className="space-y-2 text-xs text-slate-600">
-                {Array.isArray(packageItem?.exclusions) && packageItem.exclusions.map((exc, i) => (
+                {(packageItem.exclusions || packageItem.excludes || []).map((exc: string, i: number) => (
                   <li key={i} className="flex items-start gap-2">
                     <span className="text-[#ea0610] font-bold">✕</span>
                     <span>{exc}</span>
@@ -181,7 +181,7 @@ export const PackageDetailModal: React.FC<PackageDetailModalProps> = ({
           {/* Recommended Note */}
           <div className="text-xs text-slate-600 bg-slate-50 p-3.5 rounded-xl border border-slate-200">
             <span className="font-bold text-[#102a56]">Rekomendasi Peserta: </span>
-            {packageItem.recommendedFor}
+            {packageItem.recommendedFor || 'Cocok untuk solo traveler, pasangan, keluarga, maupun rombongan kantor.'}
           </div>
         </div>
 

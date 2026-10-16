@@ -202,7 +202,7 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
     startCity: resolvedStartCity,
     packageId: currentPkg.id,
     pickupAddress: form.pickupAddress,
-    pickupAreaExtra: form.pickupAreaExtra,
+    pickupAreaExtra: form.pickupAreaExtra as 'batu' | 'malang' | 'none' | undefined,
   });
   const highSeasonCheck = checkIsHighSeason(form.travelDate);
   const openTripSbyInfo = getOpenTripSurabayaSchedule(form.travelDate, form.isHighSeason);
@@ -260,88 +260,138 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
       basePrice *= form.paxCount;
     } else if (currentPkg.id === 'open-trip-surabaya') {
       const isSaturday = openTripSbyInfo.isSaturday;
-      if (form.isHighSeason) {
-        basePrice = isSaturday ? 450000 : 425000;
+      if (isSaturday) {
+        // Weekend via Tosari (Sabtu Malam): Rp 400.000 / org (High Season: Rp 425.000 / org) - Include Doc
+        basePrice = form.isHighSeason ? 425000 : 400000;
       } else {
-        basePrice = isSaturday ? 400000 : 375000;
+        // Harian via Malang: Rp 750.000 / org (High Season: Rp 800.000 / org) - Include Doc & Door to Door
+        basePrice = form.isHighSeason ? 800000 : 750000;
       }
       basePrice *= form.paxCount;
-    } else if (currentPkg.id === 'private-sukapura' || currentPkg.id === 'private-tosari') {
-      const jeepCount = Math.ceil(form.paxCount / (form.includeDocumentation ? 5 : 6)) || 1;
+    } else if (
+      currentPkg.id === 'private-jeep-wonokitri' ||
+      currentPkg.id === 'private-tosari' ||
+      currentPkg.id.includes('wonokitri') ||
+      currentPkg.id.includes('tosari')
+    ) {
+      // Basecamp Tosari Pasuruan: Maks 6 pax (tanpa doc) / 5 pax (plus doc)
+      const jeepCapacity = form.includeDocumentation ? 5 : 6;
+      const jeepCount = Math.ceil(form.paxCount / jeepCapacity) || 1;
       let singleJeepPrice = 0;
       if (form.isHighSeason) {
-        singleJeepPrice = 1700000 + (form.includeDocumentation ? 600000 : 0);
+        singleJeepPrice = 1150000 + (form.includeDocumentation ? 500000 : 0);
+      } else {
+        singleJeepPrice = 950000 + (form.includeDocumentation ? 500000 : 0);
+      }
+      basePrice = singleJeepPrice * jeepCount;
+    } else if (
+      currentPkg.id === 'private-jeep-sukapura' ||
+      currentPkg.id === 'private-sukapura' ||
+      currentPkg.id.includes('sukapura')
+    ) {
+      // Basecamp Sukapura Probolinggo: Maks 6 pax (tanpa doc) / 5 pax (plus doc)
+      const jeepCapacity = form.includeDocumentation ? 5 : 6;
+      const jeepCount = Math.ceil(form.paxCount / jeepCapacity) || 1;
+      let singleJeepPrice = 0;
+      if (form.isHighSeason) {
+        singleJeepPrice = 1200000 + (form.includeDocumentation ? 500000 : 0);
+      } else {
+        singleJeepPrice = 1000000 + (form.includeDocumentation ? 500000 : 0);
+      }
+      basePrice = singleJeepPrice * jeepCount;
+    } else if (
+      currentPkg.id === 'private-jeep-tumpang' ||
+      currentPkg.id === 'private-tumpang' ||
+      currentPkg.id.includes('tumpang') ||
+      currentPkg.id.includes('gubugklakah')
+    ) {
+      // Basecamp Gubugklakah Malang: Maks 6 pax (tanpa doc) / 5 pax (plus doc)
+      const jeepCapacity = form.includeDocumentation ? 5 : 6;
+      const jeepCount = Math.ceil(form.paxCount / jeepCapacity) || 1;
+      let singleJeepPrice = 0;
+      if (form.isHighSeason) {
+        singleJeepPrice = 1650000 + (form.includeDocumentation ? 500000 : 0);
       } else {
         singleJeepPrice = 1400000 + (form.includeDocumentation ? 500000 : 0);
       }
       basePrice = singleJeepPrice * jeepCount;
-    } else if (currentPkg.id === 'long-jeep') {
-      const isHigh = form.isHighSeason || form.dayType === 'highseason';
-      let groupPrice = 1900000;
-      if (isHigh) {
-        groupPrice = form.includeDocumentation ? 3250000 : 2650000;
-      } else if (form.dayType === 'weekend') {
-        groupPrice = form.includeDocumentation ? 2500000 : 2150000;
-      } else {
-        groupPrice = form.includeDocumentation ? 2100000 : 1900000;
-      }
-
-      let pickupFee = 0;
-      if (form.pickupAreaExtra === 'malang') {
-        pickupFee = (isHigh ? 400000 : 300000) * Math.ceil(form.paxCount / 6);
-      } else if (form.pickupAreaExtra === 'batu') {
-        pickupFee = (isHigh ? 500000 : 400000) * Math.ceil(form.paxCount / 6);
-      }
-      basePrice = groupPrice + pickupFee;
-    } else if (currentPkg.id === 'private-malang') {
-      const jeepCount = Math.ceil(form.paxCount / (form.includeDocumentation ? 5 : 6)) || 1;
+    } else if (
+      currentPkg.id === 'private-jeep-malang' ||
+      currentPkg.id === 'private-malang' ||
+      (currentPkg.category === 'private_trip' && currentPkg.startCity === 'malang')
+    ) {
+      // Door to Door Kota Malang: Shuttle + Jeep
+      const jeepCapacity = form.includeDocumentation ? 5 : 6;
+      const jeepCount = Math.ceil(form.paxCount / jeepCapacity) || 1;
       let singleJeepPrice = 0;
       if (form.isHighSeason) {
-        singleJeepPrice = 2000000 + (form.includeDocumentation ? 600000 : 0);
+        singleJeepPrice = 2000000 + (form.includeDocumentation ? 500000 : 0);
       } else {
         singleJeepPrice = 1700000 + (form.includeDocumentation ? 500000 : 0);
       }
       basePrice = singleJeepPrice * jeepCount;
-    } else if (currentPkg.id === 'private-batu') {
-      const jeepCount = Math.ceil(form.paxCount / (form.includeDocumentation ? 5 : 6)) || 1;
+    } else if (
+      currentPkg.id === 'private-jeep-batu' ||
+      currentPkg.id === 'private-batu' ||
+      (currentPkg.category === 'private_trip' && currentPkg.startCity === 'batu')
+    ) {
+      // Door to Door Kota Wisata Batu: Shuttle + Jeep
+      const jeepCapacity = form.includeDocumentation ? 5 : 6;
+      const jeepCount = Math.ceil(form.paxCount / jeepCapacity) || 1;
       let singleJeepPrice = 0;
       if (form.isHighSeason) {
-        singleJeepPrice = 2100000 + (form.includeDocumentation ? 600000 : 0);
+        singleJeepPrice = 2100000 + (form.includeDocumentation ? 500000 : 0);
       } else {
         singleJeepPrice = 1800000 + (form.includeDocumentation ? 500000 : 0);
       }
       basePrice = singleJeepPrice * jeepCount;
-    } else if (currentPkg.id === 'private-surabaya') {
+    } else if (
+      currentPkg.id === 'private-jeep-surabaya' ||
+      currentPkg.id === 'private-surabaya' ||
+      (currentPkg.category === 'private_trip' && currentPkg.startCity === 'surabaya')
+    ) {
+      // VIP Surabaya: Tiered per-pax pricing (Dokumentasi Foto & Video SUDAH INCLUDE)
       let perPax = 570000;
-      if (form.isHighSeason) {
-        if (form.paxCount <= 2) perPax = 1600000;
-        else if (form.paxCount <= 4) perPax = 850000;
-        else if (form.paxCount <= 6) perPax = 620000;
-        else if (form.paxCount === 7) perPax = 750000;
-        else if (form.paxCount === 8) perPax = 700000;
-        else if (form.paxCount <= 10) perPax = 650000;
-        else if (form.paxCount <= 12) perPax = 520000;
-        else if (form.paxCount <= 14) perPax = 530000;
-        else if (form.paxCount <= 16) perPax = 500000;
-        else if (form.paxCount <= 18) perPax = 450000;
-        else perPax = 420000;
-      } else {
-        if (form.paxCount <= 2) perPax = 1550000;
-        else if (form.paxCount <= 4) perPax = 800000;
-        else if (form.paxCount <= 6) perPax = 570000;
-        else if (form.paxCount === 7) perPax = 700000;
-        else if (form.paxCount === 8) perPax = 650000;
-        else if (form.paxCount <= 10) perPax = 600000;
-        else if (form.paxCount <= 12) perPax = 470000;
-        else if (form.paxCount <= 14) perPax = 480000;
-        else if (form.paxCount <= 16) perPax = 450000;
-        else if (form.paxCount <= 18) perPax = 400000;
-        else perPax = 370000;
+      const isHigh = form.isHighSeason || form.dayType === 'highseason';
+      if (form.paxCount <= 2) perPax = 1550000;
+      else if (form.paxCount === 3) perPax = 1100000;
+      else if (form.paxCount === 4) perPax = 800000;
+      else if (form.paxCount === 5) perPax = 680000;
+      else if (form.paxCount === 6) perPax = 570000;
+      else if (form.paxCount === 7) perPax = 700000;
+      else if (form.paxCount === 8) perPax = 650000;
+      else if (form.paxCount <= 10) perPax = 600000;
+      else if (form.paxCount <= 12) perPax = 470000;
+      else if (form.paxCount <= 14) perPax = 480000;
+      else if (form.paxCount <= 16) perPax = 450000;
+      else if (form.paxCount <= 18) perPax = 400000;
+      else perPax = 370000;
+
+      if (isHigh) {
+        perPax += 50000;
       }
       basePrice = perPax * form.paxCount;
-    } else if (currentPkg.category === 'picnic') {
-      basePrice = currentPkg.price * form.paxCount;
-    } else if (currentPkg.category === 'trail') {
+    } else if (currentPkg.id === 'long-jeep') {
+      const isHigh = form.isHighSeason || form.dayType === 'highseason';
+      const unitCount = Math.ceil(form.paxCount / 9) || 1;
+      let singleUnitPrice = 1900000;
+      if (isHigh) {
+        singleUnitPrice = form.includeDocumentation ? 3000000 : 2650000;
+      } else if (form.dayType === 'weekend') {
+        singleUnitPrice = form.includeDocumentation ? 2500000 : 2150000;
+      } else {
+        singleUnitPrice = form.includeDocumentation ? 2100000 : 1900000;
+      }
+
+      let pickupFee = 0;
+      const shuttleCarsCount = Math.ceil(form.paxCount / 6) || 1;
+      if (form.pickupAreaExtra === 'malang') {
+        pickupFee = (isHigh ? 400000 : 300000) * shuttleCarsCount;
+      } else if (form.pickupAreaExtra === 'batu') {
+        pickupFee = (isHigh ? 500000 : 400000) * shuttleCarsCount;
+      }
+      basePrice = (singleUnitPrice * unitCount) + pickupFee;
+    } else if (currentPkg.category === 'picnic' || currentPkg.category === 'trail') {
       basePrice = currentPkg.price * form.paxCount;
     } else {
       const jeepCount = Math.ceil(form.paxCount / 6) || 1;
@@ -350,7 +400,7 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
   }
 
   // WNA foreign surcharge
-  const wnaSurcharge = form.wnaCount * (currentPkg.wnaChargePerPax || 255000);
+  const wnaSurcharge = (form.wnaCount || 0) * (currentPkg.wnaChargePerPax || 255000);
 
   // Drone Add-on (+Rp 1.500.000) for Private Trips
   const isPrivateTrip = currentPkg.category === 'private_trip' || currentPkg.category === 'long_jeep';
@@ -392,7 +442,7 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
       const minAllowed = isSbyMalang ? 2 : 0;
       const nextVal = Math.max(minAllowed, Math.min(50, prev.paxCount + delta));
       if (nextVal >= (isSbyMalang ? 2 : 1)) clearFieldError('paxCount');
-      const adjustedWna = Math.min(prev.wnaCount, nextVal);
+      const adjustedWna = Math.min(prev.wnaCount || 0, nextVal);
       return { ...prev, paxCount: nextVal, wnaCount: adjustedWna };
     });
   };
@@ -400,7 +450,7 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
   const updateWna = (delta: number) => {
     setForm((prev) => {
       const maxAllowed = prev.paxCount > 0 ? prev.paxCount : 50;
-      const nextVal = Math.max(0, Math.min(maxAllowed, prev.wnaCount + delta));
+      const nextVal = Math.max(0, Math.min(maxAllowed, (prev.wnaCount || 0) + delta));
       return { ...prev, wnaCount: nextVal };
     });
   };
@@ -453,12 +503,12 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
       `*Tanggal Perjalanan (Sunrise):* ${tripSchedule.sunriseDateFormatted || form.travelDate} (Pagi Hari)`,
       `*Jadwal Penjemputan (Pickup):* ${tripSchedule.pickupScheduleFull}`,
       `*Jumlah Peserta:* ${form.paxCount} ${currentPkg.category === 'trail' ? 'Unit Motor' : 'Orang'}`,
-      currentPkg.category !== 'trail' && currentPkg.id !== 'open-trip-surabaya' && currentPkg.id !== 'private-surabaya'
+      currentPkg.category !== 'trail' && currentPkg.id !== 'open-trip-surabaya' && currentPkg.id !== 'private-surabaya' && currentPkg.id !== 'private-jeep-surabaya'
         ? `*Paket Dokumentasi:* ${form.includeDocumentation ? 'Plus Foto & Video DSLR/Mirrorless' : 'Tanpa Dokumentasi'}`
         : null,
       form.includeDrone ? `*Add-on Drone Video Udara 4K:* Ya, Include Drone (+Rp 1.500.000)` : null,
       form.isHighSeason ? `*Status Musim:* High / Peak Season (${highSeasonCheck.seasonName || 'Tarif Khusus High Season'})` : null,
-      form.wnaCount > 0 ? `*Peserta Asing (WNA):* ${form.wnaCount} Orang (+Rp 255.000/org)` : null,
+      (form.wnaCount || 0) > 0 ? `*Peserta Asing (WNA):* ${form.wnaCount} Orang (+Rp 255.000/org)` : null,
       currentPkg.id === 'long-jeep' ? `*Tipe Hari:* ${form.dayType} | *Opsi Jemput:* ${form.pickupAreaExtra}` : null,
       `*Nama Pemesan:* ${form.fullName}`,
       `*Email (Untuk E-Tiket & Invoice):* ${form.email}`,
@@ -515,13 +565,13 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
       packageTitle: currentPkg ? currentPkg.title : 'Paket Wisata Bromo',
       packageId: currentPkg?.id,
       paxCount: form.paxCount,
-      wnaCount: form.wnaCount,
+      wnaCount: form.wnaCount || 0,
       pickupAddress: form.pickupAddress.trim(),
-      paymentMethod: form.paymentMethod,
+      paymentMethod: form.paymentMethod || 'bca',
       paymentProofName: '',
       grandTotal,
       downPayment: downPaymentEstimated,
-      specialNotes: form.specialNotes.trim() || '',
+      specialNotes: form.specialNotes?.trim() || '',
       includeDocumentation: form.includeDocumentation,
       includeDrone: form.includeDrone,
     };
@@ -574,14 +624,14 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
       packageTitle: currentPkg ? currentPkg.title : 'Paket Wisata Bromo',
       packageId: currentPkg?.id,
       paxCount: form.paxCount,
-      wnaCount: form.wnaCount,
+      wnaCount: form.wnaCount || 0,
       pickupAddress: form.pickupAddress.trim(),
-      paymentMethod: form.paymentMethod,
+      paymentMethod: form.paymentMethod || 'bca',
       paymentProofName: form.paymentProofName,
       paymentProofDataUrl: form.paymentProofPreview,
       grandTotal,
       downPayment: downPaymentEstimated,
-      specialNotes: form.specialNotes.trim() || '',
+      specialNotes: form.specialNotes?.trim() || '',
       includeDocumentation: form.includeDocumentation,
       includeDrone: form.includeDrone,
     };
@@ -1052,7 +1102,7 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
                   onChange={(e) => {
                     const newId = e.target.value;
                     setSelectedPkgId(newId);
-                    const chosen = packages.find((p) => p.id === newId);
+                    const chosen = safePackages.find((p) => p.id === newId);
                     if (chosen) {
                       const isSby = newId === 'open-trip-surabaya';
                       const sbySchedule = getOpenTripSurabayaSchedule(form.travelDate, form.isHighSeason);
@@ -1156,8 +1206,8 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
                       <div className="text-[10px] text-slate-500 font-bold uppercase">Tarif / Pax:</div>
                       <div className="font-mono font-black text-sm text-[#0996f5]">
                         {form.isHighSeason
-                          ? (openTripSbyInfo.isSaturday ? 'Rp 450.000' : 'Rp 425.000')
-                          : (openTripSbyInfo.isSaturday ? 'Rp 400.000' : 'Rp 375.000')}
+                          ? (openTripSbyInfo.isSaturday ? 'Rp 425.000' : 'Rp 800.000')
+                          : (openTripSbyInfo.isSaturday ? 'Rp 400.000' : 'Rp 750.000')}
                       </div>
                     </div>
                   </div>
@@ -1165,7 +1215,7 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
               )}
 
               {/* Documentation Toggle (DSLR / Mirrorless) */}
-              {currentPkg.category !== 'trail' && currentPkg.id !== 'open-trip-surabaya' && currentPkg.id !== 'private-surabaya' && (
+              {currentPkg.category !== 'trail' && currentPkg.id !== 'open-trip-surabaya' && currentPkg.id !== 'private-surabaya' && currentPkg.id !== 'private-jeep-surabaya' && (
                 <div className="p-3.5 bg-[#e5f4ff]/60 border border-[#0996f5]/20 rounded-2xl space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold text-[#102a56] flex items-center gap-1.5">
@@ -1175,7 +1225,7 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
                     <span className="text-[11px] font-bold text-[#0996f5]">
                       {currentPkg.category === 'open_trip' 
                         ? '+Rp 50.000 / org' 
-                        : (form.isHighSeason ? '+Rp 600.000 / grup (High Season)' : '+Rp 500.000 / grup')}
+                        : '+Rp 500.000 / armada (Foto & Video)'}
                     </span>
                   </div>
                   <div className="grid grid-cols-2 gap-2">
@@ -1467,9 +1517,9 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
                     <button
                       type="button"
                       onClick={() => updateWna(-1)}
-                      disabled={form.wnaCount <= 0}
+                      disabled={(form.wnaCount || 0) <= 0}
                       className={`w-7 h-7 rounded-md flex items-center justify-center text-xs font-bold transition-all cursor-pointer ${
-                        form.wnaCount <= 0
+                        (form.wnaCount || 0) <= 0
                           ? 'opacity-30 text-slate-400 bg-slate-100 cursor-not-allowed'
                           : 'bg-[#e5f4ff] text-[#102a56] hover:bg-[#0996f5] hover:text-white'
                       }`}
@@ -1478,7 +1528,7 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
                       <Minus className="w-3 h-3" />
                     </button>
                     <span className="w-6 text-center font-mono font-bold text-xs text-[#102a56]">
-                      {form.wnaCount}
+                      {form.wnaCount || 0}
                     </span>
                     <button
                       type="button"
@@ -1649,7 +1699,7 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
                     </span>
                   </div>
 
-                  {currentPkg.category !== 'trail' && currentPkg.id !== 'open-trip-surabaya' && currentPkg.id !== 'private-surabaya' && (
+                  {currentPkg.category !== 'trail' && currentPkg.id !== 'open-trip-surabaya' && currentPkg.id !== 'private-surabaya' && currentPkg.id !== 'private-jeep-surabaya' && (
                     <div className="flex justify-between text-slate-600">
                       <span>Dokumentasi:</span>
                       <span className="font-bold text-[#0996f5]">

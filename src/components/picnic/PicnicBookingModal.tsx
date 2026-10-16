@@ -84,7 +84,7 @@ export const PicnicBookingModal: React.FC<PicnicBookingModalProps> = ({
     if (packageItem.type === 'fixed') return true;
     if (!packageItem.selectionGroups || packageItem.selectionGroups.length === 0) return true;
     return packageItem.selectionGroups.every(
-      (group) => !!selectedMenuGroups[group.id]
+      (group) => !!selectedMenuGroups[group.id || '']
     );
   }, [packageItem, selectedMenuGroups]);
 
@@ -330,7 +330,7 @@ Mohon petunjuk transfer DP dan koordinasi persiapan acara. Terima kasih!`;
                     <MenuSelectionGroup
                       key={group.id}
                       group={group}
-                      selectedValue={selectedMenuGroups[group.id]}
+                      selectedValue={selectedMenuGroups[group.id || '']}
                       onSelect={handleSelectMenuItem}
                       groupIndex={idx + 1}
                     />

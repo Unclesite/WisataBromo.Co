@@ -47,7 +47,7 @@ export const PicnicPricingSummary: React.FC<PicnicPricingSummaryProps> = ({
       <div className="space-y-2 text-xs">
         <div className="flex items-center justify-between text-[#0B1220]">
           <span className="text-[#526273]">
-            Paket ({formatRupiah(pricing.packagePrice)} × {pricing.paxCount} pax):
+            Paket ({formatRupiah(pricing.packagePrice ?? packageItem.pricePerPax ?? 0)} × {pricing.paxCount ?? paxCount} pax):
           </span>
           <span className="font-mono font-bold">
             {formatRupiah(pricing.packageSubtotal)}

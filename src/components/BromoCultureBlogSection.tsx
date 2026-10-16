@@ -61,7 +61,7 @@ export const BromoCultureBlogSection: React.FC<BromoCultureBlogSectionProps> = (
                     />
                     <div className="absolute top-3 left-3">
                       <span className="px-2.5 py-1 bg-white/95 backdrop-blur-xs text-[#0996f5] text-[10px] font-black rounded-lg shadow-xs uppercase">
-                        {post.categoryLabel}
+                        {post.categoryLabel || post.tag}
                       </span>
                     </div>
                   </div>
@@ -70,7 +70,7 @@ export const BromoCultureBlogSection: React.FC<BromoCultureBlogSectionProps> = (
                 <div className="p-5 sm:p-6">
                   {/* Metadata line */}
                   <div className="flex items-center gap-2 text-xs text-slate-500 mb-2.5">
-                    <span>{post.publishDate}</span>
+                    <span>{post.publishDate || post.date}</span>
                     <span aria-hidden="true" className="text-slate-300">·</span>
                     <span>{post.readTime}</span>
                   </div>
@@ -80,7 +80,7 @@ export const BromoCultureBlogSection: React.FC<BromoCultureBlogSectionProps> = (
                   </h3>
 
                   <p className="text-xs text-[#111318]/75 line-clamp-3 leading-relaxed mb-4">
-                    {post.excerpt}
+                    {post.excerpt || post.summary}
                   </p>
 
                   {/* Key Takeaways preview */}
@@ -179,9 +179,9 @@ export const BromoCultureBlogSection: React.FC<BromoCultureBlogSectionProps> = (
               </button>
 
               <div className="flex items-center gap-2 text-xs text-[#0996f5] font-bold mb-2">
-                <span>{selectedPost.categoryLabel}</span>
+                <span>{selectedPost.categoryLabel || selectedPost.tag}</span>
                 <span aria-hidden="true" className="text-slate-300">·</span>
-                <span className="text-slate-600">{selectedPost.publishDate}</span>
+                <span className="text-slate-600">{selectedPost.publishDate || selectedPost.date}</span>
                 <span aria-hidden="true" className="text-slate-300">·</span>
                 <span className="text-slate-600">{selectedPost.readTime}</span>
               </div>
@@ -191,7 +191,7 @@ export const BromoCultureBlogSection: React.FC<BromoCultureBlogSectionProps> = (
               </h3>
 
               <p className="text-xs sm:text-sm text-[#111318]/75 mt-2">
-                {selectedPost.subtitle}
+                {selectedPost.subtitle || selectedPost.summary}
               </p>
 
               <div className="text-xs text-slate-500 mt-3 pt-3 border-t border-slate-200/80 flex items-center gap-1.5">
@@ -210,7 +210,7 @@ export const BromoCultureBlogSection: React.FC<BromoCultureBlogSectionProps> = (
                     <span>Rangkuman &amp; Poin Kunci:</span>
                   </div>
                   <ul className="space-y-1.5 text-xs text-[#111318]/90">
-                    {selectedPost.keyTakeaways.map((takeaway, idx) => (
+                    {(selectedPost.keyTakeaways || []).map((takeaway: string, idx: number) => (
                       <li key={idx} className="flex items-start gap-2">
                         <span className="text-[#0996f5] font-bold">•</span>
                         <span>{takeaway}</span>
@@ -236,7 +236,7 @@ export const BromoCultureBlogSection: React.FC<BromoCultureBlogSectionProps> = (
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-100">
-                        {selectedPost.ratesTable.map((row, i) => (
+                        {(selectedPost.ratesTable || []).map((row: any, i: number) => (
                           <tr key={i}>
                             <td className="p-2.5 font-bold text-[#102a56]">{row.item}</td>
                             <td className="p-2.5 font-mono text-[#0996f5] font-black">{row.price}</td>
@@ -251,7 +251,7 @@ export const BromoCultureBlogSection: React.FC<BromoCultureBlogSectionProps> = (
 
               {/* Full Content Paragraphs with Rich Layout */}
               <div className="space-y-4 text-xs sm:text-sm text-slate-700 leading-relaxed font-normal">
-                {selectedPost.content.map((paragraph, idx) => {
+                {(Array.isArray(selectedPost.content) ? selectedPost.content : [selectedPost.content]).map((paragraph: string, idx: number) => {
                   // Format 4 knots bullet items with distinctive badge
                   if (paragraph.startsWith('• Simpul')) {
                     const [knotLabel, meaning] = paragraph.replace('• ', '').split('→');
@@ -320,17 +320,17 @@ export const BromoCultureBlogSection: React.FC<BromoCultureBlogSectionProps> = (
                     <span>Dokumentasi Foto Budaya Bersarung Suku Tengger:</span>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {selectedPost.galleryImages.map((imgItem, idx) => (
+                    {(selectedPost.galleryImages || []).map((imgItem: any, idx: number) => (
                       <figure 
                         key={idx} 
                         className={`bg-white border border-slate-200 rounded-xl overflow-hidden shadow-2xs group ${
-                          idx === 0 || idx === selectedPost.galleryImages!.length - 1 ? 'sm:col-span-2' : ''
+                          idx === 0 || idx === (selectedPost.galleryImages?.length ?? 1) - 1 ? 'sm:col-span-2' : ''
                         }`}
                       >
                         <div className="relative overflow-hidden bg-slate-900">
                           <img
                             src={imgItem.url}
-                            alt={imgItem.alt}
+                            alt={imgItem.alt || 'Foto'}
                             className={`w-full object-cover object-center group-hover:scale-103 transition-transform duration-500 ${
                               idx === 0 ? 'h-52 sm:h-72' : 'h-44 sm:h-56'
                             }`}
@@ -354,7 +354,7 @@ export const BromoCultureBlogSection: React.FC<BromoCultureBlogSectionProps> = (
               {selectedPost.footnotes && selectedPost.footnotes.length > 0 && (
                 <div className="pt-4 border-t border-slate-100 text-xs text-slate-500 space-y-1">
                   <div className="font-bold text-slate-600 mb-1">Catatan Kaki:</div>
-                  {selectedPost.footnotes.map((fn, i) => (
+                  {(selectedPost.footnotes || []).map((fn: string, i: number) => (
                     <div key={i}>{fn}</div>
                   ))}
                 </div>
@@ -364,7 +364,7 @@ export const BromoCultureBlogSection: React.FC<BromoCultureBlogSectionProps> = (
               {selectedPost.references && selectedPost.references.length > 0 && (
                 <div className="pt-4 border-t border-slate-100 text-xs text-slate-500 space-y-1">
                   <div className="font-bold text-slate-600 mb-1">Referensi:</div>
-                  {selectedPost.references.map((rf, i) => (
+                  {(selectedPost.references || []).map((rf: string, i: number) => (
                     <div key={i}>• {rf}</div>
                   ))}
                 </div>
@@ -373,7 +373,7 @@ export const BromoCultureBlogSection: React.FC<BromoCultureBlogSectionProps> = (
               {/* Tags */}
               <div className="pt-4 border-t border-slate-100 flex flex-wrap items-center gap-1.5 text-xs text-slate-600">
                 <Tag className="w-3.5 h-3.5 text-slate-400 mr-1" />
-                {selectedPost.tags.map((tag, idx) => (
+                {(selectedPost.tags || (selectedPost.tag ? [selectedPost.tag] : [])).map((tag: string, idx: number) => (
                   <span
                     key={idx}
                     className="px-2.5 py-1 bg-slate-100 border border-slate-200 rounded-lg text-[11px] font-medium"

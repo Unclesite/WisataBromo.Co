@@ -61,7 +61,7 @@ export const QuantityMenuSelector: React.FC<QuantityMenuSelectorProps> = ({
 
       {/* Menu Options Grid with [-] Qty [+] */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-        {group.options.map((itemName) => {
+        {group.options.map((itemName: string) => {
           const qty = Number(currentQuantities[itemName]) || 0;
           const isSelected = qty > 0;
 

@@ -280,7 +280,7 @@ export const PackageDetailPage: React.FC<PackageDetailPageProps> = ({
                       <span>Fasilitas Termasuk (Include):</span>
                     </div>
                     <ul className="space-y-2 text-xs text-emerald-950">
-                      {Array.isArray(packageItem?.inclusions) && packageItem.inclusions.map((inc, i) => (
+                      {(packageItem.inclusions || packageItem.includes || []).map((inc: string, i: number) => (
                         <li key={i} className="flex items-start gap-2">
                           <span className="text-emerald-600 font-bold">✓</span>
                           <span>{inc}</span>
@@ -295,7 +295,7 @@ export const PackageDetailPage: React.FC<PackageDetailPageProps> = ({
                       <span>Tidak Termasuk (Exclude):</span>
                     </div>
                     <ul className="space-y-2 text-xs text-rose-950">
-                      {Array.isArray(packageItem?.exclusions) && packageItem.exclusions.map((exc, i) => (
+                      {(packageItem.exclusions || packageItem.excludes || []).map((exc: string, i: number) => (
                         <li key={i} className="flex items-start gap-2">
                           <span className="text-[#ea0610] font-bold">✕</span>
                           <span>{exc}</span>
@@ -329,7 +329,7 @@ export const PackageDetailPage: React.FC<PackageDetailPageProps> = ({
                 <div className="p-4 bg-[#e5f4ff] border border-[#0996f5]/25 rounded-2xl space-y-1.5">
                   <div className="text-xs font-bold text-[#0996f5]">Wilayah Jemput:</div>
                   <div className="text-xs sm:text-sm text-[#111318] leading-relaxed font-semibold">
-                    {packageItem.meetingPoint}
+                    {packageItem.meetingPoint || packageItem.meetingPoints?.join(', ') || packageItem.startLocationName}
                   </div>
                 </div>
 
@@ -404,14 +404,19 @@ export const PackageDetailPage: React.FC<PackageDetailPageProps> = ({
               )}
 
               {/* Pricing Tiers if private surabaya */}
-              {packageItem.pricingTiers && (
-                <div className="p-3 bg-slate-50 rounded-xl space-y-1.5 text-[11px] border border-slate-200">
-                  <div className="font-bold text-[#111318]">Tarif Tier per Peserta:</div>
-                  <div className="grid grid-cols-2 gap-1 text-slate-600 font-medium">
-                    <div>2 Pax: Rp 1.550rb/org</div>
-                    <div>4 Pax: Rp 800rb/org</div>
-                    <div>6 Pax: Rp 570rb/org</div>
-                    <div>&gt;10 Pax: Rp 470rb/org</div>
+              {Array.isArray(packageItem.pricingTiers) && packageItem.pricingTiers.length > 0 && (
+                <div className="p-3.5 bg-[#e5f4ff]/50 rounded-xl space-y-2 text-[11px] border border-[#0996f5]/25">
+                  <div className="font-black text-[#102a56] flex items-center justify-between">
+                    <span>Tabel Tarif Bertingkat per Orang:</span>
+                    <span className="text-[10px] text-[#0996f5] font-bold">Semakin Banyak Semakin Hemat</span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-1.5 text-slate-700 font-semibold text-[11px]">
+                    {packageItem.pricingTiers.map((tier: any, idx: number) => (
+                      <div key={idx} className="bg-white px-2 py-1.5 rounded-lg border border-slate-200/80 flex items-center justify-between">
+                        <span className="text-slate-600 font-bold">{tier.pax}:</span>
+                        <span className="font-mono font-black text-[#0996f5]">{tier.price}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               )}

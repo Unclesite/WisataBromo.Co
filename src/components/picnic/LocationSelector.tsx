@@ -96,7 +96,7 @@ export const LocationSelector: React.FC<LocationSelectorProps> = ({
                       Transport &amp; Property
                     </div>
                     <div className={`font-mono font-black ${isAvailable ? 'text-[#0996F5]' : 'text-slate-500'}`}>
-                      {formatRupiah(loc.transportFee)}
+                      {formatRupiah(loc.transportFee ?? loc.price ?? 0)}
                     </div>
                   </div>
 

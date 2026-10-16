@@ -8,6 +8,8 @@ export interface CalculatePicnicPricingParams {
 }
 
 export interface PicnicPricingResult {
+  packagePrice: number;
+  paxCount: number;
   packageSubtotal: number;
   surcharge: number;
   locationFee: number;
@@ -31,7 +33,8 @@ export function calculatePicnicPricing({
   selectedAddons = []
 }: CalculatePicnicPricingParams): PicnicPricingResult {
   const safePax = Math.max(1, paxCount || 1);
-  const packageSubtotal = (packageItem?.pricePerPax || 0) * safePax;
+  const packagePrice = packageItem?.pricePerPax || 0;
+  const packageSubtotal = packagePrice * safePax;
 
   // Surcharge adjustment for small groups (below 4 pax)
   let surcharge = 0;
@@ -44,7 +47,7 @@ export function calculatePicnicPricing({
   }
 
   // Location fee / transport surcharge if applicable
-  const locationFee = Number(location?.price || 0);
+  const locationFee = Number(location?.price ?? location?.transportFee ?? 0);
 
   // Addons total
   const addonsSubtotal = (selectedAddons || []).reduce((sum, addon) => {
@@ -55,6 +58,8 @@ export function calculatePicnicPricing({
   const downPayment = Math.round(grandTotal * 0.3);
 
   return {
+    packagePrice,
+    paxCount: safePax,
     packageSubtotal,
     surcharge,
     locationFee,

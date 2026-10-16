@@ -4,7 +4,6 @@ import path from 'node:path';
 try {
   const rootDir = process.cwd();
   const distDir = path.resolve(rootDir, 'dist');
-  const distEntries = fs.existsSync(distDir) ? fs.readdirSync(distDir) : [];
   const publicDir = path.resolve(rootDir, 'public');
   const srcDir = path.resolve(rootDir, 'src');
   const publicSrcDir = path.resolve(publicDir, 'src');
@@ -22,9 +21,32 @@ try {
   }
 
   // 3. Clean up any accidental nested dist directories
-  if (fs.existsSync(publicDistDir)) {
-    fs.rmSync(publicDistDir, { recursive: true, force: true });
+  const nestedDist = path.resolve(publicDistDir, 'dist');
+  if (fs.existsSync(nestedDist)) {
+    fs.rmSync(nestedDist, { recursive: true, force: true });
   }
+
+  // 4. Sync compiled dist/ to public/dist/
+  if (fs.existsSync(distDir)) {
+    if (!fs.existsSync(publicDistDir)) {
+      fs.mkdirSync(publicDistDir, { recursive: true });
+    }
+    const distEntries = fs.readdirSync(distDir);
+    for (const entry of distEntries) {
+      if (entry === 'dist') continue;
+      const srcPath = path.resolve(distDir, entry);
+      const destPath = path.resolve(publicDistDir, entry);
+      fs.cpSync(srcPath, destPath, { recursive: true, force: true });
+    }
+
+    // Clean up unnecessary config files from dist folders so Vite doesn't trigger cache invalidation
+    const unneededInDist = ['tsconfig.json', 'vite.config.ts', 'vite.config.js', 'package.json'];
+    for (const f of unneededInDist) {
+      const p1 = path.resolve(publicDistDir, f);
+      const p2 = path.resolve(distDir, f);
+      if (fs.existsSync(p1)) fs.rmSync(p1, { force: true });
+      if (fs.existsSync(p2)) fs.rmSync(p2, { force: true });
+    }
 
     // 5. Position build output (index.html & assets/) parallel to public/server.js and public/package.json
     const distAssets = path.resolve(distDir, 'assets');
@@ -68,23 +90,21 @@ try {
     }
 
     console.log('✅ [Hostinger Sync] Production bundle synchronized to public/ root (flat layout)');
-
-  // 7. Synchronize production server files to public/ for self-contained Hostinger deployment
-  // CRITICAL: NEVER overwrite public/server.js if it already exists, as it is custom-configured for Hostinger Node.js
-  const rootServerJs = path.resolve(rootDir, 'server.js');
-  const publicServerJs = path.resolve(publicDir, 'server.js');
-  if (!fs.existsSync(publicServerJs) && fs.existsSync(rootServerJs)) {
-    fs.copyFileSync(rootServerJs, publicServerJs);
-    console.log('✅ [Hostinger Sync] Created initial public/server.js');
-  } else {
-    console.log('✅ [Hostinger Sync] Preserved existing production public/server.js');
   }
 
-  // Hostinger alternative entry points (app.js & index.js) - safe CommonJS require
+  // 7. Synchronize production server files to public/ for self-contained Hostinger deployment
+  const rootServerJs = path.resolve(rootDir, 'server.js');
+  const publicServerJs = path.resolve(publicDir, 'server.js');
+  if (fs.existsSync(rootServerJs)) {
+    fs.copyFileSync(rootServerJs, publicServerJs);
+    console.log('✅ [Hostinger Sync] server.js synchronized to public/server.js');
+  }
+
+  // Hostinger entry points
   const publicAppJs = path.resolve(publicDir, 'app.js');
-  fs.writeFileSync(publicAppJs, "require('./server.js');\n");
+  fs.writeFileSync(publicAppJs, "import './server.js';\n");
   const publicIndexJs = path.resolve(publicDir, 'index.js');
-  fs.writeFileSync(publicIndexJs, "require('./server.js');\n");
+  fs.writeFileSync(publicIndexJs, "import './server.js';\n");
 
   // Sync .htaccess and .env.example
   const rootHtaccess = path.resolve(rootDir, '.htaccess');
@@ -100,8 +120,8 @@ try {
   }
 
   // Sync root image assets
-  const brandFiles = fs.readdirSync(rootDir);
-  for (const f of brandFiles) {
+  const rootFiles = fs.readdirSync(rootDir);
+  for (const f of rootFiles) {
     if (f.startsWith('wisatabromo-') && (f.endsWith('.png') || f.endsWith('.svg'))) {
       const srcF = path.resolve(rootDir, f);
       const destF = path.resolve(publicDir, f);

@@ -1,13 +1,9 @@
-export interface TnbtsSpot {
-  name: string;
-  status: string;
-  open: boolean;
-}
-
 export interface TnbtsGate {
   name: string;
   status: string;
-  route: string;
+  description: string;
+  accessibleBy: string;
+  route?: string;
 }
 
 export interface TnbtsStatusData {
@@ -19,8 +15,9 @@ export interface TnbtsStatusData {
   lastCheckedDate: string;
   isOpen: boolean;
   notes: string;
-  allowedSpots: TnbtsSpot[];
+  allowedSpots: string[];
   gates: TnbtsGate[];
+  activityLevel?: string;
 }
 
 export const getOfficialTnbtsStatus = (): TnbtsStatusData => {
@@ -36,20 +33,45 @@ export const getOfficialTnbtsStatus = (): TnbtsStatusData => {
       year: 'numeric'
     }) + ' - Live Official TNBTS',
     isOpen: true,
+    activityLevel: 'Aman untuk Kunjungan Wisatawan',
     notes: 'Seluruh akses pintu masuk dari Malang, Pasuruan, Probolinggo, dan Lumajang beroperasi normal 24 jam.',
     allowedSpots: [
-      { name: 'Puncak Penanjakan 1 (Sunrise View)', status: 'Buka Normal', open: true },
-      { name: 'Bukit Kingkong & Bukit Cinta', status: 'Buka Normal', open: true },
-      { name: 'Lautan Pasir & Pura Luhur Poten', status: 'Buka Normal', open: true },
-      { name: 'Kawah Bromo (Radius Aman 1 KM)', status: 'Buka Terbatas (Aman)', open: true },
-      { name: 'Savana Bukit Teletubbies & Pasir Berbisik', status: 'Buka Normal', open: true },
-      { name: 'Lembah Widodaren & Seruni Point', status: 'Buka Normal', open: true }
+      'Puncak Penanjakan 1 (Sunrise View)',
+      'Bukit Kingkong & Bukit Cinta',
+      'Lautan Pasir & Seruni Point',
+      'Kawah Bromo (Radius Aman 1 KM)',
+      'Savana Bukit Teletubbies & Pasir Berbisik',
+      'Lembah Widodaren & Seruni Point'
     ],
     gates: [
-      { name: 'Pintu Cemorolawang (Sukapura, Probolinggo)', status: 'Buka 24 Jam', route: 'Jalur Utama Jeep & Wisatawan' },
-      { name: 'Pintu Wonokitri (Tosari, Pasuruan)', status: 'Buka 24 Jam', route: 'Akses Cepat dari Surabaya & Tol Paspro' },
-      { name: 'Pintu Coban Trisula (Tumpang, Malang)', status: 'Buka 24 Jam', route: 'Rute Open Trip & Savana Selatan' },
-      { name: 'Pintu Senduro (Klakah, Lumajang)', status: 'Buka 24 Jam', route: 'Akses Bromo via Ranu Pani' }
+      { 
+        name: 'Pintu Cemorolawang (Sukapura, Probolinggo)', 
+        status: 'Buka 24 Jam', 
+        description: 'Jalur utama wisatawan & rental jeep terdekat dari Surabaya/Malang.',
+        accessibleBy: 'Jeep 4x4, Mobil Pribadi, Sepeda Motor',
+        route: 'Jalur Utama Jeep & Wisatawan'
+      },
+      { 
+        name: 'Pintu Wonokitri (Tosari, Pasuruan)', 
+        status: 'Buka 24 Jam', 
+        description: 'Akses cepat dari Surabaya & Tol Paspro via Pasuruan.',
+        accessibleBy: 'Jeep 4x4, Mobil Pribadi, Sepeda Motor',
+        route: 'Akses Cepat dari Surabaya & Tol Paspro'
+      },
+      { 
+        name: 'Pintu Coban Trisula (Tumpang, Malang)', 
+        status: 'Buka 24 Jam', 
+        description: 'Rute Open Trip Malang via Tumpang menuju Savana Teletubbies.',
+        accessibleBy: 'Jeep 4x4 TNBTS Resmi',
+        route: 'Rute Open Trip & Savana Selatan'
+      },
+      { 
+        name: 'Pintu Senduro (Klakah, Lumajang)', 
+        status: 'Buka 24 Jam', 
+        description: 'Akses eksotis dari Lumajang via Ranu Pane & Burno.',
+        accessibleBy: 'Jeep 4x4, Sepeda Motor Trail',
+        route: 'Akses Bromo via Ranu Pani'
+      }
     ]
   };
 };
@@ -59,3 +81,5 @@ export const tnbtsStatusService = {
     return getOfficialTnbtsStatus();
   }
 };
+
+export default tnbtsStatusService;

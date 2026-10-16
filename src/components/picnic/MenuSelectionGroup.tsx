@@ -51,7 +51,7 @@ export const MenuSelectionGroup: React.FC<MenuSelectionGroupProps> = ({
             <button
               key={option}
               type="button"
-              onClick={() => onSelect(group.id, option)}
+              onClick={() => onSelect(group.id || '', option)}
               className={`p-3 rounded-xl border text-left flex items-center justify-between gap-3 transition-all cursor-pointer min-h-[46px] ${
                 isSelected
                   ? 'border-[#0996F5] bg-[#EAF6FF] text-[#0B1220] shadow-xs'

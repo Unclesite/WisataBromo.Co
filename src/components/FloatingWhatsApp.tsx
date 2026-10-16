@@ -2,22 +2,36 @@ import React from 'react';
 
 /**
  * Floating WhatsApp Bubble Component for WisataBromo.co
- * Always visible immediately on mobile (320px - 430px) and desktop.
+ * Always visible immediately on mobile and desktop without obstructing booking buttons.
  * Connects directly to CS WhatsApp 081222290318 with formatted inquiry message.
  */
 
 const WA_PHONE = '6281222290318';
 const WA_MESSAGE = `Halo WisataBromo.co 👋\n\nSaya tertarik dengan paket wisata Gunung Bromo. 😊\n\nBoleh minta informasi mengenai pilihan paket wisata, harga, fasilitas, dan jadwal keberangkatan yang tersedia?\n\nTerima kasih.`;
 
-export const FloatingWhatsApp: React.FC = () => {
+export interface FloatingWhatsAppProps {
+  hasBottomBar?: boolean;
+  hidden?: boolean;
+}
+
+export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({
+  hasBottomBar = false,
+  hidden = false,
+}) => {
+  if (hidden) return null;
+
   const waUrl = `https://wa.me/${WA_PHONE}?text=${encodeURIComponent(WA_MESSAGE)}`;
 
   return (
     <div
-      className="fixed z-[9999] pointer-events-auto"
+      className={`fixed z-35 pointer-events-auto transition-all duration-300 ${
+        hasBottomBar
+          ? 'bottom-[84px] sm:bottom-6 right-3 sm:right-6'
+          : 'bottom-4 sm:bottom-6 right-3 sm:right-6'
+      }`}
       style={{
-        right: 'calc(16px + env(safe-area-inset-right, 0px))',
-        bottom: 'calc(20px + env(safe-area-inset-bottom, 0px))',
+        paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+        paddingRight: 'env(safe-area-inset-right, 0px)',
       }}
     >
       <a
@@ -25,10 +39,10 @@ export const FloatingWhatsApp: React.FC = () => {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat WhatsApp CS WisataBromo.co"
-        className="group relative flex items-center gap-2 bg-[#25D366] hover:bg-[#20ba59] active:scale-95 text-white rounded-full transition-all duration-200 ease-out focus:outline-none focus:ring-4 focus:ring-[#25D366]/40 cursor-pointer shadow-lg px-3 py-2.5 sm:px-4 sm:py-3 select-none"
+        className="group relative flex items-center gap-2 bg-[#25D366] hover:bg-[#20ba59] active:scale-95 text-white rounded-full transition-all duration-200 ease-out focus:outline-none focus:ring-4 focus:ring-[#25D366]/40 cursor-pointer shadow-lg px-3.5 py-2.5 sm:px-4 sm:py-3 select-none"
         style={{
           boxShadow: '0 8px 24px -2px rgba(37, 211, 102, 0.5), 0 4px 10px -2px rgba(7, 26, 43, 0.2)',
-          minHeight: '52px',
+          minHeight: '48px',
         }}
       >
         {/* Subtle Online Pulse Indicator Ring */}
@@ -38,9 +52,9 @@ export const FloatingWhatsApp: React.FC = () => {
         </span>
 
         {/* WhatsApp Official Clean Vector Icon */}
-        <div className="w-8 h-8 flex items-center justify-center shrink-0">
+        <div className="w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center shrink-0">
           <svg
-            className="w-7 h-7 fill-white drop-shadow-sm"
+            className="w-6 h-6 sm:w-7 sm:h-7 fill-white drop-shadow-xs"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
             aria-hidden="true"
@@ -59,7 +73,7 @@ export const FloatingWhatsApp: React.FC = () => {
           </span>
         </div>
 
-        {/* Mobile text label (Fits gracefully on 320px–430px) */}
+        {/* Mobile text label (Directly visible, clean, touch-friendly) */}
         <span className="inline-block sm:hidden text-xs font-black tracking-tight text-white pr-0.5 whitespace-nowrap">
           Chat WA
         </span>

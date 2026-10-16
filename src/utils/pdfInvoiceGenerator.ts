@@ -19,7 +19,7 @@ export const generateBookingInvoicePDF = (
     startCity: form.startCity || pkg.startCity,
     packageId: pkg.id,
     pickupAddress: form.pickupAddress,
-    pickupAreaExtra: form.pickupAreaExtra,
+    pickupAreaExtra: form.pickupAreaExtra as 'batu' | 'malang' | 'none' | undefined,
   });
   checkIsHighSeason(form.travelDate);
 
@@ -133,7 +133,8 @@ export const generateBookingInvoicePDF = (
   // Rows
   y += 7;
   const droneAmount = form.includeDrone ? 1500000 : 0;
-  const wnaAmount = form.wnaCount * 255000;
+  const wnaCount = form.wnaCount || 0;
+  const wnaAmount = wnaCount * 255000;
   const baseTripSubtotal = totalPrice - wnaAmount - droneAmount;
 
   const rows = [
@@ -152,10 +153,10 @@ export const generateBookingInvoicePDF = (
     });
   }
 
-  if (form.wnaCount > 0) {
+  if (wnaCount > 0) {
     rows.push({
       item: 'Surcharge Tiket Masuk TNBTS Wisatawan Asing (WNA / Foreigner)',
-      qty: `${form.wnaCount} Pax`,
+      qty: `${wnaCount} Pax`,
       subtotal: formatRupiah(wnaAmount),
     });
   }

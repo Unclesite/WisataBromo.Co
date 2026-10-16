@@ -12,10 +12,10 @@ export const DESTINATION_SPOTS: DestinationSpot[] = [
   },
   {
     id: 'kawah-bromo',
-    name: 'Kawah Aktif Bromo & Pura Poten',
+    name: 'Kawah Aktif Bromo & Seruni Point',
     elevation: '2.329 mdpl',
     bestTime: '06:30 - 08:30 WIB',
-    speciality: 'Kawah berapi aktif dengan 250 anak tangga beton & Pura Luhur Poten di kaki gunung.',
+    speciality: 'Kawah berapi aktif dengan 250 anak tangga beton & Seruni Point di kaki gunung.',
     description: 'Mendengarkan gemuruh vulkanik langsung dari bibir kawah berdiameter 800 meter. Anda bisa berjalan kaki melintasi kaldera berpasir atau menyewa kuda poni lokal.',
     iconName: 'Flame'
   },
