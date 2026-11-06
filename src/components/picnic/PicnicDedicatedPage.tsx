@@ -19,6 +19,7 @@ import { LocationSelector } from './LocationSelector';
 import { DecorationColorSelector } from './DecorationColorSelector';
 import { PaxSelector } from './PaxSelector';
 import { AddonSelector } from './AddonSelector';
+import { Footer } from '../Footer';
 import { saveBookingToFirestore, updateBookingInFirestore } from '../../services/firestoreBookingService';
 import { triggerBookingEmailNotification } from '../../services/emailNotificationService';
 import imgPicnicSavana from '../../assets/images/bromo_picnic_experience_aesthetic.png';
@@ -37,6 +38,56 @@ export const PicnicDedicatedPage: React.FC<PicnicDedicatedPageProps> = ({
   onOpenJeepBooking
 }) => {
   const { language, t } = useLanguage();
+
+  const getLocalizedPackage = (pkg: PicnicPackage) => {
+    if (language === 'en') {
+      return {
+        ...pkg,
+        name: pkg.id === 'paket-1' ? 'Package 1 (Breakfast & Snacks)'
+            : pkg.id === 'paket-2' ? 'Package 2 (Lunch Specialties)'
+            : pkg.id === 'paket-3' ? 'Package 3 (Best Value Complete Feast)'
+            : pkg.id === 'paket-4' ? 'Package 4 (Main Course Express)'
+            : pkg.id === 'paket-bbq' ? 'BBQ Grill Package'
+            : pkg.id === 'paket-bbq-suki' ? 'BBQ + Steamboat Suki'
+            : pkg.id === 'paket-ngemie' ? 'Ngemie Package (Noodles & Chicken)'
+            : pkg.id === 'paket-ultimate' ? 'Ultimate Luxury VIP Package'
+            : pkg.name,
+        shortDescription: pkg.id === 'paket-1' ? 'Relaxing breakfast option combining 2 savory snacks and warm beverages.'
+            : pkg.id === 'paket-2' ? 'Complete lunch featuring East Javanese specialties, warm snacks, and cold beverages.'
+            : pkg.id === 'paket-3' ? 'Our most popular complete feast: main course, snacks, sweet desserts, and beverages.'
+            : pkg.id === 'paket-4' ? 'Practical & filling choice: hot Indonesian main course with choice of drinks.'
+            : pkg.id === 'paket-bbq' ? 'Savor sizzling marinated premium beef & chicken slices in cold caldera air.'
+            : pkg.id === 'paket-bbq-suki' ? 'Combine sizzling BBQ grilling with hot Tomyum & broth steamboat hotpot.'
+            : pkg.id === 'paket-ngemie' ? 'Legendary Indomie noodles in cold Bromo air served with fried chicken, egg, and rice.'
+            : pkg.id === 'paket-ultimate' ? 'Most lavish picnic feast: snacks, main courses, BBQ grill, desserts, and free-flow drinks.'
+            : pkg.shortDescription
+      };
+    } else if (language === 'zh') {
+      return {
+        ...pkg,
+        name: pkg.id === 'paket-1' ? '1号套餐（风味早餐）'
+            : pkg.id === 'paket-2' ? '2号套餐（正宗午餐）'
+            : pkg.id === 'paket-3' ? '3号套餐（超值全能宴）'
+            : pkg.id === 'paket-4' ? '4号套餐（精选主食）'
+            : pkg.id === 'paket-bbq' ? 'BBQ 烤肉套餐'
+            : pkg.id === 'paket-bbq-suki' ? 'BBQ 烤肉 + 寿喜烧火锅'
+            : pkg.id === 'paket-ngemie' ? 'Ngemie 国民拉面套餐'
+            : pkg.id === 'paket-ultimate' ? 'Ultimate 奢华尊享 VIP 套餐'
+            : pkg.name,
+        shortDescription: pkg.id === 'paket-1' ? '轻松惬意的早餐选择，结合2款咸甜点心与热饮。'
+            : pkg.id === 'paket-2' ? '正宗印尼特色午餐，搭配温暖小吃与清凉饮品。'
+            : pkg.id === 'paket-3' ? '最受欢迎的全能美食盛宴：主食、小吃、甜点与特饮一应俱全。'
+            : pkg.id === 'paket-4' ? '实惠暖胃之选：热气腾腾的印尼经典主食与特调饮品。'
+            : pkg.id === 'paket-bbq' ? '在高原清凉空气中现场炙烤特调腌制牛肉片与鸡肉片。'
+            : pkg.id === 'paket-bbq-suki' ? '烤肉与冬阴功/高汤鲜美火锅双重美食享受。'
+            : pkg.id === 'paket-ngemie' ? '高寒火山地带品尝印尼传奇方便面、炸鸡、煎蛋与白饭。'
+            : pkg.id === 'paket-ultimate' ? '最高规格奢华野餐盛宴：6款小吃、4款主食、BBQ、甜点及畅饮。'
+            : pkg.shortDescription
+      };
+    }
+    return pkg;
+  };
+
   // 1. Selection State
   const [selectedPackage, setSelectedPackage] = useState<PicnicPackage>(PICNIC_PACKAGES[0]);
   const [paxCount, setPaxCount] = useState<number>(PICNIC_PACKAGES[0].minPax || 4);
@@ -128,7 +179,6 @@ export const PicnicDedicatedPage: React.FC<PicnicDedicatedPageProps> = ({
         return prev.filter(a => a.id !== addon.id);
       } else {
         if (addon.category === 'birthday') {
-          // Replace previous birthday tier so only 1 tier is active, keeping tent intact!
           const withoutBirthday = prev.filter(a => a.category !== 'birthday');
           return [...withoutBirthday, addon];
         }
@@ -216,19 +266,16 @@ export const PicnicDedicatedPage: React.FC<PicnicDedicatedPageProps> = ({
     e.preventDefault();
     setSubmissionError(null);
 
-    // 1. Validate menus
     if (!menuValidation.isValid) {
       setSubmissionError(menuValidation.errors[0] || 'Mohon lengkapi porsi pilihan makanan & minuman.');
       return;
     }
 
-    // 2. Validate location
     if (!selectedLocation || !selectedLocation.active) {
       setSubmissionError('Silakan pilih lokasi piknik yang aktif (View Bromo atau Widodaren).');
       return;
     }
 
-    // 3. Validate form fields
     if (!fullName.trim() || fullName.trim().length < 2) {
       setSubmissionError('Nama lengkap wajib diisi minimal 2 karakter.');
       return;
@@ -249,7 +296,6 @@ export const PicnicDedicatedPage: React.FC<PicnicDedicatedPageProps> = ({
     setIsSubmitting(true);
     const bookingCode = generateBookingCode();
 
-    // Prepare structured selected menus
     const structuredSelectedMenus: Record<string, SelectedMenuItemQuantity[]> = {};
     const flatSelectedItemsList: string[] = [];
 
@@ -356,7 +402,6 @@ export const PicnicDedicatedPage: React.FC<PicnicDedicatedPageProps> = ({
 
     setIsUploadingProof(true);
     try {
-      // Prepare structured selected menus & items
       const structuredSelectedMenus: Record<string, SelectedMenuItemQuantity[]> = {};
       const flatSelectedItemsList: string[] = [];
 
@@ -380,7 +425,6 @@ export const PicnicDedicatedPage: React.FC<PicnicDedicatedPageProps> = ({
         details: a.category === 'birthday' ? birthdayDetails : undefined
       }));
 
-      // 1. Update Firestore
       await updateBookingInFirestore(createdBookingCode, {
         status: 'DP_SUBMITTED',
         paymentProofName,
@@ -390,7 +434,6 @@ export const PicnicDedicatedPage: React.FC<PicnicDedicatedPageProps> = ({
         addons: addonsPayload
       });
 
-      // 2. Dispatch email notification with payment proof & complete menu selections
       await triggerBookingEmailNotification({
         bookingCode: createdBookingCode,
         bookingType: 'PICNIC',
@@ -481,6 +524,8 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
     });
   };
 
+  const activePackage = getLocalizedPackage(selectedPackage);
+
   return (
     <div className="min-h-screen bg-[#F8FAFC] text-[#0B1220]">
       
@@ -493,7 +538,7 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
             className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-[#0996F5] hover:text-[#071A2B] transition-colors py-2 px-3 rounded-xl hover:bg-[#EAF6FF] cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>{t('picnic.backToHome', 'Kembali ke Beranda')}</span>
+            <span>{t('picnicPage.backToHome', t('picnic.backToHome', 'Kembali ke Beranda'))}</span>
           </button>
 
           <div className="flex items-center gap-2">
@@ -502,7 +547,7 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
             </span>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EAF6FF] border border-[#0996F5]/20 text-[#0996F5] text-xs font-black">
               <Sparkles className="w-3.5 h-3.5 text-[#FFF700] fill-[#FFF700]" />
-              <span>{t('picnic.title', 'Bromo Picnic Experience')}</span>
+              <span>{t('picnicPage.heroTitle', 'Bromo Picnic Experience')}</span>
             </div>
           </div>
         </div>
@@ -510,7 +555,7 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
 
       {/* Main Content View */}
       {bookingSuccess ? (
-        /* ================= STEP 8: SUCCESS & PAYMENT INSTRUCTIONS ================= */
+        /* ================= SUCCESS & PAYMENT INSTRUCTIONS ================= */
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12">
           <div className="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden p-6 sm:p-10">
             
@@ -520,10 +565,10 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                 <CheckCircle2 className="w-10 h-10" />
               </div>
               <span className="text-xs font-black text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full uppercase tracking-wider border border-emerald-200">
-                Pemesanan Berhasil Terdaftar
+                {t('picnicPage.successBadge', 'Pemesanan Berhasil Terdaftar')}
               </span>
               <h1 className="text-2xl sm:text-3xl font-black text-[#0B1220] mt-3">
-                Detail Pembayaran &amp; Instruksi DP
+                {t('picnicPage.successTitle', 'Detail Pembayaran & Instruksi DP')}
               </h1>
               <p className="text-xs sm:text-sm text-[#526273] mt-2">
                 Terima kasih, <strong>{fullName}</strong>. Data reservasi Anda telah tersimpan di sistem resmi WisataBromo.co dan notifikasi telah dikirimkan ke <strong>{email}</strong>.
@@ -534,7 +579,7 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
             <div className="p-4 sm:p-5 bg-[#EAF6FF] rounded-2xl border border-[#0996F5]/30 flex flex-col sm:flex-row items-center justify-between gap-3 mb-8">
               <div>
                 <div className="text-[11px] font-bold text-[#0996F5] uppercase tracking-wider">
-                  Kode Reservasi Unik
+                  {t('picnicPage.bookingCodeLabel', 'Kode Reservasi Unik')}
                 </div>
                 <div className="font-mono font-black text-xl sm:text-2xl text-[#071A2B]">
                   {createdBookingCode}
@@ -545,10 +590,9 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                   type="button"
                   onClick={handleDownloadPicnicInvoice}
                   className="px-3.5 py-2 rounded-xl bg-[#0996F5] text-white hover:bg-[#071A2B] font-bold text-xs transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95"
-                  title="Unduh Invoice Resmi dalam format PDF"
                 >
                   <Download className="w-4 h-4 text-[#FFF700]" />
-                  <span>Download Invoice</span>
+                  <span>{t('picnicPage.downloadInvoice', 'Download Invoice')}</span>
                 </button>
                 <button
                   type="button"
@@ -556,7 +600,7 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                   className="px-3.5 py-2 rounded-xl bg-white text-[#0996F5] font-bold text-xs border border-[#0996F5]/20 hover:bg-[#EAF6FF] transition-colors flex items-center gap-1.5 cursor-pointer shadow-2xs"
                 >
                   {copiedAccount === 'code' ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
-                  <span>{copiedAccount === 'code' ? 'Tersalin' : 'Salin Kode'}</span>
+                  <span>{copiedAccount === 'code' ? t('picnicPage.copied', 'Tersalin') : t('picnicPage.copyCode', 'Salin Kode')}</span>
                 </button>
               </div>
             </div>
@@ -564,10 +608,10 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
             {/* Financial Summary */}
             <div className="bg-slate-50 rounded-2xl p-4 sm:p-6 border border-slate-200 mb-8 space-y-2.5">
               <h3 className="text-xs font-black text-slate-500 uppercase tracking-wider mb-2">
-                Rincian Pembayaran
+                {t('picnicPage.paymentDetailsTitle', 'Rincian Pembayaran')}
               </h3>
               <div className="flex justify-between text-xs sm:text-sm">
-                <span className="text-slate-600">Paket: {selectedPackage.name} ({paxCount} Pax)</span>
+                <span className="text-slate-600">Paket: {activePackage.name} ({paxCount} Pax)</span>
                 <span className="font-semibold">{formatRupiah(pricing.packageSubtotal)}</span>
               </div>
               {pricing.surcharge > 0 && (
@@ -577,36 +621,36 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                 </div>
               )}
               <div className="flex justify-between text-xs sm:text-sm">
-                <span className="text-slate-600">Transport Logistik ({selectedLocation.name})</span>
+                <span className="text-slate-600">{t('picnicPage.transportFeeLabel', 'Transport Logistik')} ({selectedLocation.name})</span>
                 <span className="font-semibold">{formatRupiah(pricing.locationFee)}</span>
               </div>
               <div className="flex justify-between text-xs sm:text-sm">
-                <span className="text-slate-600">Warna Dekorasi</span>
-                <span className="font-semibold text-[#0996F5]">{selectedDecorationColor} (Termasuk)</span>
+                <span className="text-slate-600">{t('picnicPage.colorLabel', 'Warna Dekorasi:')}</span>
+                <span className="font-semibold text-[#0996F5]">{selectedDecorationColor} ({t('picnicPage.includedBadge', 'Termasuk')})</span>
               </div>
               {pricing.addonsSubtotal > 0 && (
                 <div className="flex justify-between text-xs sm:text-sm">
-                  <span className="text-slate-600">Add-on Tambahan</span>
+                  <span className="text-slate-600">{t('picnicPage.addonsLabel', 'Add-on Terpilih:')}</span>
                   <span className="font-semibold">{formatRupiah(pricing.addonsSubtotal)}</span>
                 </div>
               )}
               <div className="pt-3 border-t border-slate-200 flex justify-between text-sm sm:text-base font-bold text-[#0B1220]">
-                <span>Total Biaya Piknik</span>
+                <span>{t('picnicPage.grandTotalLabel', 'Grand Total:')}</span>
                 <span>{formatRupiah(pricing.grandTotal)}</span>
               </div>
               <div className="p-3 bg-amber-50 rounded-xl border border-amber-200 flex justify-between items-center text-sm font-black text-amber-950 mt-2">
-                <span>Kewajiban DP 30% Sekarang:</span>
+                <span>{t('picnicPage.dp30Label', 'Nominal DP 30%:')}</span>
                 <span className="text-base sm:text-lg text-[#0996F5] font-mono font-black">
                   {formatRupiah(pricing.downPayment)}
                 </span>
               </div>
             </div>
 
-            {/* Official Bank Account Cards (Shared with Jeep Booking) */}
+            {/* Official Bank Account Cards */}
             <div className="space-y-4 mb-8">
               <h3 className="text-xs font-black text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
                 <CreditCard className="w-4 h-4 text-[#0996F5]" />
-                <span>Rekening Resmi Pembayaran PT Global Travel Healing:</span>
+                <span>{t('picnicPage.bankTitle', 'Rekening Resmi Pembayaran PT Global Travel Healing:')}</span>
               </h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
@@ -638,7 +682,7 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                       className="mt-3 w-full py-2 bg-[#EAF6FF] hover:bg-[#0996F5] text-[#0996F5] hover:text-white rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                     >
                       {copiedAccount === acc.id ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
-                      <span>{copiedAccount === acc.id ? 'Tersalin' : `Salin No. ${acc.bankName}`}</span>
+                      <span>{copiedAccount === acc.id ? t('picnicPage.copied', 'Tersalin') : `Salin No. ${acc.bankName}`}</span>
                     </button>
                   </div>
                 ))}
@@ -651,7 +695,7 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                 <div className="flex items-center gap-2">
                   <Upload className="w-4 h-4 text-[#0996F5]" />
                   <h3 className="text-xs sm:text-sm font-black text-[#0B1220]">
-                    Unggah Bukti Transfer (Konfirmasi Instan)
+                    {t('picnicPage.uploadProofTitle', 'Unggah Bukti Transfer (Konfirmasi Instan)')}
                   </h3>
                 </div>
                 {!proofUploadSuccess && (
@@ -661,7 +705,7 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                     className="text-xs font-bold text-[#0996F5] hover:text-[#071A2B] flex items-center gap-1.5 cursor-pointer underline"
                   >
                     <FileText className="w-3.5 h-3.5" />
-                    <span>Download Invoice Sementara (PDF)</span>
+                    <span>Download Invoice PDF</span>
                   </button>
                 )}
               </div>
@@ -677,15 +721,14 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                         <span>✓ BUKTI DP TERKIRIM</span>
                       </div>
                       <h4 className="text-sm sm:text-base font-black text-emerald-950">
-                        Bukti Transfer Berhasil Diterima &amp; Diteruskan ke Admin!
+                        {t('picnicPage.proofSuccessTitle', 'Bukti Transfer Berhasil Diterima & Diteruskan ke Admin!')}
                       </h4>
                       <p className="text-xs text-emerald-800/90 mt-1 leading-relaxed">
-                        Data pembayaran Anda telah tersimpan di sistem. Invoice resmi Anda telah diperbarui dengan status verifikasi DP. Silakan klik tombol di bawah untuk mengunduh dokumen invoice resmi.
+                        {t('picnicPage.proofSuccessDesc', 'Data pembayaran Anda telah tersimpan di sistem. Invoice resmi Anda telah diperbarui dengan status verifikasi DP.')}
                       </p>
                     </div>
                   </div>
 
-                  {/* Primary Call-to-Action for Invoice Download */}
                   <div className="pt-2 border-t border-emerald-200/70 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                     <button
                       type="button"
@@ -693,7 +736,7 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                       className="flex-1 py-3.5 px-5 bg-[#0996F5] hover:bg-[#071A2B] text-white font-black text-xs sm:text-sm rounded-xl shadow-lg shadow-[#0996F5]/25 transition-all flex items-center justify-center gap-2.5 cursor-pointer active:scale-95"
                     >
                       <Download className="w-4 h-4 text-[#FFF700] stroke-[2.5]" />
-                      <span>Download Invoice Resmi Picnic (PDF)</span>
+                      <span>{t('picnicPage.downloadOfficialPdf', 'Download Invoice Resmi Picnic (PDF)')}</span>
                     </button>
                     <a
                       href={waConfirmLink}
@@ -702,7 +745,7 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                       className="py-3.5 px-4 bg-[#25D366] hover:bg-[#1EBE5D] text-white font-bold text-xs rounded-xl shadow-xs transition-colors flex items-center justify-center gap-2"
                     >
                       <MessageCircle className="w-4 h-4 fill-white" />
-                      <span>Chat CS Admin</span>
+                      <span>{t('picnicPage.chatAdminCs', 'Chat CS Admin')}</span>
                     </a>
                   </div>
                 </div>
@@ -732,7 +775,7 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                         className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 shrink-0 cursor-pointer disabled:opacity-50 shadow-xs"
                       >
                         {isUploadingProof ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Upload className="w-3.5 h-3.5" />}
-                        <span>Kirim Bukti Transfer</span>
+                        <span>{t('picnicPage.uploadProofButton', 'Kirim Bukti Transfer')}</span>
                       </button>
                     </div>
                   )}
@@ -740,7 +783,7 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
               )}
             </div>
 
-            {/* Action Buttons: Download Invoice, WhatsApp & Home */}
+            {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-3">
               <button
                 type="button"
@@ -748,7 +791,7 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                 className="py-3.5 px-5 bg-[#0996F5] hover:bg-[#071A2B] text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md shadow-[#0996F5]/20 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95"
               >
                 <Download className="w-4 h-4 text-[#FFF700]" />
-                <span>Download Invoice (PDF)</span>
+                <span>{t('picnicPage.downloadInvoice', 'Download Invoice')}</span>
               </button>
 
               <a
@@ -758,7 +801,7 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                 className="flex-1 py-3.5 px-4 bg-[#25D366] hover:bg-[#1EBE5D] text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center justify-center gap-2"
               >
                 <MessageCircle className="w-4 h-4 fill-white" />
-                <span>Konfirmasi via WhatsApp CS (+62 812-2229-0318)</span>
+                <span>{t('picnicPage.chatAdminCs', 'Chat CS Admin')} (+62 812-2229-0318)</span>
               </a>
 
               <button
@@ -766,7 +809,7 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                 onClick={onBackToHome}
                 className="py-3.5 px-6 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm rounded-xl transition-colors cursor-pointer"
               >
-                Selesai &amp; Beranda
+                {t('picnicPage.finishAndHome', 'Selesai & Beranda')}
               </button>
             </div>
 
@@ -780,44 +823,44 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
           <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EAF6FF] border border-[#0996F5]/20 text-[#0996F5] text-xs font-black uppercase tracking-wider mb-4 shadow-2xs">
               <Sparkles className="w-4 h-4 text-[#FFF700] fill-[#FFF700]" />
-              <span>OUTDOOR DINING EXPERIENCE KALDERA BROMO</span>
+              <span>{t('picnicPage.heroBadge', 'OUTDOOR DINING EXPERIENCE KALDERA BROMO')}</span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#0B1220] tracking-tight mb-4">
-              Bromo Picnic Experience
+              {t('picnicPage.heroTitle', 'Bromo Picnic Experience')}
             </h1>
 
             <p className="text-xs sm:text-base text-[#526273] leading-relaxed max-w-2xl mx-auto mb-6">
-              Nikmati kehangatan sajian kuliner istimewa berpadu panorama tebing karst Widodaren dan kaldera Bromo. Pilih dari <strong>8 varian paket</strong>, sesuaikan porsi menu sesuai selera rombongan, dan booking instan.
+              {t('picnicPage.heroDesc', 'Nikmati kehangatan sajian kuliner istimewa berpadu panorama tebing karst Widodaren dan kaldera Bromo. Pilih dari 8 varian paket, sesuaikan porsi menu sesuai selera rombongan, dan booking instan.')}
             </p>
 
             {/* Trust Badges */}
             <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-xs font-bold text-[#0B1220]">
               <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-xl border border-slate-200 shadow-2xs">
                 <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                <span>Butler Service</span>
+                <span>{t('picnicPage.trustButler', 'Butler Service')}</span>
               </div>
               <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-xl border border-slate-200 shadow-2xs">
                 <Utensils className="w-4 h-4 text-[#0996F5]" />
-                <span>Meja Kayu Rustic Bohemian</span>
+                <span>{t('picnicPage.trustTable', 'Meja Kayu Rustic Bohemian')}</span>
               </div>
               <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-xl border border-slate-200 shadow-2xs">
                 <Heart className="w-4 h-4 text-rose-500" />
-                <span>Fresh &amp; Higienis</span>
+                <span>{t('picnicPage.trustFresh', 'Fresh & Higienis')}</span>
               </div>
             </div>
 
             {/* Notice about Jeep */}
             <div className="mt-6 inline-flex items-center gap-2 px-4 py-2 bg-amber-50 rounded-xl border border-amber-200 text-amber-900 text-xs font-semibold">
               <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
-              <span>Layanan khusus makanan &amp; properti piknik. Harga belum termasuk armada Jeep menuju lokasi.</span>
+              <span>{t('picnicPage.jeepNotice', 'Layanan khusus makanan & properti piknik. Harga belum termasuk armada Jeep menuju lokasi.')}</span>
               {onOpenJeepBooking && (
                 <button
                   type="button"
                   onClick={onOpenJeepBooking}
                   className="underline hover:text-amber-950 font-bold ml-1 cursor-pointer"
                 >
-                  Sewa Jeep Bromo &rarr;
+                  {t('picnicPage.rentJeepCta', 'Sewa Jeep Bromo →')}
                 </button>
               )}
             </div>
@@ -836,22 +879,22 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
               <div className="absolute top-4 left-4 right-4 flex items-center justify-between gap-3 z-10 flex-wrap">
                 <span className="px-3.5 py-1.5 rounded-full bg-[#071A2B]/90 backdrop-blur-md text-[#FFF700] text-xs font-black uppercase tracking-wider border border-white/20 shadow-lg flex items-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5 fill-[#FFF700]" />
-                  AESTHETIC BOHEMIAN PICNIC
+                  {t('picnicPage.bannerBadge', 'AESTHETIC BOHEMIAN PICNIC')}
                 </span>
                 <span className="px-3.5 py-1.5 rounded-full bg-[#0996F5] text-white text-xs font-black shadow-lg">
-                  Mulai Rp 75.000 / pax · Min. 4 Pax
+                  {t('picnicPage.bannerRate', 'Mulai Rp 75.000 / pax · Min. 4 Pax')}
                 </span>
               </div>
 
               <div className="absolute bottom-6 left-6 right-6 text-white max-w-2xl z-10">
                 <span className="text-xs font-bold text-[#FFF700] uppercase tracking-wider mb-1 block">
-                  Sensasi Bersantap Mewah di Atas Awan
+                  {t('picnicPage.bannerTagline', 'Sensasi Bersantap Mewah di Atas Awan')}
                 </span>
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-white drop-shadow-md">
-                  Piknik Estetik Kaldera Bromo &amp; Widodaren
+                  {t('picnicPage.bannerTitle', 'Piknik Estetik Kaldera Bromo & Widodaren')}
                 </h2>
                 <p className="text-xs sm:text-sm text-slate-200 mt-2 hidden sm:block leading-relaxed">
-                  Meja kayu rustic rendah, karpet bohemian, bantal duduk nyaman, free-flow teh hangat &amp; kopi, serta butler service resmi berlatar panorama megah Gunung Bromo.
+                  {t('picnicPage.bannerDesc', 'Meja kayu rustic rendah, karpet bohemian, bantal duduk nyaman, free-flow teh hangat & kopi, serta butler service resmi berlatar panorama megah Gunung Bromo.')}
                 </p>
               </div>
             </div>
@@ -862,19 +905,20 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h2 className="text-xl sm:text-2xl font-black text-[#0B1220]">
-                  Langkah 1: Pilih Paket Piknik
+                  {t('picnicPage.step1Title', 'Langkah 1: Pilih Paket Piknik')}
                 </h2>
                 <p className="text-xs sm:text-sm text-[#526273]">
-                  Pilih salah satu dari 8 paket kuliner di bawah ini untuk memulai konfigurasi.
+                  {t('picnicPage.step1Sub', 'Pilih salah satu dari 8 paket kuliner di bawah ini untuk memulai konfigurasi.')}
                 </p>
               </div>
               <span className="hidden sm:inline-block text-xs font-bold text-[#0996F5] bg-[#EAF6FF] px-3 py-1 rounded-full border border-[#0996F5]/20">
-                8 Paket Tersedia
+                {t('picnicPage.availableCount', '8 Paket Tersedia')}
               </span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-              {PICNIC_PACKAGES.map((pkg) => {
+              {PICNIC_PACKAGES.map((rawPkg) => {
+                const pkg = getLocalizedPackage(rawPkg);
                 const isSelected = selectedPackage.id === pkg.id;
 
                 return (
@@ -895,7 +939,6 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#0B1220]/70 via-transparent to-transparent" />
                       
-                      {/* Badge if available */}
                       {pkg.badge && (
                         <div className="absolute top-2.5 right-2.5">
                           <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-[#FFF700] text-[#071A2B] shadow-sm">
@@ -921,7 +964,6 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                           {pkg.shortDescription}
                         </p>
 
-                        {/* Highlights */}
                         <div className="space-y-1 mb-4">
                           {Array.isArray(pkg?.highlights) && pkg.highlights.slice(0, 3).map((hl: string, idx: number) => (
                             <div key={idx} className="flex items-center gap-1.5 text-[11px] text-slate-600">
@@ -935,7 +977,7 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                       {/* Price & Select Button */}
                       <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
                         <div>
-                          <div className="text-[10px] text-slate-400 font-medium">Harga / Pax:</div>
+                          <div className="text-[10px] text-slate-400 font-medium">{t('picnicPage.perPax', 'Harga / Pax:')}</div>
                           <div className="font-mono font-black text-sm text-[#0996F5]">
                             {formatRupiah(pkg.pricePerPax)}
                           </div>
@@ -943,14 +985,14 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
 
                         <button
                           type="button"
-                          onClick={() => handleSelectPackage(pkg)}
+                          onClick={() => handleSelectPackage(rawPkg)}
                           className={`px-3 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                             isSelected
                               ? 'bg-[#0996F5] text-white shadow-xs'
                               : 'bg-[#EAF6FF] text-[#0996F5] hover:bg-[#0996F5] hover:text-white'
                           }`}
                         >
-                          {isSelected ? '✓ Terpilih' : 'Pilih Paket'}
+                          {isSelected ? t('picnicPage.selected', '✓ Terpilih') : t('picnicPage.selectPackage', 'Pilih Paket')}
                         </button>
                       </div>
                     </div>
@@ -974,16 +1016,16 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                   </div>
                   <div>
                     <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                      Paket yang Dikonfigurasi
+                      {t('picnicPage.configuredPackage', 'Paket yang Dikonfigurasi')}
                     </span>
                     <h3 className="text-base sm:text-lg font-black text-[#0B1220]">
-                      {selectedPackage.name}
+                      {activePackage.name}
                     </h3>
                   </div>
                 </div>
 
                 <div className="text-right">
-                  <span className="text-[10px] text-slate-400">Harga Satuan:</span>
+                  <span className="text-[10px] text-slate-400">{t('picnicPage.unitPrice', 'Harga Satuan:')}</span>
                   <div className="font-mono font-black text-base sm:text-lg text-[#0996F5]">
                     {formatRupiah(selectedPackage.pricePerPax)} <span className="text-xs font-normal text-slate-500">/ pax</span>
                   </div>
@@ -995,10 +1037,10 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                 <div className="flex items-center justify-between mb-4">
                   <div>
                     <h3 className="text-base font-black text-[#0B1220]">
-                      Langkah 2: Tentukan Jumlah Peserta (Pax)
+                      {t('picnicPage.step2Title', 'Langkah 2: Tentukan Jumlah Peserta (Pax)')}
                     </h3>
                     <p className="text-xs text-[#526273]">
-                      Semua kebutuhan porsi makanan &amp; minuman akan otomatis menyesuaikan jumlah pax ini.
+                      {t('picnicPage.step2Sub', 'Semua kebutuhan porsi makanan & minuman akan otomatis menyesuaikan jumlah pax ini.')}
                     </p>
                   </div>
                 </div>
@@ -1014,14 +1056,13 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
               <div className="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-xs">
                 <div className="mb-4">
                   <h3 className="text-base font-black text-[#0B1220]">
-                    Langkah 3: Konfigurasi Makanan &amp; Minuman
+                    {t('picnicPage.step3Title', 'Langkah 3: Konfigurasi Makanan & Minuman')}
                   </h3>
                   <p className="text-xs text-[#526273]">
-                    Pilih porsi masing-masing item menggunakan tombol <strong>[-] [Qty] [+]</strong>. Total porsi per kategori wajib tepat sejumlah <strong>{paxCount} porsi</strong>.
+                    {t('picnicPage.step3Sub', 'Pilih porsi masing-masing item menggunakan tombol [-] [Qty] [+]. Total porsi per kategori wajib tepat sejumlah porsi pax.')}
                   </p>
                 </div>
 
-                {/* If package has fixed included items, display them first */}
                 {selectedPackage.includedSections && selectedPackage.includedSections.length > 0 && (
                   <div className="mb-6">
                     <FixedPackageContents
@@ -1031,7 +1072,6 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                   </div>
                 )}
 
-                {/* Render Quantity Menu Selectors for each Selection Group */}
                 {selectedPackage.selectionGroups && selectedPackage.selectionGroups.length > 0 ? (
                   <div className="space-y-4">
                     {selectedPackage.selectionGroups.map((group) => (
@@ -1047,7 +1087,7 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                 ) : (
                   <div className="p-4 bg-emerald-50 rounded-xl border border-emerald-200 text-xs text-emerald-800 font-semibold flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>Seluruh menu pada paket ini telah lengkap dan siap disajikan langsung oleh butler di lokasi.</span>
+                    <span>{t('picnicPage.fixedMenuNotice', 'Seluruh menu pada paket ini telah lengkap dan siap disajikan langsung oleh butler di lokasi.')}</span>
                   </div>
                 )}
               </div>
@@ -1056,10 +1096,10 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
               <div className="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-xs">
                 <div className="mb-4">
                   <h3 className="text-base font-black text-[#0B1220]">
-                    Langkah 4: Pilihan Warna Dekorasi
+                    {t('picnicPage.step4Title', 'Langkah 4: Pilihan Warna Dekorasi')}
                   </h3>
                   <p className="text-xs text-[#526273]">
-                    Pilih 1 tema warna karpet &amp; setup properti rustic bohemian favorit Anda (sudah termasuk dalam paket).
+                    {t('picnicPage.step4Sub', 'Pilih 1 tema warna karpet & setup properti rustic bohemian favorit Anda (sudah termasuk dalam paket).')}
                   </p>
                 </div>
 
@@ -1073,10 +1113,10 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
               <div className="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-xs">
                 <div className="mb-4">
                   <h3 className="text-base font-black text-[#0B1220]">
-                    Langkah 5: Pilih Lokasi Gelaran Piknik
+                    {t('picnicPage.step5Title', 'Langkah 5: Pilih Lokasi Gelaran Piknik')}
                   </h3>
                   <p className="text-xs text-[#526273]">
-                    Biaya transportasi &amp; logistik berlaku per reservasi (bukan per orang).
+                    {t('picnicPage.step5Sub', 'Biaya transportasi & logistik berlaku per reservasi (bukan per orang).')}
                   </p>
                 </div>
 
@@ -1091,10 +1131,10 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
               <div className="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-xs">
                 <div className="mb-4">
                   <h3 className="text-base font-black text-[#0B1220]">
-                    Langkah 6: Tambahan Fasilitas &amp; Dekorasi (Add-on Opsional)
+                    {t('picnicPage.step6Title', 'Langkah 6: Tambahan Fasilitas & Dekorasi (Add-on Opsional)')}
                   </h3>
                   <p className="text-xs text-[#526273]">
-                    Sempurnakan momen piknik Anda dengan tenda canvas aesthetic atau set perayaan ulang tahun.
+                    {t('picnicPage.step6Sub', 'Sempurnakan momen piknik Anda dengan tenda canvas aesthetic atau set perayaan ulang tahun.')}
                   </p>
                 </div>
 
@@ -1111,10 +1151,10 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
               <div className="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-xs">
                 <div className="mb-4">
                   <h3 className="text-base font-black text-[#0B1220]">
-                    Langkah 7: Data Kontak Pemesan
+                    {t('picnicPage.step7Title', 'Langkah 7: Data Kontak Pemesan')}
                   </h3>
                   <p className="text-xs text-[#526273]">
-                    Informasi ini digunakan untuk pengiriman invoice resmi, briefing tim butler, dan koordinasi lapangan.
+                    {t('picnicPage.step7Sub', 'Informasi ini digunakan untuk pengiriman invoice resmi, briefing tim butler, dan koordinasi lapangan.')}
                   </p>
                 </div>
 
@@ -1129,7 +1169,7 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-xs font-bold text-slate-700 mb-1">
-                        Nama Lengkap <span className="text-rose-500">*</span>
+                        {t('picnicPage.fullNameLabel', 'Nama Lengkap')} <span className="text-rose-500">*</span>
                       </label>
                       <div className="relative">
                         <User className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
@@ -1138,7 +1178,7 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                           required
                           value={fullName}
                           onChange={(e) => setFullName(e.target.value)}
-                          placeholder="Nama sesuai KTP / Paspor"
+                          placeholder={t('picnicPage.fullNamePlaceholder', 'Nama sesuai KTP / Paspor')}
                           className="w-full pl-9 pr-3 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-[#0996F5] focus:outline-hidden"
                         />
                       </div>
@@ -1146,7 +1186,7 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
 
                     <div>
                       <label className="block text-xs font-bold text-slate-700 mb-1">
-                        Nomor WhatsApp <span className="text-rose-500">*</span>
+                        {t('picnicPage.waLabel', 'Nomor WhatsApp')} <span className="text-rose-500">*</span>
                       </label>
                       <div className="relative">
                         <Phone className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
@@ -1155,7 +1195,7 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                           required
                           value={whatsappNumber}
                           onChange={(e) => setWhatsappNumber(e.target.value)}
-                          placeholder="Contoh: 081234567890"
+                          placeholder={t('picnicPage.waPlaceholder', 'Contoh: 081234567890')}
                           className="w-full pl-9 pr-3 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-[#0996F5] focus:outline-hidden"
                         />
                       </div>
@@ -1165,7 +1205,7 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-xs font-bold text-slate-700 mb-1">
-                        Alamat Email Valid <span className="text-rose-500">*</span>
+                        {t('picnicPage.emailLabel', 'Alamat Email Valid')} <span className="text-rose-500">*</span>
                       </label>
                       <div className="relative">
                         <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
@@ -1174,7 +1214,7 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                           required
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          placeholder="nama@email.com (Untuk invoice & voucher)"
+                          placeholder={t('picnicPage.emailPlaceholder', 'nama@email.com (Untuk invoice & voucher)')}
                           className="w-full pl-9 pr-3 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-[#0996F5] focus:outline-hidden"
                         />
                       </div>
@@ -1182,7 +1222,7 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
 
                     <div>
                       <label className="block text-xs font-bold text-slate-700 mb-1">
-                        Tanggal Trip Piknik <span className="text-rose-500">*</span>
+                        {t('picnicPage.dateLabel', 'Tanggal Trip Piknik')} <span className="text-rose-500">*</span>
                       </label>
                       <div className="relative">
                         <Calendar className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
@@ -1200,7 +1240,7 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
 
                   <div>
                     <label className="block text-xs font-bold text-slate-700 mb-1">
-                      Metode Pembayaran Rekening
+                      {t('picnicPage.paymentMethodLabel', 'Metode Pembayaran Rekening')}
                     </label>
                     <select
                       value={paymentMethod}
@@ -1217,13 +1257,13 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
 
                   <div>
                     <label className="block text-xs font-bold text-slate-700 mb-1">
-                      Catatan Tambahan (Opsional)
+                      {t('picnicPage.specialNotesLabel', 'Catatan Tambahan (Opsional)')}
                     </label>
                     <textarea
                       rows={2}
                       value={specialNotes}
                       onChange={(e) => setSpecialNotes(e.target.value)}
-                      placeholder="Contoh: Request sambal dipisah, perkiraan tiba jam 08.00 WIB..."
+                      placeholder={t('picnicPage.specialNotesPlaceholder', 'Contoh: Request sambal dipisah, perkiraan tiba jam 08.00 WIB...')}
                       className="w-full p-3 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-[#0996F5] focus:outline-hidden"
                     />
                   </div>
@@ -1238,18 +1278,18 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                       {isSubmitting ? (
                         <>
                           <RefreshCw className="w-4 h-4 animate-spin" />
-                          <span>Memproses Reservasi Piknik...</span>
+                          <span>{t('picnicPage.submitting', 'Memproses Reservasi Piknik...')}</span>
                         </>
                       ) : (
                         <>
                           <Sparkles className="w-4 h-4 text-[#FFF700] fill-[#FFF700]" />
-                          <span>Lanjutkan Reservasi &amp; Dapatkan Instruksi Pembayaran</span>
+                          <span>{t('picnicPage.submitButton', 'Lanjutkan Reservasi & Dapatkan Instruksi Pembayaran')}</span>
                         </>
                       )}
                     </button>
                     {!menuValidation.isValid && (
                       <p className="text-[11px] text-amber-700 text-center mt-2 font-medium">
-                        ⚠️ Tombol akan aktif setelah seluruh porsi makanan &amp; minuman ({paxCount} porsi) telah dipilih.
+                        {t('picnicPage.disabledSubmitNotice', `⚠️ Tombol akan aktif setelah seluruh porsi makanan & minuman (${paxCount} porsi) telah dipilih.`)}
                       </p>
                     )}
                   </div>
@@ -1263,17 +1303,17 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
               <div className="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-lg">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
                   <h3 className="text-sm font-black text-[#0B1220] uppercase tracking-wider">
-                    Ringkasan Reservasi
+                    {t('picnicPage.summaryTitle', 'Ringkasan Reservasi')}
                   </h3>
                   <span className="text-[10px] font-bold text-[#0996F5] bg-[#EAF6FF] px-2 py-0.5 rounded">
-                    Live Calculation
+                    {t('picnicPage.liveCalc', 'Live Calculation')}
                   </span>
                 </div>
 
                 {/* Package Selected */}
                 <div className="mb-4 pb-3 border-b border-slate-100">
                   <div className="text-xs font-bold text-[#0B1220]">
-                    {selectedPackage.name}
+                    {activePackage.name}
                   </div>
                   <div className="text-[11px] text-slate-500">
                     {formatRupiah(selectedPackage.pricePerPax)} × {paxCount} Pax
@@ -1286,7 +1326,7 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                 {/* Menu Choices Summary */}
                 <div className="mb-4 pb-3 border-b border-slate-100">
                   <div className="text-xs font-bold text-[#0B1220] mb-1">
-                    Konfigurasi Menu:
+                    {t('picnicPage.menuConfigLabel', 'Konfigurasi Menu:')}
                   </div>
                   {Object.entries(menuQuantities).length > 0 ? (
                     <div className="space-y-1 text-[11px] text-slate-600">
@@ -1303,7 +1343,7 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                     </div>
                   ) : (
                     <div className="text-[11px] text-slate-400 italic">
-                      Belum ada menu yang dipilih
+                      {t('picnicPage.noMenuSelected', 'Belum ada menu yang dipilih')}
                     </div>
                   )}
                 </div>
@@ -1311,7 +1351,7 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                 {/* Location */}
                 <div className="mb-4 pb-3 border-b border-slate-100 flex items-center justify-between text-xs">
                   <div>
-                    <span className="font-bold text-[#0B1220]">Lokasi: </span>
+                    <span className="font-bold text-[#0B1220]">{t('picnicPage.locationLabel', 'Lokasi:')} </span>
                     <span className="text-slate-600">{selectedLocation.name}</span>
                   </div>
                   <span className="font-mono font-bold text-slate-700">
@@ -1322,18 +1362,18 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                 {/* Warna Dekorasi */}
                 <div className="mb-4 pb-3 border-b border-slate-100 flex items-center justify-between text-xs">
                   <div>
-                    <span className="font-bold text-[#0B1220]">Warna Dekorasi: </span>
+                    <span className="font-bold text-[#0B1220]">{t('picnicPage.colorLabel', 'Warna Dekorasi:')} </span>
                     <span className="text-[#0996F5] font-semibold">{selectedDecorationColor}</span>
                   </div>
                   <span className="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-1.5 py-0.5 rounded">
-                    Termasuk
+                    {t('picnicPage.includedBadge', 'Termasuk')}
                   </span>
                 </div>
 
                 {/* Surcharge if applicable */}
                 {pricing.surcharge > 0 && (
                   <div className="mb-4 pb-3 border-b border-slate-100 flex items-center justify-between text-xs text-amber-800">
-                    <span>Surcharge ({paxCount} Pax)</span>
+                    <span>{t('picnicPage.surchargeLabel', 'Surcharge')} ({paxCount} Pax)</span>
                     <span className="font-mono font-bold">+{formatRupiah(pricing.surcharge)}</span>
                   </div>
                 )}
@@ -1341,7 +1381,7 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                 {/* Add-ons */}
                 {selectedAddons.length > 0 && (
                   <div className="mb-4 pb-3 border-b border-slate-100">
-                    <div className="text-xs font-bold text-[#0B1220] mb-1">Add-on Terpilih:</div>
+                    <div className="text-xs font-bold text-[#0B1220] mb-1">{t('picnicPage.addonsLabel', 'Add-on Terpilih:')}</div>
                     {selectedAddons.map((a) => (
                       <div key={a.id} className="text-[11px] text-slate-600 mb-1.5 last:mb-0">
                         <div className="flex justify-between">
@@ -1363,7 +1403,7 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
                 {/* Total & DP */}
                 <div className="pt-2 space-y-2">
                   <div className="flex items-center justify-between text-sm font-bold text-slate-600">
-                    <span>Grand Total:</span>
+                    <span>{t('picnicPage.grandTotalLabel', 'Grand Total:')}</span>
                     <span className="text-base text-[#0B1220] font-black font-mono">
                       {formatRupiah(pricing.grandTotal)}
                     </span>
@@ -1371,13 +1411,13 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
 
                   <div className="p-3 bg-[#EAF6FF] rounded-2xl border border-[#0996F5]/30">
                     <div className="flex items-center justify-between text-xs font-black text-[#071A2B]">
-                      <span>Nominal DP 30%:</span>
+                      <span>{t('picnicPage.dp30Label', 'Nominal DP 30%:')}</span>
                       <span className="text-base font-black text-[#0996F5] font-mono">
                         {formatRupiah(pricing.downPayment)}
                       </span>
                     </div>
                     <div className="text-[10px] text-slate-500 mt-1">
-                      Wajib dibayarkan setelah submit untuk mengunci jadwal butler &amp; bahan makanan fresh.
+                      {t('picnicPage.dpNotice', 'Wajib dibayarkan setelah submit untuk mengunci jadwal butler & bahan makanan fresh.')}
                     </div>
                   </div>
                 </div>
@@ -1389,6 +1429,9 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
 
         </div>
       )}
+
+      {/* Footer Included at Bottom */}
+      <Footer />
 
     </div>
   );
