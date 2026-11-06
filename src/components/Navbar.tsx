@@ -67,7 +67,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-2.5 xl:gap-4 text-xs xl:text-sm font-bold text-[#111318]/90 whitespace-nowrap">
+          <nav className="hidden lg:flex items-center gap-2 xl:gap-3.5 text-xs xl:text-sm font-bold text-[#111318]/90 whitespace-nowrap min-w-0">
             {/* Dropdown Paket Wisata */}
             <div
               className="relative"
@@ -234,11 +234,11 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 type="button"
                 onClick={onOpenPicnic}
-                className="hover:text-[#0996f5] transition-colors cursor-pointer flex items-center gap-1.5 py-2 whitespace-nowrap"
+                className="hover:text-[#0996f5] transition-colors cursor-pointer flex items-center gap-1 py-2 whitespace-nowrap"
               >
                 <Utensils className="w-3.5 h-3.5 text-[#0996f5] shrink-0" />
                 <span>{t('navbar.picnicBromo', 'Picnic Bromo')}</span>
-                <span className="text-[10px] bg-[#0996f5]/15 text-[#0996f5] font-black px-1.5 py-0.5 rounded-full whitespace-nowrap">
+                <span className="hidden xl:inline text-[10px] bg-[#0996f5]/15 text-[#0996f5] font-black px-1.5 py-0.5 rounded-full whitespace-nowrap">
                   {t('navbar.picnicBromoBadge', '8 Paket')}
                 </span>
               </button>
@@ -247,7 +247,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Bukti VVIP Menteri RI */}
             <button
               onClick={() => scrollTo('vip-kementerian')}
-              className="hover:text-[#0996f5] transition-colors cursor-pointer flex items-center gap-1.5 whitespace-nowrap"
+              className="hover:text-[#0996f5] transition-colors cursor-pointer flex items-center gap-1 whitespace-nowrap"
             >
               <span>{t('navbar.vvipProof', 'Bukti VVIP')}</span>
               <span className="text-[10px] bg-[#ffc928] text-[#111318] font-black px-1.5 py-0.5 rounded whitespace-nowrap">
@@ -279,45 +279,34 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span>{t('navbar.aboutUs', 'Tentang Kami')}</span>
               </button>
             )}
-
-            {/* Live Cuaca Button */}
-            {onOpenLiveStatus && (
-              <button
-                type="button"
-                onClick={onOpenLiveStatus}
-                className="hover:text-[#0996f5] transition-colors cursor-pointer flex items-center gap-1.5 bg-[#e5f4ff] text-[#0996f5] px-2.5 py-1 rounded-xl border border-[#0996f5]/20 whitespace-nowrap"
-                title="Lihat status buka TNBTS dan data cuaca live"
-              >
-                <span className="flex h-1.5 w-1.5 relative shrink-0">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
-                </span>
-                <span>{t('navbar.liveWeather', 'Live Cuaca')}</span>
-              </button>
-            )}
           </nav>
 
           {/* Zone 3: OTA Hotline, Language Switcher & Quick Book */}
-          <div className="hidden lg:flex items-center gap-2 xl:gap-2.5 shrink-0 whitespace-nowrap ml-auto">
-            {/* Language Switcher (Segmented Control 🇬🇧 EN | 🇨🇳 中文 | 🇮🇩 ID) */}
-            <LanguageSwitcher variant="segmented" />
+          <div className="hidden lg:flex items-center gap-1.5 xl:gap-2.5 shrink-0 whitespace-nowrap ml-auto">
+            {/* Language Switcher: Compact on lg, Segmented on xl+ */}
+            <div className="hidden lg:block xl:hidden">
+              <LanguageSwitcher variant="compact" />
+            </div>
+            <div className="hidden xl:block">
+              <LanguageSwitcher variant="segmented" />
+            </div>
 
-            {/* Hotline Phone - Icon with tooltip on <=xl, text on 2xl+ */}
+            {/* Hotline Phone */}
             <a
               href="https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20mau%20tanya%20informasi%20paket%20trip%20ke%20Bromo"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-xs font-bold text-[#111318] hover:text-[#0996f5] p-2 2xl:px-3 2xl:py-2 rounded-xl bg-[#e5f4ff] border border-[#0996f5]/25 hover:border-[#0996f5]/50 transition-colors whitespace-nowrap shrink-0"
+              className="flex items-center gap-1.5 text-xs font-bold text-[#111318] hover:text-[#0996f5] p-2 xl:px-2.5 xl:py-2 rounded-xl bg-[#e5f4ff] border border-[#0996f5]/25 hover:border-[#0996f5]/50 transition-colors whitespace-nowrap shrink-0"
               title="Hubungi Hotline WhatsApp 0812-2229-0318"
             >
               <PhoneCall className="w-3.5 h-3.5 text-[#0996f5] shrink-0" />
               <span className="hidden 2xl:inline font-mono tabular-nums whitespace-nowrap">0812-2229-0318</span>
             </a>
 
-            {/* Primary Booking Button - Guaranteed never clipped */}
+            {/* Primary Booking Button - Guaranteed neat, never clipped */}
             <button
               onClick={() => onOpenBooking()}
-              className="px-4 xl:px-5 py-2 xl:py-2.5 text-xs font-black text-white bg-[#0996f5] hover:bg-[#0782d6] rounded-xl transition-all shadow-md shadow-[#0996f5]/25 whitespace-nowrap cursor-pointer active:scale-95 shrink-0 min-w-fit"
+              className="px-3.5 xl:px-5 py-2 xl:py-2.5 text-xs xl:text-sm font-black text-white bg-[#0996f5] hover:bg-[#0782d6] rounded-xl transition-all shadow-md shadow-[#0996f5]/20 whitespace-nowrap cursor-pointer active:scale-95 shrink-0 min-w-fit"
             >
               {t('navbar.bookingButton', 'Booking Online')}
             </button>
