@@ -1169,7 +1169,7 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
                     const displayPrice = form.isHighSeason && hsPrice > 0 ? hsPrice : pkg.price;
                     return (
                       <option key={pkg.id} value={pkg.id}>
-                        {localOptionPkg.title} ({formatCurrencyByLang(displayPrice, language)} {localOptionPkg.priceUnit}{form.isHighSeason && hsPrice > 0 ? ' - High Season' : ''})
+                        {localOptionPkg.title} ({formatCurrencyByLang(displayPrice, language)} {localOptionPkg.priceUnit}{form.isHighSeason && hsPrice > 0 ? (language === 'zh' ? ' - 旺季价格' : ' - High Season') : ''})
                       </option>
                     );
                   })}

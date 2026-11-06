@@ -74,7 +74,8 @@ const DAYS_INDO = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu
  * Deteksi Pola Penjemputan Bromo berdasarkan lokasi / jenis paket
  */
 export function detectBromoPickupPattern(
-  optionsOrCity?: string | BromoScheduleOptions
+  optionsOrCity?: string | BromoScheduleOptions,
+  lang: 'id' | 'en' | 'zh' = 'id'
 ): { pattern: BromoPickupPattern; locationLabel: string } {
   let city = '';
   let pkgId = '';
@@ -92,9 +93,11 @@ export function detectBromoPickupPattern(
 
   // Khusus Long Jeep jika tamu menambah jemput area Malang atau Batu
   if (pkgId === 'long-jeep' && (extra === 'malang' || extra === 'batu')) {
+    const batuLabel = lang === 'zh' ? '巴图市 (Batu City)' : lang === 'en' ? 'Batu City' : 'Kota Batu';
+    const malangLabel = lang === 'zh' ? '玛琅市 (Malang City)' : lang === 'en' ? 'Malang City' : 'Kota Malang';
     return {
       pattern: 'malang_batu_surabaya',
-      locationLabel: extra === 'batu' ? 'Kota Batu' : 'Kota Malang'
+      locationLabel: extra === 'batu' ? batuLabel : malangLabel
     };
   }
 
@@ -107,7 +110,7 @@ export function detectBromoPickupPattern(
   ) {
     return {
       pattern: 'gubugklakah',
-      locationLabel: 'Basecamp / Hotel Gubugklakah'
+      locationLabel: lang === 'zh' ? 'Gubugklakah 基地 / 酒店' : lang === 'en' ? 'Gubugklakah Basecamp / Hotel' : 'Basecamp / Hotel Gubugklakah'
     };
   }
 
@@ -122,20 +125,22 @@ export function detectBromoPickupPattern(
     addr.includes('tosari')
   ) {
     const isTosari = city === 'tosari' || pkgId.includes('tosari') || addr.includes('tosari');
+    const tosariLabel = lang === 'zh' ? '帕苏鲁安-托萨里 (Tosari Pasuruan)' : lang === 'en' ? 'Tosari, Pasuruan' : 'Tosari Kab. Pasuruan';
+    const sukapuraLabel = lang === 'zh' ? '波罗蒙-苏卡普拉 (Sukapura Probolinggo)' : lang === 'en' ? 'Sukapura, Probolinggo' : 'Sukapura Kab. Probolinggo';
     return {
       pattern: 'sukapura_tosari',
-      locationLabel: isTosari ? 'Tosari Kab. Pasuruan' : 'Sukapura Kab. Probolinggo'
+      locationLabel: isTosari ? tosariLabel : sukapuraLabel
     };
   }
 
   // 3. Malang, Batu, Surabaya (Pola Default)
-  let label = 'Malang / Batu / Surabaya';
+  let label = lang === 'zh' ? '玛琅 / 巴图 / 泗水 区域' : lang === 'en' ? 'Malang / Batu / Surabaya Area' : 'Malang / Batu / Surabaya';
   if (city === 'surabaya' || pkgId.includes('surabaya') || addr.includes('surabaya')) {
-    label = 'Surabaya Raya';
+    label = lang === 'zh' ? '大泗水地区 (Surabaya Area)' : lang === 'en' ? 'Greater Surabaya Area' : 'Surabaya Raya';
   } else if (city === 'batu' || pkgId.includes('batu') || addr.includes('batu')) {
-    label = 'Kota Batu';
+    label = lang === 'zh' ? '巴图市 (Batu City)' : lang === 'en' ? 'Batu City' : 'Kota Batu';
   } else if (city === 'malang' || pkgId.includes('malang') || addr.includes('malang')) {
-    label = 'Kota Malang';
+    label = lang === 'zh' ? '玛琅市 (Malang City)' : lang === 'en' ? 'Malang City' : 'Kota Malang';
   }
 
   return {
@@ -256,7 +261,7 @@ export function calculateBromoSchedule(
     };
   }
 
-  const { pattern, locationLabel } = detectBromoPickupPattern(optionsOrCity);
+  const { pattern, locationLabel } = detectBromoPickupPattern(optionsOrCity, lang);
   const sunriseInfo = parseYMD(selectedTripDate, lang);
   const sunriseDateStr = selectedTripDate;
   const sunriseTime = lang === 'zh' ? '05:00 (印尼西部时间)' : lang === 'en' ? '05:00 AM WIB' : '05.00 WIB';
