@@ -75,6 +75,54 @@ export interface LocalizedBookingModalContent {
   changeFile: string;
   removeFile: string;
   submittingProof: string;
+  // Open trip & routes
+  openTripRouteTitle: string;
+  saturdayScheduleBadge: string;
+  weekdayScheduleBadge: string;
+  singlePaxBadge: string;
+  min2PaxBadge: string;
+  openTripSbySatDesc: string;
+  openTripSbyWeekdayPrefix: string;
+  openTripSbyWeekdaySuffix: string;
+  ratePerPaxLabel: string;
+  // Schedule alert
+  pickupScheduleHeader: string;
+  routeLabel: string;
+  pickupStepLabel: string;
+  sunriseStepLabel: string;
+  atPrefix: string;
+  previousNightBadge: string;
+  earlyMorningBadge: string;
+  morningBadge: string;
+  // Season status
+  seasonStatusLabel: string;
+  peakSeasonBadge: string;
+  regularSeasonBadge: string;
+  peakSeasonActiveNote: string;
+  regularSeasonActiveNote: string;
+  // Long jeep
+  longJeepRateCategory: string;
+  longJeepAutoDetermine: string;
+  extraPickupOptionLabel: string;
+  longJeepBasecampOption: string;
+  longJeepMalangReg: string;
+  longJeepMalangHigh: string;
+  longJeepBatuReg: string;
+  longJeepBatuHigh: string;
+  // Validation errors
+  errPaxRequired: string;
+  errPaxMinSby: string;
+  errTravelDateRequired: string;
+  errFullNameRequired: string;
+  errWhatsappRequired: string;
+  errEmailRequired: string;
+  errPickupAddressRequired: string;
+  errPaymentProofRequired: string;
+  // High Season Calendar Modal
+  hsCalTitle: string;
+  hsCalSub: string;
+  hsCalDesc: string;
+  hsCalClose: string;
 }
 
 export const BOOKING_MODAL_TRANSLATIONS: Record<SupportedLanguage, LocalizedBookingModalContent> = {
@@ -152,7 +200,49 @@ export const BOOKING_MODAL_TRANSLATIONS: Record<SupportedLanguage, LocalizedBook
     uploadBoxFormats: 'Mendukung JPG, PNG, WEBP, atau PDF (Maks. 5MB)',
     changeFile: 'Ganti File',
     removeFile: 'Hapus File',
-    submittingProof: 'Mengirim Bukti & Menyimpan Reservasi...'
+    submittingProof: 'Mengirim Bukti & Menyimpan Reservasi...',
+    openTripRouteTitle: 'Rute Open Trip Surabaya (Otomatis Terhubung Kalender):',
+    saturdayScheduleBadge: '🗓️ Jadwal Hari Sabtu',
+    weekdayScheduleBadge: '🗓️ Jadwal Minggu s/d Jumat',
+    singlePaxBadge: '1 Orang Bisa Gabung',
+    min2PaxBadge: 'Minimal 2 Orang',
+    openTripSbySatDesc: 'Berangkat Sabtu pukul 22.00 WIB, nikmati Sunrise Minggu pagi. Dokumentasi Foto Include!',
+    openTripSbyWeekdayPrefix: 'Berangkat hari ',
+    openTripSbyWeekdaySuffix: ' pukul 23.00 WIB via Malang. Peserta dimulai dari 2 orang. Dokumentasi Foto Include!',
+    ratePerPaxLabel: 'Tarif / Pax:',
+    pickupScheduleHeader: 'Jadwal Penjemputan & Golden Sunrise Bromo',
+    routeLabel: 'Pola:',
+    pickupStepLabel: '1. JADWAL JEMPUT (PICKUP):',
+    sunriseStepLabel: '2. GOLDEN SUNRISE BROMO:',
+    atPrefix: 'Pukul ',
+    previousNightBadge: '(Malam Sebelumnya)',
+    earlyMorningBadge: '(Dini Hari Tanggal Sunrise)',
+    morningBadge: '(Pagi Hari)',
+    seasonStatusLabel: 'Status Musim:',
+    peakSeasonBadge: 'Peak / High Season',
+    regularSeasonBadge: 'Reguler / Normal',
+    peakSeasonActiveNote: 'Tarif Peak Season otomatis aktif',
+    regularSeasonActiveNote: 'Tarif reguler berlaku otomatis',
+    longJeepRateCategory: 'Kategori Tarif Hari Long Jeep:',
+    longJeepAutoDetermine: 'Ditentukan otomatis berdasarkan tanggal keberangkatan',
+    extraPickupOptionLabel: 'Opsi Antar-Jemput Tambahan:',
+    longJeepBasecampOption: 'Start Basecamp Gubugklakah (Tanpa Tambahan Jemput)',
+    longJeepMalangReg: 'Jemput Kota Malang (+Rp 300.000 / mobil max 6 pax)',
+    longJeepMalangHigh: 'Jemput Kota Malang (+Rp 400.000 High Season / mobil max 6 pax)',
+    longJeepBatuReg: 'Jemput Kota Batu (+Rp 400.000 / mobil max 6 pax)',
+    longJeepBatuHigh: 'Jemput Kota Batu (+Rp 500.000 High Season / mobil max 6 pax)',
+    errPaxRequired: 'Jumlah peserta wajib ditentukan minimal 1 menggunakan tombol (+).',
+    errPaxMinSby: 'Open Trip Surabaya via Malang (keberangkatan Minggu s/d Jumat) minimal 2 orang.',
+    errTravelDateRequired: 'Tanggal keberangkatan trip wajib dipilih.',
+    errFullNameRequired: 'Nama lengkap pemesan wajib diisi (minimal 2 karakter).',
+    errWhatsappRequired: 'Nomor WhatsApp aktif wajib diisi untuk konfirmasi booking resmi.',
+    errEmailRequired: 'Alamat email valid wajib diisi untuk pengiriman e-tiket TNBTS & invoice PDF.',
+    errPickupAddressRequired: 'Alamat / lokasi penjemputan wajib diisi (contoh: Nama Hotel, Stasiun, Bandara, atau Basecamp).',
+    errPaymentProofRequired: 'Silakan pilih dan unggah foto/screenshot bukti transfer pembayaran DP terlebih dahulu.',
+    hsCalTitle: 'Kalender High / Peak Season TNBTS',
+    hsCalSub: 'Pemetaan Resmi Jadwal Musim Libur Wisata Bromo',
+    hsCalDesc: 'Jika tanggal keberangkatan yang Anda pilih berada dalam salah satu rentang tanggal di bawah ini, kalkulator pemesanan akan secara otomatis menerapkan tarif High Season resmi:',
+    hsCalClose: 'Tutup Kalender'
   },
   en: {
     modalTitle: 'Official Mount Bromo Reservation Form',
@@ -228,7 +318,49 @@ export const BOOKING_MODAL_TRANSLATIONS: Record<SupportedLanguage, LocalizedBook
     uploadBoxFormats: 'Supports JPG, PNG, WEBP, or PDF (Max 5MB)',
     changeFile: 'Change File',
     removeFile: 'Remove File',
-    submittingProof: 'Submitting Receipt & Finalizing Booking...'
+    submittingProof: 'Submitting Receipt & Finalizing Booking...',
+    openTripRouteTitle: 'Surabaya Open Trip Route (Auto-Connected to Calendar):',
+    saturdayScheduleBadge: '🗓️ Saturday Departure Schedule',
+    weekdayScheduleBadge: '🗓️ Sun - Fri Departure Schedule',
+    singlePaxBadge: 'Solo Travelers Welcome',
+    min2PaxBadge: 'Min. 2 Guests Required',
+    openTripSbySatDesc: 'Depart Saturday at 10:00 PM WIB, enjoy Sunday morning Sunrise. Professional photography included!',
+    openTripSbyWeekdayPrefix: 'Depart on ',
+    openTripSbyWeekdaySuffix: ' at 11:00 PM WIB via Malang. Min. 2 guests. Professional photography included!',
+    ratePerPaxLabel: 'Rate / Pax:',
+    pickupScheduleHeader: 'Pickup Schedule & Bromo Golden Sunrise',
+    routeLabel: 'Route Pattern:',
+    pickupStepLabel: '1. PICKUP SCHEDULE:',
+    sunriseStepLabel: '2. GOLDEN SUNRISE BROMO:',
+    atPrefix: 'At ',
+    previousNightBadge: '(Previous Night)',
+    earlyMorningBadge: '(Early Morning of Sunrise Date)',
+    morningBadge: '(Morning)',
+    seasonStatusLabel: 'Season Status:',
+    peakSeasonBadge: 'Peak / High Season',
+    regularSeasonBadge: 'Regular / Normal',
+    peakSeasonActiveNote: 'Official Peak Season rate applies automatically',
+    regularSeasonActiveNote: 'Regular rate applies automatically',
+    longJeepRateCategory: 'Long Jeep Day Rate Category:',
+    longJeepAutoDetermine: 'Automatically determined based on departure date',
+    extraPickupOptionLabel: 'Additional Pickup Options:',
+    longJeepBasecampOption: 'Start at Gubugklakah Basecamp (No Pickup Add-on)',
+    longJeepMalangReg: 'Malang City Pickup (+IDR 300,000 / car max 6 pax)',
+    longJeepMalangHigh: 'Malang City Pickup (+IDR 400,000 High Season / car max 6 pax)',
+    longJeepBatuReg: 'Batu City Pickup (+IDR 400,000 / car max 6 pax)',
+    longJeepBatuHigh: 'Batu City Pickup (+IDR 500,000 High Season / car max 6 pax)',
+    errPaxRequired: 'Please set number of participants (min. 1 guest) using (+) button.',
+    errPaxMinSby: 'Surabaya Open Trip via Malang (Sun - Fri departures) requires min. 2 guests.',
+    errTravelDateRequired: 'Please select a departure date.',
+    errFullNameRequired: 'Please enter lead guest full name (min. 2 characters).',
+    errWhatsappRequired: 'Valid active WhatsApp number is required for official booking confirmation.',
+    errEmailRequired: 'Valid email address is required to receive TNBTS e-tickets & PDF invoice.',
+    errPickupAddressRequired: 'Pickup location is required (e.g., Hotel name, Train Station, Airport, or Basecamp).',
+    errPaymentProofRequired: 'Please select and upload a photo/screenshot of your deposit transfer receipt first.',
+    hsCalTitle: 'TNBTS High / Peak Season Calendar',
+    hsCalSub: 'Official Mount Bromo Peak Holiday Schedule Mapping',
+    hsCalDesc: 'If your selected departure date falls within any of the periods below, the booking calculator will automatically apply official High Season rates:',
+    hsCalClose: 'Close Calendar'
   },
   zh: {
     modalTitle: '布罗莫火山官方在线预订与费用测算',
@@ -304,6 +436,48 @@ export const BOOKING_MODAL_TRANSLATIONS: Record<SupportedLanguage, LocalizedBook
     uploadBoxFormats: '支持 JPG、PNG、WEBP 或 PDF 格式（最大 5MB）',
     changeFile: '更换文件',
     removeFile: '删除文件',
-    submittingProof: '正在提交凭证并确认预订...'
+    submittingProof: '正在提交凭证并确认预订...',
+    openTripRouteTitle: '泗水拼团路线（自动关联日历）：',
+    saturdayScheduleBadge: '🗓️ 周六行程安排',
+    weekdayScheduleBadge: '🗓️ 周日至周五行程',
+    singlePaxBadge: '1人即可报名参团',
+    min2PaxBadge: '最少2人起订',
+    openTripSbySatDesc: '周六晚10:00出发，次日（周日）清晨观赏日出。包含专业摄影服务！',
+    openTripSbyWeekdayPrefix: '',
+    openTripSbyWeekdaySuffix: '晚11:00经玛琅出发。2人起订，包含专业摄影！',
+    ratePerPaxLabel: '每人价格：',
+    pickupScheduleHeader: '接送时间表与布罗莫金光日出安排',
+    routeLabel: '线路：',
+    pickupStepLabel: '1. 上门接送时间 (PICKUP):',
+    sunriseStepLabel: '2. 布罗莫日出观赏 (GOLDEN SUNRISE):',
+    atPrefix: '时间 ',
+    previousNightBadge: '(前一晚)',
+    earlyMorningBadge: '(日出当日凌晨)',
+    morningBadge: '(早晨)',
+    seasonStatusLabel: '季节状态：',
+    peakSeasonBadge: '旺季高峰 (Peak Season)',
+    regularSeasonBadge: '常规季节 (Regular)',
+    peakSeasonActiveNote: '自动适用官方旺季价格',
+    regularSeasonActiveNote: '自动适用日常常规价格',
+    longJeepRateCategory: '长板吉普车包车价格类别：',
+    longJeepAutoDetermine: '根据出行日期自动匹配',
+    extraPickupOptionLabel: '额外接送服务选项：',
+    longJeepBasecampOption: 'Gubugklakah 基地出发（无需额外接送）',
+    longJeepMalangReg: '玛琅市区接送（+300,000印尼盾 / 车 最多6人）',
+    longJeepMalangHigh: '玛琅市区接送（+400,000印尼盾 旺季 / 车 最多6人）',
+    longJeepBatuReg: '巴图市区接送（+400,000印尼盾 / 车 最多6人）',
+    longJeepBatuHigh: '巴图市区接送（+500,000印尼盾 旺季 / 车 最多6人）',
+    errPaxRequired: '请使用 (+) 按钮选择出行人数（至少1位）。',
+    errPaxMinSby: '泗水拼团（经玛琅，周日至周五出发）最少需要2位旅客。',
+    errTravelDateRequired: '请选择出行日期。',
+    errFullNameRequired: '请填写预订人姓名（至少2个字符）。',
+    errWhatsappRequired: '请填写有效的WhatsApp号码以便接收官方预订确认。',
+    errEmailRequired: '请填写有效的电子邮箱，以便接收国家公园电子门票与PDF确认函。',
+    errPickupAddressRequired: '请填写上门接送地址（例如：酒店名称、火车站、机场或基地）。',
+    errPaymentProofRequired: '请先选择并上传定金支付汇款凭证截图/照片。',
+    hsCalTitle: 'TNBTS 国家公园旺季 / 高峰日历',
+    hsCalSub: '布罗莫火山官方节假日与旺季时间表',
+    hsCalDesc: '若您选择的出行日期落在以下任意时间范围内，预订系统将自动套用官方旺季公布价格：',
+    hsCalClose: '关闭日历'
   }
 };

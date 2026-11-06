@@ -123,7 +123,7 @@ define(['./workbox-afac4cd2'], (function (workbox) { 'use strict';
     "revision": "ef557259d8c3e50ab4d15acef6c2a1e7"
   }, {
     "url": "index.html",
-    "revision": "c1ae769c8fedba60a15038d53adbd30e"
+    "revision": "035578b53ee7d0e229b356dcf8943dda"
   }, {
     "url": "icon.svg",
     "revision": "3da407506d2fb31298c59d4678e58cf1"
@@ -314,6 +314,12 @@ define(['./workbox-afac4cd2'], (function (workbox) { 'use strict';
     "url": "assets/index.es-wqi9c2Ck.js",
     "revision": null
   }, {
+    "url": "assets/index.es-uKx0rNgE.js",
+    "revision": null
+  }, {
+    "url": "assets/index.es-EY_FHOEZ.js",
+    "revision": null
+  }, {
     "url": "assets/index.es-DYo6vviQ.js",
     "revision": null
   }, {
@@ -327,6 +333,9 @@ define(['./workbox-afac4cd2'], (function (workbox) { 'use strict';
     "revision": null
   }, {
     "url": "assets/index-DYr3UzmJ.js",
+    "revision": null
+  }, {
+    "url": "assets/index-DFGCcQKH.js",
     "revision": null
   }, {
     "url": "assets/index-Cw0edEc6.css",
@@ -345,6 +354,9 @@ define(['./workbox-afac4cd2'], (function (workbox) { 'use strict';
     "revision": null
   }, {
     "url": "assets/index-B7GwJe7W.css",
+    "revision": null
+  }, {
+    "url": "assets/index--f4-yQMX.js",
     "revision": null
   }, {
     "url": "assets/imgtoiletbromo_wisatabromo-Cdjk32fT.png",

@@ -241,30 +241,30 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
     const isSbyMalang = currentPkg.id === 'open-trip-surabaya' && !openTripSbyInfo.isSaturday;
 
     if (isSbyMalang && form.paxCount < 2) {
-      errs.paxCount = 'Open Trip Surabaya via Malang (keberangkatan Minggu s/d Jumat) minimal 2 orang.';
+      errs.paxCount = bLabels.errPaxMinSby;
     } else if (form.paxCount <= 0) {
-      errs.paxCount = 'Jumlah peserta wajib ditentukan minimal 1 ' + (currentPkg.category === 'trail' ? 'motor' : 'orang') + ' menggunakan tombol (+).';
+      errs.paxCount = bLabels.errPaxRequired;
     }
 
     if (!form.travelDate) {
-      errs.travelDate = 'Tanggal keberangkatan trip wajib dipilih.';
+      errs.travelDate = bLabels.errTravelDateRequired;
     }
 
     if (!form.fullName || form.fullName.trim().length < 2) {
-      errs.fullName = 'Nama lengkap pemesan wajib diisi (minimal 2 karakter).';
+      errs.fullName = bLabels.errFullNameRequired;
     }
 
     if (!form.whatsappNumber || form.whatsappNumber.trim().length < 8) {
-      errs.whatsappNumber = 'Nomor WhatsApp aktif wajib diisi untuk konfirmasi booking resmi.';
+      errs.whatsappNumber = bLabels.errWhatsappRequired;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!form.email || !emailRegex.test(form.email.trim())) {
-      errs.email = 'Alamat email valid wajib diisi untuk pengiriman e-tiket TNBTS & invoice PDF.';
+      errs.email = bLabels.errEmailRequired;
     }
 
     if (!form.pickupAddress || form.pickupAddress.trim().length < 3) {
-      errs.pickupAddress = 'Alamat / lokasi penjemputan wajib diisi (contoh: Nama Hotel, Stasiun, Bandara, atau Basecamp).';
+      errs.pickupAddress = bLabels.errPickupAddressRequired;
     }
 
     setFormErrors(errs);
@@ -626,7 +626,7 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
   const handleUploadProofAndFinalize = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.paymentProofName || !form.paymentProofPreview) {
-      setFormErrors({ paymentProof: 'Silakan pilih dan unggah foto/screenshot bukti transfer pembayaran DP terlebih dahulu.' });
+      setFormErrors({ paymentProof: bLabels.errPaymentProofRequired });
       return;
     }
 
@@ -1253,14 +1253,14 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-black text-[#102a56] flex items-center gap-1.5">
                       <Sparkles className="w-3.5 h-3.5 text-[#0996f5]" />
-                      <span>Rute Open Trip Surabaya (Otomatis Terhubung Kalender):</span>
+                      <span>{bLabels.openTripRouteTitle}</span>
                     </span>
                     <span className={`text-[10px] font-black px-2.5 py-0.5 rounded-full shadow-2xs ${
                       openTripSbyInfo.isSaturday 
                         ? 'bg-amber-100 text-amber-950 border border-amber-300' 
                         : 'bg-blue-100 text-blue-950 border border-blue-300'
                     }`}>
-                      {openTripSbyInfo.isSaturday ? '🗓️ Jadwal Hari Sabtu' : '🗓️ Jadwal Minggu s/d Jumat'}
+                      {openTripSbyInfo.isSaturday ? bLabels.saturdayScheduleBadge : bLabels.weekdayScheduleBadge}
                     </span>
                   </div>
 
@@ -1268,23 +1268,23 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
                         <span className="font-extrabold text-xs text-[#102a56]">
-                          {openTripSbyInfo.isSaturday ? '📍 Surabaya via Tosari (Pasuruan)' : '📍 Surabaya via Malang'}
+                          {openTripSbyInfo.isSaturday ? bLabels.openTripSbyTosariTitle : bLabels.openTripSbyMalangTitle}
                         </span>
                         <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${
                           openTripSbyInfo.isSaturday ? 'bg-emerald-100 text-emerald-800' : 'bg-indigo-100 text-indigo-800'
                         }`}>
-                          {openTripSbyInfo.isSaturday ? '1 Orang Bisa Gabung' : 'Minimal 2 Orang'}
+                          {openTripSbyInfo.isSaturday ? bLabels.singlePaxBadge : bLabels.min2PaxBadge}
                         </span>
                       </div>
                       <p className="text-[11px] text-slate-600">
                         {openTripSbyInfo.isSaturday
-                          ? 'Berangkat Sabtu pukul 22.00 WIB, nikmati Sunrise Minggu pagi. Dokumentasi Foto Include!'
-                          : `Berangkat hari ${openTripSbyInfo.dayName} pukul 23.00 WIB via Malang. Peserta dimulai dari 2 orang. Dokumentasi Foto Include!`}
+                          ? bLabels.openTripSbySatDesc
+                          : `${bLabels.openTripSbyWeekdayPrefix}${openTripSbyInfo.dayName}${bLabels.openTripSbyWeekdaySuffix}`}
                       </p>
                     </div>
 
                     <div className="text-right shrink-0 bg-slate-50 p-2.5 rounded-lg border border-slate-200">
-                      <div className="text-[10px] text-slate-500 font-bold uppercase">Tarif / Pax:</div>
+                      <div className="text-[10px] text-slate-500 font-bold uppercase">{bLabels.ratePerPaxLabel}</div>
                       <div className="font-mono font-black text-sm text-[#0996f5]">
                         {form.isHighSeason
                           ? (openTripSbyInfo.isSaturday ? 'Rp 425.000' : 'Rp 800.000')
@@ -1392,8 +1392,8 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
                 <div className="p-3.5 bg-[#e5f4ff]/60 border border-[#0996f5]/20 rounded-2xl space-y-3">
                   <div className="flex items-center justify-between">
                     <div>
-                      <span className="text-xs font-bold text-[#102a56]">Kategori Tarif Hari Long Jeep:</span>
-                      <div className="text-[10px] text-slate-500">Ditentukan otomatis berdasarkan tanggal keberangkatan</div>
+                      <span className="text-xs font-bold text-[#102a56]">{bLabels.longJeepRateCategory}</span>
+                      <div className="text-[10px] text-slate-500">{bLabels.longJeepAutoDetermine}</div>
                     </div>
                     <span className={`text-[11px] font-black px-3 py-1 rounded-full shadow-xs ${
                       form.dayType === 'highseason' || form.isHighSeason
@@ -1412,7 +1412,7 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
 
                   <div>
                     <label className="block text-xs font-bold text-[#102a56] mb-1.5">
-                      Opsi Antar-Jemput Tambahan:
+                      {bLabels.extraPickupOptionLabel}
                     </label>
                     <select
                       value={form.pickupAreaExtra || 'none'}
@@ -1424,9 +1424,9 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
                       }
                       className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs text-[#111318]"
                     >
-                      <option value="none">Start Basecamp Gubugklakah (Tanpa Tambahan Jemput)</option>
-                      <option value="malang">Jemput Kota Malang ({form.isHighSeason ? '+Rp 400.000 High Season' : '+Rp 300.000'} / mobil max 6 pax)</option>
-                      <option value="batu">Jemput Kota Batu ({form.isHighSeason ? '+Rp 500.000 High Season' : '+Rp 400.000'} / mobil max 6 pax)</option>
+                      <option value="none">{bLabels.longJeepBasecampOption}</option>
+                      <option value="malang">{form.isHighSeason ? bLabels.longJeepMalangHigh : bLabels.longJeepMalangReg}</option>
+                      <option value="batu">{form.isHighSeason ? bLabels.longJeepBatuHigh : bLabels.longJeepBatuReg}</option>
                     </select>
                   </div>
                 </div>
@@ -1529,26 +1529,26 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
                   <div className="flex items-center justify-between">
                     <span className="font-black text-[#102a56] flex items-center gap-1.5">
                       <Clock className="w-4 h-4 text-amber-600" />
-                      <span>{language === 'en' ? 'Pickup Schedule & Bromo Golden Sunrise' : language === 'zh' ? '接送时间表与布罗莫金光日出安排' : 'Jadwal Penjemputan & Golden Sunrise Bromo'}</span>
+                      <span>{bLabels.pickupScheduleHeader}</span>
                     </span>
                     <span className="text-[10px] bg-amber-200/80 text-amber-950 font-bold px-2 py-0.5 rounded-full">
-                      {language === 'en' ? 'Route:' : language === 'zh' ? '线路：' : 'Pola:'} {tripSchedule.locationLabel}
+                      {bLabels.routeLabel} {tripSchedule.locationLabel}
                     </span>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     <div className="bg-white/95 p-2.5 rounded-xl border border-blue-200/70 shadow-xs">
-                      <div className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">{language === 'en' ? '1. PICKUP SCHEDULE:' : language === 'zh' ? '1. 上门接送时间 (PICKUP):' : '1. JADWAL JEMPUT (PICKUP):'}</div>
+                      <div className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">{bLabels.pickupStepLabel}</div>
                       <div className="font-extrabold text-[#102a56] text-xs mt-0.5">{tripSchedule.pickupDateFormatted}</div>
                       <div className="text-[11px] text-blue-700 font-black mt-0.5">
-                        {language === 'en' ? 'At ' : language === 'zh' ? '时间 ' : 'Pukul '}{tripSchedule.pickupTime} {tripSchedule.pattern === 'malang_batu_surabaya' ? (language === 'en' ? '(Previous Night)' : language === 'zh' ? '(前一晚)' : '(Malam Sebelumnya)') : (language === 'en' ? '(Early Morning of Sunrise Date)' : language === 'zh' ? '(日出当日凌晨)' : '(Dini Hari Tanggal Sunrise)')}
+                        {bLabels.atPrefix}{tripSchedule.pickupTime} {tripSchedule.pattern === 'malang_batu_surabaya' ? bLabels.previousNightBadge : bLabels.earlyMorningBadge}
                       </div>
                     </div>
 
                     <div className="bg-white/95 p-2.5 rounded-xl border border-amber-200/70 shadow-xs">
-                      <div className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">{language === 'en' ? '2. GOLDEN SUNRISE BROMO:' : language === 'zh' ? '2. 布罗莫日出观赏 (GOLDEN SUNRISE):' : '2. GOLDEN SUNRISE BROMO:'}</div>
+                      <div className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">{bLabels.sunriseStepLabel}</div>
                       <div className="font-extrabold text-[#102a56] text-xs mt-0.5">{tripSchedule.sunriseDateFormatted}</div>
-                      <div className="text-[11px] text-amber-700 font-black mt-0.5">{language === 'en' ? 'At ' : language === 'zh' ? '时间 ' : 'Pukul '}{tripSchedule.sunriseTime} {language === 'en' ? '(Morning)' : language === 'zh' ? '(早晨)' : '(Pagi Hari)'}</div>
+                      <div className="text-[11px] text-amber-700 font-black mt-0.5">{bLabels.atPrefix}{tripSchedule.sunriseTime} {bLabels.morningBadge}</div>
                     </div>
                   </div>
 
@@ -1573,19 +1573,17 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
                   </div>
                   <div className="text-xs min-w-0">
                     <div className="font-bold flex items-center gap-1.5">
-                      <span>{language === 'en' ? 'Season Status:' : language === 'zh' ? '季节状态：' : 'Status Musim:'}</span>
+                      <span>{bLabels.seasonStatusLabel}</span>
                       <span className={`text-[10px] font-black px-1.5 py-0.2 rounded-md ${
                         form.isHighSeason ? 'bg-red-600 text-white' : 'bg-emerald-600 text-white'
                       }`}>
-                        {form.isHighSeason 
-                          ? (language === 'en' ? 'Peak / High Season' : language === 'zh' ? '旺季高峰 (Peak Season)' : 'Peak / High Season') 
-                          : (language === 'en' ? 'Regular / Normal' : language === 'zh' ? '常规季节 (Regular)' : 'Reguler / Normal')}
+                        {form.isHighSeason ? bLabels.peakSeasonBadge : bLabels.regularSeasonBadge}
                       </span>
                     </div>
                     <div className="text-[10px] text-slate-600 truncate mt-0.5">
                       {form.isHighSeason 
-                        ? (highSeasonCheck.seasonName || (language === 'en' ? 'Official Peak Season rate applies' : language === 'zh' ? '自动适用官方旺季价格' : 'Tarif Peak Season otomatis aktif')) 
-                        : (language === 'en' ? 'Regular rate applies automatically' : language === 'zh' ? '自动适用日常常规价格' : 'Tarif reguler berlaku otomatis')}
+                        ? (highSeasonCheck.seasonName || bLabels.peakSeasonActiveNote) 
+                        : bLabels.regularSeasonActiveNote}
                     </div>
                   </div>
                 </div>
@@ -1878,13 +1876,13 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
                 <Flame className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="text-base font-black text-[#102a56]">Kalender High / Peak Season TNBTS</h3>
-                <p className="text-xs text-slate-500">Pemetaan Resmi Jadwal Musim Libur Wisata Bromo</p>
+                <h3 className="text-base font-black text-[#102a56]">{bLabels.hsCalTitle}</h3>
+                <p className="text-xs text-slate-500">{bLabels.hsCalSub}</p>
               </div>
             </div>
 
             <p className="text-xs text-slate-600 mb-3 leading-relaxed">
-              Jika tanggal keberangkatan yang Anda pilih berada dalam salah satu rentang tanggal di bawah ini, kalkulator pemesanan akan <strong>secara otomatis menerapkan tarif High Season resmi</strong>:
+              {bLabels.hsCalDesc}
             </p>
 
             <div className="space-y-2.5 max-h-[50vh] overflow-y-auto pr-1">
@@ -1909,7 +1907,7 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
               onClick={() => setShowHighSeasonCalendar(false)}
               className="mt-5 w-full py-2.5 bg-[#0996f5] hover:bg-[#0782d6] text-white text-xs font-bold rounded-xl transition-colors cursor-pointer shadow-md"
             >
-              Tutup Kalender
+              {bLabels.hsCalClose}
             </button>
           </div>
         </div>
