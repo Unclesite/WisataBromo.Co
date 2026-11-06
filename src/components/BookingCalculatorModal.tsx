@@ -217,7 +217,7 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
     packageId: currentPkg.id,
     pickupAddress: form.pickupAddress,
     pickupAreaExtra: form.pickupAreaExtra as 'batu' | 'malang' | 'none' | undefined,
-  });
+  }, language);
   const highSeasonCheck = checkIsHighSeason(form.travelDate);
   const openTripSbyInfo = getOpenTripSurabayaSchedule(form.travelDate, form.isHighSeason);
 
@@ -1529,26 +1529,26 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
                   <div className="flex items-center justify-between">
                     <span className="font-black text-[#102a56] flex items-center gap-1.5">
                       <Clock className="w-4 h-4 text-amber-600" />
-                      <span>Jadwal Penjemputan &amp; Golden Sunrise Bromo</span>
+                      <span>{language === 'en' ? 'Pickup Schedule & Bromo Golden Sunrise' : language === 'zh' ? '接送时间表与布罗莫金光日出安排' : 'Jadwal Penjemputan & Golden Sunrise Bromo'}</span>
                     </span>
                     <span className="text-[10px] bg-amber-200/80 text-amber-950 font-bold px-2 py-0.5 rounded-full">
-                      Pola: {tripSchedule.locationLabel}
+                      {language === 'en' ? 'Route:' : language === 'zh' ? '线路：' : 'Pola:'} {tripSchedule.locationLabel}
                     </span>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     <div className="bg-white/95 p-2.5 rounded-xl border border-blue-200/70 shadow-xs">
-                      <div className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">1. Jadwal Jemput (Pickup):</div>
+                      <div className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">{language === 'en' ? '1. PICKUP SCHEDULE:' : language === 'zh' ? '1. 上门接送时间 (PICKUP):' : '1. JADWAL JEMPUT (PICKUP):'}</div>
                       <div className="font-extrabold text-[#102a56] text-xs mt-0.5">{tripSchedule.pickupDateFormatted}</div>
                       <div className="text-[11px] text-blue-700 font-black mt-0.5">
-                        Pukul {tripSchedule.pickupTime} {tripSchedule.pattern === 'malang_batu_surabaya' ? '(Malam Sebelumnya)' : '(Dini Hari Tanggal Sunrise)'}
+                        {language === 'en' ? 'At ' : language === 'zh' ? '时间 ' : 'Pukul '}{tripSchedule.pickupTime} {tripSchedule.pattern === 'malang_batu_surabaya' ? (language === 'en' ? '(Previous Night)' : language === 'zh' ? '(前一晚)' : '(Malam Sebelumnya)') : (language === 'en' ? '(Early Morning of Sunrise Date)' : language === 'zh' ? '(日出当日凌晨)' : '(Dini Hari Tanggal Sunrise)')}
                       </div>
                     </div>
 
                     <div className="bg-white/95 p-2.5 rounded-xl border border-amber-200/70 shadow-xs">
-                      <div className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">2. Golden Sunrise Bromo:</div>
+                      <div className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">{language === 'en' ? '2. GOLDEN SUNRISE BROMO:' : language === 'zh' ? '2. 布罗莫日出观赏 (GOLDEN SUNRISE):' : '2. GOLDEN SUNRISE BROMO:'}</div>
                       <div className="font-extrabold text-[#102a56] text-xs mt-0.5">{tripSchedule.sunriseDateFormatted}</div>
-                      <div className="text-[11px] text-amber-700 font-black mt-0.5">Pukul {tripSchedule.sunriseTime} (Pagi Hari)</div>
+                      <div className="text-[11px] text-amber-700 font-black mt-0.5">{language === 'en' ? 'At ' : language === 'zh' ? '时间 ' : 'Pukul '}{tripSchedule.sunriseTime} {language === 'en' ? '(Morning)' : language === 'zh' ? '(早晨)' : '(Pagi Hari)'}</div>
                     </div>
                   </div>
 

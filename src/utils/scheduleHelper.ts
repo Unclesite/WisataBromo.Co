@@ -145,9 +145,9 @@ export function detectBromoPickupPattern(
 }
 
 /**
- * Format string tanggal YYYY-MM-DD menjadi info kalender Indonesia
+ * Format string tanggal YYYY-MM-DD menjadi info kalender Indonesia / English / Mandarin
  */
-function parseYMD(ymdStr: string) {
+function parseYMD(ymdStr: string, lang: 'id' | 'en' | 'zh' = 'id') {
   const parts = ymdStr.split('-');
   const year = parseInt(parts[0], 10);
   const month = parseInt(parts[1], 10);
@@ -157,14 +157,48 @@ function parseYMD(ymdStr: string) {
   const d = new Date(Date.UTC(year, month - 1, day, 12, 0, 0));
   const dayOfWeek = d.getUTCDay();
 
+  const MONTHS_EN = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const DAYS_EN = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+  const MONTHS_ZH = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+  const DAYS_ZH = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+
+  if (lang === 'en') {
+    const dayName = DAYS_EN[dayOfWeek];
+    const monthName = MONTHS_EN[month - 1];
+    return {
+      year,
+      month,
+      day,
+      dayName,
+      monthName,
+      dateSimple: `${monthName} ${day}, ${year}`,
+      dateFormatted: `${dayName}, ${monthName} ${day}, ${year}`,
+    };
+  } else if (lang === 'zh') {
+    const dayName = DAYS_ZH[dayOfWeek];
+    const monthName = MONTHS_ZH[month - 1];
+    return {
+      year,
+      month,
+      day,
+      dayName,
+      monthName,
+      dateSimple: `${year}年${monthName}${day}日`,
+      dateFormatted: `${year}年${monthName}${day}日 (${dayName})`,
+    };
+  }
+
+  const dayName = DAYS_INDO[dayOfWeek];
+  const monthName = MONTHS_INDO[month - 1];
   return {
     year,
     month,
     day,
-    dayName: DAYS_INDO[dayOfWeek],
-    monthName: MONTHS_INDO[month - 1],
-    dateSimple: `${day} ${MONTHS_INDO[month - 1]} ${year}`,
-    dateFormatted: `${DAYS_INDO[dayOfWeek]}, ${day} ${MONTHS_INDO[month - 1]} ${year}`,
+    dayName,
+    monthName,
+    dateSimple: `${day} ${monthName} ${year}`,
+    dateFormatted: `${dayName}, ${day} ${monthName} ${year}`,
   };
 }
 
@@ -192,10 +226,12 @@ function getPreviousDayYMD(ymdStr: string): string {
  *
  * @param selectedTripDate Tanggal perjalanan / Sunrise yang dipilih customer (YYYY-MM-DD)
  * @param optionsOrCity Objek opsi atau string startCity ('malang', 'batu', 'surabaya', 'sukapura', 'tosari', 'gubugklakah')
+ * @param lang Bahasa aktif ('id' | 'en' | 'zh')
  */
 export function calculateBromoSchedule(
   selectedTripDate: string,
-  optionsOrCity?: string | BromoScheduleOptions
+  optionsOrCity?: string | BromoScheduleOptions,
+  lang: 'id' | 'en' | 'zh' = 'id'
 ): BromoScheduleResult {
   if (!selectedTripDate) {
     return {
@@ -221,51 +257,60 @@ export function calculateBromoSchedule(
   }
 
   const { pattern, locationLabel } = detectBromoPickupPattern(optionsOrCity);
-  const sunriseInfo = parseYMD(selectedTripDate);
+  const sunriseInfo = parseYMD(selectedTripDate, lang);
   const sunriseDateStr = selectedTripDate;
-  const sunriseTime = '05.00 WIB';
+  const sunriseTime = lang === 'zh' ? '05:00 (印尼西部时间)' : lang === 'en' ? '05:00 AM WIB' : '05.00 WIB';
 
   let pickupDateStr = selectedTripDate;
-  let pickupTime = '23.00 WIB';
+  let pickupTime = lang === 'zh' ? '23:00 (印尼西部时间)' : lang === 'en' ? '11:00 PM WIB' : '23.00 WIB';
   let explanation = '';
 
   switch (pattern) {
     case 'sukapura_tosari': {
-      // Pola B: Sukapura / Tosari
-      // pickupDate = selectedTripDate (dini hari pada tanggal sunrise)
-      // pickupTime = 03.00 WIB
       pickupDateStr = selectedTripDate;
-      pickupTime = '03.00 WIB';
-      const pickupInfo = sunriseInfo; // Tanggalnya sama dengan sunrise
-      explanation = `Penjemputan dilakukan dini hari pada ${pickupInfo.dateFormatted} pukul ${pickupTime}. Jadwal Golden Sunrise Bromo Anda adalah pada ${sunriseInfo.dateFormatted} pukul ${sunriseTime}.`;
+      pickupTime = lang === 'zh' ? '03:00 (印尼西部时间)' : lang === 'en' ? '03:00 AM WIB' : '03.00 WIB';
+      const pickupInfo = sunriseInfo;
+      if (lang === 'en') {
+        explanation = `Pickup takes place early morning on ${pickupInfo.dateFormatted} at ${pickupTime}. Your Mount Bromo Golden Sunrise schedule is on ${sunriseInfo.dateFormatted} at ${sunriseTime}.`;
+      } else if (lang === 'zh') {
+        explanation = `接送时间为当日凌晨 ${pickupInfo.dateFormatted} ${pickupTime}。您的布罗莫金光日出行程为 ${sunriseInfo.dateFormatted} ${sunriseTime}。`;
+      } else {
+        explanation = `Penjemputan dilakukan dini hari pada ${pickupInfo.dateFormatted} pukul ${pickupTime}. Jadwal Golden Sunrise Bromo Anda adalah pada ${sunriseInfo.dateFormatted} pukul ${sunriseTime}.`;
+      }
       break;
     }
 
     case 'gubugklakah': {
-      // Pola C: Gubugklakah / Hotel Gubugklakah
-      // pickupDate = selectedTripDate (dini hari pada tanggal sunrise)
-      // pickupTime = 02.00 / 02.30 WIB
       pickupDateStr = selectedTripDate;
-      pickupTime = '02.00 / 02.30 WIB';
-      const pickupInfo = sunriseInfo; // Tanggalnya sama dengan sunrise
-      explanation = `Penjemputan dilakukan dini hari pada ${pickupInfo.dateFormatted} pukul ${pickupTime}. Jadwal Golden Sunrise Bromo Anda adalah pada ${sunriseInfo.dateFormatted} pukul ${sunriseTime}.`;
+      pickupTime = lang === 'zh' ? '02:00 - 02:30 (印尼西部时间)' : lang === 'en' ? '02:00 - 02:30 AM WIB' : '02.00 / 02.30 WIB';
+      const pickupInfo = sunriseInfo;
+      if (lang === 'en') {
+        explanation = `Pickup takes place early morning on ${pickupInfo.dateFormatted} at ${pickupTime}. Your Mount Bromo Golden Sunrise schedule is on ${sunriseInfo.dateFormatted} at ${sunriseTime}.`;
+      } else if (lang === 'zh') {
+        explanation = `接送时间为当日凌晨 ${pickupInfo.dateFormatted} ${pickupTime}。您的布罗莫金光日出行程为 ${sunriseInfo.dateFormatted} ${sunriseTime}。`;
+      } else {
+        explanation = `Penjemputan dilakukan dini hari pada ${pickupInfo.dateFormatted} pukul ${pickupTime}. Jadwal Golden Sunrise Bromo Anda adalah pada ${sunriseInfo.dateFormatted} pukul ${sunriseTime}.`;
+      }
       break;
     }
 
     case 'malang_batu_surabaya':
     default: {
-      // Pola A: Malang / Batu / Surabaya
-      // pickupDate = selectedTripDate - 1 hari (malam sebelum tanggal perjalanan)
-      // pickupTime = 23.00 WIB
       pickupDateStr = getPreviousDayYMD(selectedTripDate);
-      pickupTime = '23.00 WIB';
-      const pickupInfo = parseYMD(pickupDateStr);
-      explanation = `Penjemputan dilakukan malam sebelumnya pada ${pickupInfo.dateFormatted} pukul ${pickupTime}. Jadwal Golden Sunrise Bromo Anda adalah pada keesokan paginya yaitu ${sunriseInfo.dateFormatted} pukul ${sunriseTime}.`;
+      pickupTime = lang === 'zh' ? '23:00 (印尼西部时间)' : lang === 'en' ? '11:00 PM WIB' : '23.00 WIB';
+      const pickupInfo = parseYMD(pickupDateStr, lang);
+      if (lang === 'en') {
+        explanation = `Pickup takes place the previous night on ${pickupInfo.dateFormatted} at ${pickupTime}. Your Mount Bromo Golden Sunrise schedule is the following morning on ${sunriseInfo.dateFormatted} at ${sunriseTime}.`;
+      } else if (lang === 'zh') {
+        explanation = `接送时间为前一晚 ${pickupInfo.dateFormatted} ${pickupTime}。您的布罗莫金光日出行程为次日早晨 ${sunriseInfo.dateFormatted} ${sunriseTime}。`;
+      } else {
+        explanation = `Penjemputan dilakukan malam sebelumnya pada ${pickupInfo.dateFormatted} pukul ${pickupTime}. Jadwal Golden Sunrise Bromo Anda adalah pada keesokan paginya yaitu ${sunriseInfo.dateFormatted} pukul ${sunriseTime}.`;
+      }
       break;
     }
   }
 
-  const pickupInfo = parseYMD(pickupDateStr);
+  const pickupInfo = parseYMD(pickupDateStr, lang);
 
   return {
     selectedTripDate,

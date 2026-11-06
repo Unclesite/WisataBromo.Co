@@ -1,6 +1,7 @@
 import React from 'react';
 import { Minus, Plus, CheckCircle2, AlertCircle, Coffee } from 'lucide-react';
 import { PicnicMenuGroup } from '../../types/picnic';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 interface QuantityMenuSelectorProps {
   group: PicnicMenuGroup;
@@ -15,6 +16,7 @@ export const QuantityMenuSelector: React.FC<QuantityMenuSelectorProps> = ({
   currentQuantities = {},
   onChangeQuantity
 }) => {
+  const { language, t } = useLanguage();
   const totalSelected = Object.values(currentQuantities).reduce((sum, q) => sum + (Number(q) || 0), 0);
   const remaining = paxCount - totalSelected;
   const isValid = totalSelected === paxCount;
@@ -30,11 +32,11 @@ export const QuantityMenuSelector: React.FC<QuantityMenuSelectorProps> = ({
               {group.title}
             </h4>
             <span className="text-[11px] font-semibold text-[#0996F5] bg-[#EAF6FF] px-2.5 py-0.5 rounded-full border border-[#0996F5]/20">
-              Wajib {paxCount} Porsi
+              {language === 'en' ? `Target ${paxCount} Portions` : language === 'zh' ? `需选满 ${paxCount} 份` : `Wajib ${paxCount} Porsi`}
             </span>
           </div>
           <p className="text-xs text-[#526273] mt-1">
-            {group.instruction} · Anda dapat memvariasikan pilihan menu.
+            {group.instruction} · {language === 'en' ? 'You can mix and match menu items.' : language === 'zh' ? '您可以组合搭配不同菜品。' : 'Anda dapat memvariasikan pilihan menu.'}
           </p>
         </div>
 

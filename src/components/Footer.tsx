@@ -41,22 +41,22 @@ export const Footer: React.FC = () => {
             <ul className="space-y-2 text-[#B8C6D4]">
               <li>
                 <a href="/paket/open-trip-malang" className="text-white hover:text-[#0996F5] hover:underline transition-colors block py-0.5">
-                  Open Trip Start Malang
+                  {t('footer.openTripMalang', 'Open Trip Start Malang')}
                 </a>
               </li>
               <li>
                 <a href="/paket/open-trip-surabaya" className="text-white hover:text-[#0996F5] hover:underline transition-colors block py-0.5">
-                  Open Trip Start Surabaya
+                  {t('footer.openTripSurabaya', 'Open Trip Start Surabaya')}
                 </a>
               </li>
               <li>
                 <a href="/paket/private-jeep-malang" className="text-white hover:text-[#0996F5] hover:underline transition-colors block py-0.5">
-                  Private Trip Malang & Batu
+                  {t('footer.privateTripMalang', 'Private Trip Malang & Batu')}
                 </a>
               </li>
               <li>
                 <a href="/paket/private-jeep-surabaya" className="text-white hover:text-[#0996F5] hover:underline transition-colors block py-0.5">
-                  Private Trip Surabaya (Airport)
+                  {t('footer.privateTripSurabaya', 'Private Trip Surabaya (Airport)')}
                 </a>
               </li>
               <li>
@@ -71,12 +71,12 @@ export const Footer: React.FC = () => {
                   }}
                   className="text-white hover:text-[#0996F5] hover:underline transition-colors block py-0.5"
                 >
-                  Bromo Picnic Experience
+                  {t('footer.picnicExperience', 'Bromo Picnic Experience')}
                 </a>
               </li>
               <li>
                 <a href="/paket/sewa-trail-sukapura" className="text-white hover:text-[#0996F5] hover:underline transition-colors block py-0.5">
-                  Trail Bike Rental Sukapura
+                  {t('footer.trailRental', 'Trail Bike Rental Sukapura')}
                 </a>
               </li>
               <li className="pt-1.5 border-t border-white/20">
@@ -100,19 +100,19 @@ export const Footer: React.FC = () => {
             <ul className="space-y-2 text-[#B8C6D4]">
               <li>
                 <span className="text-white font-bold">Sukapura (Probolinggo): </span>
-                <span className="text-[#B8C6D4]">Pintu utama hotel & Cemorolawang</span>
+                <span className="text-[#B8C6D4]">{t('footer.sukapuraDesc', 'Pintu utama hotel & Cemorolawang')}</span>
               </li>
               <li>
                 <span className="text-white font-bold">Tosari (Pasuruan): </span>
-                <span className="text-[#B8C6D4]">Akses tercepat ke Penanjakan 1</span>
+                <span className="text-[#B8C6D4]">{t('footer.tosariDesc', 'Akses tercepat ke Penanjakan 1')}</span>
               </li>
               <li>
                 <span className="text-white font-bold">Gubugklakah (Malang): </span>
-                <span className="text-[#B8C6D4]">Rute Jemplang & Savana apel</span>
+                <span className="text-[#B8C6D4]">{t('footer.gubugklakahDesc', 'Rute Jemplang & Savana apel')}</span>
               </li>
               <li>
-                <span className="text-white font-bold">Kota Batu: </span>
-                <span className="text-[#B8C6D4]">Penjemputan villa & resort keluarga</span>
+                <span className="text-white font-bold">{t('footer.batuLabel', 'Kota Batu:')} </span>
+                <span className="text-[#B8C6D4]">{t('footer.batuDesc', 'Penjemputan villa & resort keluarga')}</span>
               </li>
             </ul>
           </div>
@@ -131,7 +131,7 @@ export const Footer: React.FC = () => {
                 >
                   cs@wisatabromo.co
                 </a>
-                <div className="text-[11px] text-white/80">Layanan email resmi 24/7</div>
+                <div className="text-[11px] text-white/80">{t('footer.emailSub', 'Layanan email resmi 24/7')}</div>
               </div>
             </div>
             <div className="flex items-start gap-2.5">
@@ -145,19 +145,19 @@ export const Footer: React.FC = () => {
                 >
                   +62 812 2229 0318
                 </a>
-                <div className="text-[11px] text-white/80">Hotline WhatsApp Reservasi</div>
+                <div className="text-[11px] text-white/80">{t('footer.phoneSub', 'Hotline WhatsApp Reservasi')}</div>
               </div>
             </div>
             <div className="flex items-start gap-2.5 pt-1">
               <MapPin className="w-4 h-4 text-[#FFF700] shrink-0 mt-0.5" />
               <div className="text-[11px] text-white/90 leading-tight space-y-1.5">
                 <div>
-                  <strong className="text-white">Basecamp Malang: </strong><br />
-                  Jalan Raya Gubugklakah no 147, Malang
+                  <strong className="text-white">{t('footer.basecampMalang', 'Basecamp Malang:')} </strong><br />
+                  {t('footer.malangAddr', 'Jalan Raya Gubugklakah no 147, Malang')}
                 </div>
                 <div>
-                  <strong className="text-white">Basecamp Probolinggo: </strong><br />
-                  Jalan Pasar Sayur no 43, Sukapura
+                  <strong className="text-white">{t('footer.basecampProbolinggo', 'Basecamp Probolinggo:')} </strong><br />
+                  {t('footer.probolinggoAddr', 'Jalan Pasar Sayur no 43, Sukapura')}
                 </div>
                 <div className="pt-2">
                   <a
@@ -167,7 +167,7 @@ export const Footer: React.FC = () => {
                     className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-[#EAF6FF] text-[#0996F5] rounded-xl font-black text-[11px] transition-colors shadow-sm min-h-[38px]"
                   >
                     <MapPin className="w-3.5 h-3.5 text-[#0996F5]" />
-                    <span>Google Maps Basecamp</span>
+                    <span>{t('footer.gmapsButton', 'Google Maps Basecamp')}</span>
                     <ExternalLink className="w-3 h-3" />
                   </a>
                 </div>
@@ -182,9 +182,9 @@ export const Footer: React.FC = () => {
             © 2019 - 2026 <span className="text-white font-bold">wisatabromo.co</span>. {t('footer.copyright', 'Seluruh Hak Cipta Dilindungi Undang-Undang.')}
           </div>
           <div className="flex items-center gap-4 text-[#B8C6D4]">
-            <a href="#tips-dan-panduan" className="hover:text-[#0996F5] hover:underline">Ketentuan Layanan</a>
+            <a href="#tips-dan-panduan" className="hover:text-[#0996F5] hover:underline">{t('footer.termsOfService', 'Ketentuan Layanan')}</a>
             <span aria-hidden="true">·</span>
-            <a href="#budaya-tengger" className="hover:text-[#0996F5] hover:underline">Panduan Suku Tengger</a>
+            <a href="#budaya-tengger" className="hover:text-[#0996F5] hover:underline">{t('footer.tenggerGuide', 'Panduan Suku Tengger')}</a>
             <span aria-hidden="true">·</span>
             <a href="https://maps.app.goo.gl/s2RnoqJqDLtZSEvP7" target="_blank" rel="noopener noreferrer" className="hover:text-[#0996F5] flex items-center gap-1">
               <span>Google Maps</span>
@@ -192,7 +192,7 @@ export const Footer: React.FC = () => {
             </a>
             <span aria-hidden="true">·</span>
             <a href="#admin" className="hover:text-[#FFF700] text-[#B8C6D4] flex items-center gap-1 font-semibold">
-              <span>Admin Portal</span>
+              <span>{t('footer.adminPortal', 'Admin Portal')}</span>
             </a>
           </div>
         </div>

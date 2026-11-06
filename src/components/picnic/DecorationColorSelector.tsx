@@ -2,6 +2,7 @@ import React from 'react';
 import { Check, Sparkles, Palette } from 'lucide-react';
 import { PicnicDecorationOption } from '../../types/picnic';
 import { PICNIC_DECORATION_OPTIONS } from '../../data/picnicData';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 interface DecorationColorSelectorProps {
   selectedColor: string;
@@ -14,16 +15,18 @@ export const DecorationColorSelector: React.FC<DecorationColorSelectorProps> = (
   onSelectColor,
   decorations = PICNIC_DECORATION_OPTIONS
 }) => {
+  const { language, t } = useLanguage();
+
   return (
     <div className="space-y-4">
       {/* Informative Subheader */}
       <div className="flex items-center justify-between gap-2 flex-wrap">
         <div className="flex items-center gap-2 text-xs font-bold text-[#0996F5] bg-[#EAF6FF] px-3 py-1 rounded-full border border-[#0996F5]/20">
           <Palette className="w-3.5 h-3.5" />
-          <span>Tema &amp; Warna Karpet Gelaran Piknik</span>
+          <span>{t('picnic.selectDecorationColor', 'Pilih Warna Tema Dekorasi (Estetik)')}</span>
         </div>
         <span className="text-[11px] text-slate-500 font-medium">
-          Pilihan Aktif: <strong className="text-[#071A2B] font-bold">{selectedColor || 'Coklat Putih'}</strong>
+          {language === 'en' ? 'Active Selection:' : language === 'zh' ? '当前选择：' : 'Pilihan Aktif:'} <strong className="text-[#071A2B] font-bold">{selectedColor || 'Coklat Putih'}</strong>
         </span>
       </div>
 

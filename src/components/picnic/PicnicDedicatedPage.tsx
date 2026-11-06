@@ -25,6 +25,8 @@ import imgPicnicSavana from '../../assets/images/bromo_picnic_experience_aesthet
 import imgWidodaren from '../../assets/images/bromo_widodaren_cliff_1790774506404.jpg';
 import imgGoldenHour from '../../assets/images/bromo_golden_hour_1790774487968.jpg';
 
+import { useLanguage } from '../../i18n/LanguageContext';
+
 interface PicnicDedicatedPageProps {
   onBackToHome: () => void;
   onOpenJeepBooking?: () => void;
@@ -34,6 +36,7 @@ export const PicnicDedicatedPage: React.FC<PicnicDedicatedPageProps> = ({
   onBackToHome,
   onOpenJeepBooking
 }) => {
+  const { language, t } = useLanguage();
   // 1. Selection State
   const [selectedPackage, setSelectedPackage] = useState<PicnicPackage>(PICNIC_PACKAGES[0]);
   const [paxCount, setPaxCount] = useState<number>(PICNIC_PACKAGES[0].minPax || 4);
@@ -490,16 +493,16 @@ Mohon verifikasi reservasi saya. Terima kasih!`;
             className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-[#0996F5] hover:text-[#071A2B] transition-colors py-2 px-3 rounded-xl hover:bg-[#EAF6FF] cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Kembali ke Beranda</span>
+            <span>{t('picnic.backToHome', 'Kembali ke Beranda')}</span>
           </button>
 
           <div className="flex items-center gap-2">
             <span className="hidden sm:inline-block text-xs font-semibold text-slate-500">
-              Official Service
+              {t('picnic.officialService', 'Official Service')}
             </span>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EAF6FF] border border-[#0996F5]/20 text-[#0996F5] text-xs font-black">
               <Sparkles className="w-3.5 h-3.5 text-[#FFF700] fill-[#FFF700]" />
-              <span>Bromo Picnic Experience</span>
+              <span>{t('picnic.title', 'Bromo Picnic Experience')}</span>
             </div>
           </div>
         </div>

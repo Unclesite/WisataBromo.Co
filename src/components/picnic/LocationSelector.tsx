@@ -2,6 +2,7 @@ import React from 'react';
 import { MapPin, Check, AlertCircle } from 'lucide-react';
 import { PicnicLocation } from '../../types/picnic';
 import { formatRupiah } from '../../utils/picnicPricingEngine';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 interface LocationSelectorProps {
   locations: PicnicLocation[];
@@ -16,17 +17,19 @@ export const LocationSelector: React.FC<LocationSelectorProps> = ({
   selectedLocation,
   onSelectLocation
 }) => {
+  const { language, t } = useLanguage();
   const activeLocationId = selectedLocation?.id || selectedLocationId;
+
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <div>
           <h4 className="text-sm font-black text-[#0B1220] flex items-center gap-1.5">
             <MapPin className="w-4 h-4 text-[#0996F5]" />
-            <span>Pilih Lokasi Gelaran Piknik</span>
+            <span>{t('picnic.selectLocationTitle', 'Pilih Lokasi Gelaran Piknik')}</span>
           </h4>
           <p className="text-[11px] text-[#526273] mt-0.5">
-            Biaya logistik pengantaran makanan segar &amp; instalasi set property estetik berlaku per rombongan
+            {t('picnic.locationSub', 'Biaya logistik pengantaran makanan segar & instalasi set property estetik berlaku per rombongan')}
           </p>
         </div>
       </div>

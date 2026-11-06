@@ -2,6 +2,7 @@ import React from 'react';
 import { Plus, Check, Gift, Tent, Sparkles, Cake, Type, Palette } from 'lucide-react';
 import { PicnicAddon, BirthdayDetails } from '../../types/picnic';
 import { formatRupiah } from '../../utils/picnicPricingEngine';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 interface AddonSelectorProps {
   addons: PicnicAddon[];
@@ -22,6 +23,8 @@ export const AddonSelector: React.FC<AddonSelectorProps> = ({
   onChangeBirthdayDetails,
   onUpdateBirthdayDetails
 }) => {
+  const { language, t } = useLanguage();
+
   // Normalize selected IDs whether passed as array of strings or array of objects
   const activeIds = React.useMemo(() => {
     if (Array.isArray(selectedAddonIds)) {
@@ -84,10 +87,10 @@ export const AddonSelector: React.FC<AddonSelectorProps> = ({
       <div>
         <h4 className="text-sm font-black text-[#0B1220] flex items-center gap-1.5">
           <Sparkles className="w-4 h-4 text-[#0996F5]" />
-          <span>Fasilitas Tambahan &amp; Dekorasi Acara (Opsional)</span>
+          <span>{t('picnic.addonsTitle', 'Fasilitas Tambahan & Dekorasi Acara (Opsional)')}</span>
         </h4>
         <p className="text-[11px] text-[#526273] mt-0.5">
-          Pilih tenda canvas bohemian atau dekorasi perayaan ulang tahun/anniversary sesuai kebutuhan momen Anda.
+          {language === 'en' ? 'Select glamping bell tent or birthday/anniversary setup for your special occasion.' : language === 'zh' ? '为您的特别纪念时刻加配奢华波西米亚帐篷或生日庆典布置。' : 'Pilih tenda canvas bohemian atau dekorasi perayaan ulang tahun/anniversary sesuai kebutuhan momen Anda.'}
         </p>
       </div>
 
