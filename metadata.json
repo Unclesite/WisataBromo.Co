@@ -1,0 +1,6 @@
+{
+  "name": "WisataBromo.co - Tour & Travel Gunung Bromo",
+  "description": "Portal resmi paket wisata Bromo: Open Trip & Private Trip start Malang, Batu, Surabaya, Gubugklakah, Sukapura, Tosari, Paket Piknik Savana & Sewa Trail.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

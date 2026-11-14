@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Peta Rute Penerbangan – Mt. Bromo</title>
+<style>
+:root{--bg:#b8defa;--blue:#155fc4;--green:#3f6e47;--ink:#0b1f3a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{margin:0;background:linear-gradient(155deg,#e3f3ff 0%,#b8defa 48%,#86c5f4 100%);font-family:Arial,Helvetica,sans-serif;overflow:hidden}
+body{display:flex;align-items:center;justify-content:center;min-height:100vh}
+svg{width:100%;max-width:1274px;height:auto;display:block}
+.shelf{fill:none;stroke:rgba(255,255,255,.32);stroke-width:28;stroke-linejoin:round;stroke-linecap:round}
+.island{fill:#f3f7ee;stroke:#ffffff;stroke-width:4;stroke-linejoin:round;stroke-linecap:round;filter:drop-shadow(0 6px 14px rgba(13,64,115,.14))}
+.land{fill:none;stroke:rgba(168,194,168,.55);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.wave{fill:none;stroke:rgba(255,255,255,.48);stroke-width:2.5;stroke-linecap:round;animation:waveFloat 5.5s ease-in-out infinite}
+@keyframes waveFloat{0%,100%{transform:translateX(0);opacity:.45}50%{transform:translateX(12px);opacity:.85}}
+.fl{fill:none;stroke:var(--blue);stroke-width:3.5;stroke-dasharray:14 9;animation:flowr 1.6s linear infinite}
+@keyframes flowr{to{stroke-dashoffset:46}}
+.gr{fill:none;stroke:var(--green);stroke-width:4;stroke-dasharray:2 7;stroke-linecap:round;animation:flow 2.4s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-46}}
+.lbl{font-weight:800;font-size:28px;fill:var(--ink);text-anchor:middle;paint-order:stroke;stroke:rgba(255,255,255,.85);stroke-width:5px;stroke-linejoin:round}
+.pin{fill:var(--blue);transform-box:fill-box;transform-origin:50% 100%;animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-8px)}}
+.ring{fill:none;stroke:var(--blue);stroke-width:3;transform-box:fill-box;transform-origin:center;animation:ring 2.4s ease-out infinite;opacity:0}
+@keyframes ring{0%{transform:scale(.3);opacity:.9}100%{transform:scale(1.6);opacity:0}}
+.globe{fill:rgba(255,255,255,.22);stroke:var(--blue);stroke-width:12;stroke-linecap:round;stroke-linejoin:round}
+.cont{fill:rgba(30,111,217,.14);stroke:var(--blue);stroke-width:9;stroke-linecap:round;stroke-linejoin:round;transform-box:fill-box;animation:drift 8s ease-in-out infinite}
+@keyframes drift{50%{transform:translateX(6px)}}
+.bromo{animation:pulse 3s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
+@keyframes pulse{50%{transform:scale(1.12)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<svg viewBox="0 0 1274 928" role="img" aria-label="Peta animasi rute penerbangan ke YK, SUB, MLG, DPS dan Mt. Bromo">
+<defs>
+  <linearGradient id="oceanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#e5f4ff"/>
+    <stop offset="45%" stop-color="#bce0fb"/>
+    <stop offset="100%" stop-color="#7ec0f2"/>
+  </linearGradient>
+  <radialGradient id="sunGlow" cx="78%" cy="18%" r="48%">
+    <stop offset="0%" stop-color="rgba(255,255,255,0.75)"/>
+    <stop offset="60%" stop-color="rgba(255,255,255,0.18)"/>
+    <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+  </radialGradient>
+  <pattern id="seaGrid" width="106" height="106" patternUnits="userSpaceOnUse">
+    <path d="M 106 0 L 0 0 0 106" fill="none" stroke="rgba(255,255,255,0.28)" stroke-width="1"/>
+  </pattern>
+  <g id="plane"><g transform="rotate(90)"><path d="M0,-14 L3,-4 L14,3 L14,6 L3,3 L3,9 L7,12 L7,14 L0,12 L-7,14 L-7,12 L-3,9 L-3,3 L-14,6 L-14,3 L-3,-4Z" fill="#155fc4"/></g></g>
+  <g id="pinp"><path d="M0,0 C-8,-14 -30,-30 -30,-52 A30,30 0 1 1 30,-52 C30,-30 8,-14 0,0Z"/><circle cy="-52" r="19" fill="#ffffff"/></g>
+  <path id="p1" d="M185,583 C350,470 650,440 815,480 C980,490 1065,400 1055,235"/>
+  <path id="p2" d="M600,555 C700,585 800,595 870,588 C1030,580 1100,450 1078,235"/>
+  <path id="p3" d="M495,682 C650,650 800,665 920,670 C1100,650 1160,450 1093,230"/>
+  <path id="p4" d="M1150,820 C1180,700 1260,450 1105,218"/>
+  <g id="car"><rect x="-15" y="-8" width="30" height="16" rx="5" fill="#3f6e47" stroke="#fff" stroke-width="2"/><rect x="1" y="-6" width="8" height="12" rx="2" fill="#e6f4ff"/><rect x="-10" y="-6" width="5" height="12" rx="2" fill="#e6f4ff" opacity=".8"/><circle cx="-9" cy="-9" r="2.5" fill="#1b2638"/><circle cx="-9" cy="9" r="2.5" fill="#1b2638"/><circle cx="8" cy="-9" r="2.5" fill="#1b2638"/><circle cx="8" cy="9" r="2.5" fill="#1b2638"/></g>
+</defs>
+
+<!-- Ocean Background -->
+<rect width="1274" height="928" fill="url(#oceanGrad)"/>
+<rect width="1274" height="928" fill="url(#seaGrid)"/>
+<rect width="1274" height="928" fill="url(#sunGlow)"/>
+
+<!-- Subtle Ocean Waves -->
+<g>
+  <path class="wave" d="M90,210 Q115,198 140,210 T190,210"/>
+  <path class="wave" style="animation-delay:.8s" d="M340,140 Q365,128 390,140 T440,140"/>
+  <path class="wave" style="animation-delay:1.6s" d="M680,260 Q705,248 730,260 T780,260"/>
+  <path class="wave" style="animation-delay:2.2s" d="M430,360 Q455,348 480,360 T530,360"/>
+  <path class="wave" style="animation-delay:1.1s" d="M840,410 Q865,398 890,410 T940,410"/>
+  <path class="wave" style="animation-delay:2.7s" d="M220,830 Q245,818 270,830 T320,830"/>
+  <path class="wave" style="animation-delay:1.9s" d="M740,860 Q765,848 790,860 T840,860"/>
+  <path class="wave" style="animation-delay:.4s" d="M1010,630 Q1035,618 1060,630 T1110,630"/>
+</g>
+
+<!-- Subtle Compass Watermark in Indian Ocean -->
+<g transform="translate(115,825)" opacity="0.28">
+  <circle r="44" fill="none" stroke="#0b4682" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <circle r="32" fill="none" stroke="#0b4682" stroke-width="1"/>
+  <path d="M0,-40 L6,-8 L40,0 L6,8 L0,40 L-6,8 L-40,0 L-6,-8 Z" fill="#0b4682" opacity="0.45"/>
+  <text x="0" y="-48" text-anchor="middle" font-size="13" font-weight="800" fill="#0b4682">N</text>
+</g>
+
+<!-- Sea Labels -->
+<text x="510" y="330" font-size="18" font-weight="700" letter-spacing="6" fill="rgba(11,59,108,0.28)" text-anchor="middle">LAUT JAWA</text>
+<text x="480" y="875" font-size="18" font-weight="700" letter-spacing="6" fill="rgba(11,59,108,0.28)" text-anchor="middle">SAMUDRA HINDIA</text>
+
+<!-- Shallow Coastal Shelf Halo -->
+<path class="shelf" d="M0,490 L90,495 L120,505 L210,462 L215,420 L265,405 L292,415 L300,455 L370,462 L385,450 L430,475 L480,500 L560,500 L640,485 L760,515 L830,510 L880,505 L890,515 L860,535 L800,548 L780,570 L700,575 L640,600 L680,665 L760,660 L850,650 L900,645 L960,690 L940,750 L930,830 L960,870 L900,860 L820,815 L730,800 L650,800 L560,800 L470,790 L410,790 L380,770 L260,765 L150,735 L90,700 L0,675"/>
+<path class="shelf" d="M960,725 L1060,745 L1150,735 L1235,760 L1265,795 L1200,840 L1130,850 L1090,830 L1040,800 L975,780Z"/>
+
+<!-- Java Island -->
+<path class="island" d="M0,490 L90,495 L120,505 L210,462 L215,420 L265,405 L292,415 L300,455 L370,462 L385,450 L430,475 L480,500 L560,500 L640,485 L760,515 L830,510 L880,505 L890,515 L860,535 L800,548 L780,570 L700,575 L640,600 L680,665 L760,660 L850,650 L900,645 L960,690 L940,750 L930,830 L960,870 L900,860 L820,815 L730,800 L650,800 L560,800 L470,790 L410,790 L380,770 L260,765 L150,735 L90,700 L0,675 Z"/>
+<path class="land" d="M75,555 L95,500 M120,505 L130,650 L95,700 M250,520 L325,520 L330,600 L310,650 L340,690 L300,740 M215,580 L260,578 M380,590 L440,610 L490,600 L500,540 L515,500 M440,640 L420,720 L400,780 M560,665 L640,660 L610,630 L630,600 M530,670 L560,740 L560,800 M780,665 L780,720 L830,740 M640,600 L560,625"/>
+
+<!-- Bali & Nusa Penida / Lombok -->
+<path class="island" d="M960,725 L1060,745 L1150,735 L1235,760 L1265,795 L1200,840 L1130,850 L1090,830 L1040,800 L975,780Z"/>
+<path class="land" d="M1085,785 L1115,760 L1150,780 M1170,745 L1190,800"/>
+<path class="island" d="M1200,865 L1235,870 L1245,890 L1210,885Z"/>
+
+<!-- Flight paths -->
+<use href="#p1" class="fl" style="stroke:var(--blue)"/>
+<use href="#p2" class="fl"/><use href="#p3" class="fl"/><use href="#p4" class="fl"/>
+<use href="#p1" class="fl"/>
+
+<!-- Bromo routes -->
+<path id="g1" class="gr" d="M170,668 C300,730 450,790 600,770 C650,765 680,745 690,735"/>
+<path id="g2" class="gr" d="M592,565 C650,600 680,660 683,710"/>
+<path class="gr" d="M480,705 C560,715 600,725 650,728"/>
+<path id="g4" class="gr" d="M1135,865 C900,830 760,780 690,740"/>
+
+<!-- Planes -->
+<g><use href="#plane"/><animateMotion dur="9s" repeatCount="indefinite" rotate="auto-reverse" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#p1"/></animateMotion></g>
+<g><use href="#plane"/><animateMotion dur="7s" begin="1.5s" repeatCount="indefinite" rotate="auto-reverse" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#p2"/></animateMotion></g>
+<g><use href="#plane"/><animateMotion dur="8s" begin="3s" repeatCount="indefinite" rotate="auto-reverse" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#p3"/></animateMotion></g>
+<g><use href="#plane"/><animateMotion dur="6s" begin="0.8s" repeatCount="indefinite" rotate="auto-reverse" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#p4"/></animateMotion></g>
+
+<g><use href="#car"/><animateMotion dur="9s" repeatCount="indefinite" rotate="auto"><mpath href="#g1"/></animateMotion></g>
+<g><use href="#car"/><animateMotion dur="6s" begin="1s" repeatCount="indefinite" rotate="auto"><mpath href="#g2"/></animateMotion></g>
+<g><use href="#car"/><animateMotion dur="11s" begin="2s" repeatCount="indefinite" rotate="auto"><mpath href="#g4"/></animateMotion></g>
+
+<!-- Mt. Bromo -->
+<g class="bromo">
+  <path d="M636,740 L664,708 L676,722 L690,700 L706,722 L716,740 L690,732 L672,742Z" fill="#3f6e47"/>
+</g>
+<text x="716" y="738" font-weight="800" font-size="28" fill="#2d5434" paint-order="stroke" stroke="rgba(255,255,255,0.85)" stroke-width="5px" stroke-linejoin="round">MT.BROMO</text>
+
+<!-- Pins -->
+<g transform="translate(169,668)"><circle class="ring" cy="-52" r="40"/><g class="pin"><use href="#pinp"/></g><use href="#plane" transform="translate(0,-52) scale(.85)"/></g>
+<g transform="translate(592,562)"><circle class="ring" cy="-52" r="40" style="animation-delay:.6s"/><g class="pin" style="animation-delay:.6s"><use href="#pinp"/></g><use href="#plane" transform="translate(0,-52) scale(.85)"/></g>
+<g transform="translate(472,703)"><circle class="ring" cy="-52" r="40" style="animation-delay:1.2s"/><g class="pin" style="animation-delay:1.2s"><use href="#pinp"/></g></g>
+<g transform="translate(1135,868)"><circle class="ring" cy="-52" r="40" style="animation-delay:1.8s"/><g class="pin" style="animation-delay:1.8s"><use href="#pinp"/></g><use href="#plane" transform="translate(0,-52) scale(.85)"/></g>
+<text class="lbl" x="169" y="700">YK</text>
+<text class="lbl" x="592" y="594">SUB</text>
+<text class="lbl" x="472" y="732">MLG</text>
+<text class="lbl" x="1135" y="898">DPS</text>
+
+<!-- Globe -->
+<g>
+  <path class="globe" d="M1118,203 A108,108 0 1 0 1052,232 M1093,222 A108,108 0 0 0 1105,214"/>
+  <circle cx="1106" cy="217" r="6" fill="#155fc4"/>
+  <g class="cont">
+    <path d="M1010,95 C1030,70 1060,80 1085,70 C1110,60 1125,85 1110,105 C1100,125 1075,130 1070,155 C1062,185 1050,200 1042,172 C1038,140 1015,130 1010,95Z"/>
+    <path d="M955,128 C975,125 995,140 1000,160 C985,175 965,170 955,128Z"/>
+    <path d="M1118,90 L1135,105 L1128,120"/>
+  </g>
+</g>
+</svg>
+</body>
+</html>
