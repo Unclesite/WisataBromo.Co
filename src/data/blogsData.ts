@@ -3,15 +3,27 @@ import { SupportedLanguage } from '../i18n/LanguageContext';
 import { ARTICLE_BARANG_WAJIB_BROMO, LocalizedArticleContent } from './articles/barang-wajib-bromo';
 import { ARTICLE_KAPASITAS_JEEP_BROMO, LocalizedJeepArticleContent } from './articles/kapasitas-jeep-bromo';
 import { ARTICLE_WAKTU_TERBAIK_BROMO, LocalizedSeasonArticleContent } from './articles/waktu-terbaik-bromo';
+import { ARTICLE_BIAYA_KUDA_BROMO, LocalizedHorseArticleContent } from './articles/biaya-kuda-bromo';
 
-export { ARTICLE_BARANG_WAJIB_BROMO, ARTICLE_KAPASITAS_JEEP_BROMO, ARTICLE_WAKTU_TERBAIK_BROMO };
-export type { LocalizedArticleContent, LocalizedJeepArticleContent, LocalizedSeasonArticleContent };
+export {
+  ARTICLE_BARANG_WAJIB_BROMO,
+  ARTICLE_KAPASITAS_JEEP_BROMO,
+  ARTICLE_WAKTU_TERBAIK_BROMO,
+  ARTICLE_BIAYA_KUDA_BROMO,
+};
+export type {
+  LocalizedArticleContent,
+  LocalizedJeepArticleContent,
+  LocalizedSeasonArticleContent,
+  LocalizedHorseArticleContent,
+};
 
 // Helper to convert LocalizedArticleContent to standard BlogPost type
 export const getLocalizedBlogPosts = (lang: SupportedLanguage = 'id'): BlogPost[] => {
   const currentJeepArt = ARTICLE_KAPASITAS_JEEP_BROMO[lang] || ARTICLE_KAPASITAS_JEEP_BROMO.id;
   const currentGearArt = ARTICLE_BARANG_WAJIB_BROMO[lang] || ARTICLE_BARANG_WAJIB_BROMO.id;
   const currentSeasonArt = ARTICLE_WAKTU_TERBAIK_BROMO[lang] || ARTICLE_WAKTU_TERBAIK_BROMO.id;
+  const currentHorseArt = ARTICLE_BIAYA_KUDA_BROMO[lang] || ARTICLE_BIAYA_KUDA_BROMO.id;
 
   const jeepPost: BlogPost = {
     id: currentJeepArt.id,
@@ -107,7 +119,42 @@ export const getLocalizedBlogPosts = (lang: SupportedLanguage = 'id'): BlogPost[
     ]
   };
 
-  return [jeepPost, gearPost, seasonPost];
+  const horsePost: BlogPost = {
+    id: currentHorseArt.id,
+    slug: currentHorseArt.slug,
+    title: currentHorseArt.title,
+    subtitle: currentHorseArt.metaDescription,
+    summary: currentHorseArt.metaDescription,
+    excerpt: currentHorseArt.introduction[0] || currentHorseArt.metaDescription,
+    date: currentHorseArt.publishDate,
+    publishDate: currentHorseArt.publishDate,
+    author: currentHorseArt.author,
+    tag: currentHorseArt.categoryLabel,
+    tags: currentHorseArt.tags,
+    category: currentHorseArt.category,
+    categoryLabel: currentHorseArt.categoryLabel,
+    readTime: currentHorseArt.readTime,
+    imageUrl: currentHorseArt.heroImage,
+    content: [
+      ...currentHorseArt.introduction,
+      ...currentHorseArt.points.map(p => `${p.title}: ${p.description}`),
+      currentHorseArt.conclusion
+    ],
+    keyTakeaways: [
+      lang === 'en'
+        ? 'Round-Trip (Jeep ↔ Crater Stairs): IDR 150k – 250k | Photo Only: IDR 30k – 50k'
+        : lang === 'zh'
+        ? '往返租马（停车场↔火山口台阶）：Rp 15万–25万 | 仅拍照：Rp 3万–5万'
+        : 'Tarif PP Parkiran Jeep ↔ Kaki Tangga: Rp 150rb – Rp 250rb | Foto Saja: Rp 30rb – Rp 50rb',
+      lang === 'en'
+        ? 'Always agree on Round-Trip vs One-Way upfront & bring small IDR cash'
+        : lang === 'zh'
+        ? '上马前确认往返或单程并提前备好小额印尼盾现金'
+        : 'Selalu sepakati harga PP/sekali jalan di awal & bawa uang tunai pecahan kecil'
+    ]
+  };
+
+  return [jeepPost, gearPost, seasonPost, horsePost];
 };
 
 // Default ID export for fallback

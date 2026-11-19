@@ -63,7 +63,9 @@ const parseInitialRoute = (): { view: AppView; pkg: TourPackage | null; adminLog
     hash === '#journal'
   ) {
     let artId: string | undefined = undefined;
-    if (pathname.includes('jeep') || pathname.includes('kapasitas') || hash.includes('jeep') || hash.includes('kapasitas')) {
+    if (pathname.includes('kuda') || pathname.includes('horse') || hash.includes('kuda') || hash.includes('horse')) {
+      artId = 'biaya-kuda-bromo';
+    } else if (pathname.includes('jeep') || pathname.includes('kapasitas') || hash.includes('jeep') || hash.includes('kapasitas')) {
       artId = 'kapasitas-jeep-bromo';
     } else if (pathname.includes('waktu') || pathname.includes('musim') || hash.includes('waktu') || hash.includes('musim')) {
       artId = 'waktu-terbaik-ke-bromo';
@@ -176,7 +178,9 @@ export default function App() {
         hash === '#panduan' ||
         hash === '#journal'
       ) {
-        if (pathname.includes('jeep') || pathname.includes('kapasitas') || hash.includes('jeep') || hash.includes('kapasitas')) {
+        if (pathname.includes('kuda') || pathname.includes('horse') || hash.includes('kuda') || hash.includes('horse')) {
+          setSelectedArticlePostId('biaya-kuda-bromo');
+        } else if (pathname.includes('jeep') || pathname.includes('kapasitas') || hash.includes('jeep') || hash.includes('kapasitas')) {
           setSelectedArticlePostId('kapasitas-jeep-bromo');
         } else if (pathname.includes('waktu') || pathname.includes('musim') || hash.includes('waktu') || hash.includes('musim')) {
           setSelectedArticlePostId('waktu-terbaik-ke-bromo');
@@ -640,7 +644,9 @@ export default function App() {
           }}
           onSelectArticle={(artSlugOrId) => {
             let matchedId = artSlugOrId;
-            if (artSlugOrId.includes('jeep') || artSlugOrId.includes('kapasitas')) {
+            if (artSlugOrId.includes('kuda') || artSlugOrId.includes('horse')) {
+              matchedId = 'biaya-kuda-bromo';
+            } else if (artSlugOrId.includes('jeep') || artSlugOrId.includes('kapasitas')) {
               matchedId = 'kapasitas-jeep-bromo';
             } else if (artSlugOrId.includes('waktu') || artSlugOrId.includes('musim')) {
               matchedId = 'waktu-terbaik-ke-bromo';

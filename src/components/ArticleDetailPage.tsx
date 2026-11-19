@@ -9,6 +9,8 @@ import { useLanguage } from '../i18n/LanguageContext';
 import { ARTICLE_BARANG_WAJIB_BROMO } from '../data/articles/barang-wajib-bromo';
 import { ARTICLE_KAPASITAS_JEEP_BROMO } from '../data/articles/kapasitas-jeep-bromo';
 import { ARTICLE_WAKTU_TERBAIK_BROMO } from '../data/articles/waktu-terbaik-bromo';
+import { ARTICLE_BIAYA_KUDA_BROMO } from '../data/articles/biaya-kuda-bromo';
+import { HorseCuteVector } from './HorseArticleVectors';
 import imgCustom from '../assets/images/633b7b65-1f37-4dbd-9714-6a4197e04480.png';
 import imgJeepGroup from '../assets/images/volcanic_jeep_expedition_group_portrait.png';
 
@@ -32,22 +34,45 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   // Determine active article type
-  const isSeasonArticle = articleId === 'waktu-terbaik-ke-bromo' || 
-                          articleSlug?.includes('waktu') || 
-                          articleSlug?.includes('musim') ||
-                          articleId === 'waktu-terbaik-ke-bromo-menyelami-pesona-4-musim';
+  const isHorseArticle =
+    articleId === 'biaya-kuda-bromo' ||
+    articleId?.includes('kuda') ||
+    articleSlug?.includes('kuda') ||
+    articleSlug?.includes('horse');
 
-  const isJeepArticle = !isSeasonArticle && (
-                        articleId === 'kapasitas-jeep-bromo' || 
-                        articleSlug?.includes('kapasitas') || 
-                        articleSlug?.includes('jeep'));
+  const isSeasonArticle =
+    !isHorseArticle &&
+    (articleId === 'waktu-terbaik-ke-bromo' ||
+      articleSlug?.includes('waktu') ||
+      articleSlug?.includes('musim') ||
+      articleId === 'waktu-terbaik-ke-bromo-menyelami-pesona-4-musim');
 
+  const isJeepArticle =
+    !isHorseArticle &&
+    !isSeasonArticle &&
+    (articleId === 'kapasitas-jeep-bromo' ||
+      articleSlug?.includes('kapasitas') ||
+      articleSlug?.includes('jeep'));
+
+  const horseArticle = ARTICLE_BIAYA_KUDA_BROMO[language] || ARTICLE_BIAYA_KUDA_BROMO.id;
   const seasonArticle = ARTICLE_WAKTU_TERBAIK_BROMO[language] || ARTICLE_WAKTU_TERBAIK_BROMO.id;
   const jeepArticle = ARTICLE_KAPASITAS_JEEP_BROMO[language] || ARTICLE_KAPASITAS_JEEP_BROMO.id;
   const gearArticle = ARTICLE_BARANG_WAJIB_BROMO[language] || ARTICLE_BARANG_WAJIB_BROMO.id;
 
-  const currentTitle = isSeasonArticle ? seasonArticle.title : isJeepArticle ? jeepArticle.title : gearArticle.title;
-  const currentCategory = isSeasonArticle ? seasonArticle.categoryLabel : isJeepArticle ? jeepArticle.categoryLabel : gearArticle.categoryLabel;
+  const currentTitle = isHorseArticle
+    ? horseArticle.title
+    : isSeasonArticle
+    ? seasonArticle.title
+    : isJeepArticle
+    ? jeepArticle.title
+    : gearArticle.title;
+  const currentCategory = isHorseArticle
+    ? horseArticle.categoryLabel
+    : isSeasonArticle
+    ? seasonArticle.categoryLabel
+    : isJeepArticle
+    ? jeepArticle.categoryLabel
+    : gearArticle.categoryLabel;
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -153,7 +178,7 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
           {/* Cover Hero Image */}
           <div className="relative h-72 sm:h-96 w-full overflow-hidden bg-slate-900">
             <img
-              src={imgCustom}
+              src={isHorseArticle ? horseArticle.heroImage : imgCustom}
               alt={currentTitle}
               className="w-full h-full object-cover object-center filter brightness-90 hover:scale-103 transition-transform duration-1000"
             />
@@ -163,15 +188,15 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
               <div className="flex flex-wrap items-center gap-3 text-xs text-slate-200 mb-2 font-medium">
                 <span className="flex items-center gap-1 bg-black/40 backdrop-blur-xs px-2.5 py-1 rounded-md">
                   <Calendar className="w-3.5 h-3.5 text-[#FFF700]" />
-                  {isSeasonArticle ? seasonArticle.publishDate : isJeepArticle ? jeepArticle.publishDate : gearArticle.publishDate}
+                  {isHorseArticle ? horseArticle.publishDate : isSeasonArticle ? seasonArticle.publishDate : isJeepArticle ? jeepArticle.publishDate : gearArticle.publishDate}
                 </span>
                 <span className="flex items-center gap-1 bg-black/40 backdrop-blur-xs px-2.5 py-1 rounded-md">
                   <Clock className="w-3.5 h-3.5 text-[#FFF700]" />
-                  {isSeasonArticle ? seasonArticle.readTime : isJeepArticle ? jeepArticle.readTime : gearArticle.readTime}
+                  {isHorseArticle ? horseArticle.readTime : isSeasonArticle ? seasonArticle.readTime : isJeepArticle ? jeepArticle.readTime : gearArticle.readTime}
                 </span>
                 <span className="flex items-center gap-1 bg-black/40 backdrop-blur-xs px-2.5 py-1 rounded-md">
                   <User className="w-3.5 h-3.5 text-[#FFF700]" />
-                  {isSeasonArticle ? seasonArticle.author : isJeepArticle ? jeepArticle.author : gearArticle.author}
+                  {isHorseArticle ? horseArticle.author : isSeasonArticle ? seasonArticle.author : isJeepArticle ? jeepArticle.author : gearArticle.author}
                 </span>
               </div>
             </div>
@@ -184,14 +209,14 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
             </h1>
 
             <p className="text-base sm:text-lg text-slate-600 leading-relaxed font-normal bg-[#EAF6FF]/60 p-4 sm:p-5 rounded-2xl border-l-4 border-[#0996f5]">
-              {isSeasonArticle ? seasonArticle.metaDescription : isJeepArticle ? jeepArticle.metaDescription : gearArticle.metaDescription}
+              {isHorseArticle ? horseArticle.metaDescription : isSeasonArticle ? seasonArticle.metaDescription : isJeepArticle ? jeepArticle.metaDescription : gearArticle.metaDescription}
             </p>
 
             {/* Author & Share row */}
             <div className="flex flex-wrap items-center justify-between gap-4 pt-6 mt-6 border-t border-slate-100 text-xs">
               <div className="flex items-center gap-2 text-slate-600 font-medium">
                 <User className="w-4 h-4 text-[#0996f5]" />
-                <span>{language === 'en' ? 'By' : language === 'zh' ? '撰写:' : 'Penulis:'} <strong>{isSeasonArticle ? seasonArticle.author : isJeepArticle ? jeepArticle.author : gearArticle.author}</strong></span>
+                <span>{language === 'en' ? 'By' : language === 'zh' ? '撰写:' : 'Penulis:'} <strong>{isHorseArticle ? horseArticle.author : isSeasonArticle ? seasonArticle.author : isJeepArticle ? jeepArticle.author : gearArticle.author}</strong></span>
               </div>
 
               {/* Share Actions Suite */}
@@ -256,7 +281,302 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
           </div>
 
           {/* ARTICLE BODY CONTENT */}
-          {isSeasonArticle ? (
+          {isHorseArticle ? (
+            /* BIAYA SEWA KUDA DI BROMO ARTICLE BODY (WITH CUTE CUSTOM VECTORS) */
+            <div className="p-6 sm:p-10 lg:p-12 space-y-10">
+              {/* Cute Welcome Intro Banner + Intro Paragraphs */}
+              <div className="space-y-5">
+                <div className="p-4 sm:p-5 bg-gradient-to-r from-[#EAF6FF] via-white to-[#FEFCE8] border border-[#0996f5]/25 rounded-2xl flex items-center gap-4 shadow-2xs">
+                  <HorseCuteVector type="pony-mascot" className="w-16 h-16 shrink-0 drop-shadow-xs" />
+                  <div className="space-y-1">
+                    <span className="inline-block text-[11px] font-black uppercase tracking-wider text-[#0996f5]">
+                      {language === 'en'
+                        ? 'PONY GUIDE • MOUNT BROMO'
+                        : language === 'zh'
+                        ? '布罗莫小马向导'
+                        : 'PANDUAN SAHABAT KUDA BROMO'}
+                    </span>
+                    <p className="text-xs sm:text-sm font-bold text-[#102a56] leading-snug">
+                      {language === 'en'
+                        ? 'Complete 2026 rates, routes & friendly tips so you can ride happily across the Sea of Sand!'
+                        : language === 'zh'
+                        ? '2026年最新骑马价格、路线与实用小贴士，助您轻松畅游布罗莫沙海！'
+                        : 'Panduan jujur tarif 2026, rute & trik tawar ramah biar naik kuda di Lautan Pasir makin happy dan bebas drama!'}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-4 text-slate-700 text-base sm:text-lg leading-relaxed">
+                  {horseArticle.introduction.map((para, idx) => (
+                    <p key={idx}>{para}</p>
+                  ))}
+                </div>
+              </div>
+
+              {/* Quick Price Summary Table */}
+              <div className="bg-white border-2 border-[#0996f5]/20 rounded-3xl overflow-hidden shadow-sm">
+                <div className="p-5 sm:p-6 bg-gradient-to-r from-[#0996f5]/10 via-[#EAF6FF] to-white border-b border-slate-200/80 flex items-center gap-4">
+                  <HorseCuteVector type="coin-piggy" className="w-14 h-14 shrink-0" />
+                  <div>
+                    <h2 className="text-lg sm:text-xl font-black font-serif text-[#102a56]">
+                      {horseArticle.priceTableTitle}
+                    </h2>
+                    <p className="text-xs sm:text-sm text-slate-600 mt-0.5">
+                      {horseArticle.priceTableSubtitle}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="bg-slate-50 border-b border-slate-200 text-[11px] sm:text-xs font-black uppercase tracking-wider text-slate-500">
+                        <th className="py-3.5 px-4 sm:px-5">{horseArticle.priceTableHeaders.service}</th>
+                        <th className="py-3.5 px-4 sm:px-5">{horseArticle.priceTableHeaders.route}</th>
+                        <th className="py-3.5 px-4 sm:px-5">{horseArticle.priceTableHeaders.price}</th>
+                        <th className="py-3.5 px-4 sm:px-5 hidden md:table-cell">{horseArticle.priceTableHeaders.notes}</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 text-xs sm:text-sm">
+                      {horseArticle.priceTableRows.map((row, rIdx) => (
+                        <tr key={rIdx} className="hover:bg-[#EAF6FF]/40 transition-colors">
+                          <td className="py-4 px-4 sm:px-5 font-extrabold text-[#102a56]">{row.service}</td>
+                          <td className="py-4 px-4 sm:px-5 text-slate-600">{row.route}</td>
+                          <td className="py-4 px-4 sm:px-5">
+                            <span className="inline-block px-3 py-1 bg-[#fff700]/40 border border-amber-300 text-[#102a56] font-black rounded-lg whitespace-nowrap">
+                              {row.priceRange}
+                            </span>
+                          </td>
+                          <td className="py-4 px-4 sm:px-5 text-slate-600 hidden md:table-cell leading-relaxed">
+                            {row.notes}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* Inline Photo 1 */}
+              <figure className="rounded-3xl overflow-hidden border border-slate-200 shadow-sm bg-slate-50">
+                <img
+                  src={horseArticle.inlineImage1}
+                  alt={horseArticle.inlineImage1Caption}
+                  className="w-full max-h-[420px] object-cover object-center"
+                  loading="lazy"
+                />
+                <figcaption className="px-5 py-3 text-xs sm:text-sm text-slate-600 italic flex items-center gap-2 bg-white border-t border-slate-100">
+                  <Camera className="w-4 h-4 text-[#0996f5] shrink-0" />
+                  <span>{horseArticle.inlineImage1Caption}</span>
+                </figcaption>
+              </figure>
+
+              {/* 7 Points with Cute Custom Vectors */}
+              <div className="space-y-6">
+                <div className="flex items-center gap-3 pb-2 border-b border-slate-200">
+                  <HorseCuteVector type="horse-route" className="w-12 h-12 shrink-0" />
+                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-black font-serif text-[#102a56]">
+                    {horseArticle.pointsSectionTitle}
+                  </h2>
+                </div>
+
+                <div className="space-y-6">
+                  {horseArticle.points.map((point) => (
+                    <div
+                      key={point.id}
+                      id={point.id}
+                      className={`p-5 sm:p-7 rounded-3xl border ${point.accentBorder} ${point.accentBg} shadow-2xs hover:shadow-md transition-all space-y-4`}
+                    >
+                      {/* Point Header with Cute Vector Mascot */}
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-white border border-white/90 shadow-sm flex items-center justify-center shrink-0 p-1.5">
+                          <HorseCuteVector type={point.vectorType} className="w-full h-full" />
+                        </div>
+
+                        <div className="flex-1 space-y-1.5">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="px-2.5 py-0.5 bg-[#102a56] text-white text-[10px] sm:text-[11px] font-black uppercase tracking-wider rounded-md">
+                              {point.numberBadge}
+                            </span>
+                            {point.priceHighlight && (
+                              <span className="px-2.5 py-0.5 bg-[#fff700] text-[#102a56] text-[11px] font-black rounded-md border border-amber-300/80">
+                                {point.priceHighlight}
+                              </span>
+                            )}
+                          </div>
+
+                          <h3 className="text-lg sm:text-xl lg:text-2xl font-serif font-black text-[#102a56] leading-snug">
+                            {point.title}
+                          </h3>
+                          <p className="text-xs sm:text-sm font-bold text-[#0996f5]">
+                            {point.subtitle}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Description */}
+                      <p className="text-slate-700 text-sm sm:text-base leading-relaxed bg-white/80 p-4 rounded-2xl border border-white">
+                        {point.description}
+                      </p>
+
+                      {/* Bullet Points */}
+                      {point.bulletPoints && point.bulletPoints.length > 0 && (
+                        <ul className="space-y-2.5 pl-1">
+                          {point.bulletPoints.map((bp, bpIdx) => (
+                            <li
+                              key={bpIdx}
+                              className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700 leading-relaxed"
+                            >
+                              <span className="w-5 h-5 rounded-full bg-[#0996f5] text-white flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">
+                                <Check className="w-3 h-3 stroke-[3]" />
+                              </span>
+                              <span>{bp}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+
+                      {/* Cute Tip Callout */}
+                      <div className="p-3.5 sm:p-4 bg-white/95 border-l-4 border-[#fff700] rounded-r-2xl flex items-start gap-3 shadow-2xs">
+                        <HorseCuteVector type="tip-star" className="w-8 h-8 shrink-0" />
+                        <div className="text-xs sm:text-sm text-slate-800 leading-relaxed pt-0.5">
+                          <span className="font-extrabold text-[#102a56] mr-1.5">
+                            {language === 'en' ? 'Cute Tip:' : language === 'zh' ? '贴心小提示：' : 'Tips Manis:'}
+                          </span>
+                          {point.tip}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Inline Photo 2 */}
+              <figure className="rounded-3xl overflow-hidden border border-slate-200 shadow-sm bg-slate-50">
+                <img
+                  src={horseArticle.inlineImage2}
+                  alt={horseArticle.inlineImage2Caption}
+                  className="w-full max-h-[420px] object-cover object-center"
+                  loading="lazy"
+                />
+                <figcaption className="px-5 py-3 text-xs sm:text-sm text-slate-600 italic flex items-center gap-2 bg-white border-t border-slate-100">
+                  <Camera className="w-4 h-4 text-[#0996f5] shrink-0" />
+                  <span>{horseArticle.inlineImage2Caption}</span>
+                </figcaption>
+              </figure>
+
+              {/* Pro Tip Box with Cute Pony Mascot */}
+              <div className="p-6 sm:p-8 bg-[#fff700]/15 border-2 border-[#fff700] rounded-3xl shadow-sm flex flex-col sm:flex-row items-start gap-4">
+                <HorseCuteVector type="pony-mascot" className="w-16 h-16 shrink-0" />
+                <div className="space-y-2.5">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#fff700] text-black font-black rounded-full text-xs uppercase tracking-wider">
+                    <Sparkles className="w-3.5 h-3.5 text-black" />
+                    <span>{horseArticle.proTipBox.title}</span>
+                  </div>
+                  <p className="text-sm sm:text-base text-slate-900 font-medium leading-relaxed">
+                    {horseArticle.proTipBox.content}
+                  </p>
+                </div>
+              </div>
+
+              {/* Conclusion & Booking CTA */}
+              <div className="p-6 sm:p-8 bg-[#EAF6FF] border border-[#0996f5]/30 rounded-3xl space-y-4">
+                <h3 className="text-xl font-extrabold text-[#0B1220]">
+                  {language === 'en'
+                    ? 'Ready to Ride Across Mount Bromo’s Sea of Sand?'
+                    : language === 'zh'
+                    ? '准备好在布罗莫沙海体验骑马了吗？'
+                    : 'Siap Merasakan Serunya Naik Kuda di Lautan Pasir Bromo?'}
+                </h3>
+                <p className="text-sm sm:text-base text-slate-700 leading-relaxed">
+                  {horseArticle.conclusion}
+                </p>
+
+                <div className="pt-2 flex flex-col sm:flex-row items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={onOpenBooking}
+                    className="w-full sm:w-auto px-6 py-3.5 bg-[#0996f5] hover:bg-[#071A2B] text-white text-xs sm:text-sm font-black rounded-2xl shadow-lg shadow-[#0996f5]/25 transition-all cursor-pointer flex items-center justify-center gap-2 group"
+                  >
+                    <span>{horseArticle.ctaButton}</span>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </button>
+
+                  <a
+                    href="https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20baru%20baca%20artikel%20biaya%20sewa%20kuda%20di%20Bromo%20dan%20ingin%20konsultasi%20paket%20trip%20Bromo."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full sm:w-auto px-5 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold rounded-2xl transition-colors flex items-center justify-center gap-2"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    <span>WhatsApp Hotline (+62 812-2229-0318)</span>
+                  </a>
+                </div>
+              </div>
+
+              {/* Social Share Buttons Bottom Section */}
+              <div className="p-6 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="text-center sm:text-left">
+                  <h4 className="text-sm font-extrabold text-[#0B1220]">
+                    {language === 'en'
+                      ? 'Share this Bromo horse price guide with your travel buddies'
+                      : language === 'zh'
+                      ? '把这份布罗莫骑马价格攻略分享给同行伙伴'
+                      : 'Bagikan panduan biaya kuda Bromo ini ke teman perjalanan Anda'}
+                  </h4>
+                  <p className="text-xs text-slate-500">
+                    {language === 'en'
+                      ? 'Share via WhatsApp, Facebook, or copy link'
+                      : language === 'zh'
+                      ? '一键分享至 WhatsApp、Facebook 或复制链接'
+                      : 'Bagikan melalui WhatsApp, Facebook, atau salin link'}
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handleShareSocial('wa')}
+                    className="px-3.5 py-2 bg-[#25D366] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#20ba5a] transition-all flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <MessageCircle className="w-3.5 h-3.5" />
+                    <span>WhatsApp</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleShareSocial('fb')}
+                    className="px-3.5 py-2 bg-[#1877F2] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#1567d3] transition-all flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <Share2 className="w-3.5 h-3.5" />
+                    <span>Facebook</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleCopyLink}
+                    className="px-3.5 py-2 bg-slate-200 text-slate-800 hover:bg-slate-300 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    <span>{language === 'en' ? 'Copy Link' : language === 'zh' ? '复制链接' : 'Salin Link'}</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Article Tags */}
+              <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center gap-2 text-xs text-slate-600">
+                <span className="font-bold text-slate-400 mr-1">Tags:</span>
+                {horseArticle.tags?.map((tag, idx) => (
+                  <span
+                    key={idx}
+                    className="px-3 py-1 bg-slate-100 hover:bg-[#EAF6FF] text-slate-700 hover:text-[#0996f5] rounded-xl font-medium transition-colors cursor-pointer"
+                  >
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ) : isSeasonArticle ? (
             /* FLAGSHIP 4 SEASONS ARTICLE BODY */
             <div className="p-6 sm:p-10 lg:p-12 space-y-12 text-base text-[#0B1220] leading-relaxed">
               
