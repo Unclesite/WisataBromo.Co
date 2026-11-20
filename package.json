@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/copy-build.js",
+    "build": "rm -f public/index.html public/assets/*.js public/assets/*.css public/assets/*.map && vite build && node scripts/copy-build.js",
     "start": "node server.js"
   },
   "dependencies": {
