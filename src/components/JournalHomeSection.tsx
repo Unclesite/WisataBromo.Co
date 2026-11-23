@@ -22,8 +22,8 @@ export const JournalHomeSection: React.FC<JournalHomeSectionProps> = ({
     return getLocalizedBlogPosts(language);
   }, [language]);
 
-  // Show top 4 articles for the home editorial grid
-  const featuredArticles = blogPosts.slice(0, 4);
+  // Display all latest articles in the home editorial grid
+  const featuredArticles = blogPosts;
 
   const sectionTitle = language === 'en' 
     ? 'Travel Inspiration & Guides' 
@@ -77,8 +77,8 @@ export const JournalHomeSection: React.FC<JournalHomeSectionProps> = ({
           </p>
         </div>
 
-        {/* Luxury Editorial Cards Grid (2x2 Balanced Layout) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 items-stretch">
+        {/* Luxury Editorial Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch">
           {featuredArticles.map((article, idx) => {
             const articleUrl = `/journal/${article.slug || article.id}`;
             return (

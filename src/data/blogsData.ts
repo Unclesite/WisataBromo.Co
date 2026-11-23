@@ -4,18 +4,21 @@ import { ARTICLE_BARANG_WAJIB_BROMO, LocalizedArticleContent } from './articles/
 import { ARTICLE_KAPASITAS_JEEP_BROMO, LocalizedJeepArticleContent } from './articles/kapasitas-jeep-bromo';
 import { ARTICLE_WAKTU_TERBAIK_BROMO, LocalizedSeasonArticleContent } from './articles/waktu-terbaik-bromo';
 import { ARTICLE_BIAYA_KUDA_BROMO, LocalizedHorseArticleContent } from './articles/biaya-kuda-bromo';
+import { ARTICLE_NAIK_KERETA_BROMO, LocalizedTrainArticleContent } from './articles/naik-kereta-ke-bromo';
 
 export {
   ARTICLE_BARANG_WAJIB_BROMO,
   ARTICLE_KAPASITAS_JEEP_BROMO,
   ARTICLE_WAKTU_TERBAIK_BROMO,
   ARTICLE_BIAYA_KUDA_BROMO,
+  ARTICLE_NAIK_KERETA_BROMO,
 };
 export type {
   LocalizedArticleContent,
   LocalizedJeepArticleContent,
   LocalizedSeasonArticleContent,
   LocalizedHorseArticleContent,
+  LocalizedTrainArticleContent,
 };
 
 // Helper to convert LocalizedArticleContent to standard BlogPost type
@@ -24,6 +27,7 @@ export const getLocalizedBlogPosts = (lang: SupportedLanguage = 'id'): BlogPost[
   const currentGearArt = ARTICLE_BARANG_WAJIB_BROMO[lang] || ARTICLE_BARANG_WAJIB_BROMO.id;
   const currentSeasonArt = ARTICLE_WAKTU_TERBAIK_BROMO[lang] || ARTICLE_WAKTU_TERBAIK_BROMO.id;
   const currentHorseArt = ARTICLE_BIAYA_KUDA_BROMO[lang] || ARTICLE_BIAYA_KUDA_BROMO.id;
+  const currentTrainArt = ARTICLE_NAIK_KERETA_BROMO[lang] || ARTICLE_NAIK_KERETA_BROMO.id;
 
   const jeepPost: BlogPost = {
     id: currentJeepArt.id,
@@ -154,7 +158,42 @@ export const getLocalizedBlogPosts = (lang: SupportedLanguage = 'id'): BlogPost[
     ]
   };
 
-  return [jeepPost, gearPost, seasonPost, horsePost];
+  const trainPost: BlogPost = {
+    id: currentTrainArt.id,
+    slug: currentTrainArt.slug,
+    title: currentTrainArt.title,
+    subtitle: currentTrainArt.metaDescription,
+    summary: currentTrainArt.metaDescription,
+    excerpt: currentTrainArt.introduction[0] || currentTrainArt.metaDescription,
+    date: currentTrainArt.publishDate,
+    publishDate: currentTrainArt.publishDate,
+    author: currentTrainArt.author,
+    tag: currentTrainArt.categoryLabel,
+    tags: currentTrainArt.tags,
+    category: currentTrainArt.category,
+    categoryLabel: currentTrainArt.categoryLabel,
+    readTime: currentTrainArt.readTime,
+    imageUrl: currentTrainArt.heroImage,
+    content: [
+      ...currentTrainArt.introduction,
+      currentTrainArt.costClarification.summaryNote,
+      currentTrainArt.conclusion,
+    ],
+    keyTakeaways: [
+      lang === 'en'
+        ? '🚐 Malang Daily (23:00): Rp275k / Rp325k | Surabaya Saturday (22:00): Rp400k'
+        : lang === 'zh'
+        ? '🚐 玛琅每日团 (23:00): Rp275k/Rp325k | 泗水周六团 (22:00): Rp400k'
+        : '🚐 Start Malang (Setiap Hari 23.00): Rp275rb/Rp325rb | Start Surabaya (Sabtu 22.00): Rp400rb',
+      lang === 'en'
+        ? '🚂 Includes Java animated train route map & fares from Jakarta, Bandung, Semarang, Yogyakarta'
+        : lang === 'zh'
+        ? '🚂 含爪哇铁路动态地图及雅加达、万隆、三宝垄、日惹火车票价参考'
+        : '🚂 Dilengkapi peta animasi jalur kereta Jawa & acuan harga dari Jakarta, Bandung, Semarang, Jogja',
+    ],
+  };
+
+  return [jeepPost, gearPost, seasonPost, horsePost, trainPost];
 };
 
 // Default ID export for fallback

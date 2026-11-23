@@ -10,6 +10,7 @@ import { ARTICLE_BARANG_WAJIB_BROMO } from '../data/articles/barang-wajib-bromo'
 import { ARTICLE_KAPASITAS_JEEP_BROMO } from '../data/articles/kapasitas-jeep-bromo';
 import { ARTICLE_WAKTU_TERBAIK_BROMO } from '../data/articles/waktu-terbaik-bromo';
 import { ARTICLE_BIAYA_KUDA_BROMO } from '../data/articles/biaya-kuda-bromo';
+import { ARTICLE_NAIK_KERETA_BROMO } from '../data/articles/naik-kereta-ke-bromo';
 import { HorseCuteVector } from './HorseArticleVectors';
 import imgCustom from '../assets/images/633b7b65-1f37-4dbd-9714-6a4197e04480.png';
 import imgJeepGroup from '../assets/images/volcanic_jeep_expedition_group_portrait.png';
@@ -34,13 +35,21 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   // Determine active article type
+  const isTrainArticle =
+    articleId === 'naik-kereta-ke-bromo' ||
+    articleId?.includes('kereta') ||
+    articleSlug?.includes('kereta') ||
+    articleSlug?.includes('train');
+
   const isHorseArticle =
-    articleId === 'biaya-kuda-bromo' ||
-    articleId?.includes('kuda') ||
-    articleSlug?.includes('kuda') ||
-    articleSlug?.includes('horse');
+    !isTrainArticle &&
+    (articleId === 'biaya-kuda-bromo' ||
+      articleId?.includes('kuda') ||
+      articleSlug?.includes('kuda') ||
+      articleSlug?.includes('horse'));
 
   const isSeasonArticle =
+    !isTrainArticle &&
     !isHorseArticle &&
     (articleId === 'waktu-terbaik-ke-bromo' ||
       articleSlug?.includes('waktu') ||
@@ -48,25 +57,31 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
       articleId === 'waktu-terbaik-ke-bromo-menyelami-pesona-4-musim');
 
   const isJeepArticle =
+    !isTrainArticle &&
     !isHorseArticle &&
     !isSeasonArticle &&
     (articleId === 'kapasitas-jeep-bromo' ||
       articleSlug?.includes('kapasitas') ||
       articleSlug?.includes('jeep'));
 
+  const trainArticle = ARTICLE_NAIK_KERETA_BROMO[language] || ARTICLE_NAIK_KERETA_BROMO.id;
   const horseArticle = ARTICLE_BIAYA_KUDA_BROMO[language] || ARTICLE_BIAYA_KUDA_BROMO.id;
   const seasonArticle = ARTICLE_WAKTU_TERBAIK_BROMO[language] || ARTICLE_WAKTU_TERBAIK_BROMO.id;
   const jeepArticle = ARTICLE_KAPASITAS_JEEP_BROMO[language] || ARTICLE_KAPASITAS_JEEP_BROMO.id;
   const gearArticle = ARTICLE_BARANG_WAJIB_BROMO[language] || ARTICLE_BARANG_WAJIB_BROMO.id;
 
-  const currentTitle = isHorseArticle
+  const currentTitle = isTrainArticle
+    ? trainArticle.title
+    : isHorseArticle
     ? horseArticle.title
     : isSeasonArticle
     ? seasonArticle.title
     : isJeepArticle
     ? jeepArticle.title
     : gearArticle.title;
-  const currentCategory = isHorseArticle
+  const currentCategory = isTrainArticle
+    ? trainArticle.categoryLabel
+    : isHorseArticle
     ? horseArticle.categoryLabel
     : isSeasonArticle
     ? seasonArticle.categoryLabel
@@ -178,7 +193,7 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
           {/* Cover Hero Image */}
           <div className="relative h-72 sm:h-96 w-full overflow-hidden bg-slate-900">
             <img
-              src={isHorseArticle ? horseArticle.heroImage : imgCustom}
+              src={isTrainArticle ? trainArticle.heroImage : isHorseArticle ? horseArticle.heroImage : imgCustom}
               alt={currentTitle}
               className="w-full h-full object-cover object-center filter brightness-90 hover:scale-103 transition-transform duration-1000"
             />
@@ -188,15 +203,15 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
               <div className="flex flex-wrap items-center gap-3 text-xs text-slate-200 mb-2 font-medium">
                 <span className="flex items-center gap-1 bg-black/40 backdrop-blur-xs px-2.5 py-1 rounded-md">
                   <Calendar className="w-3.5 h-3.5 text-[#FFF700]" />
-                  {isHorseArticle ? horseArticle.publishDate : isSeasonArticle ? seasonArticle.publishDate : isJeepArticle ? jeepArticle.publishDate : gearArticle.publishDate}
+                  {isTrainArticle ? trainArticle.publishDate : isHorseArticle ? horseArticle.publishDate : isSeasonArticle ? seasonArticle.publishDate : isJeepArticle ? jeepArticle.publishDate : gearArticle.publishDate}
                 </span>
                 <span className="flex items-center gap-1 bg-black/40 backdrop-blur-xs px-2.5 py-1 rounded-md">
                   <Clock className="w-3.5 h-3.5 text-[#FFF700]" />
-                  {isHorseArticle ? horseArticle.readTime : isSeasonArticle ? seasonArticle.readTime : isJeepArticle ? jeepArticle.readTime : gearArticle.readTime}
+                  {isTrainArticle ? trainArticle.readTime : isHorseArticle ? horseArticle.readTime : isSeasonArticle ? seasonArticle.readTime : isJeepArticle ? jeepArticle.readTime : gearArticle.readTime}
                 </span>
                 <span className="flex items-center gap-1 bg-black/40 backdrop-blur-xs px-2.5 py-1 rounded-md">
                   <User className="w-3.5 h-3.5 text-[#FFF700]" />
-                  {isHorseArticle ? horseArticle.author : isSeasonArticle ? seasonArticle.author : isJeepArticle ? jeepArticle.author : gearArticle.author}
+                  {isTrainArticle ? trainArticle.author : isHorseArticle ? horseArticle.author : isSeasonArticle ? seasonArticle.author : isJeepArticle ? jeepArticle.author : gearArticle.author}
                 </span>
               </div>
             </div>
@@ -209,14 +224,14 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
             </h1>
 
             <p className="text-base sm:text-lg text-slate-600 leading-relaxed font-normal bg-[#EAF6FF]/60 p-4 sm:p-5 rounded-2xl border-l-4 border-[#0996f5]">
-              {isHorseArticle ? horseArticle.metaDescription : isSeasonArticle ? seasonArticle.metaDescription : isJeepArticle ? jeepArticle.metaDescription : gearArticle.metaDescription}
+              {isTrainArticle ? trainArticle.metaDescription : isHorseArticle ? horseArticle.metaDescription : isSeasonArticle ? seasonArticle.metaDescription : isJeepArticle ? jeepArticle.metaDescription : gearArticle.metaDescription}
             </p>
 
             {/* Author & Share row */}
             <div className="flex flex-wrap items-center justify-between gap-4 pt-6 mt-6 border-t border-slate-100 text-xs">
               <div className="flex items-center gap-2 text-slate-600 font-medium">
                 <User className="w-4 h-4 text-[#0996f5]" />
-                <span>{language === 'en' ? 'By' : language === 'zh' ? '撰写:' : 'Penulis:'} <strong>{isHorseArticle ? horseArticle.author : isSeasonArticle ? seasonArticle.author : isJeepArticle ? jeepArticle.author : gearArticle.author}</strong></span>
+                <span>{language === 'en' ? 'By' : language === 'zh' ? '撰写:' : 'Penulis:'} <strong>{isTrainArticle ? trainArticle.author : isHorseArticle ? horseArticle.author : isSeasonArticle ? seasonArticle.author : isJeepArticle ? jeepArticle.author : gearArticle.author}</strong></span>
               </div>
 
               {/* Share Actions Suite */}
@@ -281,7 +296,447 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
           </div>
 
           {/* ARTICLE BODY CONTENT */}
-          {isHorseArticle ? (
+          {isTrainArticle ? (
+            /* NAIK KERETA KE BROMO — OPEN TRIP MALANG SURABAYA ARTICLE BODY */
+            <div className="p-6 sm:p-10 lg:p-12 space-y-10">
+              {/* Intro Paragraphs */}
+              <div className="space-y-4 text-slate-700 text-base sm:text-lg leading-relaxed">
+                {trainArticle.introduction.map((para, idx) => (
+                  <p key={idx}>{para}</p>
+                ))}
+              </div>
+
+              {/* Embedded Interactive Java Rail Route Map */}
+              <div className="rounded-3xl border-2 border-[#0996f5]/25 overflow-hidden bg-white shadow-md">
+                <div className="px-5 py-4 bg-gradient-to-r from-[#102a56] to-[#0996f5] text-white">
+                  <h2 className="text-base sm:text-lg font-black tracking-tight">
+                    {trainArticle.mapTitle}
+                  </h2>
+                </div>
+
+                <div className="w-full bg-[#e0e0e0] aspect-[1274/470] relative overflow-hidden">
+                  <iframe
+                    src={trainArticle.mapEmbedUrl}
+                    title={trainArticle.mapTitle}
+                    className="w-full h-full border-0 block"
+                    loading="lazy"
+                  />
+                </div>
+
+                {/* Map Legend & Caption */}
+                <div className="px-5 py-4 bg-slate-50 border-t border-slate-200 space-y-2.5">
+                  <div className="flex flex-wrap items-center gap-4 text-xs font-bold text-slate-700">
+                    <span className="inline-flex items-center gap-2">
+                      <span className="w-5 h-1.5 rounded-full bg-[#1e6fd9] inline-block" />
+                      <span>{trainArticle.mapLegend.surabaya}</span>
+                    </span>
+                    <span className="inline-flex items-center gap-2">
+                      <span className="w-5 h-1.5 rounded-full bg-[#3aa0f0] inline-block" />
+                      <span>{trainArticle.mapLegend.malang}</span>
+                    </span>
+                    <span className="inline-flex items-center gap-2">
+                      <span className="w-5 h-1.5 rounded-full bg-[#4f7a55] inline-block" />
+                      <span>{trainArticle.mapLegend.bromo}</span>
+                    </span>
+                  </div>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    {trainArticle.mapCaption}
+                  </p>
+                </div>
+              </div>
+
+              {/* TWO SEPARATED OPEN TRIP PACKAGES (PAKET A vs PAKET B) */}
+              <div className="space-y-5">
+                <div className="border-b border-slate-200 pb-3">
+                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-black font-serif text-[#102a56]">
+                    {trainArticle.packagesSectionTitle}
+                  </h2>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-1">
+                    {trainArticle.packagesSectionSubtitle}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+                  {[trainArticle.packageA, trainArticle.packageB].map((pkg, pIdx) => {
+                    const isBlue = pkg.accentTheme === 'blue';
+                    return (
+                      <div
+                        key={pIdx}
+                        className={`rounded-3xl border-2 overflow-hidden flex flex-col justify-between shadow-sm ${
+                          isBlue
+                            ? 'border-[#0996f5] bg-[#EAF6FF]/40'
+                            : 'border-[#102a56] bg-slate-50'
+                        }`}
+                      >
+                        <div>
+                          {/* Package Header */}
+                          <div
+                            className={`p-5 sm:p-6 text-white ${
+                              isBlue ? 'bg-[#0996f5]' : 'bg-[#102a56]'
+                            }`}
+                          >
+                            <span className="inline-block px-3 py-1 bg-[#fff700] text-[#102a56] text-[10px] sm:text-[11px] font-black uppercase tracking-wider rounded-lg mb-2.5">
+                              {pkg.badge}
+                            </span>
+                            <h3 className="text-xl sm:text-2xl font-black font-serif leading-snug">
+                              {pkg.title}
+                            </h3>
+                            <p className="text-xs sm:text-sm text-white/90 font-semibold mt-1">
+                              {pkg.schedule} · {pkg.pickupTime}
+                            </p>
+                          </div>
+
+                          {/* Package Details */}
+                          <div className="p-5 sm:p-6 space-y-4">
+                            {/* Key Specs */}
+                            <div className="bg-white rounded-2xl p-4 border border-slate-200/90 space-y-2 text-xs sm:text-sm">
+                              <div>
+                                <span className="font-extrabold text-[#102a56]">
+                                  {language === 'en' ? 'Pickup Point: ' : language === 'zh' ? '接站点：' : 'Titik Jemput: '}
+                                </span>
+                                <span className="text-slate-700">{pkg.pickupPoint}</span>
+                              </div>
+                              <div>
+                                <span className="font-extrabold text-[#102a56]">
+                                  {language === 'en' ? 'Pickup Time: ' : language === 'zh' ? '接站时间：' : 'Jam Jemput: '}
+                                </span>
+                                <span className="text-slate-700 font-bold">{pkg.pickupTime}</span>
+                              </div>
+                              <div>
+                                <span className="font-extrabold text-[#102a56]">
+                                  {language === 'en' ? 'Transport: ' : language === 'zh' ? '交通方式：' : 'Transportasi: '}
+                                </span>
+                                <span className="text-slate-700">{pkg.transport}</span>
+                              </div>
+                            </div>
+
+                            {/* Price Box */}
+                            <div className="bg-white rounded-2xl p-4 border-2 border-[#fff700] space-y-2 shadow-2xs">
+                              <div className="text-xs font-black uppercase tracking-wider text-[#102a56]">
+                                💰 {language === 'en' ? 'Open Trip Price' : language === 'zh' ? '拼团价格' : 'Harga Paket'}
+                              </div>
+                              {pkg.priceLines.map((pl, plIdx) => (
+                                <div
+                                  key={plIdx}
+                                  className="flex items-center justify-between gap-2 text-xs sm:text-sm py-1 border-b last:border-b-0 border-slate-100"
+                                >
+                                  <span className="text-slate-700 font-semibold">{pl.label}</span>
+                                  <span className="font-black text-[#0996f5] text-sm sm:text-base whitespace-nowrap">
+                                    {pl.price}
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+
+                            {/* Highlights */}
+                            <ul className="space-y-2">
+                              {pkg.highlights.map((hl, hlIdx) => (
+                                <li
+                                  key={hlIdx}
+                                  className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700 leading-relaxed"
+                                >
+                                  <span
+                                    className={`w-5 h-5 rounded-full text-white flex items-center justify-center shrink-0 mt-0.5 ${
+                                      isBlue ? 'bg-[#0996f5]' : 'bg-[#102a56]'
+                                    }`}
+                                  >
+                                    <Check className="w-3 h-3 stroke-[3]" />
+                                  </span>
+                                  <span>{hl}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+
+                        {/* Direct CTA inside Card */}
+                        <div className="px-5 pb-5 sm:px-6 sm:pb-6">
+                          <button
+                            type="button"
+                            onClick={onOpenBooking}
+                            className={`w-full py-3 px-4 rounded-xl text-xs sm:text-sm font-black text-white transition-all cursor-pointer flex items-center justify-center gap-2 ${
+                              isBlue
+                                ? 'bg-[#0996f5] hover:bg-[#0779c8]'
+                                : 'bg-[#102a56] hover:bg-[#0B1220]'
+                            }`}
+                          >
+                            <span>
+                              {isBlue
+                                ? language === 'en'
+                                  ? 'Book Start Malang'
+                                  : language === 'zh'
+                                  ? '预订玛琅出发团'
+                                  : 'Booking Paket A (Start Malang)'
+                                : language === 'en'
+                                ? 'Book Start Surabaya'
+                                : language === 'zh'
+                                ? '预订泗水出发团'
+                                : 'Booking Paket B (Start Surabaya)'}
+                            </span>
+                            <ArrowRight className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* COST CLARIFICATION BOX (💰 PENEGASAN BIAYA) */}
+              <div className="p-6 sm:p-7 rounded-3xl bg-[#fff700]/15 border-2 border-[#fff700] space-y-5 shadow-xs">
+                <h2 className="text-lg sm:text-xl font-black font-serif text-[#102a56]">
+                  {trainArticle.costClarification.title}
+                </h2>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-white rounded-2xl p-4 border border-emerald-200 space-y-2.5">
+                    <div className="text-xs font-black uppercase tracking-wider text-emerald-700">
+                      ✅ {trainArticle.costClarification.includedTitle}
+                    </div>
+                    <ul className="space-y-2 text-xs sm:text-sm text-slate-700">
+                      {trainArticle.costClarification.includedItems.map((item, idx) => (
+                        <li key={idx} className="flex items-start gap-2">
+                          <Check className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="bg-white rounded-2xl p-4 border border-rose-200 space-y-2.5">
+                    <div className="text-xs font-black uppercase tracking-wider text-rose-700">
+                      ❌ {trainArticle.costClarification.excludedTitle}
+                    </div>
+                    <ul className="space-y-2 text-xs sm:text-sm text-slate-700">
+                      {trainArticle.costClarification.excludedItems.map((item, idx) => (
+                        <li key={idx} className="flex items-start gap-2">
+                          <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                <p className="text-xs sm:text-sm font-extrabold text-[#102a56] bg-white/90 p-3.5 rounded-xl border border-amber-300 leading-relaxed">
+                  💰 {trainArticle.costClarification.summaryNote}
+                </p>
+              </div>
+
+              {/* TRAIN FARE REFERENCE TABLES (🚂 ACUAN HARGA KERETA) */}
+              <div className="space-y-6">
+                <div className="border-b border-slate-200 pb-3">
+                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-black font-serif text-[#102a56]">
+                    {trainArticle.trainFaresSectionTitle}
+                  </h2>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-1">
+                    {trainArticle.trainFaresSectionSubtitle}
+                  </p>
+                </div>
+
+                {/* Table 1: To Malang */}
+                <div className="bg-white border-2 border-[#0996f5]/25 rounded-3xl overflow-hidden shadow-sm">
+                  <div className="px-5 py-4 bg-[#EAF6FF] border-b border-[#0996f5]/20">
+                    <h3 className="text-base sm:text-lg font-black text-[#102a56]">
+                      {trainArticle.toMalangTitle}
+                    </h3>
+                  </div>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left border-collapse">
+                      <thead>
+                        <tr className="bg-slate-50 border-b border-slate-200 text-[11px] sm:text-xs font-black uppercase tracking-wider text-slate-500">
+                          <th className="py-3.5 px-4 sm:px-5">{trainArticle.tableHeaders.route}</th>
+                          <th className="py-3.5 px-4 sm:px-5">{trainArticle.tableHeaders.train}</th>
+                          <th className="py-3.5 px-4 sm:px-5">{trainArticle.tableHeaders.schedule}</th>
+                          <th className="py-3.5 px-4 sm:px-5">{trainArticle.tableHeaders.price}</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100 text-xs sm:text-sm">
+                        {trainArticle.toMalangRows.map((row, idx) => (
+                          <tr key={idx} className="hover:bg-[#EAF6FF]/40 transition-colors">
+                            <td className="py-4 px-4 sm:px-5 font-extrabold text-[#102a56] whitespace-nowrap">
+                              {row.origin}
+                            </td>
+                            <td className="py-4 px-4 sm:px-5 font-bold text-[#0996f5]">
+                              {row.trainName}
+                            </td>
+                            <td className="py-4 px-4 sm:px-5 text-slate-600 leading-relaxed">
+                              {row.scheduleNote}
+                            </td>
+                            <td className="py-4 px-4 sm:px-5">
+                              <span className="inline-block px-3 py-1 bg-[#fff700]/40 border border-amber-300 text-[#102a56] font-black rounded-lg">
+                                {row.fare}
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                {/* Table 2: To Surabaya */}
+                <div className="bg-white border-2 border-[#102a56]/25 rounded-3xl overflow-hidden shadow-sm">
+                  <div className="px-5 py-4 bg-slate-100 border-b border-slate-200">
+                    <h3 className="text-base sm:text-lg font-black text-[#102a56]">
+                      {trainArticle.toSurabayaTitle}
+                    </h3>
+                  </div>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left border-collapse">
+                      <thead>
+                        <tr className="bg-slate-50 border-b border-slate-200 text-[11px] sm:text-xs font-black uppercase tracking-wider text-slate-500">
+                          <th className="py-3.5 px-4 sm:px-5">{trainArticle.tableHeaders.route}</th>
+                          <th className="py-3.5 px-4 sm:px-5">{trainArticle.tableHeaders.train}</th>
+                          <th className="py-3.5 px-4 sm:px-5">{trainArticle.tableHeaders.schedule}</th>
+                          <th className="py-3.5 px-4 sm:px-5">{trainArticle.tableHeaders.price}</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100 text-xs sm:text-sm">
+                        {trainArticle.toSurabayaRows.map((row, idx) => (
+                          <tr key={idx} className="hover:bg-slate-50 transition-colors">
+                            <td className="py-4 px-4 sm:px-5 font-extrabold text-[#102a56] whitespace-nowrap">
+                              {row.origin}
+                            </td>
+                            <td className="py-4 px-4 sm:px-5 font-bold text-[#102a56]">
+                              {row.trainName}
+                            </td>
+                            <td className="py-4 px-4 sm:px-5 text-slate-600 leading-relaxed">
+                              {row.scheduleNote}
+                            </td>
+                            <td className="py-4 px-4 sm:px-5">
+                              <span className="inline-block px-3 py-1 bg-[#fff700]/40 border border-amber-300 text-[#102a56] font-black rounded-lg">
+                                {row.fare}
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              {/* WARNINGS & ESSENTIAL TIPS (⚠️) */}
+              <div className="space-y-4">
+                <h2 className="text-xl sm:text-2xl font-black font-serif text-[#102a56]">
+                  {trainArticle.tipsTitle}
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {trainArticle.tips.map((tip, idx) => (
+                    <div
+                      key={idx}
+                      className="p-5 rounded-2xl bg-amber-50/90 border-2 border-amber-300 space-y-2 shadow-2xs"
+                    >
+                      <h3 className="text-sm sm:text-base font-black text-[#102a56]">
+                        {tip.title}
+                      </h3>
+                      <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                        {tip.description}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Conclusion & Booking CTA */}
+              <div className="p-6 sm:p-8 bg-[#EAF6FF] border border-[#0996f5]/30 rounded-3xl space-y-4">
+                <h3 className="text-xl font-extrabold text-[#0B1220]">
+                  {language === 'en'
+                    ? 'Ready to Take the Train & Join Our Bromo Open Trip?'
+                    : language === 'zh'
+                    ? '准备好乘火车衔接布罗莫拼团了吗？'
+                    : 'Siap Naik Kereta & Gabung Open Trip Bromo?'}
+                </h3>
+                <p className="text-sm sm:text-base text-slate-700 leading-relaxed">
+                  {trainArticle.conclusion}
+                </p>
+
+                <div className="pt-2 flex flex-col sm:flex-row items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={onOpenBooking}
+                    className="w-full sm:w-auto px-6 py-3.5 bg-[#0996f5] hover:bg-[#071A2B] text-white text-xs sm:text-sm font-black rounded-2xl shadow-lg shadow-[#0996f5]/25 transition-all cursor-pointer flex items-center justify-center gap-2 group"
+                  >
+                    <span>{trainArticle.ctaButton}</span>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </button>
+
+                  <a
+                    href="https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20mau%20booking%20Open%20Trip%20Bromo%20Start%20Malang%20/%20Surabaya%20(naik%20kereta)."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full sm:w-auto px-5 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold rounded-2xl transition-colors flex items-center justify-center gap-2"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    <span>WhatsApp Hotline (+62 812-2229-0318)</span>
+                  </a>
+                </div>
+              </div>
+
+              {/* Social Share Buttons Bottom Section */}
+              <div className="p-6 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="text-center sm:text-left">
+                  <h4 className="text-sm font-extrabold text-[#0B1220]">
+                    {language === 'en'
+                      ? 'Share this Bromo train & open trip guide'
+                      : language === 'zh'
+                      ? '分享这份布罗莫火车与拼团指南'
+                      : 'Bagikan panduan naik kereta & open trip Bromo ini'}
+                  </h4>
+                  <p className="text-xs text-slate-500">
+                    {language === 'en'
+                      ? 'Share via WhatsApp, Facebook, or copy link'
+                      : language === 'zh'
+                      ? '一键分享至 WhatsApp、Facebook 或复制链接'
+                      : 'Bagikan melalui WhatsApp, Facebook, atau salin link'}
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handleShareSocial('wa')}
+                    className="px-3.5 py-2 bg-[#25D366] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#20ba5a] transition-all flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <MessageCircle className="w-3.5 h-3.5" />
+                    <span>WhatsApp</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleShareSocial('fb')}
+                    className="px-3.5 py-2 bg-[#1877F2] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#1567d3] transition-all flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <Share2 className="w-3.5 h-3.5" />
+                    <span>Facebook</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleCopyLink}
+                    className="px-3.5 py-2 bg-slate-200 text-slate-800 hover:bg-slate-300 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    <span>{language === 'en' ? 'Copy Link' : language === 'zh' ? '复制链接' : 'Salin Link'}</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Article Tags */}
+              <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center gap-2 text-xs text-slate-600">
+                <span className="font-bold text-slate-400 mr-1">Tags:</span>
+                {trainArticle.tags?.map((tag, idx) => (
+                  <span
+                    key={idx}
+                    className="px-3 py-1 bg-slate-100 hover:bg-[#EAF6FF] text-slate-700 hover:text-[#0996f5] rounded-xl font-medium transition-colors cursor-pointer"
+                  >
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ) : isHorseArticle ? (
             /* BIAYA SEWA KUDA DI BROMO ARTICLE BODY (WITH CUTE CUSTOM VECTORS) */
             <div className="p-6 sm:p-10 lg:p-12 space-y-10">
               {/* Cute Welcome Intro Banner + Intro Paragraphs */}

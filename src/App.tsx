@@ -63,7 +63,9 @@ const parseInitialRoute = (): { view: AppView; pkg: TourPackage | null; adminLog
     hash === '#journal'
   ) {
     let artId: string | undefined = undefined;
-    if (pathname.includes('kuda') || pathname.includes('horse') || hash.includes('kuda') || hash.includes('horse')) {
+    if (pathname.includes('kereta') || pathname.includes('train') || hash.includes('kereta') || hash.includes('train')) {
+      artId = 'naik-kereta-ke-bromo';
+    } else if (pathname.includes('kuda') || pathname.includes('horse') || hash.includes('kuda') || hash.includes('horse')) {
       artId = 'biaya-kuda-bromo';
     } else if (pathname.includes('jeep') || pathname.includes('kapasitas') || hash.includes('jeep') || hash.includes('kapasitas')) {
       artId = 'kapasitas-jeep-bromo';
@@ -178,7 +180,9 @@ export default function App() {
         hash === '#panduan' ||
         hash === '#journal'
       ) {
-        if (pathname.includes('kuda') || pathname.includes('horse') || hash.includes('kuda') || hash.includes('horse')) {
+        if (pathname.includes('kereta') || pathname.includes('train') || hash.includes('kereta') || hash.includes('train')) {
+          setSelectedArticlePostId('naik-kereta-ke-bromo');
+        } else if (pathname.includes('kuda') || pathname.includes('horse') || hash.includes('kuda') || hash.includes('horse')) {
           setSelectedArticlePostId('biaya-kuda-bromo');
         } else if (pathname.includes('jeep') || pathname.includes('kapasitas') || hash.includes('jeep') || hash.includes('kapasitas')) {
           setSelectedArticlePostId('kapasitas-jeep-bromo');
@@ -644,7 +648,9 @@ export default function App() {
           }}
           onSelectArticle={(artSlugOrId) => {
             let matchedId = artSlugOrId;
-            if (artSlugOrId.includes('kuda') || artSlugOrId.includes('horse')) {
+            if (artSlugOrId.includes('kereta') || artSlugOrId.includes('train')) {
+              matchedId = 'naik-kereta-ke-bromo';
+            } else if (artSlugOrId.includes('kuda') || artSlugOrId.includes('horse')) {
               matchedId = 'biaya-kuda-bromo';
             } else if (artSlugOrId.includes('jeep') || artSlugOrId.includes('kapasitas')) {
               matchedId = 'kapasitas-jeep-bromo';
