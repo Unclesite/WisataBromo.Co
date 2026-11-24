@@ -11,6 +11,7 @@ import { ARTICLE_KAPASITAS_JEEP_BROMO } from '../data/articles/kapasitas-jeep-br
 import { ARTICLE_WAKTU_TERBAIK_BROMO } from '../data/articles/waktu-terbaik-bromo';
 import { ARTICLE_BIAYA_KUDA_BROMO } from '../data/articles/biaya-kuda-bromo';
 import { ARTICLE_NAIK_KERETA_BROMO } from '../data/articles/naik-kereta-ke-bromo';
+import { ARTICLE_PINTU_MASUK_HARGA_JEEP } from '../data/articles/pintu-masuk-bromo-harga-jeep';
 import { HorseCuteVector } from './HorseArticleVectors';
 import imgCustom from '../assets/images/633b7b65-1f37-4dbd-9714-6a4197e04480.png';
 import imgJeepGroup from '../assets/images/volcanic_jeep_expedition_group_portrait.png';
@@ -35,13 +36,21 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   // Determine active article type
+  const isGateJeepArticle =
+    articleId === 'pintu-masuk-bromo-harga-jeep' ||
+    articleId?.includes('pintu-masuk') ||
+    articleSlug?.includes('pintu-masuk') ||
+    articleSlug?.includes('harga-sewa-jeep');
+
   const isTrainArticle =
-    articleId === 'naik-kereta-ke-bromo' ||
-    articleId?.includes('kereta') ||
-    articleSlug?.includes('kereta') ||
-    articleSlug?.includes('train');
+    !isGateJeepArticle &&
+    (articleId === 'naik-kereta-ke-bromo' ||
+      articleId?.includes('kereta') ||
+      articleSlug?.includes('kereta') ||
+      articleSlug?.includes('train'));
 
   const isHorseArticle =
+    !isGateJeepArticle &&
     !isTrainArticle &&
     (articleId === 'biaya-kuda-bromo' ||
       articleId?.includes('kuda') ||
@@ -49,6 +58,7 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
       articleSlug?.includes('horse'));
 
   const isSeasonArticle =
+    !isGateJeepArticle &&
     !isTrainArticle &&
     !isHorseArticle &&
     (articleId === 'waktu-terbaik-ke-bromo' ||
@@ -57,6 +67,7 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
       articleId === 'waktu-terbaik-ke-bromo-menyelami-pesona-4-musim');
 
   const isJeepArticle =
+    !isGateJeepArticle &&
     !isTrainArticle &&
     !isHorseArticle &&
     !isSeasonArticle &&
@@ -64,13 +75,17 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
       articleSlug?.includes('kapasitas') ||
       articleSlug?.includes('jeep'));
 
+  const gateJeepArticle =
+    ARTICLE_PINTU_MASUK_HARGA_JEEP[language] || ARTICLE_PINTU_MASUK_HARGA_JEEP.id;
   const trainArticle = ARTICLE_NAIK_KERETA_BROMO[language] || ARTICLE_NAIK_KERETA_BROMO.id;
   const horseArticle = ARTICLE_BIAYA_KUDA_BROMO[language] || ARTICLE_BIAYA_KUDA_BROMO.id;
   const seasonArticle = ARTICLE_WAKTU_TERBAIK_BROMO[language] || ARTICLE_WAKTU_TERBAIK_BROMO.id;
   const jeepArticle = ARTICLE_KAPASITAS_JEEP_BROMO[language] || ARTICLE_KAPASITAS_JEEP_BROMO.id;
   const gearArticle = ARTICLE_BARANG_WAJIB_BROMO[language] || ARTICLE_BARANG_WAJIB_BROMO.id;
 
-  const currentTitle = isTrainArticle
+  const currentTitle = isGateJeepArticle
+    ? gateJeepArticle.title
+    : isTrainArticle
     ? trainArticle.title
     : isHorseArticle
     ? horseArticle.title
@@ -79,7 +94,9 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
     : isJeepArticle
     ? jeepArticle.title
     : gearArticle.title;
-  const currentCategory = isTrainArticle
+  const currentCategory = isGateJeepArticle
+    ? gateJeepArticle.categoryLabel
+    : isTrainArticle
     ? trainArticle.categoryLabel
     : isHorseArticle
     ? horseArticle.categoryLabel
@@ -193,7 +210,7 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
           {/* Cover Hero Image */}
           <div className="relative h-72 sm:h-96 w-full overflow-hidden bg-slate-900">
             <img
-              src={isTrainArticle ? trainArticle.heroImage : isHorseArticle ? horseArticle.heroImage : imgCustom}
+              src={isGateJeepArticle ? gateJeepArticle.heroImage : isTrainArticle ? trainArticle.heroImage : isHorseArticle ? horseArticle.heroImage : imgCustom}
               alt={currentTitle}
               className="w-full h-full object-cover object-center filter brightness-90 hover:scale-103 transition-transform duration-1000"
             />
@@ -203,15 +220,15 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
               <div className="flex flex-wrap items-center gap-3 text-xs text-slate-200 mb-2 font-medium">
                 <span className="flex items-center gap-1 bg-black/40 backdrop-blur-xs px-2.5 py-1 rounded-md">
                   <Calendar className="w-3.5 h-3.5 text-[#FFF700]" />
-                  {isTrainArticle ? trainArticle.publishDate : isHorseArticle ? horseArticle.publishDate : isSeasonArticle ? seasonArticle.publishDate : isJeepArticle ? jeepArticle.publishDate : gearArticle.publishDate}
+                  {isGateJeepArticle ? gateJeepArticle.publishDate : isTrainArticle ? trainArticle.publishDate : isHorseArticle ? horseArticle.publishDate : isSeasonArticle ? seasonArticle.publishDate : isJeepArticle ? jeepArticle.publishDate : gearArticle.publishDate}
                 </span>
                 <span className="flex items-center gap-1 bg-black/40 backdrop-blur-xs px-2.5 py-1 rounded-md">
                   <Clock className="w-3.5 h-3.5 text-[#FFF700]" />
-                  {isTrainArticle ? trainArticle.readTime : isHorseArticle ? horseArticle.readTime : isSeasonArticle ? seasonArticle.readTime : isJeepArticle ? jeepArticle.readTime : gearArticle.readTime}
+                  {isGateJeepArticle ? gateJeepArticle.readTime : isTrainArticle ? trainArticle.readTime : isHorseArticle ? horseArticle.readTime : isSeasonArticle ? seasonArticle.readTime : isJeepArticle ? jeepArticle.readTime : gearArticle.readTime}
                 </span>
                 <span className="flex items-center gap-1 bg-black/40 backdrop-blur-xs px-2.5 py-1 rounded-md">
                   <User className="w-3.5 h-3.5 text-[#FFF700]" />
-                  {isTrainArticle ? trainArticle.author : isHorseArticle ? horseArticle.author : isSeasonArticle ? seasonArticle.author : isJeepArticle ? jeepArticle.author : gearArticle.author}
+                  {isGateJeepArticle ? gateJeepArticle.author : isTrainArticle ? trainArticle.author : isHorseArticle ? horseArticle.author : isSeasonArticle ? seasonArticle.author : isJeepArticle ? jeepArticle.author : gearArticle.author}
                 </span>
               </div>
             </div>
@@ -224,14 +241,14 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
             </h1>
 
             <p className="text-base sm:text-lg text-slate-600 leading-relaxed font-normal bg-[#EAF6FF]/60 p-4 sm:p-5 rounded-2xl border-l-4 border-[#0996f5]">
-              {isTrainArticle ? trainArticle.metaDescription : isHorseArticle ? horseArticle.metaDescription : isSeasonArticle ? seasonArticle.metaDescription : isJeepArticle ? jeepArticle.metaDescription : gearArticle.metaDescription}
+              {isGateJeepArticle ? gateJeepArticle.metaDescription : isTrainArticle ? trainArticle.metaDescription : isHorseArticle ? horseArticle.metaDescription : isSeasonArticle ? seasonArticle.metaDescription : isJeepArticle ? jeepArticle.metaDescription : gearArticle.metaDescription}
             </p>
 
             {/* Author & Share row */}
             <div className="flex flex-wrap items-center justify-between gap-4 pt-6 mt-6 border-t border-slate-100 text-xs">
               <div className="flex items-center gap-2 text-slate-600 font-medium">
                 <User className="w-4 h-4 text-[#0996f5]" />
-                <span>{language === 'en' ? 'By' : language === 'zh' ? '撰写:' : 'Penulis:'} <strong>{isTrainArticle ? trainArticle.author : isHorseArticle ? horseArticle.author : isSeasonArticle ? seasonArticle.author : isJeepArticle ? jeepArticle.author : gearArticle.author}</strong></span>
+                <span>{language === 'en' ? 'By' : language === 'zh' ? '撰写:' : 'Penulis:'} <strong>{isGateJeepArticle ? gateJeepArticle.author : isTrainArticle ? trainArticle.author : isHorseArticle ? horseArticle.author : isSeasonArticle ? seasonArticle.author : isJeepArticle ? jeepArticle.author : gearArticle.author}</strong></span>
               </div>
 
               {/* Share Actions Suite */}
@@ -296,7 +313,349 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
           </div>
 
           {/* ARTICLE BODY CONTENT */}
-          {isTrainArticle ? (
+          {isGateJeepArticle ? (
+            /* PINTU MASUK BROMO & HARGA SEWA JEEP 2026 ARTICLE BODY */
+            <div className="p-6 sm:p-10 lg:p-12 space-y-10">
+              {/* Intro Paragraphs */}
+              <div className="space-y-4 text-slate-700 text-base sm:text-lg leading-relaxed">
+                {gateJeepArticle.introduction.map((para, idx) => (
+                  <p key={idx}>{para}</p>
+                ))}
+              </div>
+
+              {/* Embedded Interactive Animated Route Map to 3 Entrances of Mt. Bromo (Full Width) */}
+              <div className="-mx-6 sm:-mx-10 lg:-mx-12 rounded-none border-y-2 border-x-0 border-[#0996f5]/25 overflow-hidden bg-white shadow-md">
+                <div className="px-6 sm:px-10 lg:px-12 py-4 bg-gradient-to-r from-[#102a56] to-[#0996f5] text-white">
+                  <h2 className="text-base sm:text-lg font-black tracking-tight">
+                    {gateJeepArticle.mapTitle}
+                  </h2>
+                </div>
+
+                <div className="w-full bg-[#e0e0e0] aspect-[1274/520] relative overflow-hidden">
+                  <iframe
+                    src={gateJeepArticle.mapEmbedUrl}
+                    title={gateJeepArticle.mapTitle}
+                    className="w-full h-full border-0 block"
+                    loading="lazy"
+                  />
+                </div>
+
+                {/* Map Legend & Caption */}
+                <div className="px-6 sm:px-10 lg:px-12 py-4 bg-slate-50 border-t border-slate-200 space-y-2.5">
+                  <div className="flex flex-wrap items-center gap-4 text-xs font-bold text-slate-700">
+                    <span className="inline-flex items-center gap-2">
+                      <span className="w-5 h-1.5 rounded-full bg-[#1e6fd9] inline-block" />
+                      <span>{gateJeepArticle.mapLegend.sukapura}</span>
+                    </span>
+                    <span className="inline-flex items-center gap-2">
+                      <span className="w-5 h-1.5 rounded-full bg-[#0aa5a5] inline-block" />
+                      <span>{gateJeepArticle.mapLegend.tosari}</span>
+                    </span>
+                    <span className="inline-flex items-center gap-2">
+                      <span className="w-5 h-1.5 rounded-full bg-[#7048e8] inline-block" />
+                      <span>{gateJeepArticle.mapLegend.gubugklakah}</span>
+                    </span>
+                    <span className="inline-flex items-center gap-2">
+                      <span className="w-3 h-3 rounded-full bg-[#4f7a55] inline-block" />
+                      <span>{gateJeepArticle.mapLegend.bromo}</span>
+                    </span>
+                  </div>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    {gateJeepArticle.mapCaption}
+                  </p>
+                </div>
+              </div>
+
+              {/* 3 MAIN ENTRANCE ROUTES */}
+              <div className="space-y-5">
+                <div className="border-b border-slate-200 pb-3">
+                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-black font-serif text-[#102a56]">
+                    {gateJeepArticle.gatesSectionTitle}
+                  </h2>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-1">
+                    {gateJeepArticle.gatesSectionSubtitle}
+                  </p>
+                </div>
+
+                <div className="space-y-5">
+                  {gateJeepArticle.gates.map((gate) => (
+                    <div
+                      key={gate.id}
+                      id={gate.id}
+                      className={`p-5 sm:p-7 rounded-3xl border-2 ${gate.borderClass} ${gate.bgClass} shadow-2xs space-y-4`}
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <span
+                          className="px-3 py-1 text-white text-[10px] sm:text-[11px] font-black uppercase tracking-wider rounded-lg"
+                          style={{ backgroundColor: gate.colorHex }}
+                        >
+                          {gate.badge}
+                        </span>
+                        <span className="px-3 py-1 bg-white/95 border border-slate-200 text-[#102a56] text-xs font-extrabold rounded-lg">
+                          {gate.gatePoint}
+                        </span>
+                      </div>
+
+                      <h3 className="text-lg sm:text-xl lg:text-2xl font-serif font-black text-[#102a56]">
+                        {gate.title}
+                      </h3>
+
+                      <p className="text-slate-700 text-sm sm:text-base leading-relaxed bg-white/85 p-4 rounded-2xl border border-white">
+                        {gate.description}
+                      </p>
+
+                      <ul className="space-y-2 pl-1">
+                        {gate.highlights.map((hl, hlIdx) => (
+                          <li
+                            key={hlIdx}
+                            className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-800 leading-relaxed"
+                          >
+                            <span
+                              className="w-5 h-5 rounded-full text-white flex items-center justify-center shrink-0 mt-0.5"
+                              style={{ backgroundColor: gate.colorHex }}
+                            >
+                              <Check className="w-3 h-3 stroke-[3]" />
+                            </span>
+                            <span>{hl}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* JEEP RENTAL PRICE CARDS BY STARTING POINT (WITH STRIKETHROUGH PROMO) */}
+              <div className="space-y-5">
+                <div className="border-b border-slate-200 pb-3">
+                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-black font-serif text-[#102a56]">
+                    {gateJeepArticle.pricesSectionTitle}
+                  </h2>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-1">
+                    {gateJeepArticle.pricesSectionSubtitle}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-stretch">
+                  {gateJeepArticle.jeepPrices.map((item) => {
+                    const headerBg =
+                      item.accentTheme === 'blue'
+                        ? 'bg-[#1e6fd9]'
+                        : item.accentTheme === 'teal'
+                        ? 'bg-[#0aa5a5]'
+                        : 'bg-[#7048e8]';
+                    const borderCol =
+                      item.accentTheme === 'blue'
+                        ? 'border-[#1e6fd9]/40'
+                        : item.accentTheme === 'teal'
+                        ? 'border-[#0aa5a5]/40'
+                        : 'border-[#7048e8]/40';
+
+                    return (
+                      <div
+                        key={item.id}
+                        className={`rounded-3xl border-2 ${borderCol} bg-white overflow-hidden shadow-sm hover:shadow-xl transition-all flex flex-col justify-between`}
+                      >
+                        <div>
+                          <div className={`${headerBg} p-5 text-white space-y-1.5`}>
+                            <span className="inline-block px-2.5 py-0.5 bg-[#fff700] text-[#102a56] text-[10px] font-black uppercase tracking-wider rounded-md">
+                              💰 {item.savingsBadge}
+                            </span>
+                            <h3 className="text-lg sm:text-xl font-black font-serif">
+                              {item.startPoint}
+                            </h3>
+                            <p className="text-xs text-white/90 font-medium">{item.routeLabel}</p>
+                          </div>
+
+                          <div className="p-5 space-y-3">
+                            <div className="space-y-1">
+                              <div className="text-xs font-bold text-slate-400">
+                                {language === 'en'
+                                  ? 'Normal price'
+                                  : language === 'zh'
+                                  ? '原价'
+                                  : 'Harga normal'}
+                              </div>
+                              <div className="text-base font-bold text-slate-400 line-through decoration-rose-500 decoration-2">
+                                {item.normalPrice}
+                              </div>
+                            </div>
+
+                            <div className="p-3.5 rounded-2xl bg-[#fff700]/20 border border-amber-300 space-y-0.5">
+                              <div className="text-[11px] font-black uppercase tracking-wider text-amber-800">
+                                {language === 'en'
+                                  ? 'Promo Price 2026'
+                                  : language === 'zh'
+                                  ? '2026 优惠价'
+                                  : 'Harga Promo 2026'}
+                              </div>
+                              <div className="text-2xl font-black text-[#102a56]">
+                                {item.promoPrice}
+                              </div>
+                              <div className="text-xs font-bold text-slate-600">{item.unitNote}</div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="px-5 pb-5">
+                          <button
+                            type="button"
+                            onClick={onOpenBooking}
+                            className={`w-full py-2.5 px-4 rounded-xl text-xs font-black text-white ${headerBg} hover:opacity-90 transition-opacity cursor-pointer flex items-center justify-center gap-1.5`}
+                          >
+                            <span>
+                              {language === 'en'
+                                ? 'Book Jeep'
+                                : language === 'zh'
+                                ? '立即预订'
+                                : 'Pesan Jeep Ini'}
+                            </span>
+                            <ArrowRight className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* QUICK PRICE EXPLANATION BOX */}
+              <div className="p-6 sm:p-7 rounded-3xl bg-[#fff700]/15 border-2 border-[#fff700] space-y-4 shadow-xs">
+                <h2 className="text-lg sm:text-xl font-black font-serif text-[#102a56]">
+                  {gateJeepArticle.priceExplanation.title}
+                </h2>
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {gateJeepArticle.priceExplanation.points.map((pt, idx) => (
+                    <li
+                      key={idx}
+                      className="p-3.5 bg-white rounded-2xl border border-amber-200/90 text-xs sm:text-sm font-bold text-[#102a56] leading-relaxed shadow-2xs"
+                    >
+                      {pt}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* TIPS & WARNINGS */}
+              <div className="space-y-4">
+                <h2 className="text-xl sm:text-2xl font-black font-serif text-[#102a56]">
+                  {gateJeepArticle.tipsTitle}
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {gateJeepArticle.tips.map((tip, idx) => (
+                    <div
+                      key={idx}
+                      className="p-5 rounded-2xl bg-amber-50/90 border-2 border-amber-300 space-y-2 shadow-2xs"
+                    >
+                      <h3 className="text-sm sm:text-base font-black text-[#102a56]">
+                        {tip.title}
+                      </h3>
+                      <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                        {tip.description}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Conclusion & Booking CTA */}
+              <div className="p-6 sm:p-8 bg-[#EAF6FF] border border-[#0996f5]/30 rounded-3xl space-y-4">
+                <h3 className="text-xl font-extrabold text-[#0B1220]">
+                  {language === 'en'
+                    ? 'Ready to Choose Your Bromo Entrance & Book Your Jeep?'
+                    : language === 'zh'
+                    ? '准备好选定入口并预订布罗莫吉普车了吗？'
+                    : 'Sudah Tentukan Pintu Masuk Bromo Pilihan Anda?'}
+                </h3>
+                <p className="text-sm sm:text-base text-slate-700 leading-relaxed">
+                  {gateJeepArticle.conclusion}
+                </p>
+
+                <div className="pt-2 flex flex-col sm:flex-row items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={onOpenBooking}
+                    className="w-full sm:w-auto px-6 py-3.5 bg-[#0996f5] hover:bg-[#071A2B] text-white text-xs sm:text-sm font-black rounded-2xl shadow-lg shadow-[#0996f5]/25 transition-all cursor-pointer flex items-center justify-center gap-2 group"
+                  >
+                    <span>{gateJeepArticle.ctaButton}</span>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </button>
+
+                  <a
+                    href="https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20mau%20pesan%20Sewa%20Jeep%20Bromo%20(Start%20Sukapura%20/%20Tosari%20/%20Gubugklakah)."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full sm:w-auto px-5 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold rounded-2xl transition-colors flex items-center justify-center gap-2"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    <span>WhatsApp Hotline (+62 812-2229-0318)</span>
+                  </a>
+                </div>
+              </div>
+
+              {/* Social Share Buttons Bottom Section */}
+              <div className="p-6 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="text-center sm:text-left">
+                  <h4 className="text-sm font-extrabold text-[#0B1220]">
+                    {language === 'en'
+                      ? 'Share this Bromo entrance & jeep price guide'
+                      : language === 'zh'
+                      ? '分享这份布罗莫入口与吉普车价格指南'
+                      : 'Bagikan panduan pintu masuk & harga sewa jeep Bromo ini'}
+                  </h4>
+                  <p className="text-xs text-slate-500">
+                    {language === 'en'
+                      ? 'Share via WhatsApp, Facebook, or copy link'
+                      : language === 'zh'
+                      ? '一键分享至 WhatsApp、Facebook 或复制链接'
+                      : 'Bagikan melalui WhatsApp, Facebook, atau salin link'}
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handleShareSocial('wa')}
+                    className="px-3.5 py-2 bg-[#25D366] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#20ba5a] transition-all flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <MessageCircle className="w-3.5 h-3.5" />
+                    <span>WhatsApp</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleShareSocial('fb')}
+                    className="px-3.5 py-2 bg-[#1877F2] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#1567d3] transition-all flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <Share2 className="w-3.5 h-3.5" />
+                    <span>Facebook</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleCopyLink}
+                    className="px-3.5 py-2 bg-slate-200 text-slate-800 hover:bg-slate-300 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    <span>{language === 'en' ? 'Copy Link' : language === 'zh' ? '复制链接' : 'Salin Link'}</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Article Tags */}
+              <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center gap-2 text-xs text-slate-600">
+                <span className="font-bold text-slate-400 mr-1">Tags:</span>
+                {gateJeepArticle.tags?.map((tag, idx) => (
+                  <span
+                    key={idx}
+                    className="px-3 py-1 bg-slate-100 hover:bg-[#EAF6FF] text-slate-700 hover:text-[#0996f5] rounded-xl font-medium transition-colors cursor-pointer"
+                  >
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ) : isTrainArticle ? (
             /* NAIK KERETA KE BROMO — OPEN TRIP MALANG SURABAYA ARTICLE BODY */
             <div className="p-6 sm:p-10 lg:p-12 space-y-10">
               {/* Intro Paragraphs */}

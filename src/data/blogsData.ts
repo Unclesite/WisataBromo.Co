@@ -5,6 +5,7 @@ import { ARTICLE_KAPASITAS_JEEP_BROMO, LocalizedJeepArticleContent } from './art
 import { ARTICLE_WAKTU_TERBAIK_BROMO, LocalizedSeasonArticleContent } from './articles/waktu-terbaik-bromo';
 import { ARTICLE_BIAYA_KUDA_BROMO, LocalizedHorseArticleContent } from './articles/biaya-kuda-bromo';
 import { ARTICLE_NAIK_KERETA_BROMO, LocalizedTrainArticleContent } from './articles/naik-kereta-ke-bromo';
+import { ARTICLE_PINTU_MASUK_HARGA_JEEP, LocalizedGateJeepArticleContent } from './articles/pintu-masuk-bromo-harga-jeep';
 
 export {
   ARTICLE_BARANG_WAJIB_BROMO,
@@ -12,6 +13,7 @@ export {
   ARTICLE_WAKTU_TERBAIK_BROMO,
   ARTICLE_BIAYA_KUDA_BROMO,
   ARTICLE_NAIK_KERETA_BROMO,
+  ARTICLE_PINTU_MASUK_HARGA_JEEP,
 };
 export type {
   LocalizedArticleContent,
@@ -19,6 +21,7 @@ export type {
   LocalizedSeasonArticleContent,
   LocalizedHorseArticleContent,
   LocalizedTrainArticleContent,
+  LocalizedGateJeepArticleContent,
 };
 
 // Helper to convert LocalizedArticleContent to standard BlogPost type
@@ -28,6 +31,7 @@ export const getLocalizedBlogPosts = (lang: SupportedLanguage = 'id'): BlogPost[
   const currentSeasonArt = ARTICLE_WAKTU_TERBAIK_BROMO[lang] || ARTICLE_WAKTU_TERBAIK_BROMO.id;
   const currentHorseArt = ARTICLE_BIAYA_KUDA_BROMO[lang] || ARTICLE_BIAYA_KUDA_BROMO.id;
   const currentTrainArt = ARTICLE_NAIK_KERETA_BROMO[lang] || ARTICLE_NAIK_KERETA_BROMO.id;
+  const currentGateJeepArt = ARTICLE_PINTU_MASUK_HARGA_JEEP[lang] || ARTICLE_PINTU_MASUK_HARGA_JEEP.id;
 
   const jeepPost: BlogPost = {
     id: currentJeepArt.id,
@@ -193,7 +197,42 @@ export const getLocalizedBlogPosts = (lang: SupportedLanguage = 'id'): BlogPost[
     ],
   };
 
-  return [jeepPost, gearPost, seasonPost, horsePost, trainPost];
+  const gateJeepPost: BlogPost = {
+    id: currentGateJeepArt.id,
+    slug: currentGateJeepArt.slug,
+    title: currentGateJeepArt.title,
+    subtitle: currentGateJeepArt.metaDescription,
+    summary: currentGateJeepArt.metaDescription,
+    excerpt: currentGateJeepArt.introduction[0] || currentGateJeepArt.metaDescription,
+    date: currentGateJeepArt.publishDate,
+    publishDate: currentGateJeepArt.publishDate,
+    author: currentGateJeepArt.author,
+    tag: currentGateJeepArt.categoryLabel,
+    tags: currentGateJeepArt.tags,
+    category: currentGateJeepArt.category,
+    categoryLabel: currentGateJeepArt.categoryLabel,
+    readTime: currentGateJeepArt.readTime,
+    imageUrl: currentGateJeepArt.heroImage,
+    content: [
+      ...currentGateJeepArt.introduction,
+      ...currentGateJeepArt.gates.map(g => `${g.title}: ${g.description}`),
+      currentGateJeepArt.conclusion,
+    ],
+    keyTakeaways: [
+      lang === 'en'
+        ? '🚐 Per Jeep (incl. driver, tickets & fuel): Tosari Rp950k | Sukapura Rp1M | Gubugklakah Rp1.4M'
+        : lang === 'zh'
+        ? '🚐 每辆吉普（含司机门票油费）：Tosari Rp950k | Sukapura Rp100万 | Gubugklakah Rp140万'
+        : '🚐 Per Jeep (include driver, tiket & BBM): Tosari Rp950rb | Sukapura Rp1jt | Gubugklakah Rp1,4jt',
+      lang === 'en'
+        ? '🛣️ Includes animated route map to Cemoro Lawang, Wonokitri & Gubugklakah'
+        : lang === 'zh'
+        ? '🛣️ 含三大入口（Cemoro Lawang / Wonokitri / Gubugklakah）动态路线图'
+        : '🛣️ Dilengkapi peta animasi 3 pintu masuk: Sukapura, Tosari & Gubugklakah',
+    ],
+  };
+
+  return [jeepPost, gearPost, seasonPost, horsePost, trainPost, gateJeepPost];
 };
 
 // Default ID export for fallback
