@@ -203,7 +203,7 @@ export const BlogDirectoryPage: React.FC<BlogDirectoryPageProps> = ({
                     {post.imageUrl && (
                       <div className="relative h-48 w-full overflow-hidden bg-slate-100">
                         <img
-                          src={idx === 0 ? imgBlog1 : idx === 1 ? imgBlog2 : idx === 2 ? imgBlog3 : post.imageUrl}
+                          src={idx === 0 ? imgBlog1 : idx === 2 ? imgBlog3 : post.imageUrl}
                           alt={post.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />

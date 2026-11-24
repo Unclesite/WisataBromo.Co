@@ -96,7 +96,7 @@ export const JournalHomeSection: React.FC<JournalHomeSectionProps> = ({
                   {article.imageUrl && (
                     <div className="relative aspect-[16/10] w-full overflow-hidden bg-slate-900">
                       <img
-                        src={idx === 0 ? imgCard1 : idx === 1 ? imgCustom : article.imageUrl}
+                        src={idx === 0 ? imgCard1 : article.imageUrl}
                         alt={article.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                         loading="lazy"

@@ -1,5 +1,6 @@
 import { SupportedLanguage } from '../../i18n/LanguageContext';
-import imgThreeGatesHero from '../../assets/images/img3jalur_wisatabromo.jpg';
+
+const HERO_IMAGE_PINTU_MASUK = '/assets/aistudio/1795528679940_d2d4114e.jpg';
 
 export interface GateRouteItem {
   id: string;
@@ -80,7 +81,7 @@ export const ARTICLE_PINTU_MASUK_HARGA_JEEP: Record<
     readTime: '5 Menit Baca',
     category: 'tips_wisata',
     categoryLabel: 'Tips & Panduan Wisata',
-    heroImage: imgThreeGatesHero,
+    heroImage: HERO_IMAGE_PINTU_MASUK,
     mapEmbedUrl: '/assets/aistudio/Rute_ke_Mt._Bromo_dari_Berbagai_Kota_5ecd85c2.html',
     mapTitle: '🛣️ Peta Animasi Rute dari Berbagai Kota ke 3 Pintu Masuk Mt. Bromo',
     mapCaption:
@@ -229,7 +230,7 @@ export const ARTICLE_PINTU_MASUK_HARGA_JEEP: Record<
     readTime: '5 Min Read',
     category: 'tips_wisata',
     categoryLabel: 'Travel Tips & Guide',
-    heroImage: imgThreeGatesHero,
+    heroImage: HERO_IMAGE_PINTU_MASUK,
     mapEmbedUrl: '/assets/aistudio/Rute_ke_Mt._Bromo_dari_Berbagai_Kota_5ecd85c2.html',
     mapTitle: '🛣️ Animated Route Map from Major Cities to the 3 Entrances of Mt. Bromo',
     mapCaption:
@@ -377,7 +378,7 @@ export const ARTICLE_PINTU_MASUK_HARGA_JEEP: Record<
     readTime: '5 分钟阅读',
     category: 'tips_wisata',
     categoryLabel: '攻略与指南',
-    heroImage: imgThreeGatesHero,
+    heroImage: HERO_IMAGE_PINTU_MASUK,
     mapEmbedUrl: '/assets/aistudio/Rute_ke_Mt._Bromo_dari_Berbagai_Kota_5ecd85c2.html',
     mapTitle: '🛣️ 爪哇各城市前往布罗莫三大入口动态路线图',
     mapCaption:

@@ -210,7 +210,17 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
           {/* Cover Hero Image */}
           <div className="relative h-72 sm:h-96 w-full overflow-hidden bg-slate-900">
             <img
-              src={isGateJeepArticle ? gateJeepArticle.heroImage : isTrainArticle ? trainArticle.heroImage : isHorseArticle ? horseArticle.heroImage : imgCustom}
+              src={
+                isGateJeepArticle
+                  ? gateJeepArticle.heroImage
+                  : isTrainArticle
+                  ? trainArticle.heroImage
+                  : isHorseArticle
+                  ? horseArticle.heroImage
+                  : isSeasonArticle || isJeepArticle
+                  ? imgCustom
+                  : gearArticle.heroImage
+              }
               alt={currentTitle}
               className="w-full h-full object-cover object-center filter brightness-90 hover:scale-103 transition-transform duration-1000"
             />
@@ -665,9 +675,9 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
                 ))}
               </div>
 
-              {/* Embedded Interactive Java Rail Route Map */}
-              <div className="rounded-3xl border-2 border-[#0996f5]/25 overflow-hidden bg-white shadow-md">
-                <div className="px-5 py-4 bg-gradient-to-r from-[#102a56] to-[#0996f5] text-white">
+              {/* Embedded Interactive Java Rail Route Map (Full Width) */}
+              <div className="-mx-6 sm:-mx-10 lg:-mx-12 rounded-none border-y-2 border-x-0 border-[#0996f5]/25 overflow-hidden bg-white shadow-md">
+                <div className="px-6 sm:px-10 lg:px-12 py-4 bg-gradient-to-r from-[#102a56] to-[#0996f5] text-white">
                   <h2 className="text-base sm:text-lg font-black tracking-tight">
                     {trainArticle.mapTitle}
                   </h2>
@@ -683,7 +693,7 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
                 </div>
 
                 {/* Map Legend & Caption */}
-                <div className="px-5 py-4 bg-slate-50 border-t border-slate-200 space-y-2.5">
+                <div className="px-6 sm:px-10 lg:px-12 py-4 bg-slate-50 border-t border-slate-200 space-y-2.5">
                   <div className="flex flex-wrap items-center gap-4 text-xs font-bold text-slate-700">
                     <span className="inline-flex items-center gap-2">
                       <span className="w-5 h-1.5 rounded-full bg-[#1e6fd9] inline-block" />

@@ -47,7 +47,7 @@ export const ARTICLE_BARANG_WAJIB_BROMO: Record<SupportedLanguage, LocalizedArti
     categoryLabel: 'Tips & Panduan Wisata',
     publishDate: '7 November 2026',
     readTime: '6 Menit Baca',
-    heroImage: 'https://images.unsplash.com/photo-1588668214407-6ea9a6d8c272?q=80&w=1600&auto=format&fit=crop',
+    heroImage: '/assets/aistudio/1795529125757_45dd83e5.jpg',
     heroImageCaption: 'Pemandangan fajar spektakuler di Penanjakan 1 Bromo dengan hembusan angin kencang pegunungan.',
     introduction: [
       'Merencanakan petualangan ke Gunung Bromo adalah salah satu keputusan liburan paling mendebarkan yang bisa Anda buat di Jawa Timur. Namun, di balik pesona matahari terbit keemasan dan hamparan lautan pasir yang magis, terdapat tantangan iklim pegunungan vulkanik yang tidak boleh diremehkan.',
@@ -141,7 +141,7 @@ export const ARTICLE_BARANG_WAJIB_BROMO: Record<SupportedLanguage, LocalizedArti
     categoryLabel: 'Travel Tips & Guide',
     publishDate: 'November 7, 2026',
     readTime: '6 Min Read',
-    heroImage: 'https://images.unsplash.com/photo-1588668214407-6ea9a6d8c272?q=80&w=1600&auto=format&fit=crop',
+    heroImage: '/assets/aistudio/1795529125757_45dd83e5.jpg',
     heroImageCaption: 'Spectacular dawn viewpoint at Penanjakan 1 Bromo with crisp high-altitude mountain winds.',
     introduction: [
       'Planning an expedition to Mount Bromo is one of the most thrilling vacation decisions you can make in East Java, Indonesia. However, behind the allure of golden sunrises and magical volcanic sand seas lies a rugged alpine climate that should never be underestimated.',
@@ -235,7 +235,7 @@ export const ARTICLE_BARANG_WAJIB_BROMO: Record<SupportedLanguage, LocalizedArti
     categoryLabel: '旅游攻略与指南',
     publishDate: '2026年11月7日',
     readTime: '阅读时间 6分钟',
-    heroImage: 'https://images.unsplash.com/photo-1588668214407-6ea9a6d8c272?q=80&w=1600&auto=format&fit=crop',
+    heroImage: '/assets/aistudio/1795529125757_45dd83e5.jpg',
     heroImageCaption: '布罗莫火山佩南贾坎1号观景台破晓初升的震撼景色，伴随着高山凛冽清爽的微风。',
     introduction: [
       '计划前往印度尼西亚东爪哇省的布罗莫火山（Mount Bromo）探险，无疑是一次令人心潮澎湃的非凡之旅。然而，在金色日出与如梦似幻的黑沙海奇观背后，高寒的火山气候绝不可忽视。',
