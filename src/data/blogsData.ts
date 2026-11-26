@@ -10,6 +10,38 @@ import {
   ARTICLE_OPEN_TRIP_BROMO_START_MALANG,
   LocalizedMalangTripArticleContent,
 } from './articles/open-trip-bromo-start-malang';
+import {
+  ARTICLE_PRIVATE_TRIP_BROMO_START_SURABAYA,
+  LocalizedSurabayaTripArticleContent,
+} from './articles/private-trip-bromo-start-surabaya';
+import {
+  ARTICLE_PRIVATE_TRIP_BROMO_START_BATU,
+  LocalizedBatuTripArticleContent,
+} from './articles/private-trip-bromo-start-batu';
+import {
+  ARTICLE_PRIVATE_TRIP_BROMO_START_SUKAPURA,
+  LocalizedSukapuraTripArticleContent,
+} from './articles/private-trip-bromo-start-sukapura';
+import {
+  ARTICLE_PRIVATE_TRIP_BROMO_START_TOSARI,
+  LocalizedTosariTripArticleContent,
+} from './articles/private-trip-bromo-start-tosari';
+import {
+  ARTICLE_PRIVATE_TRIP_BROMO_START_GUBUGKLAKAH,
+  LocalizedGubugklakahTripArticleContent,
+} from './articles/private-trip-bromo-start-gubugklakah';
+import {
+  ARTICLE_OPEN_TRIP_BROMO_START_SURABAYA,
+  LocalizedOpenTripSurabayaArticleContent,
+} from './articles/open-trip-bromo-start-surabaya';
+import {
+  ARTICLE_OPEN_TRIP_BROMO_START_KOTA_MALANG,
+  LocalizedOpenTripMalangArticleContent,
+} from './articles/open-trip-bromo-start-kota-malang';
+import {
+  ARTICLE_OPEN_TRIP_BROMO_START_KOTA_BATU,
+  LocalizedOpenTripBatuArticleContent,
+} from './articles/open-trip-bromo-start-kota-batu';
 
 export {
   ARTICLE_BARANG_WAJIB_BROMO,
@@ -19,6 +51,14 @@ export {
   ARTICLE_NAIK_KERETA_BROMO,
   ARTICLE_PINTU_MASUK_HARGA_JEEP,
   ARTICLE_OPEN_TRIP_BROMO_START_MALANG,
+  ARTICLE_PRIVATE_TRIP_BROMO_START_SURABAYA,
+  ARTICLE_PRIVATE_TRIP_BROMO_START_BATU,
+  ARTICLE_PRIVATE_TRIP_BROMO_START_SUKAPURA,
+  ARTICLE_PRIVATE_TRIP_BROMO_START_TOSARI,
+  ARTICLE_PRIVATE_TRIP_BROMO_START_GUBUGKLAKAH,
+  ARTICLE_OPEN_TRIP_BROMO_START_SURABAYA,
+  ARTICLE_OPEN_TRIP_BROMO_START_KOTA_MALANG,
+  ARTICLE_OPEN_TRIP_BROMO_START_KOTA_BATU,
 };
 export type {
   LocalizedArticleContent,
@@ -28,6 +68,14 @@ export type {
   LocalizedTrainArticleContent,
   LocalizedGateJeepArticleContent,
   LocalizedMalangTripArticleContent,
+  LocalizedSurabayaTripArticleContent,
+  LocalizedBatuTripArticleContent,
+  LocalizedSukapuraTripArticleContent,
+  LocalizedTosariTripArticleContent,
+  LocalizedGubugklakahTripArticleContent,
+  LocalizedOpenTripSurabayaArticleContent,
+  LocalizedOpenTripMalangArticleContent,
+  LocalizedOpenTripBatuArticleContent,
 };
 
 // Helper to convert LocalizedArticleContent to standard BlogPost type
@@ -40,6 +88,22 @@ export const getLocalizedBlogPosts = (lang: SupportedLanguage = 'id'): BlogPost[
   const currentGateJeepArt = ARTICLE_PINTU_MASUK_HARGA_JEEP[lang] || ARTICLE_PINTU_MASUK_HARGA_JEEP.id;
   const currentMalangTripArt =
     ARTICLE_OPEN_TRIP_BROMO_START_MALANG[lang] || ARTICLE_OPEN_TRIP_BROMO_START_MALANG.id;
+  const currentSurabayaTripArt =
+    ARTICLE_PRIVATE_TRIP_BROMO_START_SURABAYA[lang] || ARTICLE_PRIVATE_TRIP_BROMO_START_SURABAYA.id;
+  const currentBatuTripArt =
+    ARTICLE_PRIVATE_TRIP_BROMO_START_BATU[lang] || ARTICLE_PRIVATE_TRIP_BROMO_START_BATU.id;
+  const currentSukapuraTripArt =
+    ARTICLE_PRIVATE_TRIP_BROMO_START_SUKAPURA[lang] || ARTICLE_PRIVATE_TRIP_BROMO_START_SUKAPURA.id;
+  const currentTosariTripArt =
+    ARTICLE_PRIVATE_TRIP_BROMO_START_TOSARI[lang] || ARTICLE_PRIVATE_TRIP_BROMO_START_TOSARI.id;
+  const currentGubugklakahTripArt =
+    ARTICLE_PRIVATE_TRIP_BROMO_START_GUBUGKLAKAH[lang] || ARTICLE_PRIVATE_TRIP_BROMO_START_GUBUGKLAKAH.id;
+  const currentOpenTripSurabayaArt =
+    ARTICLE_OPEN_TRIP_BROMO_START_SURABAYA[lang] || ARTICLE_OPEN_TRIP_BROMO_START_SURABAYA.id;
+  const currentOpenTripMalangArt =
+    ARTICLE_OPEN_TRIP_BROMO_START_KOTA_MALANG[lang] || ARTICLE_OPEN_TRIP_BROMO_START_KOTA_MALANG.id;
+  const currentOpenTripBatuArt =
+    ARTICLE_OPEN_TRIP_BROMO_START_KOTA_BATU[lang] || ARTICLE_OPEN_TRIP_BROMO_START_KOTA_BATU.id;
 
   const jeepPost: BlogPost = {
     id: currentJeepArt.id,
@@ -275,7 +339,287 @@ export const getLocalizedBlogPosts = (lang: SupportedLanguage = 'id'): BlogPost[
     ],
   };
 
-  return [jeepPost, gearPost, seasonPost, horsePost, trainPost, gateJeepPost, malangTripPost];
+  const surabayaTripPost: BlogPost = {
+    id: currentSurabayaTripArt.id,
+    slug: currentSurabayaTripArt.slug,
+    title: currentSurabayaTripArt.title,
+    subtitle: currentSurabayaTripArt.metaDescription,
+    summary: currentSurabayaTripArt.metaDescription,
+    excerpt: currentSurabayaTripArt.introduction[0] || currentSurabayaTripArt.metaDescription,
+    date: currentSurabayaTripArt.publishDate,
+    publishDate: currentSurabayaTripArt.publishDate,
+    author: currentSurabayaTripArt.author,
+    tag: currentSurabayaTripArt.categoryLabel,
+    tags: currentSurabayaTripArt.tags,
+    category: currentSurabayaTripArt.category,
+    categoryLabel: currentSurabayaTripArt.categoryLabel,
+    readTime: currentSurabayaTripArt.readTime,
+    imageUrl: currentSurabayaTripArt.heroImage,
+    content: [
+      ...currentSurabayaTripArt.introduction,
+      ...currentSurabayaTripArt.itinerarySteps.map(s => `${s.time} ${s.title}: ${s.description}`),
+      currentSurabayaTripArt.conclusion,
+    ],
+    keyTakeaways: [
+      lang === 'en'
+        ? '💰 From Rp370k/pax (>18 pax) or Rp570k/pax (6 pax) | 📸 Photo & Video INCLUDED | 🚁 +Rp1.5M'
+        : lang === 'zh'
+        ? '💰 6人团 Rp570k/人、18人以上 Rp370k/人 | 📸 摄影跟拍已含 | 🚁 +Rp150万'
+        : '💰 Mulai Rp370rb/org (>18 pax) atau Rp570rb/org (6 pax) | 📸 Dokumentasi INCLUDE | 🚁 +Rp1,5jt',
+      lang === 'en'
+        ? '📍 VIP Greater Surabaya Pickup — Juanda Airport, Train Stations & Hotels (23:00–13:30 WIB)'
+        : lang === 'zh'
+        ? '📍 泗水大区 VIP 接送 — 朱安达机场、火车站及酒店（23:00–13:30 WIB）'
+        : '📍 Private Trip Start Surabaya Raya — Jemput Juanda, Stasiun & Hotel (23:00–13:30 WIB)',
+    ],
+  };
+
+  const batuTripPost: BlogPost = {
+    id: currentBatuTripArt.id,
+    slug: currentBatuTripArt.slug,
+    title: currentBatuTripArt.title,
+    subtitle: currentBatuTripArt.metaDescription,
+    summary: currentBatuTripArt.metaDescription,
+    excerpt: currentBatuTripArt.introduction[0] || currentBatuTripArt.metaDescription,
+    date: currentBatuTripArt.publishDate,
+    publishDate: currentBatuTripArt.publishDate,
+    author: currentBatuTripArt.author,
+    tag: currentBatuTripArt.categoryLabel,
+    tags: currentBatuTripArt.tags,
+    category: currentBatuTripArt.category,
+    categoryLabel: currentBatuTripArt.categoryLabel,
+    readTime: currentBatuTripArt.readTime,
+    imageUrl: currentBatuTripArt.heroImage,
+    content: [
+      ...currentBatuTripArt.introduction,
+      ...currentBatuTripArt.itinerarySteps.map(s => `${s.time} ${s.title}: ${s.description}`),
+      currentBatuTripArt.conclusion,
+    ],
+    keyTakeaways: [
+      lang === 'en'
+        ? '💰 Rp1.800.000 / jeep (1–6 pax, same price for 1 or 6 people) | 📸 +Rp500k | 🚁 +Rp1.5M'
+        : lang === 'zh'
+        ? '💰 Rp1.800.000 / 辆吉普（1–6人同价，1人或6人价格相同）| 📸 +Rp50万 | 🚁 +Rp150万'
+        : '💰 Rp1.800.000 / jeep (1–6 peserta, 1 atau 6 orang harga sama) | 📸 +Rp500rb | 🚁 +Rp1,5jt',
+      lang === 'en'
+        ? '📍 Private Trip Start Batu City — Door-to-door Hotel, Resort & Villa pickup (23:00–13:00 WIB)'
+        : lang === 'zh'
+        ? '📍 巴图市私人团 — 酒店/度假村/别墅上门接送（23:00–13:00 WIB）'
+        : '📍 Private Trip Start Kota Batu — Jemput Hotel, Resort & Villa (23:00–13:00 WIB)',
+    ],
+  };
+
+  const sukapuraTripPost: BlogPost = {
+    id: currentSukapuraTripArt.id,
+    slug: currentSukapuraTripArt.slug,
+    title: currentSukapuraTripArt.title,
+    subtitle: currentSukapuraTripArt.metaDescription,
+    summary: currentSukapuraTripArt.metaDescription,
+    excerpt: currentSukapuraTripArt.introduction[0] || currentSukapuraTripArt.metaDescription,
+    date: currentSukapuraTripArt.publishDate,
+    publishDate: currentSukapuraTripArt.publishDate,
+    author: currentSukapuraTripArt.author,
+    tag: currentSukapuraTripArt.categoryLabel,
+    tags: currentSukapuraTripArt.tags,
+    category: currentSukapuraTripArt.category,
+    categoryLabel: currentSukapuraTripArt.categoryLabel,
+    readTime: currentSukapuraTripArt.readTime,
+    imageUrl: currentSukapuraTripArt.heroImage,
+    content: [
+      ...currentSukapuraTripArt.introduction,
+      ...currentSukapuraTripArt.itinerarySteps.map(s => `${s.time} ${s.title}: ${s.description}`),
+      currentSukapuraTripArt.conclusion,
+    ],
+    keyTakeaways: [
+      lang === 'en'
+        ? '💰 Rp1.000.000 / jeep (1–6 pax, same price for 1 or 6 people) | 📸 +Rp500k | 🚁 +Rp1.5M'
+        : lang === 'zh'
+        ? '💰 Rp1.000.000 / 辆吉普（1–6人同价，1人或6人价格相同）| 📸 +Rp50万 | 🚁 +Rp150万'
+        : '💰 Rp1.000.000 / jeep (1–6 peserta, 1 atau 6 orang harga sama) | 📸 +Rp500rb | 🚁 +Rp1,5jt',
+      lang === 'en'
+        ? '📍 Basecamp Sukapura Probolinggo & Cemoro Lawang Hotels (Sunrise 03:00 / Panorama 11:00)'
+        : lang === 'zh'
+        ? '📍 庞越 Sukapura 吉普大本营及周边酒店（日出 03:00 / 全景 11:00）'
+        : '📍 Basecamp Sukapura Probolinggo & Hotel Cemoro Lawang (Sunrise 03:00 / Panorama 11:00)',
+    ],
+  };
+
+  const tosariTripPost: BlogPost = {
+    id: currentTosariTripArt.id,
+    slug: currentTosariTripArt.slug,
+    title: currentTosariTripArt.title,
+    subtitle: currentTosariTripArt.metaDescription,
+    summary: currentTosariTripArt.metaDescription,
+    excerpt: currentTosariTripArt.introduction[0] || currentTosariTripArt.metaDescription,
+    date: currentTosariTripArt.publishDate,
+    publishDate: currentTosariTripArt.publishDate,
+    author: currentTosariTripArt.author,
+    tag: currentTosariTripArt.categoryLabel,
+    tags: currentTosariTripArt.tags,
+    category: currentTosariTripArt.category,
+    categoryLabel: currentTosariTripArt.categoryLabel,
+    readTime: currentTosariTripArt.readTime,
+    imageUrl: currentTosariTripArt.heroImage,
+    content: [
+      ...currentTosariTripArt.introduction,
+      ...currentTosariTripArt.itinerarySteps.map(s => `${s.time} ${s.title}: ${s.description}`),
+      currentTosariTripArt.conclusion,
+    ],
+    keyTakeaways: [
+      lang === 'en'
+        ? '💰 Rp950.000 / jeep (1–6 pax, same price for 1 or 6 people) | 📸 +Rp500k | 🚁 +Rp1.5M'
+        : lang === 'zh'
+        ? '💰 Rp950.000 / 辆吉普（1–6人同价，1人或6人价格相同）| 📸 +Rp50万 | 🚁 +Rp150万'
+        : '💰 Rp950.000 / jeep (1–6 peserta, 1 atau 6 orang harga sama) | 📸 +Rp500rb | 🚁 +Rp1,5jt',
+      lang === 'en'
+        ? '📍 Basecamp Tosari Pasuruan & Wonokitri Hotels — Shortest drive to Sunrise Point'
+        : lang === 'zh'
+        ? '📍 岩望 Tosari 吉普大本营及 Wonokitri 酒店 — 距日出点最近入口'
+        : '📍 Basecamp Tosari Pasuruan & Hotel Wonokitri — Jarak terdekat ke Sunrise Point',
+    ],
+  };
+
+  const gubugklakahTripPost: BlogPost = {
+    id: currentGubugklakahTripArt.id,
+    slug: currentGubugklakahTripArt.slug,
+    title: currentGubugklakahTripArt.title,
+    subtitle: currentGubugklakahTripArt.metaDescription,
+    summary: currentGubugklakahTripArt.metaDescription,
+    excerpt: currentGubugklakahTripArt.introduction[0] || currentGubugklakahTripArt.metaDescription,
+    date: currentGubugklakahTripArt.publishDate,
+    publishDate: currentGubugklakahTripArt.publishDate,
+    author: currentGubugklakahTripArt.author,
+    tag: currentGubugklakahTripArt.categoryLabel,
+    tags: currentGubugklakahTripArt.tags,
+    category: currentGubugklakahTripArt.category,
+    categoryLabel: currentGubugklakahTripArt.categoryLabel,
+    readTime: currentGubugklakahTripArt.readTime,
+    imageUrl: currentGubugklakahTripArt.heroImage,
+    content: [
+      ...currentGubugklakahTripArt.introduction,
+      ...currentGubugklakahTripArt.itinerarySteps.map(s => `${s.time} ${s.title}: ${s.description}`),
+      currentGubugklakahTripArt.conclusion,
+    ],
+    keyTakeaways: [
+      lang === 'en'
+        ? '💰 Rp1.400.000 / jeep (1–6 pax, same price for 1 or 6 people) | 📸 +Rp500k | 🚁 +Rp1.5M'
+        : lang === 'zh'
+        ? '💰 Rp1.400.000 / 辆吉普（1–6人同价，1人或6人价格相同）| 📸 +Rp50万 | 🚁 +Rp150万'
+        : '💰 Rp1.400.000 / jeep (1–6 peserta, 1 atau 6 orang harga sama) | 📸 +Rp500rb | 🚁 +Rp1,5jt',
+      lang === 'en'
+        ? '📍 Basecamp Gubugklakah No. 147, Malang Regency — Scenic Ngadas & Jemplang route'
+        : lang === 'zh'
+        ? '📍 玛琅县 Gubugklakah 147号大本营 — Ngadas 与 Jemplang 绝美南线'
+        : '📍 Basecamp Gubugklakah No. 147 Kab. Malang — Jalur eksotis Ngadas & Jemplang',
+    ],
+  };
+
+  const openTripSurabayaPost: BlogPost = {
+    id: currentOpenTripSurabayaArt.id,
+    slug: currentOpenTripSurabayaArt.slug,
+    title: currentOpenTripSurabayaArt.title,
+    subtitle: currentOpenTripSurabayaArt.metaDescription,
+    summary: currentOpenTripSurabayaArt.metaDescription,
+    excerpt: currentOpenTripSurabayaArt.introduction[0] || currentOpenTripSurabayaArt.metaDescription,
+    date: currentOpenTripSurabayaArt.publishDate,
+    publishDate: currentOpenTripSurabayaArt.publishDate,
+    author: currentOpenTripSurabayaArt.author,
+    tag: currentOpenTripSurabayaArt.categoryLabel,
+    tags: currentOpenTripSurabayaArt.tags,
+    category: currentOpenTripSurabayaArt.category,
+    categoryLabel: currentOpenTripSurabayaArt.categoryLabel,
+    readTime: currentOpenTripSurabayaArt.readTime,
+    imageUrl: currentOpenTripSurabayaArt.heroImage,
+    content: [
+      ...currentOpenTripSurabayaArt.introduction,
+      ...currentOpenTripSurabayaArt.itinerarySteps.map(s => `${s.time} ${s.title}: ${s.description}`),
+      currentOpenTripSurabayaArt.conclusion,
+    ],
+    keyTakeaways: [
+      lang === 'en'
+        ? '💰 Weekend via Tosari Rp400k/pax (1 pax guaranteed!) | Daily via Malang Rp750k/pax | 📸 Photo INCLUDED'
+        : lang === 'zh'
+        ? '💰 周六经 Tosari Rp400k/人（1人发团！）| 每日经玛琅 Rp750k/人 | 📸 摄影跟拍已含'
+        : '💰 Weekend via Tosari Rp400rb/org (1 org pasti berangkat!) | Harian via Malang Rp750rb/org | 📸 Doc INCLUDE',
+      lang === 'en'
+        ? '📍 Pasar Turi Station & Bungurasih Terminal (Weekend) or Custom Surabaya/Sidoarjo Pickup (Daily)'
+        : lang === 'zh'
+        ? '📍 Pasar Turi 火车站与 Bungurasih 总站（周末）或泗水/诗都阿佐自由接送（每日）'
+        : '📍 Stasiun Pasar Turi & Terminal Bungurasih (Weekend) atau Bebas Titik Jemput Surabaya/Sidoarjo (Harian)',
+    ],
+  };
+
+  const openTripMalangPost: BlogPost = {
+    id: currentOpenTripMalangArt.id,
+    slug: currentOpenTripMalangArt.slug,
+    title: currentOpenTripMalangArt.title,
+    subtitle: currentOpenTripMalangArt.metaDescription,
+    summary: currentOpenTripMalangArt.metaDescription,
+    excerpt: currentOpenTripMalangArt.introduction[0] || currentOpenTripMalangArt.metaDescription,
+    date: currentOpenTripMalangArt.publishDate,
+    publishDate: currentOpenTripMalangArt.publishDate,
+    author: currentOpenTripMalangArt.author,
+    tag: currentOpenTripMalangArt.categoryLabel,
+    tags: currentOpenTripMalangArt.tags,
+    category: currentOpenTripMalangArt.category,
+    categoryLabel: currentOpenTripMalangArt.categoryLabel,
+    readTime: currentOpenTripMalangArt.readTime,
+    imageUrl: currentOpenTripMalangArt.heroImage,
+    content: [
+      ...currentOpenTripMalangArt.introduction,
+      ...currentOpenTripMalangArt.itinerarySteps.map(s => `${s.time} ${s.title}: ${s.description}`),
+      currentOpenTripMalangArt.conclusion,
+    ],
+    keyTakeaways: [
+      lang === 'en'
+        ? '💰 Start Malang Rp275k/pax (Regular) or Rp325k/pax (+DSLR Photo) | 1 Pax Guaranteed Daily!'
+        : lang === 'zh'
+        ? '💰 玛琅出发 Rp275k/人（标准版）或 Rp325k/人（含单反跟拍）| 1人天天发团！'
+        : '💰 Start Malang Rp275rb/org (Reguler) atau Rp325rb/org (+Foto DSLR) | 1 Orang Pasti Berangkat!',
+      lang === 'en'
+        ? '📍 Door-to-door pickup at Malang Stations, Hotels, Airport & Homes (23:00–13:00 WIB)'
+        : lang === 'zh'
+        ? '📍 玛琅火车站、酒店、机场及市区住宅上门接送（23:00–13:00 WIB）'
+        : '📍 Jemput langsung Stasiun Malang, Hotel, Bandara & Rumah (23:00–13:00 WIB)',
+    ],
+  };
+
+  const openTripBatuPost: BlogPost = {
+    id: currentOpenTripBatuArt.id,
+    slug: currentOpenTripBatuArt.slug,
+    title: currentOpenTripBatuArt.title,
+    subtitle: currentOpenTripBatuArt.metaDescription,
+    summary: currentOpenTripBatuArt.metaDescription,
+    excerpt: currentOpenTripBatuArt.introduction[0] || currentOpenTripBatuArt.metaDescription,
+    date: currentOpenTripBatuArt.publishDate,
+    publishDate: currentOpenTripBatuArt.publishDate,
+    author: currentOpenTripBatuArt.author,
+    tag: currentOpenTripBatuArt.categoryLabel,
+    tags: currentOpenTripBatuArt.tags,
+    category: currentOpenTripBatuArt.category,
+    categoryLabel: currentOpenTripBatuArt.categoryLabel,
+    readTime: currentOpenTripBatuArt.readTime,
+    imageUrl: currentOpenTripBatuArt.heroImage,
+    content: [
+      ...currentOpenTripBatuArt.introduction,
+      ...currentOpenTripBatuArt.itinerarySteps.map(s => `${s.time} ${s.title}: ${s.description}`),
+      currentOpenTripBatuArt.conclusion,
+    ],
+    keyTakeaways: [
+      lang === 'en'
+        ? '💰 Start Batu City Rp325k/pax (Regular) or Rp375k/pax (+DSLR Photo) | 1 Pax Guaranteed Daily!'
+        : lang === 'zh'
+        ? '💰 巴图市出发 Rp325k/人（标准版）或 Rp375k/人（含单反跟拍）| 1人天天发团！'
+        : '💰 Start Kota Batu Rp325rb/org (Reguler) atau Rp375rb/org (+Foto DSLR) | 1 Orang Pasti Berangkat!',
+      lang === 'en'
+        ? '📍 Door-to-door pickup at Batu Hotels, Resorts & Villas near Jatim Park & Selecta (23:00–13:00 WIB)'
+        : lang === 'zh'
+        ? '📍 巴图市 Jatim Park、Selecta 周边酒店、度假村与别墅上门接送（23:00–13:00 WIB）'
+        : '📍 Jemput langsung Hotel, Resort & Villa Kota Wisata Batu area Jatim Park & Selecta (23:00–13:00 WIB)',
+    ],
+  };
+
+  return [jeepPost, gearPost, seasonPost, horsePost, trainPost, gateJeepPost, malangTripPost, surabayaTripPost, batuTripPost, sukapuraTripPost, tosariTripPost, gubugklakahTripPost, openTripSurabayaPost, openTripMalangPost, openTripBatuPost];
 };
 
 // Default ID export for fallback

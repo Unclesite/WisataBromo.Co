@@ -97,15 +97,17 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
 
   useEffect(() => {
     if (isOpen && initialPackageId) {
-      setSelectedPkgId(initialPackageId);
-      const chosen = safePackages.find((p) => p.id === initialPackageId);
-      const isSby = initialPackageId === 'open-trip-surabaya';
+      const isOpenTripBatu = initialPackageId === 'open-trip-batu';
+      const resolvedPkgId = isOpenTripBatu ? 'open-trip-malang' : initialPackageId;
+      setSelectedPkgId(resolvedPkgId);
+      const chosen = safePackages.find((p) => p.id === resolvedPkgId);
+      const isSby = resolvedPkgId === 'open-trip-surabaya';
       const sbySchedule = getOpenTripSurabayaSchedule(form.travelDate, form.isHighSeason);
       const isPrivate = chosen?.category === 'private_trip' || chosen?.category === 'long_jeep';
       setForm((prev) => ({
         ...prev,
-        packageId: initialPackageId,
-        startCity: chosen ? chosen.startCity : prev.startCity,
+        packageId: resolvedPkgId,
+        startCity: isOpenTripBatu ? 'batu' : chosen ? chosen.startCity : prev.startCity,
         openTripSurabayaRoute: sbySchedule.route,
         paxCount: isSby && !sbySchedule.isSaturday ? Math.max(2, prev.paxCount) : prev.paxCount,
         includeDrone: isPrivate ? prev.includeDrone : false,

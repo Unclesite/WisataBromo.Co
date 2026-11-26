@@ -13,6 +13,14 @@ import { ARTICLE_BIAYA_KUDA_BROMO } from '../data/articles/biaya-kuda-bromo';
 import { ARTICLE_NAIK_KERETA_BROMO } from '../data/articles/naik-kereta-ke-bromo';
 import { ARTICLE_PINTU_MASUK_HARGA_JEEP } from '../data/articles/pintu-masuk-bromo-harga-jeep';
 import { ARTICLE_OPEN_TRIP_BROMO_START_MALANG } from '../data/articles/open-trip-bromo-start-malang';
+import { ARTICLE_PRIVATE_TRIP_BROMO_START_SURABAYA } from '../data/articles/private-trip-bromo-start-surabaya';
+import { ARTICLE_PRIVATE_TRIP_BROMO_START_BATU } from '../data/articles/private-trip-bromo-start-batu';
+import { ARTICLE_PRIVATE_TRIP_BROMO_START_SUKAPURA } from '../data/articles/private-trip-bromo-start-sukapura';
+import { ARTICLE_PRIVATE_TRIP_BROMO_START_TOSARI } from '../data/articles/private-trip-bromo-start-tosari';
+import { ARTICLE_PRIVATE_TRIP_BROMO_START_GUBUGKLAKAH } from '../data/articles/private-trip-bromo-start-gubugklakah';
+import { ARTICLE_OPEN_TRIP_BROMO_START_SURABAYA } from '../data/articles/open-trip-bromo-start-surabaya';
+import { ARTICLE_OPEN_TRIP_BROMO_START_KOTA_MALANG } from '../data/articles/open-trip-bromo-start-kota-malang';
+import { ARTICLE_OPEN_TRIP_BROMO_START_KOTA_BATU } from '../data/articles/open-trip-bromo-start-kota-batu';
 import { HorseCuteVector } from './HorseArticleVectors';
 import imgCustom from '../assets/images/633b7b65-1f37-4dbd-9714-6a4197e04480.png';
 import imgJeepGroup from '../assets/images/volcanic_jeep_expedition_group_portrait.png';
@@ -37,16 +45,115 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   // Determine active article type
+  const isOpenTripBatuArticle =
+    articleId === 'open-trip-bromo-start-kota-batu-harga-2026' ||
+    articleId?.includes('open-trip-bromo-start-kota-batu') ||
+    articleId?.includes('open-trip-bromo-start-batu') ||
+    articleId?.includes('open-trip-start-kota-batu') ||
+    articleSlug?.includes('open-trip-bromo-start-kota-batu') ||
+    articleSlug?.includes('open-trip-bromo-start-batu') ||
+    articleSlug?.includes('open-trip-start-kota-batu');
+
+  const isOpenTripMalangArticle =
+    !isOpenTripBatuArticle &&
+    (articleId === 'open-trip-bromo-start-kota-malang-harga-2026' ||
+      articleId?.includes('open-trip-bromo-start-kota-malang') ||
+      articleId?.includes('open-trip-start-kota-malang') ||
+      articleSlug?.includes('open-trip-bromo-start-kota-malang') ||
+      articleSlug?.includes('open-trip-start-kota-malang'));
+
+  const isOpenTripSurabayaArticle =
+    !isOpenTripBatuArticle &&
+    !isOpenTripMalangArticle &&
+    (articleId === 'open-trip-bromo-start-surabaya-harga-2026' ||
+      articleId?.includes('open-trip-bromo-start-surabaya') ||
+      articleId?.includes('open-trip-bromo-start-kota-surabaya') ||
+      articleId?.includes('open-trip-start-kota-surabaya') ||
+      articleSlug?.includes('open-trip-bromo-start-surabaya') ||
+      articleSlug?.includes('open-trip-bromo-start-kota-surabaya') ||
+      articleSlug?.includes('open-trip-start-kota-surabaya'));
+
+  const isGubugklakahTripArticle =
+    !isOpenTripBatuArticle &&
+    !isOpenTripMalangArticle &&
+    !isOpenTripSurabayaArticle &&
+    (articleId === 'private-trip-bromo-start-gubugklakah-harga-2026' ||
+      articleId?.includes('start-gubugklakah') ||
+      articleSlug?.includes('start-gubugklakah') ||
+      articleSlug?.includes('gubugklakah-kab-malang'));
+
+  const isTosariTripArticle =
+    !isOpenTripBatuArticle &&
+    !isOpenTripMalangArticle &&
+    !isOpenTripSurabayaArticle &&
+    !isGubugklakahTripArticle &&
+    (articleId === 'private-trip-bromo-start-tosari-harga-2026' ||
+      articleId?.includes('start-tosari') ||
+      articleSlug?.includes('start-tosari') ||
+      articleSlug?.includes('tosari-pasuruan'));
+
+  const isSukapuraTripArticle =
+    !isOpenTripBatuArticle &&
+    !isOpenTripMalangArticle &&
+    !isOpenTripSurabayaArticle &&
+    !isGubugklakahTripArticle &&
+    !isTosariTripArticle &&
+    (articleId === 'private-trip-bromo-start-sukapura-harga-2026' ||
+      articleId?.includes('start-sukapura') ||
+      articleSlug?.includes('start-sukapura') ||
+      articleSlug?.includes('sukapura-probolinggo'));
+
+  const isBatuTripArticle =
+    !isOpenTripBatuArticle &&
+    !isOpenTripMalangArticle &&
+    !isOpenTripSurabayaArticle &&
+    !isGubugklakahTripArticle &&
+    !isTosariTripArticle &&
+    !isSukapuraTripArticle &&
+    (articleId === 'private-trip-bromo-start-batu-harga-2026' ||
+      articleId?.includes('start-batu') ||
+      articleId?.includes('start-kota-batu') ||
+      articleSlug?.includes('start-batu') ||
+      articleSlug?.includes('start-kota-batu'));
+
+  const isSurabayaTripArticle =
+    !isOpenTripBatuArticle &&
+    !isOpenTripMalangArticle &&
+    !isOpenTripSurabayaArticle &&
+    !isGubugklakahTripArticle &&
+    !isTosariTripArticle &&
+    !isSukapuraTripArticle &&
+    !isBatuTripArticle &&
+    (articleId === 'private-trip-bromo-start-surabaya-harga-2026' ||
+      articleId?.includes('start-surabaya') ||
+      articleSlug?.includes('start-surabaya'));
+
   const isMalangTripArticle =
-    articleId === 'open-trip-bromo-start-malang-harga-2026' ||
-    articleId?.includes('open-trip-bromo-start-malang') ||
-    articleId?.includes('private-trip-bromo-start') ||
-    articleId?.includes('start-kota-malang') ||
-    articleSlug?.includes('open-trip-bromo-start-malang') ||
-    articleSlug?.includes('private-trip-bromo-start') ||
-    articleSlug?.includes('start-kota-malang');
+    !isOpenTripBatuArticle &&
+    !isOpenTripMalangArticle &&
+    !isOpenTripSurabayaArticle &&
+    !isGubugklakahTripArticle &&
+    !isTosariTripArticle &&
+    !isSukapuraTripArticle &&
+    !isBatuTripArticle &&
+    !isSurabayaTripArticle &&
+    (articleId === 'open-trip-bromo-start-malang-harga-2026' ||
+      articleId?.includes('open-trip-bromo-start-malang') ||
+      articleId?.includes('private-trip-bromo-start') ||
+      articleId?.includes('start-kota-malang') ||
+      articleSlug?.includes('open-trip-bromo-start-malang') ||
+      articleSlug?.includes('private-trip-bromo-start') ||
+      articleSlug?.includes('start-kota-malang'));
 
   const isGateJeepArticle =
+    !isOpenTripBatuArticle &&
+    !isOpenTripMalangArticle &&
+    !isOpenTripSurabayaArticle &&
+    !isGubugklakahTripArticle &&
+    !isTosariTripArticle &&
+    !isSukapuraTripArticle &&
+    !isBatuTripArticle &&
+    !isSurabayaTripArticle &&
     !isMalangTripArticle &&
     (articleId === 'pintu-masuk-bromo-harga-jeep' ||
       articleId?.includes('pintu-masuk') ||
@@ -54,6 +161,14 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
       articleSlug?.includes('harga-sewa-jeep'));
 
   const isTrainArticle =
+    !isOpenTripBatuArticle &&
+    !isOpenTripMalangArticle &&
+    !isOpenTripSurabayaArticle &&
+    !isGubugklakahTripArticle &&
+    !isTosariTripArticle &&
+    !isSukapuraTripArticle &&
+    !isBatuTripArticle &&
+    !isSurabayaTripArticle &&
     !isMalangTripArticle &&
     !isGateJeepArticle &&
     (articleId === 'naik-kereta-ke-bromo' ||
@@ -62,6 +177,14 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
       articleSlug?.includes('train'));
 
   const isHorseArticle =
+    !isOpenTripBatuArticle &&
+    !isOpenTripMalangArticle &&
+    !isOpenTripSurabayaArticle &&
+    !isGubugklakahTripArticle &&
+    !isTosariTripArticle &&
+    !isSukapuraTripArticle &&
+    !isBatuTripArticle &&
+    !isSurabayaTripArticle &&
     !isMalangTripArticle &&
     !isGateJeepArticle &&
     !isTrainArticle &&
@@ -71,6 +194,14 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
       articleSlug?.includes('horse'));
 
   const isSeasonArticle =
+    !isOpenTripBatuArticle &&
+    !isOpenTripMalangArticle &&
+    !isOpenTripSurabayaArticle &&
+    !isGubugklakahTripArticle &&
+    !isTosariTripArticle &&
+    !isSukapuraTripArticle &&
+    !isBatuTripArticle &&
+    !isSurabayaTripArticle &&
     !isMalangTripArticle &&
     !isGateJeepArticle &&
     !isTrainArticle &&
@@ -81,6 +212,14 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
       articleId === 'waktu-terbaik-ke-bromo-menyelami-pesona-4-musim');
 
   const isJeepArticle =
+    !isOpenTripBatuArticle &&
+    !isOpenTripMalangArticle &&
+    !isOpenTripSurabayaArticle &&
+    !isGubugklakahTripArticle &&
+    !isTosariTripArticle &&
+    !isSukapuraTripArticle &&
+    !isBatuTripArticle &&
+    !isSurabayaTripArticle &&
     !isMalangTripArticle &&
     !isGateJeepArticle &&
     !isTrainArticle &&
@@ -90,8 +229,40 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
       articleSlug?.includes('kapasitas') ||
       articleSlug?.includes('jeep'));
 
+  const openTripBatuArticle =
+    ARTICLE_OPEN_TRIP_BROMO_START_KOTA_BATU[language] || ARTICLE_OPEN_TRIP_BROMO_START_KOTA_BATU.id;
+  const openTripMalangArticle =
+    ARTICLE_OPEN_TRIP_BROMO_START_KOTA_MALANG[language] || ARTICLE_OPEN_TRIP_BROMO_START_KOTA_MALANG.id;
+  const openTripSurabayaArticle =
+    ARTICLE_OPEN_TRIP_BROMO_START_SURABAYA[language] || ARTICLE_OPEN_TRIP_BROMO_START_SURABAYA.id;
+  const gubugklakahTripArticle =
+    ARTICLE_PRIVATE_TRIP_BROMO_START_GUBUGKLAKAH[language] || ARTICLE_PRIVATE_TRIP_BROMO_START_GUBUGKLAKAH.id;
+  const tosariTripArticle =
+    ARTICLE_PRIVATE_TRIP_BROMO_START_TOSARI[language] || ARTICLE_PRIVATE_TRIP_BROMO_START_TOSARI.id;
+  const sukapuraTripArticle =
+    ARTICLE_PRIVATE_TRIP_BROMO_START_SUKAPURA[language] || ARTICLE_PRIVATE_TRIP_BROMO_START_SUKAPURA.id;
+  const batuTripArticle =
+    ARTICLE_PRIVATE_TRIP_BROMO_START_BATU[language] || ARTICLE_PRIVATE_TRIP_BROMO_START_BATU.id;
+  const surabayaTripArticle =
+    ARTICLE_PRIVATE_TRIP_BROMO_START_SURABAYA[language] || ARTICLE_PRIVATE_TRIP_BROMO_START_SURABAYA.id;
+  const activeTieredTripArticle = isOpenTripBatuArticle
+    ? openTripBatuArticle
+    : isOpenTripMalangArticle
+    ? openTripMalangArticle
+    : isOpenTripSurabayaArticle
+    ? openTripSurabayaArticle
+    : surabayaTripArticle;
   const malangTripArticle =
     ARTICLE_OPEN_TRIP_BROMO_START_MALANG[language] || ARTICLE_OPEN_TRIP_BROMO_START_MALANG.id;
+  const activeFlatJeepArticle = isGubugklakahTripArticle
+    ? gubugklakahTripArticle
+    : isTosariTripArticle
+    ? tosariTripArticle
+    : isSukapuraTripArticle
+    ? sukapuraTripArticle
+    : isBatuTripArticle
+    ? batuTripArticle
+    : malangTripArticle;
   const gateJeepArticle =
     ARTICLE_PINTU_MASUK_HARGA_JEEP[language] || ARTICLE_PINTU_MASUK_HARGA_JEEP.id;
   const trainArticle = ARTICLE_NAIK_KERETA_BROMO[language] || ARTICLE_NAIK_KERETA_BROMO.id;
@@ -100,7 +271,23 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
   const jeepArticle = ARTICLE_KAPASITAS_JEEP_BROMO[language] || ARTICLE_KAPASITAS_JEEP_BROMO.id;
   const gearArticle = ARTICLE_BARANG_WAJIB_BROMO[language] || ARTICLE_BARANG_WAJIB_BROMO.id;
 
-  const currentTitle = isMalangTripArticle
+  const currentTitle = isOpenTripBatuArticle
+    ? openTripBatuArticle.title
+    : isOpenTripMalangArticle
+    ? openTripMalangArticle.title
+    : isOpenTripSurabayaArticle
+    ? openTripSurabayaArticle.title
+    : isGubugklakahTripArticle
+    ? gubugklakahTripArticle.title
+    : isTosariTripArticle
+    ? tosariTripArticle.title
+    : isSukapuraTripArticle
+    ? sukapuraTripArticle.title
+    : isBatuTripArticle
+    ? batuTripArticle.title
+    : isSurabayaTripArticle
+    ? surabayaTripArticle.title
+    : isMalangTripArticle
     ? malangTripArticle.title
     : isGateJeepArticle
     ? gateJeepArticle.title
@@ -113,7 +300,23 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
     : isJeepArticle
     ? jeepArticle.title
     : gearArticle.title;
-  const currentCategory = isMalangTripArticle
+  const currentCategory = isOpenTripBatuArticle
+    ? openTripBatuArticle.categoryLabel
+    : isOpenTripMalangArticle
+    ? openTripMalangArticle.categoryLabel
+    : isOpenTripSurabayaArticle
+    ? openTripSurabayaArticle.categoryLabel
+    : isGubugklakahTripArticle
+    ? gubugklakahTripArticle.categoryLabel
+    : isTosariTripArticle
+    ? tosariTripArticle.categoryLabel
+    : isSukapuraTripArticle
+    ? sukapuraTripArticle.categoryLabel
+    : isBatuTripArticle
+    ? batuTripArticle.categoryLabel
+    : isSurabayaTripArticle
+    ? surabayaTripArticle.categoryLabel
+    : isMalangTripArticle
     ? malangTripArticle.categoryLabel
     : isGateJeepArticle
     ? gateJeepArticle.categoryLabel
@@ -232,7 +435,23 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
           <div className="relative h-72 sm:h-96 w-full overflow-hidden bg-slate-900">
             <img
               src={
-                isMalangTripArticle
+                isOpenTripBatuArticle
+                  ? openTripBatuArticle.heroImage
+                  : isOpenTripMalangArticle
+                  ? openTripMalangArticle.heroImage
+                  : isOpenTripSurabayaArticle
+                  ? openTripSurabayaArticle.heroImage
+                  : isGubugklakahTripArticle
+                  ? gubugklakahTripArticle.heroImage
+                  : isTosariTripArticle
+                  ? tosariTripArticle.heroImage
+                  : isSukapuraTripArticle
+                  ? sukapuraTripArticle.heroImage
+                  : isBatuTripArticle
+                  ? batuTripArticle.heroImage
+                  : isSurabayaTripArticle
+                  ? surabayaTripArticle.heroImage
+                  : isMalangTripArticle
                   ? malangTripArticle.heroImage
                   : isGateJeepArticle
                   ? gateJeepArticle.heroImage
@@ -253,15 +472,15 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
               <div className="flex flex-wrap items-center gap-3 text-xs text-slate-200 mb-2 font-medium">
                 <span className="flex items-center gap-1 bg-black/40 backdrop-blur-xs px-2.5 py-1 rounded-md">
                   <Calendar className="w-3.5 h-3.5 text-[#FFF700]" />
-                  {isMalangTripArticle ? malangTripArticle.publishDate : isGateJeepArticle ? gateJeepArticle.publishDate : isTrainArticle ? trainArticle.publishDate : isHorseArticle ? horseArticle.publishDate : isSeasonArticle ? seasonArticle.publishDate : isJeepArticle ? jeepArticle.publishDate : gearArticle.publishDate}
+                  {isOpenTripBatuArticle ? openTripBatuArticle.publishDate : isOpenTripMalangArticle ? openTripMalangArticle.publishDate : isOpenTripSurabayaArticle ? openTripSurabayaArticle.publishDate : isGubugklakahTripArticle ? gubugklakahTripArticle.publishDate : isTosariTripArticle ? tosariTripArticle.publishDate : isSukapuraTripArticle ? sukapuraTripArticle.publishDate : isBatuTripArticle ? batuTripArticle.publishDate : isSurabayaTripArticle ? surabayaTripArticle.publishDate : isMalangTripArticle ? malangTripArticle.publishDate : isGateJeepArticle ? gateJeepArticle.publishDate : isTrainArticle ? trainArticle.publishDate : isHorseArticle ? horseArticle.publishDate : isSeasonArticle ? seasonArticle.publishDate : isJeepArticle ? jeepArticle.publishDate : gearArticle.publishDate}
                 </span>
                 <span className="flex items-center gap-1 bg-black/40 backdrop-blur-xs px-2.5 py-1 rounded-md">
                   <Clock className="w-3.5 h-3.5 text-[#FFF700]" />
-                  {isMalangTripArticle ? malangTripArticle.readTime : isGateJeepArticle ? gateJeepArticle.readTime : isTrainArticle ? trainArticle.readTime : isHorseArticle ? horseArticle.readTime : isSeasonArticle ? seasonArticle.readTime : isJeepArticle ? jeepArticle.readTime : gearArticle.readTime}
+                  {isOpenTripBatuArticle ? openTripBatuArticle.readTime : isOpenTripMalangArticle ? openTripMalangArticle.readTime : isOpenTripSurabayaArticle ? openTripSurabayaArticle.readTime : isGubugklakahTripArticle ? gubugklakahTripArticle.readTime : isTosariTripArticle ? tosariTripArticle.readTime : isSukapuraTripArticle ? sukapuraTripArticle.readTime : isBatuTripArticle ? batuTripArticle.readTime : isSurabayaTripArticle ? surabayaTripArticle.readTime : isMalangTripArticle ? malangTripArticle.readTime : isGateJeepArticle ? gateJeepArticle.readTime : isTrainArticle ? trainArticle.readTime : isHorseArticle ? horseArticle.readTime : isSeasonArticle ? seasonArticle.readTime : isJeepArticle ? jeepArticle.readTime : gearArticle.readTime}
                 </span>
                 <span className="flex items-center gap-1 bg-black/40 backdrop-blur-xs px-2.5 py-1 rounded-md">
                   <User className="w-3.5 h-3.5 text-[#FFF700]" />
-                  {isMalangTripArticle ? malangTripArticle.author : isGateJeepArticle ? gateJeepArticle.author : isTrainArticle ? trainArticle.author : isHorseArticle ? horseArticle.author : isSeasonArticle ? seasonArticle.author : isJeepArticle ? jeepArticle.author : gearArticle.author}
+                  {isOpenTripBatuArticle ? openTripBatuArticle.author : isOpenTripMalangArticle ? openTripMalangArticle.author : isOpenTripSurabayaArticle ? openTripSurabayaArticle.author : isGubugklakahTripArticle ? gubugklakahTripArticle.author : isTosariTripArticle ? tosariTripArticle.author : isSukapuraTripArticle ? sukapuraTripArticle.author : isBatuTripArticle ? batuTripArticle.author : isSurabayaTripArticle ? surabayaTripArticle.author : isMalangTripArticle ? malangTripArticle.author : isGateJeepArticle ? gateJeepArticle.author : isTrainArticle ? trainArticle.author : isHorseArticle ? horseArticle.author : isSeasonArticle ? seasonArticle.author : isJeepArticle ? jeepArticle.author : gearArticle.author}
                 </span>
               </div>
             </div>
@@ -274,14 +493,14 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
             </h1>
 
             <p className="text-base sm:text-lg text-slate-600 leading-relaxed font-normal bg-[#EAF6FF]/60 p-4 sm:p-5 rounded-2xl border-l-4 border-[#0996f5]">
-              {isMalangTripArticle ? malangTripArticle.metaDescription : isGateJeepArticle ? gateJeepArticle.metaDescription : isTrainArticle ? trainArticle.metaDescription : isHorseArticle ? horseArticle.metaDescription : isSeasonArticle ? seasonArticle.metaDescription : isJeepArticle ? jeepArticle.metaDescription : gearArticle.metaDescription}
+              {isOpenTripBatuArticle ? openTripBatuArticle.metaDescription : isOpenTripMalangArticle ? openTripMalangArticle.metaDescription : isOpenTripSurabayaArticle ? openTripSurabayaArticle.metaDescription : isGubugklakahTripArticle ? gubugklakahTripArticle.metaDescription : isTosariTripArticle ? tosariTripArticle.metaDescription : isSukapuraTripArticle ? sukapuraTripArticle.metaDescription : isBatuTripArticle ? batuTripArticle.metaDescription : isSurabayaTripArticle ? surabayaTripArticle.metaDescription : isMalangTripArticle ? malangTripArticle.metaDescription : isGateJeepArticle ? gateJeepArticle.metaDescription : isTrainArticle ? trainArticle.metaDescription : isHorseArticle ? horseArticle.metaDescription : isSeasonArticle ? seasonArticle.metaDescription : isJeepArticle ? jeepArticle.metaDescription : gearArticle.metaDescription}
             </p>
 
             {/* Author & Share row */}
             <div className="flex flex-wrap items-center justify-between gap-4 pt-6 mt-6 border-t border-slate-100 text-xs">
               <div className="flex items-center gap-2 text-slate-600 font-medium">
                 <User className="w-4 h-4 text-[#0996f5]" />
-                <span>{language === 'en' ? 'By' : language === 'zh' ? '撰写:' : 'Penulis:'} <strong>{isMalangTripArticle ? malangTripArticle.author : isGateJeepArticle ? gateJeepArticle.author : isTrainArticle ? trainArticle.author : isHorseArticle ? horseArticle.author : isSeasonArticle ? seasonArticle.author : isJeepArticle ? jeepArticle.author : gearArticle.author}</strong></span>
+                <span>{language === 'en' ? 'By' : language === 'zh' ? '撰写:' : 'Penulis:'} <strong>{isOpenTripBatuArticle ? openTripBatuArticle.author : isOpenTripMalangArticle ? openTripMalangArticle.author : isOpenTripSurabayaArticle ? openTripSurabayaArticle.author : isGubugklakahTripArticle ? gubugklakahTripArticle.author : isTosariTripArticle ? tosariTripArticle.author : isSukapuraTripArticle ? sukapuraTripArticle.author : isBatuTripArticle ? batuTripArticle.author : isSurabayaTripArticle ? surabayaTripArticle.author : isMalangTripArticle ? malangTripArticle.author : isGateJeepArticle ? gateJeepArticle.author : isTrainArticle ? trainArticle.author : isHorseArticle ? horseArticle.author : isSeasonArticle ? seasonArticle.author : isJeepArticle ? jeepArticle.author : gearArticle.author}</strong></span>
               </div>
 
               {/* Share Actions Suite */}
@@ -346,22 +565,22 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
           </div>
 
           {/* ARTICLE BODY CONTENT */}
-          {isMalangTripArticle ? (
-            /* PRIVATE TRIP BROMO START KOTA MALANG HARGA 2026 ARTICLE BODY */
+          {isSurabayaTripArticle || isOpenTripSurabayaArticle || isOpenTripMalangArticle || isOpenTripBatuArticle ? (
+            /* PRIVATE TRIP SURABAYA / OPEN TRIP SURABAYA / OPEN TRIP MALANG / OPEN TRIP BATU HARGA 2026 ARTICLE BODY */
             <div className="p-6 sm:p-10 lg:p-12 space-y-10">
               {/* Intro Paragraphs */}
               <div className="space-y-4 text-slate-700 text-base sm:text-lg leading-relaxed">
-                {malangTripArticle.introduction.map((para, idx) => (
+                {activeTieredTripArticle.introduction.map((para, idx) => (
                   <p key={idx}>{para}</p>
                 ))}
               </div>
 
-              {/* Embedded Animated Blue Bromo Jeep (Full Width, No Card/Border) */}
+              {/* Embedded Animated Convoy Bromo Jeep (Full Width, No Card/Border) */}
               <div className="-mx-6 sm:-mx-10 lg:-mx-12 overflow-hidden">
                 <div className="w-full aspect-[4/1] overflow-hidden">
                   <iframe
-                    src={malangTripArticle.animationEmbedUrl}
-                    title={malangTripArticle.animationCaption}
+                    src={activeTieredTripArticle.animationEmbedUrl}
+                    title={activeTieredTripArticle.animationCaption}
                     className="w-full h-full border-0 block bg-transparent"
                     scrolling="no"
                     loading="lazy"
@@ -373,10 +592,488 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
               <div className="space-y-5">
                 <div>
                   <h2 className="text-xl sm:text-2xl font-black font-serif text-[#102a56]">
-                    {malangTripArticle.pricingSectionTitle}
+                    {activeTieredTripArticle.pricingSectionTitle}
                   </h2>
                   <p className="text-xs sm:text-sm text-slate-600 mt-1">
-                    {malangTripArticle.pricingSectionSubtitle}
+                    {activeTieredTripArticle.pricingSectionSubtitle}
+                  </p>
+                </div>
+
+                {/* Main Price Banner */}
+                <div className="rounded-3xl border-2 border-[#0996f5]/40 bg-gradient-to-br from-[#102a56] via-[#0B1F42] to-[#0996f5] text-white p-6 sm:p-8 shadow-xl relative overflow-hidden space-y-5">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div className="space-y-2.5">
+                      <span className="inline-block px-3 py-1 rounded-lg bg-[#fff700] text-[#102a56] text-[11px] font-black uppercase tracking-wider">
+                        {activeTieredTripArticle.heroBadge}
+                      </span>
+                      <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
+                        <span className="text-sm sm:text-base font-bold text-sky-200">
+                          {activeTieredTripArticle.startingPriceLabel}
+                        </span>
+                        <span className="text-3xl sm:text-4xl font-black text-[#fff700] tracking-tight">
+                          {activeTieredTripArticle.startingPriceValue}
+                        </span>
+                        <span className="text-xs sm:text-sm font-extrabold text-sky-100">
+                          {activeTieredTripArticle.startingPriceUnit}
+                        </span>
+                      </div>
+                      <p className="text-xs sm:text-sm text-sky-100 font-medium">
+                        💰 {activeTieredTripArticle.seasonNote}
+                      </p>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => onOpenBooking(activeTieredTripArticle.bookingPackageId)}
+                      className="w-full md:w-auto px-6 py-3.5 bg-[#fff700] hover:bg-amber-300 text-[#102a56] text-xs sm:text-sm font-black rounded-2xl shadow-lg transition-all cursor-pointer flex items-center justify-center gap-2 shrink-0 group"
+                    >
+                      <span>
+                        {isOpenTripBatuArticle
+                          ? language === 'en'
+                            ? 'Open Batu Open Trip Calculator'
+                            : language === 'zh'
+                            ? '打开巴图市拼团计算器'
+                            : 'Buka Kalkulator Open Trip Batu'
+                          : isOpenTripMalangArticle
+                          ? language === 'en'
+                            ? 'Open Malang Open Trip Calculator'
+                            : language === 'zh'
+                            ? '打开玛琅拼团计算器'
+                            : 'Buka Kalkulator Open Trip Malang'
+                          : isOpenTripSurabayaArticle
+                          ? language === 'en'
+                            ? 'Open Surabaya Open Trip Calculator'
+                            : language === 'zh'
+                            ? '打开泗水拼团计算器'
+                            : 'Buka Kalkulator Open Trip Surabaya'
+                          : language === 'en'
+                          ? 'Open Private Surabaya Calculator'
+                          : language === 'zh'
+                          ? '打开泗水私人团计算器'
+                          : 'Buka Kalkulator Private Start Surabaya'}
+                      </span>
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </button>
+                  </div>
+
+                  {/* Highlight: Documentation Included */}
+                  <div className="p-4 sm:p-5 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-xs space-y-1">
+                    <div className="text-xs sm:text-sm font-black text-[#fff700]">
+                      {activeTieredTripArticle.docIncludedBannerTitle}
+                    </div>
+                    <p className="text-xs sm:text-sm text-white/95 font-medium leading-relaxed">
+                      {activeTieredTripArticle.docIncludedBannerDesc}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Tiered Pricing Grid */}
+                <div className="p-5 sm:p-6 rounded-3xl bg-slate-50 border border-slate-200 space-y-4">
+                  <div>
+                    <h3 className="text-base sm:text-lg font-black text-[#102a56]">
+                      {activeTieredTripArticle.tiersTableTitle}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-slate-600 mt-0.5">
+                      {activeTieredTripArticle.tiersTableSubtitle}
+                    </p>
+                  </div>
+
+                  <div
+                    className={`grid grid-cols-1 sm:grid-cols-2 ${
+                      activeTieredTripArticle.pricingTiers.length === 4 ? '' : 'lg:grid-cols-3'
+                    } gap-2.5`}
+                  >
+                    {activeTieredTripArticle.pricingTiers.map((tier, idx) => (
+                      <div
+                        key={idx}
+                        className={`p-3.5 rounded-2xl border flex items-center justify-between gap-2 transition-colors ${
+                          tier.highlight
+                            ? 'bg-[#EAF6FF] border-[#0996f5]/50 shadow-2xs'
+                            : 'bg-white border-slate-200/90'
+                        }`}
+                      >
+                        <div>
+                          <div className="text-xs sm:text-sm font-black text-[#102a56]">
+                            {tier.pax}
+                          </div>
+                          {tier.badge && (
+                            <div className="text-[10px] font-extrabold text-[#0996f5] mt-0.5">
+                              {tier.badge}
+                            </div>
+                          )}
+                        </div>
+                        <div className="text-xs sm:text-sm font-black text-emerald-700 text-right shrink-0">
+                          {tier.pricePerPax}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <p className="text-xs text-slate-500 font-medium leading-relaxed pt-1">
+                    ℹ️ {activeTieredTripArticle.highSeasonNote}
+                  </p>
+                </div>
+
+                {/* Documentation (Included) & Add-on Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {activeTieredTripArticle.addons.map((addon, idx) => (
+                    <div
+                      key={idx}
+                      className={`p-5 rounded-2xl border transition-colors flex items-start gap-4 shadow-2xs ${
+                        addon.included
+                          ? 'bg-emerald-50/70 border-emerald-200'
+                          : 'bg-slate-50 border-slate-200 hover:border-[#0996f5]/50'
+                      }`}
+                    >
+                      <div className="w-12 h-12 rounded-2xl bg-white border border-slate-200 flex items-center justify-center text-2xl shrink-0 shadow-2xs">
+                        {addon.symbol}
+                      </div>
+                      <div className="space-y-1 flex-1">
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <h3 className="text-sm sm:text-base font-black text-[#102a56]">
+                            {addon.label}
+                          </h3>
+                          <span
+                            className={`px-2.5 py-0.5 rounded-lg text-xs sm:text-sm font-black ${
+                              addon.included
+                                ? 'bg-emerald-600 text-white'
+                                : 'bg-[#EAF6FF] text-[#0996f5]'
+                            }`}
+                          >
+                            {addon.price}
+                          </span>
+                        </div>
+                        <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                          {addon.detail}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* 2. FASILITAS (INCLUDE & EXCLUDE) */}
+              <div className="space-y-4">
+                <h2 className="text-xl sm:text-2xl font-black font-serif text-[#102a56]">
+                  {activeTieredTripArticle.facilitiesSectionTitle}
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {/* Include Card */}
+                  <div className="p-6 rounded-3xl bg-emerald-50/70 border-2 border-emerald-200 space-y-3.5 shadow-2xs">
+                    <h3 className="text-base sm:text-lg font-black text-emerald-950">
+                      {activeTieredTripArticle.includeTitle}
+                    </h3>
+                    <ul className="space-y-2.5">
+                      {activeTieredTripArticle.includeItems.map((item, idx) => (
+                        <li
+                          key={idx}
+                          className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700 font-medium leading-relaxed"
+                        >
+                          <span className="shrink-0 mt-0.5">✅</span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Exclude Card */}
+                  <div className="p-6 rounded-3xl bg-rose-50/70 border-2 border-rose-200 space-y-3.5 shadow-2xs">
+                    <h3 className="text-base sm:text-lg font-black text-rose-950">
+                      {activeTieredTripArticle.excludeTitle}
+                    </h3>
+                    <ul className="space-y-2.5">
+                      {activeTieredTripArticle.excludeItems.map((item, idx) => (
+                        <li
+                          key={idx}
+                          className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700 font-medium leading-relaxed"
+                        >
+                          <span className="shrink-0 mt-0.5">❌</span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* 3. ITINERARY LENGKAP (URUT) */}
+              <div className="space-y-5">
+                <div>
+                  <h2 className="text-xl sm:text-2xl font-black font-serif text-[#102a56]">
+                    {activeTieredTripArticle.itinerarySectionTitle}
+                  </h2>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-1">
+                    {activeTieredTripArticle.itinerarySectionSubtitle}
+                  </p>
+                </div>
+
+                <div className="space-y-3.5">
+                  {activeTieredTripArticle.itinerarySteps.map((step, idx) => (
+                    <div
+                      key={idx}
+                      className="p-5 rounded-2xl bg-white border border-slate-200 shadow-2xs flex flex-col sm:flex-row sm:items-start gap-4 relative overflow-hidden"
+                    >
+                      <div className="flex items-center gap-3 sm:w-48 shrink-0">
+                        <span className="w-10 h-10 rounded-xl bg-[#EAF6FF] border border-[#0996f5]/20 flex items-center justify-center text-xl shrink-0">
+                          {step.symbol}
+                        </span>
+                        <span className="text-xs sm:text-sm font-black text-[#0996f5] whitespace-nowrap">
+                          {step.time}
+                        </span>
+                      </div>
+                      <div className="space-y-1 flex-1 border-t sm:border-t-0 sm:border-l border-slate-100 pt-3 sm:pt-0 sm:pl-4">
+                        <h3 className="text-sm sm:text-base font-black text-[#102a56]">
+                          {step.title}
+                        </h3>
+                        <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                          {step.description}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* 4. LOKASI PENJEMPUTAN RESMI SURABAYA */}
+              <div className="p-6 sm:p-7 rounded-3xl bg-[#EAF6FF]/75 border-2 border-[#0996f5]/30 space-y-4 shadow-2xs">
+                <h2 className="text-lg sm:text-xl font-black font-serif text-[#102a56]">
+                  {activeTieredTripArticle.pickupSectionTitle}
+                </h2>
+                <p className="text-sm sm:text-base text-slate-700 font-semibold leading-relaxed">
+                  {activeTieredTripArticle.pickupLead}
+                </p>
+                <div className="space-y-2.5">
+                  <div className="text-xs font-black uppercase tracking-wider text-[#0996f5]">
+                    {activeTieredTripArticle.pickupPopularTitle}
+                  </div>
+                  <ul className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    {activeTieredTripArticle.pickupPoints.map((pt, idx) => (
+                      <li
+                        key={idx}
+                        className="p-4 rounded-2xl bg-white border border-sky-200/80 text-xs sm:text-sm font-bold text-[#102a56] flex items-start gap-2.5 shadow-2xs"
+                      >
+                        <span className="shrink-0">📍</span>
+                        <span>{pt}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              {/* 5. PERLENGKAPAN WAJIB (SUHU 2°C - 10°C) */}
+              <div className="space-y-4">
+                <div>
+                  <h2 className="text-xl sm:text-2xl font-black font-serif text-[#102a56]">
+                    {activeTieredTripArticle.gearSectionTitle}
+                  </h2>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-1">
+                    {activeTieredTripArticle.gearSectionSubtitle}
+                  </p>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {activeTieredTripArticle.gearItems.map((gear, idx) => (
+                    <div
+                      key={idx}
+                      className="p-5 rounded-2xl bg-slate-50 border border-slate-200 flex items-start gap-3.5 shadow-2xs"
+                    >
+                      <span className="w-11 h-11 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-2xl shrink-0 shadow-2xs">
+                        {gear.symbol}
+                      </span>
+                      <div className="space-y-1">
+                        <h3 className="text-sm sm:text-base font-black text-[#102a56]">
+                          {gear.name}
+                        </h3>
+                        <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                          {gear.reason}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* 6. TIPS TAMBAHAN */}
+              <div className="p-6 sm:p-7 rounded-3xl bg-[#fff700]/15 border-2 border-[#fff700] space-y-2 shadow-2xs">
+                <h2 className="text-base sm:text-lg font-black text-[#102a56]">
+                  {activeTieredTripArticle.extraTipTitle}
+                </h2>
+                <p className="text-xs sm:text-sm sm:leading-relaxed text-slate-800 font-medium">
+                  {activeTieredTripArticle.extraTipContent}
+                </p>
+              </div>
+
+              {/* Conclusion & Direct Start Booking CTA */}
+              <div className="p-6 sm:p-8 bg-[#EAF6FF] border border-[#0996f5]/30 rounded-3xl space-y-4">
+                <h3 className="text-xl font-extrabold text-[#0B1220]">
+                  {isOpenTripBatuArticle
+                    ? language === 'en'
+                      ? 'Ready to Book Your Open Trip Start Batu City?'
+                      : language === 'zh'
+                      ? '准备好预订您的巴图市出发拼团行程了吗？'
+                      : 'Siap Hitung & Booking Open Trip Start Kota Batu?'
+                    : isOpenTripMalangArticle
+                    ? language === 'en'
+                      ? 'Ready to Book Your Open Trip Start Malang City?'
+                      : language === 'zh'
+                      ? '准备好预订您的玛琅市区出发拼团行程了吗？'
+                      : 'Siap Hitung & Booking Open Trip Start Kota Malang?'
+                    : isOpenTripSurabayaArticle
+                    ? language === 'en'
+                      ? 'Ready to Book Your Open Trip Start Surabaya City?'
+                      : language === 'zh'
+                      ? '准备好预订您的泗水市区出发拼团行程了吗？'
+                      : 'Siap Hitung & Booking Open Trip Start Kota Surabaya?'
+                    : language === 'en'
+                    ? 'Ready to Calculate Your Private Trip Start Surabaya?'
+                    : language === 'zh'
+                    ? '准备好计算您的泗水出发私人团行程了吗？'
+                    : 'Siap Hitung & Booking Private Trip Start Surabaya?'}
+                </h3>
+                <p className="text-sm sm:text-base text-slate-700 leading-relaxed">
+                  {activeTieredTripArticle.conclusion}
+                </p>
+
+                <div className="pt-2 flex flex-col sm:flex-row items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => onOpenBooking(activeTieredTripArticle.bookingPackageId)}
+                    className="w-full sm:w-auto px-6 py-3.5 bg-[#0996f5] hover:bg-[#071A2B] text-white text-xs sm:text-sm font-black rounded-2xl shadow-lg shadow-[#0996f5]/25 transition-all cursor-pointer flex items-center justify-center gap-2 group"
+                  >
+                    <span>{activeTieredTripArticle.ctaButton}</span>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </button>
+
+                  <a
+                    href={
+                      isOpenTripBatuArticle
+                        ? 'https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20mau%20booking%20Open%20Trip%20Bromo%20Start%20Kota%20Batu%20(Harga%202026%20Rp325.000/org%20Reguler%20/%20Rp375.000/org%20Plus%20Foto%20DSLR).'
+                        : isOpenTripMalangArticle
+                        ? 'https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20mau%20booking%20Open%20Trip%20Bromo%20Start%20Kota%20Malang%20(Harga%202026%20Rp275.000/org%20Reguler%20/%20Rp325.000/org%20Plus%20Foto%20DSLR).'
+                        : isOpenTripSurabayaArticle
+                        ? 'https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20mau%20booking%20Open%20Trip%20Bromo%20Start%20Kota%20Surabaya%20(Harga%202026%20Rp400.000/org%20Weekend%20via%20Tosari%20/%20Rp750.000/org%20Harian%20via%20Malang,%20Include%20Dokumentasi).'
+                        : 'https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20mau%20booking%20Private%20Trip%20Bromo%20Start%20Surabaya%20(Harga%202026%20Include%20Dokumentasi).'
+                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full sm:w-auto px-5 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold rounded-2xl transition-colors flex items-center justify-center gap-2"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    <span>WhatsApp Hotline (+62 812-2229-0318)</span>
+                  </a>
+                </div>
+              </div>
+
+              {/* Social Share Buttons Bottom Section */}
+              <div className="p-6 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="text-center sm:text-left">
+                  <h4 className="text-sm font-extrabold text-[#0B1220]">
+                    {isOpenTripBatuArticle
+                      ? language === 'en'
+                        ? 'Share this Open Trip Start Batu City 2026 guide'
+                        : language === 'zh'
+                        ? '分享这份 2026 巴图市出发拼团指南'
+                        : 'Bagikan panduan Open Trip Start Kota Batu 2026 ini'
+                      : isOpenTripMalangArticle
+                      ? language === 'en'
+                        ? 'Share this Open Trip Start Malang City 2026 guide'
+                        : language === 'zh'
+                        ? '分享这份 2026 玛琅市区出发拼团指南'
+                        : 'Bagikan panduan Open Trip Start Kota Malang 2026 ini'
+                      : isOpenTripSurabayaArticle
+                      ? language === 'en'
+                        ? 'Share this Open Trip Start Surabaya City 2026 guide'
+                        : language === 'zh'
+                        ? '分享这份 2026 泗水市区出发拼团指南'
+                        : 'Bagikan panduan Open Trip Start Kota Surabaya 2026 ini'
+                      : language === 'en'
+                      ? 'Share this Private Trip Start Surabaya 2026 guide'
+                      : language === 'zh'
+                      ? '分享这份 2026 泗水出发私人团指南'
+                      : 'Bagikan panduan Private Trip Start Surabaya 2026 ini'}
+                  </h4>
+                  <p className="text-xs text-slate-500">
+                    {language === 'en'
+                      ? 'Share via WhatsApp, Facebook, or copy link'
+                      : language === 'zh'
+                      ? '一键分享至 WhatsApp、Facebook 或复制链接'
+                      : 'Bagikan melalui WhatsApp, Facebook, atau salin link'}
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handleShareSocial('wa')}
+                    className="px-3.5 py-2 bg-[#25D366] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#20ba5a] transition-all flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <MessageCircle className="w-3.5 h-3.5" />
+                    <span>WhatsApp</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleShareSocial('fb')}
+                    className="px-3.5 py-2 bg-[#1877F2] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#1567d3] transition-all flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <Share2 className="w-3.5 h-3.5" />
+                    <span>Facebook</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleCopyLink}
+                    className="px-3.5 py-2 bg-slate-200 text-slate-800 hover:bg-slate-300 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    <span>{language === 'en' ? 'Copy Link' : language === 'zh' ? '复制链接' : 'Salin Link'}</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Article Tags */}
+              <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center gap-2 text-xs text-slate-600">
+                <span className="font-bold text-slate-400 mr-1">Tags:</span>
+                {activeTieredTripArticle.tags?.map((tag, idx) => (
+                  <span
+                    key={idx}
+                    className="px-2.5 py-1 bg-slate-100 rounded-lg text-slate-600 font-medium"
+                  >
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ) : isMalangTripArticle || isBatuTripArticle || isSukapuraTripArticle || isTosariTripArticle || isGubugklakahTripArticle ? (
+            /* PRIVATE TRIP BROMO START KOTA MALANG / KOTA BATU / SUKAPURA / TOSARI / GUBUGKLAKAH HARGA 2026 ARTICLE BODY */
+            <div className="p-6 sm:p-10 lg:p-12 space-y-10">
+              {/* Intro Paragraphs */}
+              <div className="space-y-4 text-slate-700 text-base sm:text-lg leading-relaxed">
+                {activeFlatJeepArticle.introduction.map((para, idx) => (
+                  <p key={idx}>{para}</p>
+                ))}
+              </div>
+
+              {/* Embedded Animated Convoy Bromo Jeep (Full Width, No Card/Border) */}
+              <div className="-mx-6 sm:-mx-10 lg:-mx-12 overflow-hidden">
+                <div className="w-full aspect-[4/1] overflow-hidden">
+                  <iframe
+                    src={activeFlatJeepArticle.animationEmbedUrl}
+                    title={activeFlatJeepArticle.animationCaption}
+                    className="w-full h-full border-0 block bg-transparent"
+                    scrolling="no"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+
+              {/* 1. HARGA & PAKET 2026 */}
+              <div className="space-y-5">
+                <div>
+                  <h2 className="text-xl sm:text-2xl font-black font-serif text-[#102a56]">
+                    {activeFlatJeepArticle.pricingSectionTitle}
+                  </h2>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-1">
+                    {activeFlatJeepArticle.pricingSectionSubtitle}
                   </p>
                 </div>
 
@@ -385,31 +1082,55 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                     <div className="space-y-2.5">
                       <span className="inline-block px-3 py-1 rounded-lg bg-[#fff700] text-[#102a56] text-[11px] font-black uppercase tracking-wider">
-                        {malangTripArticle.savingsBadge}
+                        {activeFlatJeepArticle.savingsBadge}
                       </span>
                       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                         <span className="text-lg sm:text-xl font-bold text-slate-300 line-through decoration-rose-400 decoration-2">
-                          {malangTripArticle.normalPrice}
+                          {activeFlatJeepArticle.normalPrice}
                         </span>
                         <span className="text-3xl sm:text-4xl font-black text-[#fff700] tracking-tight">
-                          {malangTripArticle.promoPrice}
+                          {activeFlatJeepArticle.promoPrice}
                         </span>
                         <span className="text-sm sm:text-base font-extrabold text-sky-100">
-                          {malangTripArticle.priceUnitLabel}
+                          {activeFlatJeepArticle.priceUnitLabel}
                         </span>
                       </div>
                       <p className="text-xs sm:text-sm text-sky-100 font-medium">
-                        💰 {malangTripArticle.seasonNote}
+                        💰 {activeFlatJeepArticle.seasonNote}
                       </p>
                     </div>
 
                     <button
                       type="button"
-                      onClick={() => onOpenBooking(malangTripArticle.bookingPackageId)}
+                      onClick={() => onOpenBooking(activeFlatJeepArticle.bookingPackageId)}
                       className="w-full md:w-auto px-6 py-3.5 bg-[#fff700] hover:bg-amber-300 text-[#102a56] text-xs sm:text-sm font-black rounded-2xl shadow-lg transition-all cursor-pointer flex items-center justify-center gap-2 shrink-0 group"
                     >
                       <span>
-                        {language === 'en'
+                        {isGubugklakahTripArticle
+                          ? language === 'en'
+                            ? 'Open Private Gubugklakah Calculator'
+                            : language === 'zh'
+                            ? '打开 Gubugklakah 私人团计算器'
+                            : 'Buka Kalkulator Private Start Gubugklakah'
+                          : isTosariTripArticle
+                          ? language === 'en'
+                            ? 'Open Private Tosari Calculator'
+                            : language === 'zh'
+                            ? '打开 Tosari 私人团计算器'
+                            : 'Buka Kalkulator Private Start Tosari'
+                          : isSukapuraTripArticle
+                          ? language === 'en'
+                            ? 'Open Private Sukapura Calculator'
+                            : language === 'zh'
+                            ? '打开 Sukapura 私人团计算器'
+                            : 'Buka Kalkulator Private Start Sukapura'
+                          : isBatuTripArticle
+                          ? language === 'en'
+                            ? 'Open Private Batu Calculator'
+                            : language === 'zh'
+                            ? '打开巴图市私人团计算器'
+                            : 'Buka Kalkulator Private Start Kota Batu'
+                          : language === 'en'
                           ? 'Open Private Malang Calculator'
                           : language === 'zh'
                           ? '打开玛琅私人团计算器'
@@ -422,17 +1143,17 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
                   {/* Highlight: 1-6 Peserta Flat Per Jeep / Per Grup */}
                   <div className="p-4 sm:p-5 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-xs space-y-1">
                     <div className="text-xs sm:text-sm font-black text-[#fff700]">
-                      {malangTripArticle.groupPriceTitle}
+                      {activeFlatJeepArticle.groupPriceTitle}
                     </div>
                     <p className="text-xs sm:text-sm text-white/95 font-medium leading-relaxed">
-                      {malangTripArticle.groupPriceNote}
+                      {activeFlatJeepArticle.groupPriceNote}
                     </p>
                   </div>
                 </div>
 
                 {/* Optional Add-ons (Dokumentasi & Drone) */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {malangTripArticle.addons.map((addon, idx) => (
+                  {activeFlatJeepArticle.addons.map((addon, idx) => (
                     <div
                       key={idx}
                       className="p-5 rounded-2xl bg-slate-50 border border-slate-200 hover:border-[#0996f5]/50 transition-colors flex items-start gap-4 shadow-2xs"
@@ -461,16 +1182,16 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
               {/* 2. FASILITAS (INCLUDE & EXCLUDE) */}
               <div className="space-y-4">
                 <h2 className="text-xl sm:text-2xl font-black font-serif text-[#102a56]">
-                  {malangTripArticle.facilitiesSectionTitle}
+                  {activeFlatJeepArticle.facilitiesSectionTitle}
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   {/* Include Card */}
                   <div className="p-6 rounded-3xl bg-emerald-50/70 border-2 border-emerald-200 space-y-3.5 shadow-2xs">
                     <h3 className="text-base sm:text-lg font-black text-emerald-950">
-                      {malangTripArticle.includeTitle}
+                      {activeFlatJeepArticle.includeTitle}
                     </h3>
                     <ul className="space-y-2.5">
-                      {malangTripArticle.includeItems.map((item, idx) => (
+                      {activeFlatJeepArticle.includeItems.map((item, idx) => (
                         <li
                           key={idx}
                           className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700 font-medium leading-relaxed"
@@ -485,10 +1206,10 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
                   {/* Exclude Card */}
                   <div className="p-6 rounded-3xl bg-rose-50/70 border-2 border-rose-200 space-y-3.5 shadow-2xs">
                     <h3 className="text-base sm:text-lg font-black text-rose-950">
-                      {malangTripArticle.excludeTitle}
+                      {activeFlatJeepArticle.excludeTitle}
                     </h3>
                     <ul className="space-y-2.5">
-                      {malangTripArticle.excludeItems.map((item, idx) => (
+                      {activeFlatJeepArticle.excludeItems.map((item, idx) => (
                         <li
                           key={idx}
                           className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700 font-medium leading-relaxed"
@@ -506,15 +1227,15 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
               <div className="space-y-5">
                 <div>
                   <h2 className="text-xl sm:text-2xl font-black font-serif text-[#102a56]">
-                    {malangTripArticle.itinerarySectionTitle}
+                    {activeFlatJeepArticle.itinerarySectionTitle}
                   </h2>
                   <p className="text-xs sm:text-sm text-slate-600 mt-1">
-                    {malangTripArticle.itinerarySectionSubtitle}
+                    {activeFlatJeepArticle.itinerarySectionSubtitle}
                   </p>
                 </div>
 
                 <div className="space-y-3.5">
-                  {malangTripArticle.itinerarySteps.map((step, idx) => (
+                  {activeFlatJeepArticle.itinerarySteps.map((step, idx) => (
                     <div
                       key={idx}
                       className="p-5 rounded-2xl bg-white border border-slate-200 shadow-2xs flex flex-col sm:flex-row sm:items-start gap-4 relative overflow-hidden"
@@ -543,17 +1264,17 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
               {/* 4. LOKASI PENJEMPUTAN RESMI */}
               <div className="p-6 sm:p-7 rounded-3xl bg-[#EAF6FF]/75 border-2 border-[#0996f5]/30 space-y-4 shadow-2xs">
                 <h2 className="text-lg sm:text-xl font-black font-serif text-[#102a56]">
-                  {malangTripArticle.pickupSectionTitle}
+                  {activeFlatJeepArticle.pickupSectionTitle}
                 </h2>
                 <p className="text-sm sm:text-base text-slate-700 font-semibold leading-relaxed">
-                  {malangTripArticle.pickupLead}
+                  {activeFlatJeepArticle.pickupLead}
                 </p>
                 <div className="space-y-2.5">
                   <div className="text-xs font-black uppercase tracking-wider text-[#0996f5]">
-                    {malangTripArticle.pickupPopularTitle}
+                    {activeFlatJeepArticle.pickupPopularTitle}
                   </div>
                   <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {malangTripArticle.pickupPoints.map((pt, idx) => (
+                    {activeFlatJeepArticle.pickupPoints.map((pt, idx) => (
                       <li
                         key={idx}
                         className="p-4 rounded-2xl bg-white border border-sky-200/80 text-xs sm:text-sm font-bold text-[#102a56] flex items-start gap-2.5 shadow-2xs"
@@ -570,14 +1291,14 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
               <div className="space-y-4">
                 <div>
                   <h2 className="text-xl sm:text-2xl font-black font-serif text-[#102a56]">
-                    {malangTripArticle.gearSectionTitle}
+                    {activeFlatJeepArticle.gearSectionTitle}
                   </h2>
                   <p className="text-xs sm:text-sm text-slate-600 mt-1">
-                    {malangTripArticle.gearSectionSubtitle}
+                    {activeFlatJeepArticle.gearSectionSubtitle}
                   </p>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {malangTripArticle.gearItems.map((gear, idx) => (
+                  {activeFlatJeepArticle.gearItems.map((gear, idx) => (
                     <div
                       key={idx}
                       className="p-5 rounded-2xl bg-slate-50 border border-slate-200 flex items-start gap-3.5 shadow-2xs"
@@ -601,38 +1322,72 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
               {/* 6. TIPS TAMBAHAN */}
               <div className="p-6 sm:p-7 rounded-3xl bg-[#fff700]/15 border-2 border-[#fff700] space-y-2 shadow-2xs">
                 <h2 className="text-base sm:text-lg font-black text-[#102a56]">
-                  {malangTripArticle.extraTipTitle}
+                  {activeFlatJeepArticle.extraTipTitle}
                 </h2>
                 <p className="text-xs sm:text-sm sm:leading-relaxed text-slate-800 font-medium">
-                  {malangTripArticle.extraTipContent}
+                  {activeFlatJeepArticle.extraTipContent}
                 </p>
               </div>
 
-              {/* Conclusion & Direct Private Start Malang Booking CTA */}
+              {/* Conclusion & Direct Private Booking CTA */}
               <div className="p-6 sm:p-8 bg-[#EAF6FF] border border-[#0996f5]/30 rounded-3xl space-y-4">
                 <h3 className="text-xl font-extrabold text-[#0B1220]">
-                  {language === 'en'
+                  {isGubugklakahTripArticle
+                    ? language === 'en'
+                      ? 'Ready to Calculate Your Private Trip Start Gubugklakah Malang?'
+                      : language === 'zh'
+                      ? '准备好计算您的玛琅县 Gubugklakah 出发私人团行程了吗？'
+                      : 'Siap Hitung & Booking Private Trip Start Gubugklakah Kab. Malang?'
+                    : isTosariTripArticle
+                    ? language === 'en'
+                      ? 'Ready to Calculate Your Private Trip Start Tosari Pasuruan?'
+                      : language === 'zh'
+                      ? '准备好计算您的岩望 Tosari 出发私人团行程了吗？'
+                      : 'Siap Hitung & Booking Private Trip Start Tosari Pasuruan?'
+                    : isSukapuraTripArticle
+                    ? language === 'en'
+                      ? 'Ready to Calculate Your Private Trip Start Sukapura Probolinggo?'
+                      : language === 'zh'
+                      ? '准备好计算您的庞越 Sukapura 出发私人团行程了吗？'
+                      : 'Siap Hitung & Booking Private Trip Start Sukapura Probolinggo?'
+                    : isBatuTripArticle
+                    ? language === 'en'
+                      ? 'Ready to Calculate Your Private Trip Start Batu City?'
+                      : language === 'zh'
+                      ? '准备好计算您的巴图市出发私人团行程了吗？'
+                      : 'Siap Hitung & Booking Private Trip Start Kota Batu?'
+                    : language === 'en'
                     ? 'Ready to Calculate Your Private Trip Start Malang City?'
                     : language === 'zh'
                     ? '准备好计算您的玛琅市区出发私人团行程了吗？'
                     : 'Siap Hitung & Booking Private Trip Start Kota Malang?'}
                 </h3>
                 <p className="text-sm sm:text-base text-slate-700 leading-relaxed">
-                  {malangTripArticle.conclusion}
+                  {activeFlatJeepArticle.conclusion}
                 </p>
 
                 <div className="pt-2 flex flex-col sm:flex-row items-center gap-3">
                   <button
                     type="button"
-                    onClick={() => onOpenBooking(malangTripArticle.bookingPackageId)}
+                    onClick={() => onOpenBooking(activeFlatJeepArticle.bookingPackageId)}
                     className="w-full sm:w-auto px-6 py-3.5 bg-[#0996f5] hover:bg-[#071A2B] text-white text-xs sm:text-sm font-black rounded-2xl shadow-lg shadow-[#0996f5]/25 transition-all cursor-pointer flex items-center justify-center gap-2 group"
                   >
-                    <span>{malangTripArticle.ctaButton}</span>
+                    <span>{activeFlatJeepArticle.ctaButton}</span>
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </button>
 
                   <a
-                    href="https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20mau%20booking%20Private%20Trip%20Bromo%20Start%20Kota%20Malang%20(Harga%20Promo%202026%20Rp1.700.000%20per%20jeep%20untuk%201-6%20peserta)."
+                    href={
+                      isGubugklakahTripArticle
+                        ? 'https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20mau%20booking%20Private%20Trip%20Bromo%20Start%20Gubugklakah%20Kab.%20Malang%20(Harga%202026%20Rp1.400.000%20per%20jeep%20untuk%201-6%20peserta).'
+                        : isTosariTripArticle
+                        ? 'https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20mau%20booking%20Private%20Trip%20Bromo%20Start%20Tosari%20Pasuruan%20(Harga%202026%20Rp950.000%20per%20jeep%20untuk%201-6%20peserta).'
+                        : isSukapuraTripArticle
+                        ? 'https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20mau%20booking%20Private%20Trip%20Bromo%20Start%20Sukapura%20Probolinggo%20(Harga%202026%20Rp1.000.000%20per%20jeep%20untuk%201-6%20peserta).'
+                        : isBatuTripArticle
+                        ? 'https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20mau%20booking%20Private%20Trip%20Bromo%20Start%20Kota%20Batu%20(Harga%202026%20Rp1.800.000%20per%20jeep%20untuk%201-6%20peserta).'
+                        : 'https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20mau%20booking%20Private%20Trip%20Bromo%20Start%20Kota%20Malang%20(Harga%20Promo%202026%20Rp1.700.000%20per%20jeep%20untuk%201-6%20peserta).'
+                    }
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full sm:w-auto px-5 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold rounded-2xl transition-colors flex items-center justify-center gap-2"
@@ -647,7 +1402,31 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
               <div className="p-6 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="text-center sm:text-left">
                   <h4 className="text-sm font-extrabold text-[#0B1220]">
-                    {language === 'en'
+                    {isGubugklakahTripArticle
+                      ? language === 'en'
+                        ? 'Share this Private Trip Start Gubugklakah Malang 2026 guide'
+                        : language === 'zh'
+                        ? '分享这份 2026 玛琅县 Gubugklakah 出发私人团指南'
+                        : 'Bagikan panduan Private Trip Start Gubugklakah Kab. Malang 2026 ini'
+                      : isTosariTripArticle
+                      ? language === 'en'
+                        ? 'Share this Private Trip Start Tosari Pasuruan 2026 guide'
+                        : language === 'zh'
+                        ? '分享这份 2026 岩望 Tosari 出发私人团指南'
+                        : 'Bagikan panduan Private Trip Start Tosari Pasuruan 2026 ini'
+                      : isSukapuraTripArticle
+                      ? language === 'en'
+                        ? 'Share this Private Trip Start Sukapura Probolinggo 2026 guide'
+                        : language === 'zh'
+                        ? '分享这份 2026 庞越 Sukapura 出发私人团指南'
+                        : 'Bagikan panduan Private Trip Start Sukapura Probolinggo 2026 ini'
+                      : isBatuTripArticle
+                      ? language === 'en'
+                        ? 'Share this Private Trip Start Batu City 2026 guide'
+                        : language === 'zh'
+                        ? '分享这份 2026 巴图市出发私人团指南'
+                        : 'Bagikan panduan Private Trip Start Kota Batu 2026 ini'
+                      : language === 'en'
                       ? 'Share this Private Trip Start Malang City 2026 guide'
                       : language === 'zh'
                       ? '分享这份 2026 玛琅市区出发私人团指南'
@@ -695,7 +1474,7 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
               {/* Article Tags */}
               <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center gap-2 text-xs text-slate-600">
                 <span className="font-bold text-slate-400 mr-1">Tags:</span>
-                {malangTripArticle.tags?.map((tag, idx) => (
+                {activeFlatJeepArticle.tags?.map((tag, idx) => (
                   <span
                     key={idx}
                     className="px-2.5 py-1 bg-slate-100 rounded-lg text-slate-600 font-medium"

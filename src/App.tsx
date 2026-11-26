@@ -64,6 +64,64 @@ const parseInitialRoute = (): { view: AppView; pkg: TourPackage | null; adminLog
   ) {
     let artId: string | undefined = undefined;
     if (
+      pathname.includes('open-trip-bromo-start-kota-batu') ||
+      pathname.includes('open-trip-bromo-start-batu') ||
+      pathname.includes('open-trip-start-kota-batu') ||
+      hash.includes('open-trip-bromo-start-kota-batu') ||
+      hash.includes('open-trip-bromo-start-batu') ||
+      hash.includes('open-trip-start-kota-batu')
+    ) {
+      artId = 'open-trip-bromo-start-kota-batu-harga-2026';
+    } else if (
+      pathname.includes('open-trip-bromo-start-kota-malang') ||
+      pathname.includes('open-trip-start-kota-malang') ||
+      hash.includes('open-trip-bromo-start-kota-malang') ||
+      hash.includes('open-trip-start-kota-malang')
+    ) {
+      artId = 'open-trip-bromo-start-kota-malang-harga-2026';
+    } else if (
+      pathname.includes('open-trip-bromo-start-surabaya') ||
+      pathname.includes('open-trip-bromo-start-kota-surabaya') ||
+      pathname.includes('open-trip-start-kota-surabaya') ||
+      hash.includes('open-trip-bromo-start-surabaya') ||
+      hash.includes('open-trip-bromo-start-kota-surabaya') ||
+      hash.includes('open-trip-start-kota-surabaya')
+    ) {
+      artId = 'open-trip-bromo-start-surabaya-harga-2026';
+    } else if (
+      pathname.includes('start-gubugklakah') ||
+      pathname.includes('gubugklakah-kab-malang') ||
+      hash.includes('start-gubugklakah') ||
+      hash.includes('gubugklakah-kab-malang')
+    ) {
+      artId = 'private-trip-bromo-start-gubugklakah-harga-2026';
+    } else if (
+      pathname.includes('start-tosari') ||
+      pathname.includes('tosari-pasuruan') ||
+      hash.includes('start-tosari') ||
+      hash.includes('tosari-pasuruan')
+    ) {
+      artId = 'private-trip-bromo-start-tosari-harga-2026';
+    } else if (
+      pathname.includes('start-sukapura') ||
+      pathname.includes('sukapura-probolinggo') ||
+      hash.includes('start-sukapura') ||
+      hash.includes('sukapura-probolinggo')
+    ) {
+      artId = 'private-trip-bromo-start-sukapura-harga-2026';
+    } else if (
+      pathname.includes('start-batu') ||
+      pathname.includes('start-kota-batu') ||
+      hash.includes('start-batu') ||
+      hash.includes('start-kota-batu')
+    ) {
+      artId = 'private-trip-bromo-start-batu-harga-2026';
+    } else if (
+      pathname.includes('start-surabaya') ||
+      hash.includes('start-surabaya')
+    ) {
+      artId = 'private-trip-bromo-start-surabaya-harga-2026';
+    } else if (
       pathname.includes('open-trip-bromo-start-malang') ||
       pathname.includes('private-trip-bromo-start') ||
       pathname.includes('start-kota-malang') ||
@@ -192,6 +250,64 @@ export default function App() {
         hash === '#journal'
       ) {
         if (
+          pathname.includes('open-trip-bromo-start-kota-batu') ||
+          pathname.includes('open-trip-bromo-start-batu') ||
+          pathname.includes('open-trip-start-kota-batu') ||
+          hash.includes('open-trip-bromo-start-kota-batu') ||
+          hash.includes('open-trip-bromo-start-batu') ||
+          hash.includes('open-trip-start-kota-batu')
+        ) {
+          setSelectedArticlePostId('open-trip-bromo-start-kota-batu-harga-2026');
+        } else if (
+          pathname.includes('open-trip-bromo-start-kota-malang') ||
+          pathname.includes('open-trip-start-kota-malang') ||
+          hash.includes('open-trip-bromo-start-kota-malang') ||
+          hash.includes('open-trip-start-kota-malang')
+        ) {
+          setSelectedArticlePostId('open-trip-bromo-start-kota-malang-harga-2026');
+        } else if (
+          pathname.includes('open-trip-bromo-start-surabaya') ||
+          pathname.includes('open-trip-bromo-start-kota-surabaya') ||
+          pathname.includes('open-trip-start-kota-surabaya') ||
+          hash.includes('open-trip-bromo-start-surabaya') ||
+          hash.includes('open-trip-bromo-start-kota-surabaya') ||
+          hash.includes('open-trip-start-kota-surabaya')
+        ) {
+          setSelectedArticlePostId('open-trip-bromo-start-surabaya-harga-2026');
+        } else if (
+          pathname.includes('start-gubugklakah') ||
+          pathname.includes('gubugklakah-kab-malang') ||
+          hash.includes('start-gubugklakah') ||
+          hash.includes('gubugklakah-kab-malang')
+        ) {
+          setSelectedArticlePostId('private-trip-bromo-start-gubugklakah-harga-2026');
+        } else if (
+          pathname.includes('start-tosari') ||
+          pathname.includes('tosari-pasuruan') ||
+          hash.includes('start-tosari') ||
+          hash.includes('tosari-pasuruan')
+        ) {
+          setSelectedArticlePostId('private-trip-bromo-start-tosari-harga-2026');
+        } else if (
+          pathname.includes('start-sukapura') ||
+          pathname.includes('sukapura-probolinggo') ||
+          hash.includes('start-sukapura') ||
+          hash.includes('sukapura-probolinggo')
+        ) {
+          setSelectedArticlePostId('private-trip-bromo-start-sukapura-harga-2026');
+        } else if (
+          pathname.includes('start-batu') ||
+          pathname.includes('start-kota-batu') ||
+          hash.includes('start-batu') ||
+          hash.includes('start-kota-batu')
+        ) {
+          setSelectedArticlePostId('private-trip-bromo-start-batu-harga-2026');
+        } else if (
+          pathname.includes('start-surabaya') ||
+          hash.includes('start-surabaya')
+        ) {
+          setSelectedArticlePostId('private-trip-bromo-start-surabaya-harga-2026');
+        } else if (
           pathname.includes('open-trip-bromo-start-malang') ||
           pathname.includes('private-trip-bromo-start') ||
           pathname.includes('start-kota-malang') ||
@@ -671,6 +787,33 @@ export default function App() {
           onSelectArticle={(artSlugOrId) => {
             let matchedId = artSlugOrId;
             if (
+              artSlugOrId.includes('open-trip-bromo-start-kota-batu') ||
+              artSlugOrId.includes('open-trip-bromo-start-batu') ||
+              artSlugOrId.includes('open-trip-start-kota-batu')
+            ) {
+              matchedId = 'open-trip-bromo-start-kota-batu-harga-2026';
+            } else if (
+              artSlugOrId.includes('open-trip-bromo-start-kota-malang') ||
+              artSlugOrId.includes('open-trip-start-kota-malang')
+            ) {
+              matchedId = 'open-trip-bromo-start-kota-malang-harga-2026';
+            } else if (
+              artSlugOrId.includes('open-trip-bromo-start-surabaya') ||
+              artSlugOrId.includes('open-trip-bromo-start-kota-surabaya') ||
+              artSlugOrId.includes('open-trip-start-kota-surabaya')
+            ) {
+              matchedId = 'open-trip-bromo-start-surabaya-harga-2026';
+            } else if (artSlugOrId.includes('start-gubugklakah') || artSlugOrId.includes('gubugklakah-kab-malang')) {
+              matchedId = 'private-trip-bromo-start-gubugklakah-harga-2026';
+            } else if (artSlugOrId.includes('start-tosari') || artSlugOrId.includes('tosari-pasuruan')) {
+              matchedId = 'private-trip-bromo-start-tosari-harga-2026';
+            } else if (artSlugOrId.includes('start-sukapura') || artSlugOrId.includes('sukapura-probolinggo')) {
+              matchedId = 'private-trip-bromo-start-sukapura-harga-2026';
+            } else if (artSlugOrId.includes('start-batu') || artSlugOrId.includes('start-kota-batu')) {
+              matchedId = 'private-trip-bromo-start-batu-harga-2026';
+            } else if (artSlugOrId.includes('start-surabaya')) {
+              matchedId = 'private-trip-bromo-start-surabaya-harga-2026';
+            } else if (
               artSlugOrId.includes('open-trip-bromo-start-malang') ||
               artSlugOrId.includes('private-trip-bromo-start') ||
               artSlugOrId.includes('start-kota-malang')

@@ -85,7 +85,7 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_MALANG: Record<
     category: 'tips_wisata',
     categoryLabel: 'Tips & Panduan Wisata',
     heroImage: imgMalangHero,
-    animationEmbedUrl: '/assets/aistudio/jeep-polos-4x1-snippet_f30e0ac2.html',
+    animationEmbedUrl: '/assets/aistudio/jeep-konvoi-4x1-snippet_24fbfc55.html',
     animationCaption:
       '🚐 Private Jeep 4×4 Bromo Start Kota Malang — Harga flat per jeep / per grup untuk 1–6 peserta',
     introduction: [
@@ -229,7 +229,7 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_MALANG: Record<
     category: 'tips_wisata',
     categoryLabel: 'Travel Tips & Guide',
     heroImage: imgMalangHero,
-    animationEmbedUrl: '/assets/aistudio/jeep-polos-4x1-snippet_f30e0ac2.html',
+    animationEmbedUrl: '/assets/aistudio/jeep-konvoi-4x1-snippet_24fbfc55.html',
     animationCaption:
       '🚐 Private 4×4 Bromo Jeep Start Malang City — Flat rate per jeep / per group for 1–6 participants',
     introduction: [
@@ -373,7 +373,7 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_MALANG: Record<
     category: 'tips_wisata',
     categoryLabel: '攻略与指南',
     heroImage: imgMalangHero,
-    animationEmbedUrl: '/assets/aistudio/jeep-polos-4x1-snippet_f30e0ac2.html',
+    animationEmbedUrl: '/assets/aistudio/jeep-konvoi-4x1-snippet_24fbfc55.html',
     animationCaption:
       '🚐 玛琅市区出发专属四驱布罗莫吉普 — 每辆 / 每团 1–6 人同价一口价',
     introduction: [

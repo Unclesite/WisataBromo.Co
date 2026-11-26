@@ -123,7 +123,7 @@ define(['./workbox-afac4cd2'], (function (workbox) { 'use strict';
     "revision": "ef557259d8c3e50ab4d15acef6c2a1e7"
   }, {
     "url": "index.html",
-    "revision": "534183bc49e6ee265898a560c4142e5e"
+    "revision": "1425f1c1eca3093605b3dd87cc3e4459"
   }, {
     "url": "icon.svg",
     "revision": "3da407506d2fb31298c59d4678e58cf1"
@@ -314,13 +314,13 @@ define(['./workbox-afac4cd2'], (function (workbox) { 'use strict';
     "url": "assets/lokasi_bromo_picnic-D3WvrT2S.png",
     "revision": null
   }, {
-    "url": "assets/index.es-BueUnyw2.js",
+    "url": "assets/index.es-B4xbsXCm.js",
     "revision": null
   }, {
-    "url": "assets/index-DV7CF9lC.js",
+    "url": "assets/index-CAIXKR6d.css",
     "revision": null
   }, {
-    "url": "assets/index-BZH6D83A.css",
+    "url": "assets/index-BrKdwnjb.js",
     "revision": null
   }, {
     "url": "assets/imgtoiletbromo_wisatabromo-Cdjk32fT.png",
@@ -468,6 +468,9 @@ define(['./workbox-afac4cd2'], (function (workbox) { 'use strict';
     "revision": null
   }, {
     "url": "assets/aistudio/jeep-polos-4x1-snippet_f30e0ac2.html",
+    "revision": null
+  }, {
+    "url": "assets/aistudio/jeep-konvoi-4x1-snippet_24fbfc55.html",
     "revision": null
   }, {
     "url": "assets/aistudio/Salinan_dari_Desain_Tanpa_Judul_20261108_174614_0001_6a7ed04b.png",
