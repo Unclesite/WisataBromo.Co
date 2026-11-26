@@ -46,7 +46,7 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
 
   // Determine active article type
   const isOpenTripBatuArticle =
-    articleId === 'open-trip-bromo-start-kota-batu-harga-2026' ||
+    articleId === 'open-trip-bromo-start-kota-batu' ||
     articleId?.includes('open-trip-bromo-start-kota-batu') ||
     articleId?.includes('open-trip-bromo-start-batu') ||
     articleId?.includes('open-trip-start-kota-batu') ||
@@ -56,7 +56,7 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
 
   const isOpenTripMalangArticle =
     !isOpenTripBatuArticle &&
-    (articleId === 'open-trip-bromo-start-kota-malang-harga-2026' ||
+    (articleId === 'open-trip-bromo-start-kota-malang' ||
       articleId?.includes('open-trip-bromo-start-kota-malang') ||
       articleId?.includes('open-trip-start-kota-malang') ||
       articleSlug?.includes('open-trip-bromo-start-kota-malang') ||
@@ -65,7 +65,7 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
   const isOpenTripSurabayaArticle =
     !isOpenTripBatuArticle &&
     !isOpenTripMalangArticle &&
-    (articleId === 'open-trip-bromo-start-surabaya-harga-2026' ||
+    (articleId === 'open-trip-bromo-start-surabaya' ||
       articleId?.includes('open-trip-bromo-start-surabaya') ||
       articleId?.includes('open-trip-bromo-start-kota-surabaya') ||
       articleId?.includes('open-trip-start-kota-surabaya') ||
@@ -77,7 +77,7 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
     !isOpenTripBatuArticle &&
     !isOpenTripMalangArticle &&
     !isOpenTripSurabayaArticle &&
-    (articleId === 'private-trip-bromo-start-gubugklakah-harga-2026' ||
+    (articleId === 'private-trip-bromo-start-gubugklakah' ||
       articleId?.includes('start-gubugklakah') ||
       articleSlug?.includes('start-gubugklakah') ||
       articleSlug?.includes('gubugklakah-kab-malang'));
@@ -87,7 +87,7 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
     !isOpenTripMalangArticle &&
     !isOpenTripSurabayaArticle &&
     !isGubugklakahTripArticle &&
-    (articleId === 'private-trip-bromo-start-tosari-harga-2026' ||
+    (articleId === 'private-trip-bromo-start-tosari' ||
       articleId?.includes('start-tosari') ||
       articleSlug?.includes('start-tosari') ||
       articleSlug?.includes('tosari-pasuruan'));
@@ -98,7 +98,7 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
     !isOpenTripSurabayaArticle &&
     !isGubugklakahTripArticle &&
     !isTosariTripArticle &&
-    (articleId === 'private-trip-bromo-start-sukapura-harga-2026' ||
+    (articleId === 'private-trip-bromo-start-sukapura' ||
       articleId?.includes('start-sukapura') ||
       articleSlug?.includes('start-sukapura') ||
       articleSlug?.includes('sukapura-probolinggo'));
@@ -110,7 +110,7 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
     !isGubugklakahTripArticle &&
     !isTosariTripArticle &&
     !isSukapuraTripArticle &&
-    (articleId === 'private-trip-bromo-start-batu-harga-2026' ||
+    (articleId === 'private-trip-bromo-start-batu' ||
       articleId?.includes('start-batu') ||
       articleId?.includes('start-kota-batu') ||
       articleSlug?.includes('start-batu') ||
@@ -124,7 +124,7 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
     !isTosariTripArticle &&
     !isSukapuraTripArticle &&
     !isBatuTripArticle &&
-    (articleId === 'private-trip-bromo-start-surabaya-harga-2026' ||
+    (articleId === 'private-trip-bromo-start-surabaya' ||
       articleId?.includes('start-surabaya') ||
       articleSlug?.includes('start-surabaya'));
 
@@ -137,7 +137,7 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
     !isSukapuraTripArticle &&
     !isBatuTripArticle &&
     !isSurabayaTripArticle &&
-    (articleId === 'open-trip-bromo-start-malang-harga-2026' ||
+    (articleId === 'private-trip-bromo-start-kota-malang' ||
       articleId?.includes('open-trip-bromo-start-malang') ||
       articleId?.includes('private-trip-bromo-start') ||
       articleId?.includes('start-kota-malang') ||
@@ -946,12 +946,12 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
                   <a
                     href={
                       isOpenTripBatuArticle
-                        ? 'https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20mau%20booking%20Open%20Trip%20Bromo%20Start%20Kota%20Batu%20(Harga%202026%20Rp325.000/org%20Reguler%20/%20Rp375.000/org%20Plus%20Foto%20DSLR).'
+                        ? 'https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20mau%20booking%20Open%20Trip%20Bromo%20Start%20Kota%20Batu%20(Rp325.000/org%20Reguler%20/%20Rp375.000/org%20Plus%20Foto%20DSLR).'
                         : isOpenTripMalangArticle
-                        ? 'https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20mau%20booking%20Open%20Trip%20Bromo%20Start%20Kota%20Malang%20(Harga%202026%20Rp275.000/org%20Reguler%20/%20Rp325.000/org%20Plus%20Foto%20DSLR).'
+                        ? 'https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20mau%20booking%20Open%20Trip%20Bromo%20Start%20Kota%20Malang%20(Rp275.000/org%20Reguler%20/%20Rp325.000/org%20Plus%20Foto%20DSLR).'
                         : isOpenTripSurabayaArticle
-                        ? 'https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20mau%20booking%20Open%20Trip%20Bromo%20Start%20Kota%20Surabaya%20(Harga%202026%20Rp400.000/org%20Weekend%20via%20Tosari%20/%20Rp750.000/org%20Harian%20via%20Malang,%20Include%20Dokumentasi).'
-                        : 'https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20mau%20booking%20Private%20Trip%20Bromo%20Start%20Surabaya%20(Harga%202026%20Include%20Dokumentasi).'
+                        ? 'https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20mau%20booking%20Open%20Trip%20Bromo%20Start%20Kota%20Surabaya%20(Rp400.000/org%20Weekend%20via%20Tosari%20/%20Rp750.000/org%20Harian%20via%20Malang,%20Include%20Dokumentasi).'
+                        : 'https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20mau%20booking%20Private%20Trip%20Bromo%20Start%20Surabaya%20(Include%20Dokumentasi).'
                     }
                     target="_blank"
                     rel="noopener noreferrer"
@@ -969,27 +969,27 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
                   <h4 className="text-sm font-extrabold text-[#0B1220]">
                     {isOpenTripBatuArticle
                       ? language === 'en'
-                        ? 'Share this Open Trip Start Batu City 2026 guide'
+                        ? 'Share this Open Trip Start Batu City guide'
                         : language === 'zh'
-                        ? '分享这份 2026 巴图市出发拼团指南'
-                        : 'Bagikan panduan Open Trip Start Kota Batu 2026 ini'
+                        ? '分享这份巴图市出发拼团指南'
+                        : 'Bagikan panduan Open Trip Start Kota Batu ini'
                       : isOpenTripMalangArticle
                       ? language === 'en'
-                        ? 'Share this Open Trip Start Malang City 2026 guide'
+                        ? 'Share this Open Trip Start Malang City guide'
                         : language === 'zh'
-                        ? '分享这份 2026 玛琅市区出发拼团指南'
-                        : 'Bagikan panduan Open Trip Start Kota Malang 2026 ini'
+                        ? '分享这份玛琅市区出发拼团指南'
+                        : 'Bagikan panduan Open Trip Start Kota Malang ini'
                       : isOpenTripSurabayaArticle
                       ? language === 'en'
-                        ? 'Share this Open Trip Start Surabaya City 2026 guide'
+                        ? 'Share this Open Trip Start Surabaya City guide'
                         : language === 'zh'
-                        ? '分享这份 2026 泗水市区出发拼团指南'
-                        : 'Bagikan panduan Open Trip Start Kota Surabaya 2026 ini'
+                        ? '分享这份泗水市区出发拼团指南'
+                        : 'Bagikan panduan Open Trip Start Kota Surabaya ini'
                       : language === 'en'
-                      ? 'Share this Private Trip Start Surabaya 2026 guide'
+                      ? 'Share this Private Trip Start Surabaya guide'
                       : language === 'zh'
-                      ? '分享这份 2026 泗水出发私人团指南'
-                      : 'Bagikan panduan Private Trip Start Surabaya 2026 ini'}
+                      ? '分享这份泗水出发私人团指南'
+                      : 'Bagikan panduan Private Trip Start Surabaya ini'}
                   </h4>
                   <p className="text-xs text-slate-500">
                     {language === 'en'
@@ -1379,14 +1379,14 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
                   <a
                     href={
                       isGubugklakahTripArticle
-                        ? 'https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20mau%20booking%20Private%20Trip%20Bromo%20Start%20Gubugklakah%20Kab.%20Malang%20(Harga%202026%20Rp1.400.000%20per%20jeep%20untuk%201-6%20peserta).'
+                        ? 'https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20mau%20booking%20Private%20Trip%20Bromo%20Start%20Gubugklakah%20Kab.%20Malang%20(Rp1.400.000%20per%20jeep%20untuk%201-6%20peserta).'
                         : isTosariTripArticle
-                        ? 'https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20mau%20booking%20Private%20Trip%20Bromo%20Start%20Tosari%20Pasuruan%20(Harga%202026%20Rp950.000%20per%20jeep%20untuk%201-6%20peserta).'
+                        ? 'https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20mau%20booking%20Private%20Trip%20Bromo%20Start%20Tosari%20Pasuruan%20(Rp950.000%20per%20jeep%20untuk%201-6%20peserta).'
                         : isSukapuraTripArticle
-                        ? 'https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20mau%20booking%20Private%20Trip%20Bromo%20Start%20Sukapura%20Probolinggo%20(Harga%202026%20Rp1.000.000%20per%20jeep%20untuk%201-6%20peserta).'
+                        ? 'https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20mau%20booking%20Private%20Trip%20Bromo%20Start%20Sukapura%20Probolinggo%20(Rp1.000.000%20per%20jeep%20untuk%201-6%20peserta).'
                         : isBatuTripArticle
-                        ? 'https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20mau%20booking%20Private%20Trip%20Bromo%20Start%20Kota%20Batu%20(Harga%202026%20Rp1.800.000%20per%20jeep%20untuk%201-6%20peserta).'
-                        : 'https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20mau%20booking%20Private%20Trip%20Bromo%20Start%20Kota%20Malang%20(Harga%20Promo%202026%20Rp1.700.000%20per%20jeep%20untuk%201-6%20peserta).'
+                        ? 'https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20mau%20booking%20Private%20Trip%20Bromo%20Start%20Kota%20Batu%20(Rp1.800.000%20per%20jeep%20untuk%201-6%20peserta).'
+                        : 'https://wa.me/6281222290318?text=Halo%20Admin%20WisataBromo.co,%20saya%20mau%20booking%20Private%20Trip%20Bromo%20Start%20Kota%20Malang%20(Harga%20Promo%20Rp1.700.000%20per%20jeep%20untuk%201-6%20peserta).'
                     }
                     target="_blank"
                     rel="noopener noreferrer"
@@ -1404,33 +1404,33 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
                   <h4 className="text-sm font-extrabold text-[#0B1220]">
                     {isGubugklakahTripArticle
                       ? language === 'en'
-                        ? 'Share this Private Trip Start Gubugklakah Malang 2026 guide'
+                        ? 'Share this Private Trip Start Gubugklakah Malang guide'
                         : language === 'zh'
-                        ? '分享这份 2026 玛琅县 Gubugklakah 出发私人团指南'
-                        : 'Bagikan panduan Private Trip Start Gubugklakah Kab. Malang 2026 ini'
+                        ? '分享这份玛琅县 Gubugklakah 出发私人团指南'
+                        : 'Bagikan panduan Private Trip Start Gubugklakah Kab. Malang ini'
                       : isTosariTripArticle
                       ? language === 'en'
-                        ? 'Share this Private Trip Start Tosari Pasuruan 2026 guide'
+                        ? 'Share this Private Trip Start Tosari Pasuruan guide'
                         : language === 'zh'
-                        ? '分享这份 2026 岩望 Tosari 出发私人团指南'
-                        : 'Bagikan panduan Private Trip Start Tosari Pasuruan 2026 ini'
+                        ? '分享这份岩望 Tosari 出发私人团指南'
+                        : 'Bagikan panduan Private Trip Start Tosari Pasuruan ini'
                       : isSukapuraTripArticle
                       ? language === 'en'
-                        ? 'Share this Private Trip Start Sukapura Probolinggo 2026 guide'
+                        ? 'Share this Private Trip Start Sukapura Probolinggo guide'
                         : language === 'zh'
-                        ? '分享这份 2026 庞越 Sukapura 出发私人团指南'
-                        : 'Bagikan panduan Private Trip Start Sukapura Probolinggo 2026 ini'
+                        ? '分享这份庞越 Sukapura 出发私人团指南'
+                        : 'Bagikan panduan Private Trip Start Sukapura Probolinggo ini'
                       : isBatuTripArticle
                       ? language === 'en'
-                        ? 'Share this Private Trip Start Batu City 2026 guide'
+                        ? 'Share this Private Trip Start Batu City guide'
                         : language === 'zh'
-                        ? '分享这份 2026 巴图市出发私人团指南'
-                        : 'Bagikan panduan Private Trip Start Kota Batu 2026 ini'
+                        ? '分享这份巴图市出发私人团指南'
+                        : 'Bagikan panduan Private Trip Start Kota Batu ini'
                       : language === 'en'
-                      ? 'Share this Private Trip Start Malang City 2026 guide'
+                      ? 'Share this Private Trip Start Malang City guide'
                       : language === 'zh'
-                      ? '分享这份 2026 玛琅市区出发私人团指南'
-                      : 'Bagikan panduan Private Trip Start Kota Malang 2026 ini'}
+                      ? '分享这份玛琅市区出发私人团指南'
+                      : 'Bagikan panduan Private Trip Start Kota Malang ini'}
                   </h4>
                   <p className="text-xs text-slate-500">
                     {language === 'en'
@@ -1655,10 +1655,10 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
                             <div className="p-3.5 rounded-2xl bg-[#fff700]/20 border border-amber-300 space-y-0.5">
                               <div className="text-[11px] font-black uppercase tracking-wider text-amber-800">
                                 {language === 'en'
-                                  ? 'Promo Price 2026'
+                                  ? 'Promo Price'
                                   : language === 'zh'
-                                  ? '2026 优惠价'
-                                  : 'Harga Promo 2026'}
+                                  ? '优惠价'
+                                  : 'Harga Promo'}
                               </div>
                               <div className="text-2xl font-black text-[#102a56]">
                                 {item.promoPrice}
@@ -2283,10 +2283,10 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
                     </span>
                     <p className="text-xs sm:text-sm font-bold text-[#102a56] leading-snug">
                       {language === 'en'
-                        ? 'Complete 2026 rates, routes & friendly tips so you can ride happily across the Sea of Sand!'
+                        ? 'Complete rates, routes & friendly tips so you can ride happily across the Sea of Sand!'
                         : language === 'zh'
-                        ? '2026年最新骑马价格、路线与实用小贴士，助您轻松畅游布罗莫沙海！'
-                        : 'Panduan jujur tarif 2026, rute & trik tawar ramah biar naik kuda di Lautan Pasir makin happy dan bebas drama!'}
+                        ? '最新骑马价格、路线与实用小贴士，助您轻松畅游布罗莫沙海！'
+                        : 'Panduan jujur tarif terbaru, rute & trik tawar ramah biar naik kuda di Lautan Pasir makin happy dan bebas drama!'}
                     </p>
                   </div>
                 </div>

@@ -73,12 +73,12 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_GUBUGKLAKAH: Record<
   LocalizedGubugklakahTripArticleContent
 > = {
   id: {
-    id: 'private-trip-bromo-start-gubugklakah-harga-2026',
-    slug: 'private-trip-bromo-start-gubugklakah-kab-malang-harga-2026-itinerary-fasilitas',
+    id: 'private-trip-bromo-start-gubugklakah',
+    slug: 'private-trip-bromo-start-gubugklakah-kab-malang-harga-itinerary-fasilitas',
     bookingPackageId: 'private-jeep-tumpang',
-    title: 'Private Trip Bromo Start Gubugklakah Kab. Malang: Harga 2026, Itinerary, dan Fasilitas',
+    title: 'Private Trip Bromo Start Gubugklakah Kab. Malang: Harga, Itinerary, dan Fasilitas',
     metaDescription:
-      'Panduan lengkap Private Trip Bromo Start Gubugklakah Kab. Malang Harga 2026 mulai Rp1.400.000 per jeep/grup untuk 1–6 peserta (1 atau 6 orang harga sama saja), jalur eksotis kebun apel & savana Jemplang, dokumentasi +Rp500.000 & drone +Rp1.500.000, meeting point Basecamp Gubugklakah No. 147.',
+      'Panduan lengkap Private Trip Bromo Start Gubugklakah Kab. Malang Harga Terbaru mulai Rp1.400.000 per jeep/grup untuk 1–6 peserta (1 atau 6 orang harga sama saja), jalur eksotis kebun apel & savana Jemplang, dokumentasi +Rp500.000 & drone +Rp1.500.000, meeting point Basecamp Gubugklakah No. 147.',
     author: 'Tim Editorial WisataBromo.co',
     publishDate: '26 November 2026',
     readTime: '5 Menit Baca',
@@ -90,9 +90,9 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_GUBUGKLAKAH: Record<
       '🚐 Private Jeep 4×4 Bromo Start Gubugklakah Kab. Malang — Harga flat per jeep / per grup untuk 1–6 peserta',
     introduction: [
       'Ingin merasakan jalur selatan Gunung Bromo yang paling eksotis melintasi pedesaan kebun apel, hutan pinus asri, Desa Ngadas, dan bentang tebing Savana Jemplang? Layanan Private Trip Bromo Start Gubugklakah Kab. Malang cocok bagi Anda yang membawa kendaraan pribadi dari arah Malang Timur/Tumpang atau sudah menginap di Desa Wisata Gubugklakah. Anda menyewa 1 unit Jeep 4×4 Toyota Land Cruiser FJ40 secara 100% privat tanpa digabung rombongan lain, berangkat setiap hari pukul 03:00 WIB dini hari (tersedia juga opsi pagi/siang).',
-      'Panduan Harga 2026 ini merangkum tarif flat Rp1.400.000 per jeep untuk 1–6 peserta (berangkat 1 orang maupun 6 orang harganya tetap sama saja), tambahan dokumentasi & drone, fasilitas lengkap include/exclude, itinerary 02:30 – 10:30 WIB, meeting point Basecamp Gubugklakah No. 147, hingga perlengkapan wajib suhu 2°C – 10°C.',
+      'Panduan Harga Terbaru ini merangkum tarif flat Rp1.400.000 per jeep untuk 1–6 peserta (berangkat 1 orang maupun 6 orang harganya tetap sama saja), tambahan dokumentasi & drone, fasilitas lengkap include/exclude, itinerary 02:30 – 10:30 WIB, meeting point Basecamp Gubugklakah No. 147, hingga perlengkapan wajib suhu 2°C – 10°C.',
     ],
-    pricingSectionTitle: '💰 Harga & Paket Private Trip Start Gubugklakah Kab. Malang (Update 2026)',
+    pricingSectionTitle: '💰 Harga & Paket Private Trip Start Gubugklakah Kab. Malang (Terbaru)',
     pricingSectionSubtitle:
       'Harga flat per jeep / per grup (maksimal 6 peserta tanpa dokumentasi atau 5 peserta plus fotografer) — berangkat 1 orang maupun 6 orang, harganya sama saja!',
     normalPrice: 'Rp1.650.000',
@@ -204,12 +204,12 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_GUBUGKLAKAH: Record<
     extraTipContent:
       'Private Trip Start Gubugklakah Kab. Malang sangat direkomendasikan bagi traveler dan keluarga dari arah Malang Timur yang menginap di Desa Wisata Gubugklakah atau Tumpang. Jangan lupa siapkan kamera karena pemandangan tebing savana Jemplang dan perbukitan hijau saat perjalanan pulang di siang hari sangat memukau!',
     conclusion:
-      'Dengan tarif reguler 2026 Rp1.400.000 per jeep/grup untuk 1–6 peserta (1 atau 6 orang harga sama saja), sudah termasuk tiket masuk TNBTS WNI, BBM, dan driver lokal Gubugklakah, perjalanan Bromo jalur selatan Anda jauh lebih seru dan eksklusif. Hitung estimasi lengkap serta opsi dokumentasi dan drone langsung di Kalkulator Private Start Gubugklakah.',
+      'Dengan tarif reguler Rp1.400.000 per jeep/grup untuk 1–6 peserta (1 atau 6 orang harga sama saja), sudah termasuk tiket masuk TNBTS WNI, BBM, dan driver lokal Gubugklakah, perjalanan Bromo jalur selatan Anda jauh lebih seru dan eksklusif. Hitung estimasi lengkap serta opsi dokumentasi dan drone langsung di Kalkulator Private Start Gubugklakah.',
     ctaButton: 'Hitung & Booking via Kalkulator Private Start Gubugklakah',
     tags: [
       'Private Trip Start Gubugklakah',
       'Sewa Jeep Bromo Tumpang',
-      'Harga Jeep Gubugklakah 2026',
+      'Harga Jeep Gubugklakah',
       'Jalur Bromo Ngadas Jemplang',
       'Sewa Jeep Bromo 1-6 Orang',
       'Itinerary Bromo Gubugklakah',
@@ -217,12 +217,12 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_GUBUGKLAKAH: Record<
   },
 
   en: {
-    id: 'private-trip-bromo-start-gubugklakah-harga-2026',
-    slug: 'private-trip-bromo-start-gubugklakah-kab-malang-harga-2026-itinerary-fasilitas',
+    id: 'private-trip-bromo-start-gubugklakah',
+    slug: 'private-trip-bromo-start-gubugklakah-kab-malang-harga-itinerary-fasilitas',
     bookingPackageId: 'private-jeep-tumpang',
-    title: 'Private Trip Bromo Start Gubugklakah Malang Regency: 2026 Prices, Itinerary & Facilities',
+    title: 'Private Trip Bromo Start Gubugklakah Malang Regency: Prices, Itinerary & Facilities',
     metaDescription:
-      'Complete 2026 guide for Private Trip Bromo Start Gubugklakah Malang Regency from Rp1.400.000 per jeep/group for 1–6 participants (same flat rate for 1 or 6 people), scenic apple-orchard & Jemplang savanna route, optional photo/video +Rp500.000 & drone +Rp1.500.000.',
+      'Complete guide for Private Trip Bromo Start Gubugklakah Malang Regency from Rp1.400.000 per jeep/group for 1–6 participants (same flat rate for 1 or 6 people), scenic apple-orchard & Jemplang savanna route, optional photo/video +Rp500.000 & drone +Rp1.500.000.',
     author: 'WisataBromo.co Editorial Team',
     publishDate: 'November 26, 2026',
     readTime: '5 Min Read',
@@ -234,9 +234,9 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_GUBUGKLAKAH: Record<
       '🚐 Private 4×4 Bromo Jeep Start Gubugklakah Malang Regency — Flat rate per jeep / per group for 1–6 participants',
     introduction: [
       'Want to experience Mount Bromo’s most scenic southern route winding through apple orchards, lush pine forests, Ngadas Village, and dramatic Jemplang savanna cliffs? Our Private Trip Bromo Start Gubugklakah Malang Regency is ideal if you are driving from East Malang/Tumpang or staying in Gubugklakah Tourism Village. Rent one 100% private Toyota Land Cruiser FJ40 4×4 Jeep departing daily at 03:00 WIB (optional morning/daytime departures available).',
-      'This 2026 guide details our flat per-jeep rate of Rp1.400.000 for 1–6 participants (whether 1 or 6 people ride, the rate is identical), optional photography and drone add-ons, inclusions/exclusions, the 02:30–10:30 WIB itinerary, and cold-weather packing tips.',
+      'This guide details our flat per-jeep rate of Rp1.400.000 for 1–6 participants (whether 1 or 6 people ride, the rate is identical), optional photography and drone add-ons, inclusions/exclusions, the 02:30–10:30 WIB itinerary, and cold-weather packing tips.',
     ],
-    pricingSectionTitle: '💰 2026 Private Trip Start Gubugklakah Prices & Add-Ons',
+    pricingSectionTitle: '💰 Private Trip Start Gubugklakah Prices & Add-Ons',
     pricingSectionSubtitle:
       'Flat price per jeep / per group (max 6 guests without photographer, or 5 guests with photographer) — 1 person or 6 people pay the exact same rate!',
     normalPrice: 'Rp1.650.000',
@@ -348,12 +348,12 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_GUBUGKLAKAH: Record<
     extraTipContent:
       'Private Trip Start Gubugklakah is the premier choice for travelers staying in Gubugklakah or Tumpang who love scenic mountain landscapes—keep your camera ready on the daytime return trip past Jemplang savanna cliffs and East Malang apple orchards!',
     conclusion:
-      'Book directly using our Private Start Gubugklakah Calculator to choose your date, add optional photography or drone coverage, and lock in the 2026 flat rate of Rp1.400.000 per jeep/group.',
+      'Book directly using our Private Start Gubugklakah Calculator to choose your date, add optional photography or drone coverage, and lock in the flat rate of Rp1.400.000 per jeep/group.',
     ctaButton: 'Calculate & Book via Private Start Gubugklakah Calculator',
     tags: [
       'Private Trip Start Gubugklakah',
       'Bromo Jeep Rental Tumpang',
-      'Gubugklakah Jeep Prices 2026',
+      'Gubugklakah Jeep Prices',
       'Bromo Ngadas Jemplang Route',
       'Bromo Jeep 1-6 Pax',
       'Bromo Itinerary Gubugklakah',
@@ -361,12 +361,12 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_GUBUGKLAKAH: Record<
   },
 
   zh: {
-    id: 'private-trip-bromo-start-gubugklakah-harga-2026',
-    slug: 'private-trip-bromo-start-gubugklakah-kab-malang-harga-2026-itinerary-fasilitas',
+    id: 'private-trip-bromo-start-gubugklakah',
+    slug: 'private-trip-bromo-start-gubugklakah-kab-malang-harga-itinerary-fasilitas',
     bookingPackageId: 'private-jeep-tumpang',
-    title: 'Private Trip 玛琅县 Gubugklakah 出发布罗莫：2026 价格、行程与设施完整指南',
+    title: 'Private Trip 玛琅县 Gubugklakah 出发布罗莫：价格、行程与设施完整指南',
     metaDescription:
-      '2026 玛琅县 Gubugklakah 大本营出发布罗莫私人吉普团攻略：平季整车价 Rp1.400.000/辆（适用 1–6 人，1 人或 6 人同价），穿越苹果园、松林与 Jemplang 草原南线绝美秘境，含摄影与无人机加购价。',
+      '玛琅县 Gubugklakah 大本营出发布罗莫私人吉普团攻略：平季整车价 Rp1.400.000/辆（适用 1–6 人，1 人或 6 人同价），穿越苹果园、松林与 Jemplang 草原南线绝美秘境，含摄影与无人机加购价。',
     author: 'WisataBromo.co 编辑团队',
     publishDate: '2026年11月26日',
     readTime: '5 分钟阅读',
@@ -378,9 +378,9 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_GUBUGKLAKAH: Record<
       '🚐 玛琅县 Gubugklakah 出发专属四驱布罗莫吉普 — 每辆 / 每团 1–6 人同价一口价',
     introduction: [
       '想体验布罗莫火山最具风情的南线秘境，穿越东玛琅苹果园、苍翠松林、Ngadas 山村与 Jemplang 高山草原悬崖？选择 Private Trip Start Gubugklakah Kab. Malang 私人吉普包车正是最佳选择！独享 1 辆 100% 独立四驱丰田 FJ40 吉普车，每日 03:00 凌晨出发（亦可选上午或午间出发）。',
-      '本文完整整理 2026 整车报价 Rp1.400.000（1–6 人同价）、摄影与无人机加购价、费用包含/不含及 02:30–10:30 行程攻略。',
+      '本文完整整理整车报价 Rp1.400.000（1–6 人同价）、摄影与无人机加购价、费用包含/不含及 02:30–10:30 行程攻略。',
     ],
-    pricingSectionTitle: '💰 2026 玛琅县 Gubugklakah 出发私人吉普价格与方案',
+    pricingSectionTitle: '💰 玛琅县 Gubugklakah 出发私人吉普价格与方案',
     pricingSectionSubtitle: '按辆吉普车 / 按团一口价（最多 6 人；含摄影师最多 5 人）—— 1 人或 6 人出行同价！',
     normalPrice: 'Rp1.650.000',
     promoPrice: 'Rp1.400.000',
@@ -484,11 +484,11 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_GUBUGKLAKAH: Record<
     extraTipContent:
       'Gubugklakah 入口非常适合下榻在东玛琅或 Tumpang 民宿的家庭与摄影爱好者——白日返程经过 Jemplang 草原悬崖时请务必准备好相机捕捉绝美山谷风光！',
     conclusion:
-      '立即打开 Gubugklakah 私人吉普计算器选择日期与摄影/无人机加购项，锁定 2026 平季整车价 Rp1.400.000（1–6 人同价）！',
+      '立即打开 Gubugklakah 私人吉普计算器选择日期与摄影/无人机加购项，锁定平季整车价 Rp1.400.000（1–6 人同价）！',
     ctaButton: '打开 Gubugklakah 专车计算器立即预订',
     tags: [
       'Private Trip Gubugklakah 出发',
-      '2026玛琅东线布罗莫吉普',
+      '玛琅东线布罗莫吉普',
       'Tumpang 租吉普',
       'Jemplang 草原路线',
       '布罗莫吉普1-6人同价',

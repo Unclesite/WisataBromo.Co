@@ -85,12 +85,12 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_SURABAYA: Record<
   LocalizedSurabayaTripArticleContent
 > = {
   id: {
-    id: 'private-trip-bromo-start-surabaya-harga-2026',
-    slug: 'private-trip-bromo-start-surabaya-harga-2026-itinerary-fasilitas',
+    id: 'private-trip-bromo-start-surabaya',
+    slug: 'private-trip-bromo-start-surabaya-harga-itinerary-fasilitas',
     bookingPackageId: 'private-jeep-surabaya',
-    title: 'Private Trip Bromo Start Surabaya: Harga 2026, Itinerary, dan Fasilitas',
+    title: 'Private Trip Bromo Start Surabaya: Harga, Itinerary, dan Fasilitas',
     metaDescription:
-      'Panduan lengkap Private Trip Bromo Start Surabaya Raya Harga 2026 (2 hingga >18 peserta) mulai Rp370.000/orang atau Rp570.000/orang untuk 6 pax — 100% privat, BBM & Tol PP, sudah INCLUDE dokumentasi foto & video DSLR/Mirrorless, opsi drone +Rp1.500.000, jemput Bandara Juanda, Stasiun, & Hotel Surabaya/Sidoarjo.',
+      'Panduan lengkap Private Trip Bromo Start Surabaya Raya Harga Terbaru (2 hingga >18 peserta) mulai Rp370.000/orang atau Rp570.000/orang untuk 6 pax — 100% privat, BBM & Tol PP, sudah INCLUDE dokumentasi foto & video DSLR/Mirrorless, opsi drone +Rp1.500.000, jemput Bandara Juanda, Stasiun, & Hotel Surabaya/Sidoarjo.',
     author: 'Tim Editorial WisataBromo.co',
     publishDate: '26 November 2026',
     readTime: '6 Menit Baca',
@@ -102,9 +102,9 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_SURABAYA: Record<
       '🚐 Private Trip Bromo Start Surabaya Raya — VIP door-to-door via Tol Trans Jawa & Jeep 4×4 100% privat',
     introduction: [
       'Berangkat ke Gunung Bromo langsung dari Surabaya atau Sidoarjo kini jauh lebih praktis, eksklusif, dan bebas repot melalui layanan Private Trip Bromo Start Surabaya Raya. Anda tidak digabung dengan peserta lain (100% privat), dijemput langsung door-to-door menggunakan armada AC prima (Innova Reborn, Hiace Premio, Elf, hingga Bus Pariwisata) via Tol Trans Jawa, lalu dilanjutkan eksplorasi menggunakan Jeep 4×4 privat di kawasan kaldera Bromo.',
-      'Istimewanya lagi, paket Private Trip Start Surabaya 2026 ini sudah INCLUDE dokumentasi foto & video DSLR/Mirrorless profesional tanpa biaya tambahan! Simak daftar tarif bertingkat per jumlah peserta, rincian fasilitas include/exclude, itinerary 23:00 – 13:30 WIB, titik penjemputan resmi Surabaya Raya, hingga perlengkapan wajib suhu 2°C – 10°C sebelum menghitung estimasi di Kalkulator Private Start Surabaya.',
+      'Istimewanya lagi, paket Private Trip Start Surabaya ini sudah INCLUDE dokumentasi foto & video DSLR/Mirrorless profesional tanpa biaya tambahan! Simak daftar tarif bertingkat per jumlah peserta, rincian fasilitas include/exclude, itinerary 23:00 – 13:30 WIB, titik penjemputan resmi Surabaya Raya, hingga perlengkapan wajib suhu 2°C – 10°C sebelum menghitung estimasi di Kalkulator Private Start Surabaya.',
     ],
-    pricingSectionTitle: '💰 Harga & Paket Private Trip Start Surabaya (Update 2026)',
+    pricingSectionTitle: '💰 Harga & Paket Private Trip Start Surabaya (Terbaru)',
     pricingSectionSubtitle:
       'Tarif transparan bertingkat per peserta — semakin banyak rombongan, biaya per orang semakin hemat dan sudah INCLUDE dokumentasi!',
     heroBadge: 'VVIP SURABAYA RAYA • INCLUDE DOKUMENTASI',
@@ -115,7 +115,7 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_SURABAYA: Record<
     docIncludedBannerTitle: '📸 Dokumentasi Foto & Video DSLR/Mirrorless SUDAH INCLUDE!',
     docIncludedBannerDesc:
       'Untuk Private Trip Start Surabaya Raya (2 hingga >18 peserta), layanan fotografer & videografer DSLR/Mirrorless sudah masuk ke dalam harga paket tanpa biaya tambahan. Anda juga bisa menambahkan Drone (+Rp1.500.000) langsung di kalkulator.',
-    tiersTableTitle: 'Daftar Harga Lengkap Private Trip Start Surabaya 2026',
+    tiersTableTitle: 'Daftar Harga Lengkap Private Trip Start Surabaya',
     tiersTableSubtitle: 'Pilih jumlah rombongan Anda (2 orang hingga rombongan besar >18 orang):',
     highSeasonNote:
       'Catatan: Pada periode High Season / Libur Panjang / Nataru / Lebaran berlaku penyesuaian +Rp50.000/orang. Peserta WNA dikenakan surcharge tiket TNBTS Rp255.000/orang.',
@@ -251,7 +251,7 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_SURABAYA: Record<
     ctaButton: 'Hitung & Booking via Kalkulator Private Start Surabaya',
     tags: [
       'Private Trip Bromo Start Surabaya',
-      'Harga Bromo Surabaya 2026',
+      'Harga Bromo Surabaya',
       'Paket Bromo Jemput Juanda',
       'Private Trip Bromo Include Dokumentasi',
       'Itinerary Bromo Surabaya',
@@ -260,12 +260,12 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_SURABAYA: Record<
   },
 
   en: {
-    id: 'private-trip-bromo-start-surabaya-harga-2026',
-    slug: 'private-trip-bromo-start-surabaya-harga-2026-itinerary-fasilitas',
+    id: 'private-trip-bromo-start-surabaya',
+    slug: 'private-trip-bromo-start-surabaya-harga-itinerary-fasilitas',
     bookingPackageId: 'private-jeep-surabaya',
-    title: 'Private Trip Bromo Start Surabaya: 2026 Prices, Itinerary & Facilities',
+    title: 'Private Trip Bromo Start Surabaya: Prices, Itinerary & Facilities',
     metaDescription:
-      'Complete 2026 guide for Private Trip Bromo Start Greater Surabaya (2 to 18+ guests) from Rp370.000/pax or Rp570.000/pax for 6 guests — 100% private AC transport via Toll Road, private 4×4 Jeep, DSLR/Mirrorless photo & video INCLUDED, optional drone +Rp1.500.000, pickup at Juanda Airport, stations & hotels.',
+      'Complete guide for Private Trip Bromo Start Greater Surabaya (2 to 18+ guests) from Rp370.000/pax or Rp570.000/pax for 6 guests — 100% private AC transport via Toll Road, private 4×4 Jeep, DSLR/Mirrorless photo & video INCLUDED, optional drone +Rp1.500.000, pickup at Juanda Airport, stations & hotels.',
     author: 'WisataBromo.co Editorial Team',
     publishDate: 'November 26, 2026',
     readTime: '6 Min Read',
@@ -277,9 +277,9 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_SURABAYA: Record<
       '🚐 Private Trip Bromo Start Greater Surabaya — VIP door-to-door via Trans-Java Toll & 100% Private 4×4 Jeep',
     introduction: [
       'Traveling to Mount Bromo directly from Surabaya or Sidoarjo is effortless and completely private with our Private Trip Bromo Start Greater Surabaya service. Your group is never mixed with other travelers—enjoy direct door-to-door pickup in a comfortable AC vehicle (Innova Reborn, Hiace Premio, Elf, or Tour Bus) via the Trans-Java Toll Road, transferring smoothly into a private 4×4 Jeep at Bromo.',
-      'Best of all, our 2026 Private Trip Start Surabaya package already INCLUDES professional DSLR/Mirrorless photo & video documentation at no extra cost! Check the complete tiered group pricing, inclusions/exclusions, 23:00–13:30 WIB itinerary, official Surabaya pickup points, and 2°C–10°C cold-weather packing list before calculating your exact quote.',
+      'Best of all, our Private Trip Start Surabaya package already INCLUDES professional DSLR/Mirrorless photo & video documentation at no extra cost! Check the complete tiered group pricing, inclusions/exclusions, 23:00–13:30 WIB itinerary, official Surabaya pickup points, and 2°C–10°C cold-weather packing list before calculating your exact quote.',
     ],
-    pricingSectionTitle: '💰 2026 Private Trip Start Surabaya Prices & Packages',
+    pricingSectionTitle: '💰 Private Trip Start Surabaya Prices & Packages',
     pricingSectionSubtitle:
       'Transparent tiered pricing per person — the bigger your group, the lower the per-person rate, with photography INCLUDED!',
     heroBadge: 'VVIP GREATER SURABAYA • PHOTO & VIDEO INCLUDED',
@@ -290,7 +290,7 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_SURABAYA: Record<
     docIncludedBannerTitle: '📸 Professional DSLR/Mirrorless Photo & Video ALREADY INCLUDED!',
     docIncludedBannerDesc:
       'Every Private Trip Start Surabaya booking (from 2 to 18+ guests) automatically includes our photographer & videographer at zero extra charge. You can optionally add Drone aerial footage (+Rp1.500.000) in the calculator.',
-    tiersTableTitle: '2026 Tiered Price List — Private Trip Start Surabaya',
+    tiersTableTitle: 'Tiered Price List — Private Trip Start Surabaya',
     tiersTableSubtitle: 'Rates automatically scale down as your group grows (2 guests up to 18+ corporate groups):',
     highSeasonNote:
       'Note: High Season / National Holidays add +Rp50.000/person. Foreign nationals (WNA) incur an official TNBTS park ticket surcharge of Rp255.000/person.',
@@ -426,7 +426,7 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_SURABAYA: Record<
     ctaButton: 'Calculate & Book via Private Start Surabaya Calculator',
     tags: [
       'Private Trip Bromo Start Surabaya',
-      'Bromo Surabaya 2026 Prices',
+      'Bromo Surabaya Prices',
       'Bromo Tour from Juanda Airport',
       'Private Bromo Included Photo Video',
       'Bromo Itinerary Surabaya',
@@ -435,12 +435,12 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_SURABAYA: Record<
   },
 
   zh: {
-    id: 'private-trip-bromo-start-surabaya-harga-2026',
-    slug: 'private-trip-bromo-start-surabaya-harga-2026-itinerary-fasilitas',
+    id: 'private-trip-bromo-start-surabaya',
+    slug: 'private-trip-bromo-start-surabaya-harga-itinerary-fasilitas',
     bookingPackageId: 'private-jeep-surabaya',
-    title: 'Private Trip 泗水出发布罗莫：2026 价格、行程与设施完整指南',
+    title: 'Private Trip 泗水出发布罗莫：价格、行程与设施完整指南',
     metaDescription:
-      '2026 泗水及诗都阿佐出发布罗莫私人定制团攻略（2至18+人）：6人团仅 Rp570.000/人、18人以上低至 Rp370.000/人，全程100%独立专车走高速、专属四驱吉普，已免费包含单反摄影跟拍，支持朱安达机场/火车站/酒店上门接送。',
+      '泗水及诗都阿佐出发布罗莫私人定制团攻略（2至18+人）：6人团仅 Rp570.000/人、18人以上低至 Rp370.000/人，全程100%独立专车走高速、专属四驱吉普，已免费包含单反摄影跟拍，支持朱安达机场/火车站/酒店上门接送。',
     author: 'WisataBromo.co 编辑团队',
     publishDate: '2026年11月26日',
     readTime: '6 分钟阅读',
@@ -452,9 +452,9 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_SURABAYA: Record<
       '🚐 泗水大区出发专属布罗莫私人团 — 高速往返空调专车 + 100% 独立四驱吉普车',
     introduction: [
       '从泗水（Surabaya）或诗都阿佐（Sidoarjo）直接出发布罗莫火山，选择 Private Trip Start Surabaya 私人定制团最省心体面。全程 100% 独立成团不拼人，空调专车（Innova Reborn / Hiace Premio / Elf / 大巴）经爪哇高速上门接送，并在布罗莫换乘专属四驱越野吉普车。',
-      '更超值的是，2026 泗水出发私人团已免费包含专业单反/微单摄影与视频跟拍（无需另付费）！下文完整整理按人数阶梯报价表、费用包含/不含、23:00–13:30 行程安排与防寒装备清单。',
+      '更超值的是，泗水出发私人团已免费包含专业单反/微单摄影与视频跟拍（无需另付费）！下文完整整理按人数阶梯报价表、费用包含/不含、23:00–13:30 行程安排与防寒装备清单。',
     ],
-    pricingSectionTitle: '💰 2026 泗水出发私人团价格表与套餐说明',
+    pricingSectionTitle: '💰 泗水出发私人团价格表与套餐说明',
     pricingSectionSubtitle: '按人数阶梯透明报价——人数越多单价越划算，且已免费包含摄影跟拍！',
     heroBadge: '泗水 VVIP 专线 • 已含专业摄影跟拍',
     startingPriceLabel: '6人热门单价',
@@ -464,7 +464,7 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_SURABAYA: Record<
     docIncludedBannerTitle: '📸 专业单反/微单照片+视频跟拍已包含在套餐内！',
     docIncludedBannerDesc:
       '所有泗水出发私人团（2人至18人以上）均已免费包含专业摄影跟拍，无需额外加钱；如需航拍可在计算器加购无人机（+Rp1.500.000）。',
-    tiersTableTitle: '2026 泗水出发私人团阶梯报价表',
+    tiersTableTitle: '泗水出发私人团阶梯报价表',
     tiersTableSubtitle: '按实际出行人数阶梯计价（2人起订，支持大型企业团建）：',
     highSeasonNote:
       '说明：旺季/节假日每人加收 Rp50.000；外籍游客 (WNA) 需补国家公园外籍门票差价 Rp255.000/人。',
@@ -588,11 +588,11 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_SURABAYA: Record<
     extraTipContent:
       '泗水出发私人团非常适合落地朱安达机场或搭乘高铁火车抵达泗水的家庭、商务贵宾及企业团队，专车走高速 + 独立吉普 + 摄影跟拍一站式全包！',
     conclusion:
-      '立即打开泗水私人团计算器选择人数、日期与无人机加购项，实时获取 2026 透明报价并一键预订！',
+      '立即打开泗水私人团计算器选择人数、日期与无人机加购项，实时获取透明报价并一键预订！',
     ctaButton: '打开泗水专车计算器立即预订',
     tags: [
       'Private Trip 泗水出发布罗莫',
-      '2026泗水布罗莫价格',
+      '泗水布罗莫价格',
       '朱安达机场接送布罗莫',
       '布罗莫私人团含摄影',
       '泗水布罗莫行程攻略',

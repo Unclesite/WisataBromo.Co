@@ -85,12 +85,12 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_KOTA_MALANG: Record<
   LocalizedOpenTripMalangArticleContent
 > = {
   id: {
-    id: 'open-trip-bromo-start-kota-malang-harga-2026',
-    slug: 'open-trip-bromo-start-kota-malang-harga-2026-itinerary-fasilitas',
+    id: 'open-trip-bromo-start-kota-malang',
+    slug: 'open-trip-bromo-start-kota-malang-harga-itinerary-fasilitas',
     bookingPackageId: 'open-trip-malang',
-    title: 'Open Trip Bromo Start Kota Malang: Harga 2026, Itinerary, dan Fasilitas',
+    title: 'Open Trip Bromo Start Kota Malang: Harga, Itinerary, dan Fasilitas',
     metaDescription:
-      'Panduan lengkap Open Trip Bromo Start Kota Malang Harga 2026 mulai Rp275.000/orang (atau Rp325.000/orang plus dokumentasi foto DSLR). Berangkat setiap hari tanpa kuota minimal (1 orang pasti berangkat!), jemput langsung Stasiun Malang/Hotel, sudah termasuk Shuttle AC, Jeep 4x4 & tiket TNBTS.',
+      'Panduan lengkap Open Trip Bromo Start Kota Malang Harga Terbaru mulai Rp275.000/orang (atau Rp325.000/orang plus dokumentasi foto DSLR). Berangkat setiap hari tanpa kuota minimal (1 orang pasti berangkat!), jemput langsung Stasiun Malang/Hotel, sudah termasuk Shuttle AC, Jeep 4x4 & tiket TNBTS.',
     author: 'Tim Editorial WisataBromo.co',
     publishDate: '26 November 2026',
     readTime: '5 Menit Baca',
@@ -102,9 +102,9 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_KOTA_MALANG: Record<
       '🚐 Open Trip Bromo Start Kota Malang — 1 orang pasti berangkat setiap hari mulai Rp275.000/orang',
     introduction: [
       'Ingin menjelajahi keindahan Golden Sunrise dan 5 spot ikonik Gunung Bromo dengan budget paling hemat dari Kota Malang? Layanan Open Trip Bromo Start Kota Malang dari WisataBromo.co merupakan paket sharing trip harian terfavorit bagi solo traveler, pasangan, mahasiswa, maupun rombongan kecil. Berangkat setiap hari tengah malam (Senin–Minggu), bahkan daftar 1 orang saja tetap pasti berangkat tanpa kuota minimal!',
-      'Dengan tarif mulai Rp275.000/orang (atau Rp325.000/orang jika ingin sekalian dokumentasi foto DSLR/Mirrorless), Anda sudah mendapatkan layanan jemput-antar langsung di Stasiun Malang, hotel, homestay, maupun alamat rumah di Kota Malang, lengkap dengan Jeep 4×4 Toyota Land Cruiser FJ40 dan tiket masuk resmi TNBTS. Simak rincian harga 2026, fasilitas, itinerary 23:00 – 13:00 WIB, serta perlengkapan wajibnya di bawah ini.',
+      'Dengan tarif mulai Rp275.000/orang (atau Rp325.000/orang jika ingin sekalian dokumentasi foto DSLR/Mirrorless), Anda sudah mendapatkan layanan jemput-antar langsung di Stasiun Malang, hotel, homestay, maupun alamat rumah di Kota Malang, lengkap dengan Jeep 4×4 Toyota Land Cruiser FJ40 dan tiket masuk resmi TNBTS. Simak rincian harga terbaru, fasilitas, itinerary 23:00 – 13:00 WIB, serta perlengkapan wajibnya di bawah ini.',
     ],
-    pricingSectionTitle: '💰 Harga & Paket Open Trip Start Kota Malang (Update 2026)',
+    pricingSectionTitle: '💰 Harga & Paket Open Trip Start Kota Malang (Terbaru)',
     pricingSectionSubtitle:
       'Sharing trip harian termurah dari Kota Malang — 1 orang pasti berangkat setiap hari dengan pilihan reguler atau plus dokumentasi foto DSLR/Mirrorless.',
     heroBadge: '1 ORANG PASTI BERANGKAT • SETIAP HARI',
@@ -116,7 +116,7 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_KOTA_MALANG: Record<
     docIncludedBannerTitle: '🚐 1 Orang Pasti Berangkat Setiap Hari — Tanpa Kuota Minimal!',
     docIncludedBannerDesc:
       'Berbeda dengan open trip yang hanya jalan di akhir pekan, Open Trip Bromo Start Kota Malang berangkat SETIAP HARI (Senin–Minggu) pukul 23:00–01:00 WIB dengan penjemputan langsung di alamat, hotel, atau Stasiun Malang!',
-    tiersTableTitle: '📊 Daftar Harga Open Trip Bromo Start Malang & Batu 2026',
+    tiersTableTitle: '📊 Daftar Harga Open Trip Bromo Start Malang & Batu',
     tiersTableSubtitle:
       'Pilih opsi sesuai titik jemput dan kebutuhan dokumentasi foto DSLR/Mirrorless Anda:',
     pricingTiers: [
@@ -284,19 +284,19 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_KOTA_MALANG: Record<
     ctaButton: 'Hitung & Booking Open Trip Start Malang',
     tags: [
       'Open Trip Bromo Start Malang',
-      'Open Trip Bromo Malang 2026',
+      'Open Trip Bromo Malang',
       'Harga Open Trip Bromo 275rb',
       'Open Trip Bromo 1 Orang Berangkat',
       'Bromo Start Stasiun Malang',
     ],
   },
   en: {
-    id: 'open-trip-bromo-start-kota-malang-harga-2026',
-    slug: 'open-trip-bromo-start-kota-malang-harga-2026-itinerary-fasilitas',
+    id: 'open-trip-bromo-start-kota-malang',
+    slug: 'open-trip-bromo-start-kota-malang-harga-itinerary-fasilitas',
     bookingPackageId: 'open-trip-malang',
-    title: 'Mount Bromo Open Trip from Malang City: 2026 Prices, Itinerary & Facilities',
+    title: 'Mount Bromo Open Trip from Malang City: Prices, Itinerary & Facilities',
     metaDescription:
-      'Complete 2026 guide to Mount Bromo Open Trip from Malang City starting at IDR 275,000/person (or IDR 325,000/person with DSLR photography). Daily guaranteed departure even for 1 solo traveler, direct pickup at Malang Station or hotels, including AC shuttle, 4x4 Jeep & TNBTS ticket.',
+      'Complete guide to Mount Bromo Open Trip from Malang City starting at IDR 275,000/person (or IDR 325,000/person with DSLR photography). Daily guaranteed departure even for 1 solo traveler, direct pickup at Malang Station or hotels, including AC shuttle, 4x4 Jeep & TNBTS ticket.',
     author: 'WisataBromo.co Editorial Team',
     publishDate: 'November 26, 2026',
     readTime: '5 Min Read',
@@ -308,9 +308,9 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_KOTA_MALANG: Record<
       '🚐 Mount Bromo Open Trip from Malang City — Daily guaranteed departure from 1 person, starting at IDR 275,000/pax',
     introduction: [
       'Want to experience Mount Bromo’s Golden Sunrise and all 5 caldera highlights on the most budget-friendly schedule from Malang City? WisataBromo.co’s Open Trip Bromo Start Malang is our #1 daily shared tour for solo travelers, couples, backpackers, and small groups. Departing every single night (Monday–Sunday), even 1 single traveler is guaranteed to depart with zero minimum quota!',
-      'Starting at just IDR 275,000/person (or IDR 325,000/person with professional DSLR/Mirrorless photo documentation), the tour includes direct door-to-door pickup at Malang Train Station, hotels, or residences in Malang City, a 4×4 Toyota Land Cruiser FJ40 Jeep, and official TNBTS entry tickets (WNI). Check the 2026 pricing, inclusions, and 23:00–13:00 WIB itinerary below.',
+      'Starting at just IDR 275,000/person (or IDR 325,000/person with professional DSLR/Mirrorless photo documentation), the tour includes direct door-to-door pickup at Malang Train Station, hotels, or residences in Malang City, a 4×4 Toyota Land Cruiser FJ40 Jeep, and official TNBTS entry tickets (WNI). Check the latest pricing, inclusions, and 23:00–13:00 WIB itinerary below.',
     ],
-    pricingSectionTitle: '💰 2026 Open Trip Start Malang City Prices & Options',
+    pricingSectionTitle: '💰 Open Trip Start Malang City Prices & Options',
     pricingSectionSubtitle:
       'Most affordable daily shared trip from Malang — guaranteed daily departure from 1 pax with optional DSLR/Mirrorless photo package.',
     heroBadge: '1 PAX GUARANTEED • DAILY DEPARTURE',
@@ -322,7 +322,7 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_KOTA_MALANG: Record<
     docIncludedBannerTitle: '🚐 Guaranteed Daily Departure Even for 1 Solo Traveler!',
     docIncludedBannerDesc:
       'Unlike weekend-only shared tours, our Malang Open Trip departs EVERY DAY (Mon–Sun) at 23:00–01:00 WIB with direct door-to-door pickup at your Malang hotel, home, or train station!',
-    tiersTableTitle: '📊 2026 Open Trip Malang & Batu Price Breakdown',
+    tiersTableTitle: '📊 Open Trip Malang & Batu Price Breakdown',
     tiersTableSubtitle:
       'Select your pickup city and whether you want professional DSLR/Mirrorless photo coverage:',
     pricingTiers: [
@@ -490,19 +490,19 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_KOTA_MALANG: Record<
     ctaButton: 'Calculate & Book Open Trip Start Malang',
     tags: [
       'Mount Bromo Open Trip Malang',
-      'Bromo Shared Tour Malang 2026',
+      'Bromo Shared Tour Malang',
       'Budget Bromo Tour 275k',
       'Solo Traveler Bromo Malang',
       'Bromo Pickup Malang Station',
     ],
   },
   zh: {
-    id: 'open-trip-bromo-start-kota-malang-harga-2026',
-    slug: 'open-trip-bromo-start-kota-malang-harga-2026-itinerary-fasilitas',
+    id: 'open-trip-bromo-start-kota-malang',
+    slug: 'open-trip-bromo-start-kota-malang-harga-itinerary-fasilitas',
     bookingPackageId: 'open-trip-malang',
-    title: '玛琅市区出发布罗莫拼团 (Open Trip)：2026 价格、行程与全包设施指南',
+    title: '玛琅市区出发布罗莫拼团 (Open Trip)：价格、行程与全包设施指南',
     metaDescription:
-      '2026 玛琅市区出发布罗莫拼团 (Open Trip) 完整攻略：仅需 Rp275.000/人起（加单反跟拍 Rp325.000/人）。天天发团、1人即可成行，玛琅火车站/酒店上门接送，含空调车、4x4吉普与 TNBTS 门票。',
+      '玛琅市区出发布罗莫拼团 (Open Trip) 完整攻略：仅需 Rp275.000/人起（加单反跟拍 Rp325.000/人）。天天发团、1人即可成行，玛琅火车站/酒店上门接送，含空调车、4x4吉普与 TNBTS 门票。',
     author: 'WisataBromo.co 编辑团队',
     publishDate: '2026年11月26日',
     readTime: '阅读约 5 分钟',
@@ -514,9 +514,9 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_KOTA_MALANG: Record<
       '🚐 玛琅市区出发布罗莫拼团 — 1人即发团、天天发车，低至 Rp275.000/人起',
     introduction: [
       '想以超高性价比从玛琅市区出发，打卡布罗莫金色日出与 5 大火山口奇观？WisataBromo.co 的“玛琅市区出发布罗莫拼团 (Open Trip)”是独行旅客、情侣、学生及小团队最喜爱的每日拼团方案。周一至周日每晚准时发车，哪怕只报名 1 人也保证发团，无最低人数限制！',
-      '价格低至 Rp275.000/人起（或升级至 Rp325.000/人含专业单反/微单摄影跟拍），直接提供玛琅火车站、酒店、民宿或市区地址上门往返接送，包含 4×4 丰田 Land Cruiser FJ40 吉普与 TNBTS 国家公园官方门票（印尼公民）。下面为您详述 2026 价格、设施与 23:00–13:00 行程。',
+      '价格低至 Rp275.000/人起（或升级至 Rp325.000/人含专业单反/微单摄影跟拍），直接提供玛琅火车站、酒店、民宿或市区地址上门往返接送，包含 4×4 丰田 Land Cruiser FJ40 吉普与 TNBTS 国家公园官方门票（印尼公民）。下面为您详述最新价格、设施与 23:00–13:00 行程。',
     ],
-    pricingSectionTitle: '💰 2026 玛琅市区出发拼团价格与套餐',
+    pricingSectionTitle: '💰 玛琅市区出发拼团价格与套餐',
     pricingSectionSubtitle:
       '玛琅出发最具性价比的每日拼团——1人即可发团，可自由选择标准版或单反跟拍升级版。',
     heroBadge: '1人保证发团 • 天天发车',
@@ -528,7 +528,7 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_KOTA_MALANG: Record<
     docIncludedBannerTitle: '🚐 1人即发团、周一至周日天天发车！',
     docIncludedBannerDesc:
       '不同于仅限周末的拼团，玛琅市区布罗莫拼团每晚 23:00–01:00 WIB 准时发车，支持玛琅火车站、酒店或住址直接上门接送，无需凑人数！',
-    tiersTableTitle: '📊 2026 玛琅 / 巴图拼团详细价目表',
+    tiersTableTitle: '📊 玛琅 / 巴图拼团详细价目表',
     tiersTableSubtitle:
       '根据您的接送城市与是否需要单反/微单摄影跟拍灵活选择：',
     pricingTiers: [
@@ -696,7 +696,7 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_KOTA_MALANG: Record<
     ctaButton: '计算费用并预订玛琅出发拼团',
     tags: [
       '玛琅布罗莫拼团',
-      '玛琅出发Open Trip 2026',
+      '玛琅出发Open Trip',
       '布罗莫拼团275k',
       '布罗莫1人发团',
       '玛琅火车站布罗莫一日游',

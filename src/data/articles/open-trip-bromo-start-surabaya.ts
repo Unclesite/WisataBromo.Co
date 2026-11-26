@@ -85,12 +85,12 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_SURABAYA: Record<
   LocalizedOpenTripSurabayaArticleContent
 > = {
   id: {
-    id: 'open-trip-bromo-start-surabaya-harga-2026',
-    slug: 'open-trip-bromo-start-kota-surabaya-harga-2026-itinerary-fasilitas',
+    id: 'open-trip-bromo-start-surabaya',
+    slug: 'open-trip-bromo-start-kota-surabaya-harga-itinerary-fasilitas',
     bookingPackageId: 'open-trip-surabaya',
-    title: 'Open Trip Bromo Start Kota Surabaya: Harga 2026, Itinerary, dan Fasilitas',
+    title: 'Open Trip Bromo Start Kota Surabaya: Harga, Itinerary, dan Fasilitas',
     metaDescription:
-      'Panduan lengkap Open Trip Bromo Start Kota Surabaya Harga 2026 mulai Rp400.000/orang (Weekend Sabtu via Tosari, 1 orang pasti berangkat!) atau Rp750.000/orang (Harian via Malang, bebas titik jemput). Sudah INCLUDE dokumentasi foto DSLR/Mirrorless, Shuttle AC, Tol PP, Jeep 4x4 & tiket TNBTS.',
+      'Panduan lengkap Open Trip Bromo Start Kota Surabaya Harga Terbaru mulai Rp400.000/orang (Weekend Sabtu via Tosari, 1 orang pasti berangkat!) atau Rp750.000/orang (Harian via Malang, bebas titik jemput). Sudah INCLUDE dokumentasi foto DSLR/Mirrorless, Shuttle AC, Tol PP, Jeep 4x4 & tiket TNBTS.',
     author: 'Tim Editorial WisataBromo.co',
     publishDate: '26 November 2026',
     readTime: '6 Menit Baca',
@@ -102,9 +102,9 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_SURABAYA: Record<
       '🚐 Open Trip Bromo Start Kota Surabaya — 1 orang pasti berangkat & sudah INCLUDE dokumentasi foto DSLR/Mirrorless',
     introduction: [
       'Ingin liburan hemat dan praktis ke Gunung Bromo dari Kota Surabaya tanpa harus repot mencari rombongan besar atau menyetir tengah malam? Layanan Open Trip Bromo Start Kota Surabaya dari WisataBromo.co hadir sebagai solusi sharing trip paling favorit bagi solo traveler, pasangan, maupun rombongan kecil. Anda cukup mendaftar mulai dari 1 orang saja untuk keberangkatan Weekend Sabtu malam via Tosari dan tetap pasti berangkat tanpa minimal kuota!',
-      'Kabar terbaiknya, paket Open Trip Start Kota Surabaya 2026 sudah INCLUDE dokumentasi foto DSLR/Mirrorless profesional, Shuttle Car AC prima, BBM, Tol Trans Jawa PP, Jeep Hardtop 4×4, hingga tiket masuk resmi TNBTS. Tersedia pula opsi Rute Harian via Malang (berangkat setiap hari, bebas titik jemput seluruh Surabaya & Sidoarjo). Simak rincian harga, fasilitas, jadwal itinerary 23:00 – 13:30 WIB, dan titik jemput resminya di bawah ini.',
+      'Kabar terbaiknya, paket Open Trip Start Kota Surabaya sudah INCLUDE dokumentasi foto DSLR/Mirrorless profesional, Shuttle Car AC prima, BBM, Tol Trans Jawa PP, Jeep Hardtop 4×4, hingga tiket masuk resmi TNBTS. Tersedia pula opsi Rute Harian via Malang (berangkat setiap hari, bebas titik jemput seluruh Surabaya & Sidoarjo). Simak rincian harga, fasilitas, jadwal itinerary 23:00 – 13:30 WIB, dan titik jemput resminya di bawah ini.',
     ],
-    pricingSectionTitle: '💰 Harga & Jadwal Open Trip Start Kota Surabaya (Update 2026)',
+    pricingSectionTitle: '💰 Harga & Jadwal Open Trip Start Kota Surabaya (Terbaru)',
     pricingSectionSubtitle:
       'Tersedia 2 pilihan jadwal fleksibel dari Surabaya — keduanya sudah INCLUDE Shuttle AC, Tol PP, Jeep 4×4, tiket TNBTS WNI, dan dokumentasi foto DSLR/Mirrorless.',
     heroBadge: '1 ORANG PASTI BERANGKAT • INCLUDE DOKUMENTASI',
@@ -116,7 +116,7 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_SURABAYA: Record<
     docIncludedBannerTitle: '📸 1 Orang Tetap Bisa Gabung + Dokumentasi Foto Sudah INCLUDE!',
     docIncludedBannerDesc:
       'Khusus rute Weekend via Tosari (berangkat setiap Sabtu malam), solo traveler 1 orang tetap pasti berangkat tanpa kuota minimal. Seluruh peserta juga otomatis mendapatkan fasilitas dokumentasi foto DSLR/Mirrorless tanpa biaya tambahan!',
-    tiersTableTitle: '📊 Pilihan Jadwal & Tarif Open Trip Surabaya 2026',
+    tiersTableTitle: '📊 Pilihan Jadwal & Tarif Open Trip Surabaya',
     tiersTableSubtitle:
       'Bandingkan rute Weekend via Tosari (paling hemat, 1 orang bisa gabung) dengan rute Harian via Malang (berangkat setiap hari & bebas pilih titik jemput):',
     pricingTiers: [
@@ -296,19 +296,19 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_SURABAYA: Record<
     ctaButton: 'Hitung & Booking Open Trip Start Surabaya',
     tags: [
       'Open Trip Bromo Start Surabaya',
-      'Open Trip Bromo Surabaya 2026',
+      'Open Trip Bromo Surabaya',
       'Harga Open Trip Bromo Surabaya',
       'Open Trip Bromo 1 Orang Berangkat',
       'Bromo Start Pasar Turi Bungurasih',
     ],
   },
   en: {
-    id: 'open-trip-bromo-start-surabaya-harga-2026',
-    slug: 'open-trip-bromo-start-kota-surabaya-harga-2026-itinerary-fasilitas',
+    id: 'open-trip-bromo-start-surabaya',
+    slug: 'open-trip-bromo-start-kota-surabaya-harga-itinerary-fasilitas',
     bookingPackageId: 'open-trip-surabaya',
-    title: 'Mount Bromo Open Trip from Surabaya City: 2026 Prices, Itinerary & Facilities',
+    title: 'Mount Bromo Open Trip from Surabaya City: Prices, Itinerary & Facilities',
     metaDescription:
-      'Complete 2026 guide to Mount Bromo Open Trip from Surabaya starting at IDR 400,000/person (Saturday Weekend via Tosari, guaranteed departure even for 1 solo traveler!) or IDR 750,000/person (Daily via Malang, free pickup location). Includes DSLR photography, AC shuttle, toll fees, 4x4 Jeep & TNBTS ticket.',
+      'Complete guide to Mount Bromo Open Trip from Surabaya starting at IDR 400,000/person (Saturday Weekend via Tosari, guaranteed departure even for 1 solo traveler!) or IDR 750,000/person (Daily via Malang, free pickup location). Includes DSLR photography, AC shuttle, toll fees, 4x4 Jeep & TNBTS ticket.',
     author: 'WisataBromo.co Editorial Team',
     publishDate: 'November 26, 2026',
     readTime: '6 Min Read',
@@ -320,9 +320,9 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_SURABAYA: Record<
       '🚐 Mount Bromo Open Trip from Surabaya — Solo travelers guaranteed to depart & DSLR photography INCLUDED',
     introduction: [
       'Looking for an affordable, hassle-free way to visit Mount Bromo from Surabaya without organizing a big group or driving at midnight? WisataBromo.co’s Open Trip Bromo Start Surabaya is the top shared-trip choice for solo travelers, couples, and small groups. For the Saturday Weekend departure via Tosari, even 1 single traveler is guaranteed to depart with zero minimum quota!',
-      'Best of all, our 2026 Surabaya Open Trip already INCLUDES professional DSLR/Mirrorless photo documentation, a comfortable AC shuttle, fuel, Trans-Java toll fees, a 4×4 Jeep Hardtop, and official TNBTS entry tickets (Indonesian citizens). A Daily Route via Malang is also available every day with custom door-to-door pickup anywhere in Surabaya & Sidoarjo.',
+      'Best of all, our Surabaya Open Trip already INCLUDES professional DSLR/Mirrorless photo documentation, a comfortable AC shuttle, fuel, Trans-Java toll fees, a 4×4 Jeep Hardtop, and official TNBTS entry tickets (Indonesian citizens). A Daily Route via Malang is also available every day with custom door-to-door pickup anywhere in Surabaya & Sidoarjo.',
     ],
-    pricingSectionTitle: '💰 2026 Open Trip Start Surabaya Prices & Schedules',
+    pricingSectionTitle: '💰 Open Trip Start Surabaya Prices & Schedules',
     pricingSectionSubtitle:
       'Two flexible departure options from Surabaya — both INCLUDE AC shuttle, Trans-Java tolls, 4×4 Jeep, TNBTS WNI entry ticket, and DSLR/Mirrorless photography.',
     heroBadge: '1 PAX GUARANTEED DEPARTURE • PHOTO INCLUDED',
@@ -334,7 +334,7 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_SURABAYA: Record<
     docIncludedBannerTitle: '📸 1 Solo Traveler Can Join + DSLR Photography Already INCLUDED!',
     docIncludedBannerDesc:
       'On our Saturday night Weekend route via Tosari, solo travelers can book just 1 seat with guaranteed departure. All guests also enjoy complimentary professional DSLR/Mirrorless photo coverage throughout the tour!',
-    tiersTableTitle: '📊 2026 Surabaya Open Trip Routes & Rates',
+    tiersTableTitle: '📊 Surabaya Open Trip Routes & Rates',
     tiersTableSubtitle:
       'Compare the budget-friendly Saturday Weekend route via Tosari (1 pax welcome) with the Daily route via Malang (runs every day with flexible Surabaya/Sidoarjo pickup):',
     pricingTiers: [
@@ -514,19 +514,19 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_SURABAYA: Record<
     ctaButton: 'Calculate & Book Open Trip Start Surabaya',
     tags: [
       'Mount Bromo Open Trip Surabaya',
-      'Bromo Shared Tour Surabaya 2026',
+      'Bromo Shared Tour Surabaya',
       'Surabaya to Bromo Budget Tour',
       'Solo Traveler Bromo Open Trip',
       'Pasar Turi Bungurasih Bromo Tour',
     ],
   },
   zh: {
-    id: 'open-trip-bromo-start-surabaya-harga-2026',
-    slug: 'open-trip-bromo-start-kota-surabaya-harga-2026-itinerary-fasilitas',
+    id: 'open-trip-bromo-start-surabaya',
+    slug: 'open-trip-bromo-start-kota-surabaya-harga-itinerary-fasilitas',
     bookingPackageId: 'open-trip-surabaya',
-    title: '泗水市区出发布罗莫拼团 (Open Trip)：2026 价格、行程与全包设施指南',
+    title: '泗水市区出发布罗莫拼团 (Open Trip)：价格、行程与全包设施指南',
     metaDescription:
-      '2026 泗水市区出发布罗莫拼团 (Open Trip) 完整指南：周六晚经 Tosari 仅 Rp400.000/人（1人即发团！），每日经玛琅 Rp750.000/人（泗水与诗都阿佐全境自由上门接送）。费用已含单反跟拍、空调专车、高速费、4x4吉普与门票。',
+      '泗水市区出发布罗莫拼团 (Open Trip) 完整指南：周六晚经 Tosari 仅 Rp400.000/人（1人即发团！），每日经玛琅 Rp750.000/人（泗水与诗都阿佐全境自由上门接送）。费用已含单反跟拍、空调专车、高速费、4x4吉普与门票。',
     author: 'WisataBromo.co 编辑团队',
     publishDate: '2026年11月26日',
     readTime: '阅读约 6 分钟',
@@ -538,9 +538,9 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_SURABAYA: Record<
       '🚐 泗水市区出发布罗莫拼团 — 1人即可成行，费用已含单反/微单摄影跟拍',
     introduction: [
       '想从泗水市区高性价比、零操心前往布罗莫火山，又不想自己凑大团或深夜长途开车？WisataBromo.co 推出的“泗水市区出发布罗莫拼团 (Open Trip)”是独行侠、情侣与小团队的热门首选。选择周六晚经 Tosari 的周末拼团路线，哪怕只有 1 位游客也保证发团，无最低人数限制！',
-      '更棒的是，2026 年泗水拼团价格已直接包含专业单反/微单摄影跟拍、空调旅游车、油费、跨爪哇高速往返路桥费、4×4 越野吉普以及 TNBTS 国家公园官方门票（印尼公民）。此外还提供经玛琅出发的每日路线（天天发团，支持泗水与诗都阿佐自由指定上门接送地点）。以下为您完整汇总价格、设施与 23:00–13:30 行程安排。',
+      '更棒的是，泗水拼团价格已直接包含专业单反/微单摄影跟拍、空调旅游车、油费、跨爪哇高速往返路桥费、4×4 越野吉普以及 TNBTS 国家公园官方门票（印尼公民）。此外还提供经玛琅出发的每日路线（天天发团，支持泗水与诗都阿佐自由指定上门接送地点）。以下为您完整汇总价格、设施与 23:00–13:30 行程安排。',
     ],
-    pricingSectionTitle: '💰 2026 泗水市区出发拼团价格与排期',
+    pricingSectionTitle: '💰 泗水市区出发拼团价格与排期',
     pricingSectionSubtitle:
       '提供两种灵活的泗水出发方案——均已包含空调专车、往返高速费、4×4 吉普车、TNBTS 门票及单反/微单摄影跟拍。',
     heroBadge: '1人即可发团 • 含专业摄影跟拍',
@@ -552,7 +552,7 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_SURABAYA: Record<
     docIncludedBannerTitle: '📸 1人照常成行 + 单反摄影跟拍已直接包含！',
     docIncludedBannerDesc:
       '周六晚经 Tosari 的周末拼团路线支持 1 人报名即保证发团；且所有团员均可免费享受专业摄影师全程单反/微单拍照记录，无需额外加购！',
-    tiersTableTitle: '📊 2026 泗水拼团双路线价格一览',
+    tiersTableTitle: '📊 泗水拼团双路线价格一览',
     tiersTableSubtitle:
       '对比超值周末拼团路线（经 Tosari，1人可报）与每日路线（经玛琅，天天发团且全境自由接送）：',
     pricingTiers: [
@@ -732,7 +732,7 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_SURABAYA: Record<
     ctaButton: '计算费用并预订泗水出发拼团',
     tags: [
       '泗水布罗莫拼团',
-      '泗水出发Open Trip 2026',
+      '泗水出发Open Trip',
       '布罗莫1人发团',
       '泗水布罗莫一日游价格',
       'Pasar Turi布罗莫拼团',

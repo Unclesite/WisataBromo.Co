@@ -72,10 +72,10 @@ export const ARTICLE_PINTU_MASUK_HARGA_JEEP: Record<
 > = {
   id: {
     id: 'pintu-masuk-bromo-harga-jeep',
-    slug: 'pintu-masuk-bromo-harga-sewa-jeep-2026',
-    title: '🛣️ Pintu Masuk Bromo & Harga Sewa Jeep 2026: Panduan Lengkap 3 Jalur Utama',
+    slug: 'pintu-masuk-bromo-harga-sewa-jeep',
+    title: '🛣️ Pintu Masuk Bromo & Harga Sewa Jeep: Panduan Lengkap 3 Jalur Utama',
     metaDescription:
-      'Panduan lengkap 3 pintu masuk Gunung Bromo (Probolinggo–Sukapura, Pasuruan–Tosari, Malang–Gubugklakah) lengkap dengan daftar harga sewa jeep 2026 per jeep sudah termasuk driver, tiket, dan BBM.',
+      'Panduan lengkap 3 pintu masuk Gunung Bromo (Probolinggo–Sukapura, Pasuruan–Tosari, Malang–Gubugklakah) lengkap dengan daftar harga sewa jeep terbaru per jeep sudah termasuk driver, tiket, dan BBM.',
     author: 'Tim Editorial WisataBromo.co',
     publishDate: '24 November 2026',
     readTime: '5 Menit Baca',
@@ -94,7 +94,7 @@ export const ARTICLE_PINTU_MASUK_HARGA_JEEP: Record<
     },
     introduction: [
       '🛣️ Memilih pintu masuk Bromo yang tepat adalah langkah paling penting sebelum menyewa 🚐 jeep 4×4. Setiap gerbang memiliki karakter jalur, pemandangan, fasilitas penginapan, hingga 💰 harga sewa jeep yang berbeda.',
-      'Panduan 2026 ini merangkum tiga jalur masuk utama Gunung Bromo beserta daftar harga promo sewa jeep per unit agar Anda dapat menyusun rute perjalanan yang paling hemat waktu dan biaya.',
+      'Panduan ini merangkum tiga jalur masuk utama Gunung Bromo beserta daftar harga promo sewa jeep per unit agar Anda dapat menyusun rute perjalanan yang paling hemat waktu dan biaya.',
     ],
     gatesSectionTitle: '🛣️ Tiga Jalur Masuk Utama Gunung Bromo',
     gatesSectionSubtitle:
@@ -149,7 +149,7 @@ export const ARTICLE_PINTU_MASUK_HARGA_JEEP: Record<
         ],
       },
     ],
-    pricesSectionTitle: '💰 Daftar Harga Sewa Jeep Bromo 2026 Berdasarkan Titik Start',
+    pricesSectionTitle: '💰 Daftar Harga Sewa Jeep Bromo Berdasarkan Titik Start',
     pricesSectionSubtitle:
       'Tarif transparan per unit 🚐 Jeep 4×4 sesuai pintu masuk keberangkatan Anda.',
     jeepPrices: [
@@ -207,11 +207,11 @@ export const ARTICLE_PINTU_MASUK_HARGA_JEEP: Record<
       },
     ],
     conclusion:
-      'Dengan memahami karakter 3 🛣️ pintu masuk Bromo dan daftar 💰 harga sewa jeep 2026 (Start Tosari Rp950.000, Start Sukapura Rp1.000.000, dan Start Gubugklakah Rp1.400.000 per jeep termasuk driver, tiket, dan BBM), Anda bisa merencanakan perjalanan Bromo yang lebih efisien dan nyaman bersama keluarga maupun rombongan.',
+      'Dengan memahami karakter 3 🛣️ pintu masuk Bromo dan daftar 💰 harga sewa jeep terbaru (Start Tosari Rp950.000, Start Sukapura Rp1.000.000, dan Start Gubugklakah Rp1.400.000 per jeep termasuk driver, tiket, dan BBM), Anda bisa merencanakan perjalanan Bromo yang lebih efisien dan nyaman bersama keluarga maupun rombongan.',
     ctaButton: 'Pesan Jeep Bromo Sesuai Pintu Masuk Sekarang',
     tags: [
       'Pintu Masuk Bromo',
-      'Harga Sewa Jeep Bromo 2026',
+      'Harga Sewa Jeep Bromo',
       'Jalur Sukapura Probolinggo',
       'Jalur Tosari Pasuruan',
       'Jalur Gubugklakah Malang',
@@ -221,10 +221,10 @@ export const ARTICLE_PINTU_MASUK_HARGA_JEEP: Record<
 
   en: {
     id: 'pintu-masuk-bromo-harga-jeep',
-    slug: 'pintu-masuk-bromo-harga-sewa-jeep-2026',
-    title: '🛣️ Mount Bromo Entrances & 2026 Jeep Rental Prices: Complete 3-Gate Guide',
+    slug: 'pintu-masuk-bromo-harga-sewa-jeep',
+    title: '🛣️ Mount Bromo Entrances & Jeep Rental Prices: Complete 3-Gate Guide',
     metaDescription:
-      'Complete 2026 guide to Mount Bromo’s 3 main entrances (Probolinggo–Sukapura, Pasuruan–Tosari, Malang–Gubugklakah) with per-jeep rental prices including driver, tickets, and fuel.',
+      'Complete guide to Mount Bromo’s 3 main entrances (Probolinggo–Sukapura, Pasuruan–Tosari, Malang–Gubugklakah) with per-jeep rental prices including driver, tickets, and fuel.',
     author: 'WisataBromo.co Editorial Team',
     publishDate: 'November 24, 2026',
     readTime: '5 Min Read',
@@ -243,7 +243,7 @@ export const ARTICLE_PINTU_MASUK_HARGA_JEEP: Record<
     },
     introduction: [
       '🛣️ Choosing the right Mount Bromo entrance gate is essential before booking your 🚐 4×4 Jeep. Each gate offers distinct scenery, hotel choices, distance to sunrise viewpoints, and 💰 jeep rental rates.',
-      'This 2026 guide details all three main Mount Bromo entrances alongside transparent promo per-jeep prices to save you both travel time and budget.',
+      'This guide details all three main Mount Bromo entrances alongside transparent promo per-jeep prices to save you both travel time and budget.',
     ],
     gatesSectionTitle: '🛣️ Three Main Mount Bromo Entrance Routes',
     gatesSectionSubtitle:
@@ -298,7 +298,7 @@ export const ARTICLE_PINTU_MASUK_HARGA_JEEP: Record<
         ],
       },
     ],
-    pricesSectionTitle: '💰 2026 Bromo Jeep Rental Prices by Starting Point',
+    pricesSectionTitle: '💰 Bromo Jeep Rental Prices by Starting Point',
     pricesSectionSubtitle: 'Transparent per-vehicle 🚐 4×4 Jeep rates by entrance hub.',
     jeepPrices: [
       {
@@ -355,11 +355,11 @@ export const ARTICLE_PINTU_MASUK_HARGA_JEEP: Record<
       },
     ],
     conclusion:
-      'Choose your ideal 🛣️ Mount Bromo entrance and enjoy transparent 2026 💰 per-jeep pricing (Tosari Rp950.000, Sukapura Rp1.000.000, Gubugklakah Rp1.400.000 including driver, tickets, and fuel).',
+      'Choose your ideal 🛣️ Mount Bromo entrance and enjoy transparent 💰 per-jeep pricing (Tosari Rp950.000, Sukapura Rp1.000.000, Gubugklakah Rp1.400.000 including driver, tickets, and fuel).',
     ctaButton: 'Book Your Bromo Jeep Now',
     tags: [
       'Mount Bromo Entrances',
-      'Bromo Jeep Rental 2026',
+      'Bromo Jeep Rental',
       'Sukapura Probolinggo',
       'Tosari Pasuruan',
       'Gubugklakah Malang',
@@ -369,10 +369,10 @@ export const ARTICLE_PINTU_MASUK_HARGA_JEEP: Record<
 
   zh: {
     id: 'pintu-masuk-bromo-harga-jeep',
-    slug: 'pintu-masuk-bromo-harga-sewa-jeep-2026',
-    title: '🛣️ 布罗莫火山三大入口与 2026 吉普车包车价格完整指南',
+    slug: 'pintu-masuk-bromo-harga-sewa-jeep',
+    title: '🛣️ 布罗莫火山三大入口与吉普车包车价格完整指南',
     metaDescription:
-      '2026布罗莫火山三大主要入口（庞越 Sukapura、岩望 Tosari、玛琅 Gubugklakah）与每辆吉普车最新优惠价一览，费用含司机、门票与油费。',
+      '布罗莫火山三大主要入口（庞越 Sukapura、岩望 Tosari、玛琅 Gubugklakah）与每辆吉普车最新优惠价一览，费用含司机、门票与油费。',
     author: 'WisataBromo.co 编辑团队',
     publishDate: '2026年11月24日',
     readTime: '5 分钟阅读',
@@ -391,7 +391,7 @@ export const ARTICLE_PINTU_MASUK_HARGA_JEEP: Record<
     },
     introduction: [
       '🛣️ 选对布罗莫火山入口能大幅节省交通时间与预算。三大入口在沿途风景、酒店咖啡馆配套、日出观景台距离以及 🚐 吉普车 💰 报价上各有特色。',
-      '以下为您清晰梳理 2026 年三大主要入口及各出发点吉普车包车价格与注意事项。',
+      '以下为您清晰梳理 三大主要入口及各出发点吉普车包车价格与注意事项。',
     ],
     gatesSectionTitle: '🛣️ 布罗莫火山三大主要入口路线',
     gatesSectionSubtitle: '根据您的出发城市与游玩偏好选择合适的入口。',
@@ -445,7 +445,7 @@ export const ARTICLE_PINTU_MASUK_HARGA_JEEP: Record<
         ],
       },
     ],
-    pricesSectionTitle: '💰 2026 按出发点划分的吉普车包车价格表',
+    pricesSectionTitle: '💰 按出发点划分的吉普车包车价格表',
     pricesSectionSubtitle: '按 🚐 每辆吉普车计价，透明无隐藏费用。',
     jeepPrices: [
       {
@@ -500,11 +500,11 @@ export const ARTICLE_PINTU_MASUK_HARGA_JEEP: Record<
       },
     ],
     conclusion:
-      '选准 🛣️ 布罗莫入口并提前锁定 2026 💰 优惠吉普包车价（Tosari Rp950.000、Sukapura Rp1.000.000、Gubugklakah Rp1.400.000/辆，含司机、门票与油费），让您的火山之旅省时又省心！',
+      '选准 🛣️ 布罗莫入口并提前锁定 💰 优惠吉普包车价（Tosari Rp950.000、Sukapura Rp1.000.000、Gubugklakah Rp1.400.000/辆，含司机、门票与油费），让您的火山之旅省时又省心！',
     ctaButton: '立即预订布罗莫吉普车',
     tags: [
       '布罗莫入口指南',
-      '2026布罗莫吉普车价格',
+      '布罗莫吉普车价格',
       'Sukapura 庞越',
       'Tosari 岩望',
       'Gubugklakah 玛琅',

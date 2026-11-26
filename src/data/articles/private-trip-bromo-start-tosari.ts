@@ -73,12 +73,12 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_TOSARI: Record<
   LocalizedTosariTripArticleContent
 > = {
   id: {
-    id: 'private-trip-bromo-start-tosari-harga-2026',
-    slug: 'private-trip-bromo-start-tosari-pasuruan-harga-2026-itinerary-fasilitas',
+    id: 'private-trip-bromo-start-tosari',
+    slug: 'private-trip-bromo-start-tosari-pasuruan-harga-itinerary-fasilitas',
     bookingPackageId: 'private-jeep-wonokitri',
-    title: 'Private Trip Bromo Start Tosari Pasuruan: Harga 2026, Itinerary, dan Fasilitas',
+    title: 'Private Trip Bromo Start Tosari Pasuruan: Harga, Itinerary, dan Fasilitas',
     metaDescription:
-      'Panduan lengkap Private Trip Bromo Start Tosari Pasuruan Harga 2026 paling hemat mulai Rp950.000 per jeep/grup untuk 1–6 peserta (1 atau 6 orang harga sama saja), akses terdekat ke Sunrise Point Penanjakan, opsi Sunrise 03:00 WIB atau Panorama 11:00 WIB, dokumentasi +Rp500.000 & drone +Rp1.500.000.',
+      'Panduan lengkap Private Trip Bromo Start Tosari Pasuruan Harga Terbaru paling hemat mulai Rp950.000 per jeep/grup untuk 1–6 peserta (1 atau 6 orang harga sama saja), akses terdekat ke Sunrise Point Penanjakan, opsi Sunrise 03:00 WIB atau Panorama 11:00 WIB, dokumentasi +Rp500.000 & drone +Rp1.500.000.',
     author: 'Tim Editorial WisataBromo.co',
     publishDate: '26 November 2026',
     readTime: '5 Menit Baca',
@@ -90,9 +90,9 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_TOSARI: Record<
       '🚐 Private Jeep 4×4 Bromo Start Tosari Pasuruan — Harga flat paling hemat per jeep / per grup untuk 1–6 peserta',
     introduction: [
       'Datang dari arah Surabaya atau Pasuruan menggunakan kendaraan pribadi, atau sedang menginap di hotel/resort sejuk kawasan Tosari dan Desa Wonokitri? Layanan Private Trip Bromo Start Tosari Pasuruan adalah gerbang dengan akses jalan aspal paling mulus sekaligus jarak terdekat menuju Sunrise Point Penanjakan! Anda menyewa 1 unit Jeep 4×4 Toyota Land Cruiser FJ40 secara 100% privat tanpa digabung rombongan lain, berangkat setiap hari dengan pilihan Paket Sunrise (03:00 WIB) atau Paket Panorama Siang (11:00 WIB).',
-      'Panduan Harga 2026 ini merangkum tarif flat paling ekonomis Rp950.000 per jeep untuk 1–6 peserta (berangkat 1 orang maupun 6 orang harganya tetap sama saja), tambahan dokumentasi & drone, fasilitas lengkap include/exclude, itinerary 02:30 – 10:00 WIB, meeting point Basecamp Tosari, hingga perlengkapan wajib suhu 2°C – 10°C.',
+      'Panduan Harga Terbaru ini merangkum tarif flat paling ekonomis Rp950.000 per jeep untuk 1–6 peserta (berangkat 1 orang maupun 6 orang harganya tetap sama saja), tambahan dokumentasi & drone, fasilitas lengkap include/exclude, itinerary 02:30 – 10:00 WIB, meeting point Basecamp Tosari, hingga perlengkapan wajib suhu 2°C – 10°C.',
     ],
-    pricingSectionTitle: '💰 Harga & Paket Private Trip Start Tosari Pasuruan (Update 2026)',
+    pricingSectionTitle: '💰 Harga & Paket Private Trip Start Tosari Pasuruan (Terbaru)',
     pricingSectionSubtitle:
       'Harga flat paling hemat per jeep / per grup (maksimal 6 peserta tanpa dokumentasi atau 5 peserta plus fotografer) — berangkat 1 orang maupun 6 orang, harganya sama saja!',
     normalPrice: 'Rp1.150.000',
@@ -204,12 +204,12 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_TOSARI: Record<
     extraTipContent:
       'Private Trip Start Tosari Pasuruan adalah rute favorit wisatawan keluarga yang membawa mobil pribadi dari arah Surabaya/Pasuruan maupun tamu yang menginap di resort kawasan Tosari & Wonokitri. Selain tarif jeep paling hemat, waktu tempuh menuju Penanjakan sangat singkat sehingga anak-anak dan orang tua tetap bugar!',
     conclusion:
-      'Dengan tarif reguler 2026 paling ekonomis Rp950.000 per jeep/grup untuk 1–6 peserta (1 atau 6 orang harga sama saja), sudah termasuk tiket masuk TNBTS WNI, BBM, dan driver lokal Tengger Tosari, liburan Bromo Anda jauh lebih efisien dan nyaman. Hitung estimasi lengkap beserta opsi dokumentasi dan drone langsung di Kalkulator Private Start Tosari Pasuruan.',
+      'Dengan tarif reguler paling ekonomis Rp950.000 per jeep/grup untuk 1–6 peserta (1 atau 6 orang harga sama saja), sudah termasuk tiket masuk TNBTS WNI, BBM, dan driver lokal Tengger Tosari, liburan Bromo Anda jauh lebih efisien dan nyaman. Hitung estimasi lengkap beserta opsi dokumentasi dan drone langsung di Kalkulator Private Start Tosari Pasuruan.',
     ctaButton: 'Hitung & Booking via Kalkulator Private Start Tosari',
     tags: [
       'Private Trip Start Tosari',
       'Sewa Jeep Bromo Pasuruan',
-      'Harga Jeep Tosari 2026',
+      'Harga Jeep Tosari',
       'Jeep Bromo Wonokitri',
       'Sewa Jeep Bromo 1-6 Orang',
       'Itinerary Bromo Tosari',
@@ -217,12 +217,12 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_TOSARI: Record<
   },
 
   en: {
-    id: 'private-trip-bromo-start-tosari-harga-2026',
-    slug: 'private-trip-bromo-start-tosari-pasuruan-harga-2026-itinerary-fasilitas',
+    id: 'private-trip-bromo-start-tosari',
+    slug: 'private-trip-bromo-start-tosari-pasuruan-harga-itinerary-fasilitas',
     bookingPackageId: 'private-jeep-wonokitri',
-    title: 'Private Trip Bromo Start Tosari Pasuruan: 2026 Prices, Itinerary & Facilities',
+    title: 'Private Trip Bromo Start Tosari Pasuruan: Prices, Itinerary & Facilities',
     metaDescription:
-      'Complete 2026 guide for Private Trip Bromo Start Tosari Pasuruan — best value from Rp950.000 per jeep/group for 1–6 participants (same flat rate for 1 or 6 people), shortest drive to Penanjakan Sunrise Point, daily Sunrise 03:00 WIB or Panorama 11:00 WIB, optional photo/video +Rp500.000 & drone +Rp1.500.000.',
+      'Complete guide for Private Trip Bromo Start Tosari Pasuruan — best value from Rp950.000 per jeep/group for 1–6 participants (same flat rate for 1 or 6 people), shortest drive to Penanjakan Sunrise Point, daily Sunrise 03:00 WIB or Panorama 11:00 WIB, optional photo/video +Rp500.000 & drone +Rp1.500.000.',
     author: 'WisataBromo.co Editorial Team',
     publishDate: 'November 26, 2026',
     readTime: '5 Min Read',
@@ -234,9 +234,9 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_TOSARI: Record<
       '🚐 Private 4×4 Bromo Jeep Start Tosari Pasuruan — Most economical flat rate per jeep / per group for 1–6 participants',
     introduction: [
       'Driving from Surabaya or Pasuruan in your own car, or staying at a mountain resort around Tosari and Wonokitri Village? Our Private Trip Bromo Start Tosari Pasuruan offers the smoothest paved access road and the shortest drive directly up to Mount Bromo’s legendary Penanjakan Sunrise Point! Rent one 100% private Toyota Land Cruiser FJ40 4×4 Jeep with daily Sunrise (03:00 WIB) or Daytime Panorama (11:00 WIB) departures.',
-      'This 2026 guide covers our lowest flat per-jeep price of Rp950.000 for 1–6 participants (whether 1 or 6 people join, the price is identical), optional photo/video and drone add-ons, inclusions/exclusions, the 02:30–10:00 WIB schedule, and cold-weather packing tips.',
+      'This guide covers our lowest flat per-jeep price of Rp950.000 for 1–6 participants (whether 1 or 6 people join, the price is identical), optional photo/video and drone add-ons, inclusions/exclusions, the 02:30–10:00 WIB schedule, and cold-weather packing tips.',
     ],
-    pricingSectionTitle: '💰 2026 Private Trip Start Tosari Pasuruan Prices & Add-Ons',
+    pricingSectionTitle: '💰 Private Trip Start Tosari Pasuruan Prices & Add-Ons',
     pricingSectionSubtitle:
       'Lowest flat rate per jeep / per group (max 6 guests without photographer, or 5 guests with photographer) — 1 person or 6 people pay the exact same rate!',
     normalPrice: 'Rp1.150.000',
@@ -348,12 +348,12 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_TOSARI: Record<
     extraTipContent:
       'Private Trip Start Tosari Pasuruan is the favorite northern gate for families driving from Surabaya or staying in Tosari/Wonokitri resorts—offering the smoothest asphalt approach, shortest drive to Penanjakan, and the most budget-friendly per-jeep rate!',
     conclusion:
-      'Book directly using our Private Start Tosari Calculator to select Sunrise or Panorama departure, add optional photography or drone coverage, and lock in the 2026 flat rate of Rp950.000 per jeep/group.',
+      'Book directly using our Private Start Tosari Calculator to select Sunrise or Panorama departure, add optional photography or drone coverage, and lock in the flat rate of Rp950.000 per jeep/group.',
     ctaButton: 'Calculate & Book via Private Start Tosari Calculator',
     tags: [
       'Private Trip Start Tosari',
       'Bromo Jeep Rental Pasuruan',
-      'Tosari Jeep Prices 2026',
+      'Tosari Jeep Prices',
       'Bromo Jeep Wonokitri',
       'Bromo Jeep 1-6 Pax',
       'Bromo Itinerary Tosari',
@@ -361,12 +361,12 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_TOSARI: Record<
   },
 
   zh: {
-    id: 'private-trip-bromo-start-tosari-harga-2026',
-    slug: 'private-trip-bromo-start-tosari-pasuruan-harga-2026-itinerary-fasilitas',
+    id: 'private-trip-bromo-start-tosari',
+    slug: 'private-trip-bromo-start-tosari-pasuruan-harga-itinerary-fasilitas',
     bookingPackageId: 'private-jeep-wonokitri',
-    title: 'Private Trip 岩望 Tosari 出发布罗莫：2026 价格、行程与设施完整指南',
+    title: 'Private Trip 岩望 Tosari 出发布罗莫：价格、行程与设施完整指南',
     metaDescription:
-      '2026 岩望 Tosari 大本营出发布罗莫私人吉普团攻略：最实惠平季整车价 Rp950.000/辆（适用 1–6 人，1 人或 6 人同价），距 Penanjakan 日出观景台最近、柏油路况最平整，每日可选 03:00 日出或 11:00 全景。',
+      '岩望 Tosari 大本营出发布罗莫私人吉普团攻略：最实惠平季整车价 Rp950.000/辆（适用 1–6 人，1 人或 6 人同价），距 Penanjakan 日出观景台最近、柏油路况最平整，每日可选 03:00 日出或 11:00 全景。',
     author: 'WisataBromo.co 编辑团队',
     publishDate: '2026年11月26日',
     readTime: '5 分钟阅读',
@@ -378,9 +378,9 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_TOSARI: Record<
       '🚐 岩望 Tosari 出发专属四驱布罗莫吉普 — 最划算每辆 / 每团 1–6 人同价一口价',
     introduction: [
       '从泗水或岩望（Pasuruan）方向自驾前往，或已入住 Tosari 及 Wonokitri 山谷度假村？选择 Private Trip Start Tosari Pasuruan 是路况最平整、距 Penanjakan 日出观景台车程最短且性价比最高的官方入口！独享 1 辆 100% 独立四驱丰田 FJ40 吉普车，每日提供 03:00 日出团与 11:00 白天全景团。',
-      '本文完整整理 2026 最划算整车报价 Rp950.000（1–6 人同价）、摄影与无人机加购价、费用包含/不含及 02:30–10:00 行程安排。',
+      '本文完整整理最划算整车报价 Rp950.000（1–6 人同价）、摄影与无人机加购价、费用包含/不含及 02:30–10:00 行程安排。',
     ],
-    pricingSectionTitle: '💰 2026 岩望 Tosari 出发私人吉普价格与方案',
+    pricingSectionTitle: '💰 岩望 Tosari 出发私人吉普价格与方案',
     pricingSectionSubtitle: '最划算每辆吉普车 / 按团一口价（最多 6 人；含摄影师最多 5 人）—— 1 人或 6 人出行同价！',
     normalPrice: 'Rp1.150.000',
     promoPrice: 'Rp950.000',
@@ -484,11 +484,11 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_TOSARI: Record<
     extraTipContent:
       'Tosari 入口最受从泗水方向自驾或下榻 Tosari/Wonokitri 度假村的亲子家庭欢迎——进山柏油路平顺、距日出点车程最短，整车吉普价格也是三大入口中最实惠的！',
     conclusion:
-      '立即打开 Tosari 私人吉普计算器选择日期与摄影/无人机加购项，锁定 2026 最划算整车价 Rp950.000（1–6 人同价）！',
+      '立即打开 Tosari 私人吉普计算器选择日期与摄影/无人机加购项，锁定最划算整车价 Rp950.000（1–6 人同价）！',
     ctaButton: '打开 Tosari 专车计算器立即预订',
     tags: [
       'Private Trip Tosari 出发',
-      '2026岩望布罗莫吉普价格',
+      '岩望布罗莫吉普价格',
       'Wonokitri 租吉普',
       '布罗莫吉普1-6人同价',
       '布罗莫最省钱入口',

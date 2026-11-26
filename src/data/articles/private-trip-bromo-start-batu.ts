@@ -73,12 +73,12 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_BATU: Record<
   LocalizedBatuTripArticleContent
 > = {
   id: {
-    id: 'private-trip-bromo-start-batu-harga-2026',
-    slug: 'private-trip-bromo-start-kota-batu-harga-2026-itinerary-fasilitas',
+    id: 'private-trip-bromo-start-batu',
+    slug: 'private-trip-bromo-start-kota-batu-harga-itinerary-fasilitas',
     bookingPackageId: 'private-jeep-batu',
-    title: 'Private Trip Bromo Start Kota Batu: Harga 2026, Itinerary, dan Fasilitas',
+    title: 'Private Trip Bromo Start Kota Batu: Harga, Itinerary, dan Fasilitas',
     metaDescription:
-      'Panduan lengkap Private Trip Bromo Start Kota Batu Harga 2026 mulai Rp1.800.000 per jeep/grup untuk 1–6 peserta (1 atau 6 orang harga sama saja), penjemputan door-to-door di hotel, resort & villa Kota Wisata Batu, opsi dokumentasi +Rp500.000 & drone +Rp1.500.000, itinerary 23:00–13:00 WIB.',
+      'Panduan lengkap Private Trip Bromo Start Kota Batu Harga Terbaru mulai Rp1.800.000 per jeep/grup untuk 1–6 peserta (1 atau 6 orang harga sama saja), penjemputan door-to-door di hotel, resort & villa Kota Wisata Batu, opsi dokumentasi +Rp500.000 & drone +Rp1.500.000, itinerary 23:00–13:00 WIB.',
     author: 'Tim Editorial WisataBromo.co',
     publishDate: '26 November 2026',
     readTime: '5 Menit Baca',
@@ -89,10 +89,10 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_BATU: Record<
     animationCaption:
       '🚐 Private Jeep 4×4 Bromo Start Kota Wisata Batu — Harga flat per jeep / per grup untuk 1–6 peserta',
     introduction: [
-      'Sedang berlibur atau staycation di hotel, resort, maupun villa sejuk Kota Wisata Batu dan ingin melanjutkan petualangan sunrise ke Gunung Bromo? Layanan Private Trip Bromo Start Kota Batu menawarkan penjemputan langsung door-to-door di depan akomodasi Anda tanpa perlu berpindah ke Kota Malang terlebih dahulu. Panduan Harga 2026 ini merangkum tarif terbaru per jeep untuk 1–6 peserta (berangkat 1 orang maupun 6 orang harganya tetap sama saja), tambahan dokumentasi & drone, fasilitas lengkap, hingga itinerary dari tengah malam hingga siang hari.',
+      'Sedang berlibur atau staycation di hotel, resort, maupun villa sejuk Kota Wisata Batu dan ingin melanjutkan petualangan sunrise ke Gunung Bromo? Layanan Private Trip Bromo Start Kota Batu menawarkan penjemputan langsung door-to-door di depan akomodasi Anda tanpa perlu berpindah ke Kota Malang terlebih dahulu. Panduan Harga Terbaru ini merangkum tarif terbaru per jeep untuk 1–6 peserta (berangkat 1 orang maupun 6 orang harganya tetap sama saja), tambahan dokumentasi & drone, fasilitas lengkap, hingga itinerary dari tengah malam hingga siang hari.',
       'Simak rincian paket all-in tanpa digabung peserta lain, area penjemputan resmi seluruh Kota Wisata Batu, serta perlengkapan wajib menghadapi suhu 2°C – 10°C sebelum melakukan pemesanan langsung melalui Kalkulator Private Start Kota Batu.',
     ],
-    pricingSectionTitle: '💰 Harga & Paket Private Trip Start Kota Batu (Update 2026)',
+    pricingSectionTitle: '💰 Harga & Paket Private Trip Start Kota Batu (Terbaru)',
     pricingSectionSubtitle:
       'Harga flat per jeep / per grup (maksimal 6 peserta tanpa dokumentasi atau 5 peserta plus fotografer) — berangkat 1 orang maupun 6 orang, harganya sama saja!',
     normalPrice: 'Rp2.100.000',
@@ -205,12 +205,12 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_BATU: Record<
     extraTipContent:
       'Private Trip Start Kota Batu sangat cocok bagi keluarga dengan anak-anak maupun rombongan kantor yang menginap di villa atau resort Kota Batu dan menginginkan privasi penuh. Anda bisa beristirahat nyaman di villa sebelum dijemput tengah malam, lalu kembali siang hari tepat waktu untuk bersantai di Batu.',
     conclusion:
-      'Dengan harga promo reguler 2026 Rp1.800.000 per jeep/grup untuk 1–6 peserta (1 atau 6 orang harga sama saja), penjemputan langsung door-to-door di hotel atau villa Kota Batu, serta jadwal fleksibel 23:00 – 13:00 WIB, liburan Bromo Anda jauh lebih praktis dan privat. Hitung estimasi biaya serta opsi dokumentasi dan drone langsung di Kalkulator Booking Private Start Kota Batu.',
+      'Dengan harga promo reguler Rp1.800.000 per jeep/grup untuk 1–6 peserta (1 atau 6 orang harga sama saja), penjemputan langsung door-to-door di hotel atau villa Kota Batu, serta jadwal fleksibel 23:00 – 13:00 WIB, liburan Bromo Anda jauh lebih praktis dan privat. Hitung estimasi biaya serta opsi dokumentasi dan drone langsung di Kalkulator Booking Private Start Kota Batu.',
     ctaButton: 'Hitung & Booking via Kalkulator Private Start Kota Batu',
     tags: [
       'Private Trip Start Kota Batu',
       'Private Trip Bromo Batu',
-      'Harga Bromo Batu 2026',
+      'Harga Bromo Batu',
       'Sewa Jeep Bromo 1-6 Orang',
       'Penjemputan Villa Kota Batu',
       'Itinerary Bromo Batu',
@@ -218,12 +218,12 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_BATU: Record<
   },
 
   en: {
-    id: 'private-trip-bromo-start-batu-harga-2026',
-    slug: 'private-trip-bromo-start-kota-batu-harga-2026-itinerary-fasilitas',
+    id: 'private-trip-bromo-start-batu',
+    slug: 'private-trip-bromo-start-kota-batu-harga-itinerary-fasilitas',
     bookingPackageId: 'private-jeep-batu',
-    title: 'Private Trip Bromo Start Batu City: 2026 Prices, Itinerary & Facilities',
+    title: 'Private Trip Bromo Start Batu City: Prices, Itinerary & Facilities',
     metaDescription:
-      'Complete 2026 guide for Private Trip Bromo Start Batu City from Rp1.800.000 per jeep/group for 1–6 participants (same flat rate for 1 or 6 people), door-to-door pickup at Batu hotels, resorts & villas, optional photo/video +Rp500.000 & drone +Rp1.500.000, 23:00–13:00 WIB itinerary.',
+      'Complete guide for Private Trip Bromo Start Batu City from Rp1.800.000 per jeep/group for 1–6 participants (same flat rate for 1 or 6 people), door-to-door pickup at Batu hotels, resorts & villas, optional photo/video +Rp500.000 & drone +Rp1.500.000, 23:00–13:00 WIB itinerary.',
     author: 'WisataBromo.co Editorial Team',
     publishDate: 'November 26, 2026',
     readTime: '5 Min Read',
@@ -234,10 +234,10 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_BATU: Record<
     animationCaption:
       '🚐 Private 4×4 Bromo Jeep Start Batu City — Flat rate per jeep / per group for 1–6 participants',
     introduction: [
-      'Staying at a resort, hotel, or hillside villa in Batu City and planning a Mount Bromo sunrise escape? Our Private Trip Start Batu City provides seamless door-to-door pickup straight from your Batu accommodation—no need to transfer to Malang first. This 2026 guide outlines our flat per-jeep/group rate for 1–6 participants (whether 1 or 6 people travel, the price is identical), optional photo/video and drone add-ons, inclusions, and full midnight-to-midday schedule.',
+      'Staying at a resort, hotel, or hillside villa in Batu City and planning a Mount Bromo sunrise escape? Our Private Trip Start Batu City provides seamless door-to-door pickup straight from your Batu accommodation—no need to transfer to Malang first. This guide outlines our flat per-jeep/group rate for 1–6 participants (whether 1 or 6 people travel, the price is identical), optional photo/video and drone add-ons, inclusions, and full midnight-to-midday schedule.',
       'Review all package facilities, official Batu pickup zones, and the 2°C – 10°C cold-weather packing checklist before booking directly through our Private Start Batu Calculator.',
     ],
-    pricingSectionTitle: '💰 2026 Private Trip Start Batu City Prices & Add-Ons',
+    pricingSectionTitle: '💰 Private Trip Start Batu City Prices & Add-Ons',
     pricingSectionSubtitle:
       'Flat price per jeep / per group (max 6 guests without photographer, or 5 guests with photographer) — 1 person or 6 people pay the exact same rate!',
     normalPrice: 'Rp2.100.000',
@@ -350,12 +350,12 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_BATU: Record<
     extraTipContent:
       'Private Trip Start Batu City is tailored for families with kids and corporate retreats staying at Batu villas or resorts who want full privacy and effortless door-to-door midnight pickup.',
     conclusion:
-      'Book directly using our Private Start Batu Booking Calculator to pick your dates, optionally add photography or drone coverage, and lock in the 2026 flat rate of Rp1.800.000 per jeep/group (1–6 participants).',
+      'Book directly using our Private Start Batu Booking Calculator to pick your dates, optionally add photography or drone coverage, and lock in the flat rate of Rp1.800.000 per jeep/group (1–6 participants).',
     ctaButton: 'Calculate & Book via Private Start Batu Calculator',
     tags: [
       'Private Trip Start Batu City',
       'Private Trip Bromo Batu',
-      'Bromo Batu 2026 Prices',
+      'Bromo Batu Prices',
       'Bromo Jeep 1-6 Pax',
       'Batu Villa Pickup Bromo',
       'Bromo Itinerary Batu',
@@ -363,12 +363,12 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_BATU: Record<
   },
 
   zh: {
-    id: 'private-trip-bromo-start-batu-harga-2026',
-    slug: 'private-trip-bromo-start-kota-batu-harga-2026-itinerary-fasilitas',
+    id: 'private-trip-bromo-start-batu',
+    slug: 'private-trip-bromo-start-kota-batu-harga-itinerary-fasilitas',
     bookingPackageId: 'private-jeep-batu',
-    title: 'Private Trip 巴图市出发布罗莫：2026 价格、行程与设施完整指南',
+    title: 'Private Trip 巴图市出发布罗莫：价格、行程与设施完整指南',
     metaDescription:
-      '2026 巴图旅游市出发布罗莫私人团 (Private Trip Start Kota Batu) 攻略：平季整车价 Rp1.800.000/辆吉普车（适用 1–6 人，1 人或 6 人同价），支持巴图全境酒店/度假村/别墅上门接送，含摄影与无人机加购价及 23:00–13:00 行程。',
+      '巴图旅游市出发布罗莫私人团 (Private Trip Start Kota Batu) 攻略：平季整车价 Rp1.800.000/辆吉普车（适用 1–6 人，1 人或 6 人同价），支持巴图全境酒店/度假村/别墅上门接送，含摄影与无人机加购价及 23:00–13:00 行程。',
     author: 'WisataBromo.co 编辑团队',
     publishDate: '2026年11月26日',
     readTime: '5 分钟阅读',
@@ -379,10 +379,10 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_BATU: Record<
     animationCaption:
       '🚐 巴图市出发专属四驱布罗莫吉普 — 每辆 / 每团 1–6 人同价一口价',
     introduction: [
-      '入住巴图旅游市（Kota Wisata Batu）的酒店、度假村或山景别墅，选择 Private Trip Start Kota Batu 私人团即可享受门到门上门接送，无需再折腾前往玛琅市区汇合。本文汇总 2026 最新整车/整团报价（适用 1–6 位团员，1 人或 6 人价格完全相同）、摄影与无人机加购项及完整行程攻略。',
+      '入住巴图旅游市（Kota Wisata Batu）的酒店、度假村或山景别墅，选择 Private Trip Start Kota Batu 私人团即可享受门到门上门接送，无需再折腾前往玛琅市区汇合。本文汇总最新整车/整团报价（适用 1–6 位团员，1 人或 6 人价格完全相同）、摄影与无人机加购项及完整行程攻略。',
       '点击下方按钮即可直接打开巴图市出发私人团计算器（Private Start Kota Batu）核算费用并预约。',
     ],
-    pricingSectionTitle: '💰 2026 巴图市出发私人团价格与套餐方案',
+    pricingSectionTitle: '💰 巴图市出发私人团价格与套餐方案',
     pricingSectionSubtitle: '按辆吉普车 / 按团一口价（最多 6 人；含摄影师最多 5 人）—— 1 人或 6 人出行同价！',
     normalPrice: 'Rp2.100.000',
     promoPrice: 'Rp1.800.000',
@@ -487,11 +487,11 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_BATU: Record<
     extraTipContent:
       '巴图市出发私人团专为入住巴图别墅或度假村的亲子家庭及公司团队打造，半夜直接门口接车，100% 独立私密，次日中午返回刚好继续享受巴图休闲时光。',
     conclusion:
-      '立即打开巴图市私人团计算器选择日期与摄影/无人机加购项，锁定 2026 平季整车价 Rp1.800.000（1–6 人同价）！',
+      '立即打开巴图市私人团计算器选择日期与摄影/无人机加购项，锁定平季整车价 Rp1.800.000（1–6 人同价）！',
     ctaButton: '打开巴图市专车计算器立即预订',
     tags: [
       'Private Trip 巴图市出发',
-      '2026巴图布罗莫价格',
+      '巴图布罗莫价格',
       '巴图别墅接送布罗莫',
       '布罗莫吉普1-6人同价',
       '布罗莫行程攻略',

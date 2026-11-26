@@ -65,9 +65,9 @@ export const ARTICLE_BIAYA_KUDA_BROMO: Record<SupportedLanguage, LocalizedHorseA
   id: {
     id: 'biaya-kuda-bromo',
     slug: 'biaya-sewa-kuda-di-bromo-daftar-harga-tips',
-    title: 'Biaya Sewa Kuda di Bromo 2026: Daftar Harga Terbaru, Rute & Tips Anti Kena Mahal',
+    title: 'Biaya Sewa Kuda di Bromo: Daftar Harga Terbaru, Rute & Tips Anti Kena Mahal',
     metaDescription:
-      'Panduan lengkap tarif sewa kuda di Gunung Bromo tahun 2026 mulai dari jalur Parkiran Jeep ke Kaki Tangga Kawah, sesi foto di Lautan Pasir, hingga trik tawar-menawar ramah bersama pemilik kuda Tengger.',
+      'Panduan lengkap tarif sewa kuda di Gunung Bromo terbaru mulai dari jalur Parkiran Jeep ke Kaki Tangga Kawah, sesi foto di Lautan Pasir, hingga trik tawar-menawar ramah bersama pemilik kuda Tengger.',
     author: 'Tim Editorial WisataBromo.co',
     publishDate: '19 November 2026',
     readTime: '6 Menit Baca',
@@ -84,7 +84,7 @@ export const ARTICLE_BIAYA_KUDA_BROMO: Record<SupportedLanguage, LocalizedHorseA
       'Menjelajahi Lautan Pasir Gunung Bromo setelah menikmati Golden Sunrise adalah pengalaman yang tak tergantikan. Namun, berjalan kaki sejauh 1,5 hingga 2 kilometer dari area parkir Jeep menuju kaki tangga Kawah Bromo melintasi pasir vulkanik yang gembur dan menanjak bisa terasa cukup melelahkan—terutama di ketinggian 2.300+ mdpl dengan udara tipis.',
       'Di sinilah jasa sewa kuda lokal milik masyarakat Suku Tengger menjadi penyelamat sekaligus pengalaman wisata ikonik yang wajib dicoba! Agar budget liburan Anda tetap aman dan transaksi berjalan hangat tanpa salah paham, berikut rincian lengkap biaya sewa kuda di Bromo beserta tips praktisnya.',
     ],
-    priceTableTitle: 'Ringkasan Tarif Sewa Kuda di Bromo (Update 2026)',
+    priceTableTitle: 'Ringkasan Tarif Sewa Kuda di Bromo (Terbaru)',
     priceTableSubtitle: 'Estimasi harga standar lapangan yang disepakati bersama paguyuban pemilik kuda lokal.',
     priceTableHeaders: {
       service: 'Jenis Layanan',
@@ -248,11 +248,11 @@ export const ARTICLE_BIAYA_KUDA_BROMO: Record<SupportedLanguage, LocalizedHorseA
         'Jika Anda berangkat menggunakan paket Jeep resmi WisataBromo.co, jangan ragu meminta bantuan Driver Jeep kami untuk merekomendasikan pawang kuda langganan yang ramah dan jujur. Driver kami biasanya membantu mencocokkan harga wajar sekaligus memastikan kuda mengantar Anda kembali tepat ke unit Jeep kami tanpa bingung mencari!',
     },
     conclusion:
-      'Menunggang kuda di Gunung Bromo bukan hanya cara cerdas menghemat tenaga saat melintasi Lautan Pasir, melainkan juga bagian dari petualangan budaya bersama masyarakat Suku Tengger. Dengan mengetahui kisaran tarif 2026 sebesar Rp 150.000 – Rp 250.000 PP dan menerapkan tips di atas, liburan Bromo Anda dijamin makin seru, aman, dan bebas drama!',
+      'Menunggang kuda di Gunung Bromo bukan hanya cara cerdas menghemat tenaga saat melintasi Lautan Pasir, melainkan juga bagian dari petualangan budaya bersama masyarakat Suku Tengger. Dengan mengetahui kisaran tarif terbaru sebesar Rp 150.000 – Rp 250.000 PP dan menerapkan tips di atas, liburan Bromo Anda dijamin makin seru, aman, dan bebas drama!',
     ctaButton: 'Konsultasi & Booking Trip Bromo Sekarang',
     tags: [
       'Biaya Kuda Bromo',
-      'Sewa Kuda Bromo 2026',
+      'Sewa Kuda Bromo',
       'Tips Wisata Bromo',
       'Kawah Bromo',
       'Lautan Pasir Bromo',
@@ -263,9 +263,9 @@ export const ARTICLE_BIAYA_KUDA_BROMO: Record<SupportedLanguage, LocalizedHorseA
   en: {
     id: 'biaya-kuda-bromo',
     slug: 'biaya-sewa-kuda-di-bromo-daftar-harga-tips',
-    title: 'Mount Bromo Horse Rental Cost 2026: Official Price Guide, Routes & Fair-Bargaining Tips',
+    title: 'Mount Bromo Horse Rental Cost: Official Price Guide, Routes & Fair-Bargaining Tips',
     metaDescription:
-      'Complete 2026 guide to horse riding prices at Mount Bromo—covering Jeep Parking to Crater Stairs round-trip rates, Sea of Sand photo sessions, and friendly local tips.',
+      'Complete guide to horse riding prices at Mount Bromo—covering Jeep Parking to Crater Stairs round-trip rates, Sea of Sand photo sessions, and friendly local tips.',
     author: 'WisataBromo.co Editorial Team',
     publishDate: 'November 19, 2026',
     readTime: '6 Min Read',
@@ -280,9 +280,9 @@ export const ARTICLE_BIAYA_KUDA_BROMO: Record<SupportedLanguage, LocalizedHorseA
       'Horseback riding wrapped in a traditional Tengger sarong across the savanna makes for an unforgettable Mount Bromo photo moment.',
     introduction: [
       'Crossing Mount Bromo’s dramatic Sea of Sand after catching the Golden Sunrise is an unforgettable highlight. However, walking 1.5 to 2 kilometers over soft volcanic sand and uphill trails to the crater stairs at 2,300+ meters elevation can feel exhausting for many travelers.',
-      'Renting a local horse guided by the Tengger community is both a lifesaver for your legs and an iconic Mount Bromo cultural experience. Here is the complete 2026 price breakdown and practical tips so you get a fair, smooth, and joyful ride.',
+      'Renting a local horse guided by the Tengger community is both a lifesaver for your legs and an iconic Mount Bromo cultural experience. Here is the complete price breakdown and practical tips so you get a fair, smooth, and joyful ride.',
     ],
-    priceTableTitle: 'Mount Bromo Horse Rental Price Summary (2026 Update)',
+    priceTableTitle: 'Mount Bromo Horse Rental Price Summary (Latest Rates)',
     priceTableSubtitle: 'Standard field rates commonly agreed upon with local Tengger horse owners.',
     priceTableHeaders: {
       service: 'Service Type',
@@ -446,7 +446,7 @@ export const ARTICLE_BIAYA_KUDA_BROMO: Record<SupportedLanguage, LocalizedHorseA
         'Traveling with an official WisataBromo.co Jeep? Ask our Jeep driver to introduce you to a trusted local Tengger horse guide. Our drivers help confirm fair local rates and make sure your guide returns you directly to our exact Jeep without getting lost in the crowd.',
     },
     conclusion:
-      'Riding a horse across Mount Bromo’s Sea of Sand saves your energy for the 250 crater steps while immersing you in authentic Tengger highland culture. With the 2026 round-trip rate of IDR 150,000 – 250,000 and these practical tips in hand, you are all set for a smooth, memorable ride!',
+      'Riding a horse across Mount Bromo’s Sea of Sand saves your energy for the 250 crater steps while immersing you in authentic Tengger highland culture. With the round-trip rate of IDR 150,000 – 250,000 and these practical tips in hand, you are all set for a smooth, memorable ride!',
     ctaButton: 'Consult & Book Your Bromo Trip Now',
     tags: [
       'Bromo Horse Cost',
@@ -454,16 +454,16 @@ export const ARTICLE_BIAYA_KUDA_BROMO: Record<SupportedLanguage, LocalizedHorseA
       'Bromo Travel Tips',
       'Bromo Crater',
       'Sea of Sand',
-      'Bromo Guide 2026',
+      'Bromo Guide',
     ],
   },
 
   zh: {
     id: 'biaya-kuda-bromo',
     slug: 'biaya-sewa-kuda-di-bromo-daftar-harga-tips',
-    title: '2026布罗莫火山骑马费用指南：最新价格表、路线与防坑砍价技巧',
+    title: '布罗莫火山骑马费用指南：最新价格表、路线与防坑砍价技巧',
     metaDescription:
-      '2026年布罗莫火山租马完整攻略：吉普车停车场至火山口台阶往返价格、沙海拍照费用及与滕格尔族马夫友好沟通的实用贴士。',
+      '布罗莫火山租马完整攻略：吉普车停车场至火山口台阶往返价格、沙海拍照费用及与滕格尔族马夫友好沟通的实用贴士。',
     author: 'WisataBromo.co 编辑团队',
     publishDate: '2026年11月19日',
     readTime: '6 分钟阅读',
@@ -476,9 +476,9 @@ export const ARTICLE_BIAYA_KUDA_BROMO: Record<SupportedLanguage, LocalizedHorseA
     inlineImage2Caption: '披上滕格尔传统沙龙骑马在火山沙海与草原留影，是游客最爱的打卡画面。',
     introduction: [
       '看完布罗莫金色日出后，穿越壮观的火山沙海前往火山口是必玩项目。但从吉普车停车场步行 1.5 至 2 公里松软上坡的火山灰路，在海拔 2300 米以上的高原非常消耗体力。',
-      '租一匹当地滕格尔族居民牵引的布罗莫小马，不仅能轻松保存体力攀登火山口台阶，更是极具仪式感的特色体验！以下是 2026 年最新骑马价格与实用避坑指南。',
+      '租一匹当地滕格尔族居民牵引的布罗莫小马，不仅能轻松保存体力攀登火山口台阶，更是极具仪式感的特色体验！以下是 最新骑马价格与实用避坑指南。',
     ],
-    priceTableTitle: '布罗莫火山骑马费用一览表（2026更新）',
+    priceTableTitle: '布罗莫火山骑马费用一览表（最新参考）',
     priceTableSubtitle: '现场与当地马夫协会普遍认可的合理参考价格。',
     priceTableHeaders: {
       service: '服务类型',
@@ -642,7 +642,7 @@ export const ARTICLE_BIAYA_KUDA_BROMO: Record<SupportedLanguage, LocalizedHorseA
         '如果您预订了 WisataBromo.co 官方吉普车行程，欢迎请我们的司机协助推荐熟悉且靠谱的当地马夫！司机不仅能帮您把关合理价格，还能确保马夫直接把您稳妥送回咱们的吉普车旁。',
     },
     conclusion:
-      '在布罗莫沙海骑马既能为您保留攀登 250 级火山台阶的体力，又能深度感受滕格尔高原文化。掌握 2026 年 15 万–25 万印尼盾往返参考价与这 7 条小贴士，祝您玩得尽兴又舒心！',
+      '在布罗莫沙海骑马既能为您保留攀登 250 级火山台阶的体力，又能深度感受滕格尔高原文化。掌握 15 万–25 万印尼盾往返参考价与这 7 条小贴士，祝您玩得尽兴又舒心！',
     ctaButton: '立即咨询并预订布罗莫行程',
     tags: [
       '布罗莫骑马费用',
@@ -650,7 +650,7 @@ export const ARTICLE_BIAYA_KUDA_BROMO: Record<SupportedLanguage, LocalizedHorseA
       '布罗莫旅游贴士',
       '布罗莫火山口',
       '火山沙海',
-      '2026布罗莫指南',
+      '布罗莫指南',
     ],
   },
 };

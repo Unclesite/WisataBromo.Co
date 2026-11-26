@@ -85,12 +85,12 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_KOTA_BATU: Record<
   LocalizedOpenTripBatuArticleContent
 > = {
   id: {
-    id: 'open-trip-bromo-start-kota-batu-harga-2026',
-    slug: 'open-trip-bromo-start-kota-batu-harga-2026-itinerary-fasilitas',
+    id: 'open-trip-bromo-start-kota-batu',
+    slug: 'open-trip-bromo-start-kota-batu-harga-itinerary-fasilitas',
     bookingPackageId: 'open-trip-batu',
-    title: 'Open Trip Bromo Start Kota Batu: Harga 2026, Itinerary, dan Fasilitas',
+    title: 'Open Trip Bromo Start Kota Batu: Harga, Itinerary, dan Fasilitas',
     metaDescription:
-      'Panduan lengkap Open Trip Bromo Start Kota Batu Harga 2026 mulai Rp325.000/orang (atau Rp375.000/orang plus dokumentasi foto DSLR). Berangkat setiap hari tanpa kuota minimal (1 orang pasti berangkat!), jemput langsung di hotel, villa & resort Kota Wisata Batu, sudah termasuk Shuttle AC, Jeep 4x4 & tiket TNBTS.',
+      'Panduan lengkap Open Trip Bromo Start Kota Batu Harga Terbaru mulai Rp325.000/orang (atau Rp375.000/orang plus dokumentasi foto DSLR). Berangkat setiap hari tanpa kuota minimal (1 orang pasti berangkat!), jemput langsung di hotel, villa & resort Kota Wisata Batu, sudah termasuk Shuttle AC, Jeep 4x4 & tiket TNBTS.',
     author: 'Tim Editorial WisataBromo.co',
     publishDate: '26 November 2026',
     readTime: '5 Menit Baca',
@@ -102,9 +102,9 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_KOTA_BATU: Record<
       '🚐 Open Trip Bromo Start Kota Batu — 1 orang pasti berangkat setiap hari mulai Rp325.000/orang',
     introduction: [
       'Sedang berlibur atau staycation di Kota Wisata Batu dan ingin melanjutkan petualangan mengejar Golden Sunrise Gunung Bromo dengan biaya hemat? Layanan Open Trip Bromo Start Kota Batu dari WisataBromo.co siap menjemput Anda langsung di lobi hotel, villa, maupun resort kawasan Jatim Park, Alun-Alun Batu, Oro-Oro Ombo, hingga Selecta. Berangkat setiap hari tengah malam (Senin–Minggu), bahkan 1 orang saja tetap pasti berangkat tanpa minimal kuota!',
-      'Dengan tarif transparan 2026 mulai Rp325.000/orang (atau Rp375.000/orang jika sekalian dokumentasi foto DSLR/Mirrorless), Anda tidak perlu repot turun dulu ke Kota Malang. Paket sudah mencakup Shuttle Car AC PP, BBM, Jeep Hardtop 4×4 Toyota Land Cruiser FJ40, hingga tiket masuk resmi TNBTS. Simak rincian harga, fasilitas, jadwal itinerary 23:00 – 13:00 WIB, serta perlengkapan wajibnya di bawah ini.',
+      'Dengan tarif transparan mulai Rp325.000/orang (atau Rp375.000/orang jika sekalian dokumentasi foto DSLR/Mirrorless), Anda tidak perlu repot turun dulu ke Kota Malang. Paket sudah mencakup Shuttle Car AC PP, BBM, Jeep Hardtop 4×4 Toyota Land Cruiser FJ40, hingga tiket masuk resmi TNBTS. Simak rincian harga, fasilitas, jadwal itinerary 23:00 – 13:00 WIB, serta perlengkapan wajibnya di bawah ini.',
     ],
-    pricingSectionTitle: '💰 Harga & Paket Open Trip Start Kota Batu (Update 2026)',
+    pricingSectionTitle: '💰 Harga & Paket Open Trip Start Kota Batu (Terbaru)',
     pricingSectionSubtitle:
       'Sharing trip harian praktis langsung dari Kota Wisata Batu — 1 orang pasti berangkat setiap hari dengan opsi reguler atau plus foto DSLR/Mirrorless.',
     heroBadge: '1 ORANG PASTI BERANGKAT • JEMPUT VILLA & HOTEL BATU',
@@ -116,7 +116,7 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_KOTA_BATU: Record<
     docIncludedBannerTitle: '🚐 1 Orang Pasti Berangkat Setiap Hari Langsung dari Kota Batu!',
     docIncludedBannerDesc:
       'Tidak perlu khawatir kuota kurang atau harus transit sendiri ke Malang — Open Trip Start Kota Batu berangkat SETIAP HARI pukul 23:00–00:30 WIB dengan penjemputan door-to-door di hotel, villa, atau homestay Anda di Kota Wisata Batu!',
-    tiersTableTitle: '📊 Daftar Harga Open Trip Bromo Start Kota Batu 2026',
+    tiersTableTitle: '📊 Daftar Harga Open Trip Bromo Start Kota Batu',
     tiersTableSubtitle:
       'Pilih opsi sesuai musim keberangkatan dan kebutuhan dokumentasi foto DSLR/Mirrorless Anda:',
     pricingTiers: [
@@ -281,19 +281,19 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_KOTA_BATU: Record<
     ctaButton: 'Hitung & Booking Open Trip Start Kota Batu',
     tags: [
       'Open Trip Bromo Start Kota Batu',
-      'Open Trip Bromo Batu 2026',
+      'Open Trip Bromo Batu',
       'Harga Open Trip Bromo Batu',
       'Open Trip Bromo 1 Orang Berangkat',
       'Bromo Jemput Hotel Villa Batu',
     ],
   },
   en: {
-    id: 'open-trip-bromo-start-kota-batu-harga-2026',
-    slug: 'open-trip-bromo-start-kota-batu-harga-2026-itinerary-fasilitas',
+    id: 'open-trip-bromo-start-kota-batu',
+    slug: 'open-trip-bromo-start-kota-batu-harga-itinerary-fasilitas',
     bookingPackageId: 'open-trip-batu',
-    title: 'Mount Bromo Open Trip from Batu City: 2026 Prices, Itinerary & Facilities',
+    title: 'Mount Bromo Open Trip from Batu City: Prices, Itinerary & Facilities',
     metaDescription:
-      'Complete 2026 guide to Mount Bromo Open Trip from Batu City starting at IDR 325,000/person (or IDR 375,000/person with DSLR photography). Daily guaranteed departure even for 1 solo traveler, direct pickup at Batu hotels, villas & resorts, including AC shuttle, 4x4 Jeep & TNBTS ticket.',
+      'Complete guide to Mount Bromo Open Trip from Batu City starting at IDR 325,000/person (or IDR 375,000/person with DSLR photography). Daily guaranteed departure even for 1 solo traveler, direct pickup at Batu hotels, villas & resorts, including AC shuttle, 4x4 Jeep & TNBTS ticket.',
     author: 'WisataBromo.co Editorial Team',
     publishDate: 'November 26, 2026',
     readTime: '5 Min Read',
@@ -305,9 +305,9 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_KOTA_BATU: Record<
       '🚐 Mount Bromo Open Trip from Batu City — Daily guaranteed departure from 1 person, starting at IDR 325,000/pax',
     introduction: [
       'Staying at a hotel, resort, or villa in Batu City and want a budget-friendly way to chase Mount Bromo’s Golden Sunrise? WisataBromo.co’s Open Trip Bromo Start Batu City picks you up directly from your accommodation around Jatim Park, Batu Town Square, Oro-Oro Ombo, Songgoriti, or Selecta. Running every single night (Mon–Sun), even 1 solo traveler is guaranteed to depart with zero minimum quota!',
-      'With transparent 2026 rates starting at IDR 325,000/person (or IDR 375,000/person with DSLR/Mirrorless photo documentation), there is no need to commute down to Malang first. Round-trip AC shuttle transport, fuel, a 4×4 Toyota Land Cruiser FJ40 Jeep, and official TNBTS entry tickets (WNI) are all covered.',
+      'With transparent rates starting at IDR 325,000/person (or IDR 375,000/person with DSLR/Mirrorless photo documentation), there is no need to commute down to Malang first. Round-trip AC shuttle transport, fuel, a 4×4 Toyota Land Cruiser FJ40 Jeep, and official TNBTS entry tickets (WNI) are all covered.',
     ],
-    pricingSectionTitle: '💰 2026 Open Trip Start Batu City Prices & Options',
+    pricingSectionTitle: '💰 Open Trip Start Batu City Prices & Options',
     pricingSectionSubtitle:
       'Seamless daily shared tour directly from Batu City — guaranteed departure from 1 pax with optional DSLR/Mirrorless photography.',
     heroBadge: '1 PAX GUARANTEED • BATU HOTEL & VILLA PICKUP',
@@ -319,7 +319,7 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_KOTA_BATU: Record<
     docIncludedBannerTitle: '🚐 Guaranteed Daily Departure Directly from Batu City — Even for 1 Pax!',
     docIncludedBannerDesc:
       'No need to wait for minimum signups or travel to Malang first — our Batu Open Trip departs EVERY DAY at 23:00–00:30 WIB with direct door-to-door pickup at your Batu hotel, resort, or villa!',
-    tiersTableTitle: '📊 2026 Open Trip Start Batu City Price Table',
+    tiersTableTitle: '📊 Open Trip Start Batu City Price Table',
     tiersTableSubtitle:
       'Choose your travel season and whether you would like DSLR/Mirrorless photography:',
     pricingTiers: [
@@ -484,19 +484,19 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_KOTA_BATU: Record<
     ctaButton: 'Calculate & Book Open Trip Start Batu City',
     tags: [
       'Mount Bromo Open Trip Batu',
-      'Bromo Shared Tour Batu City 2026',
+      'Bromo Shared Tour Batu City',
       'Batu Hotel Pickup Bromo Tour',
       'Solo Traveler Bromo Batu',
       'Bromo Open Trip 325k',
     ],
   },
   zh: {
-    id: 'open-trip-bromo-start-kota-batu-harga-2026',
-    slug: 'open-trip-bromo-start-kota-batu-harga-2026-itinerary-fasilitas',
+    id: 'open-trip-bromo-start-kota-batu',
+    slug: 'open-trip-bromo-start-kota-batu-harga-itinerary-fasilitas',
     bookingPackageId: 'open-trip-batu',
-    title: '巴图市出发布罗莫拼团 (Open Trip)：2026 价格、行程与全包设施指南',
+    title: '巴图市出发布罗莫拼团 (Open Trip)：价格、行程与全包设施指南',
     metaDescription:
-      '2026 巴图市 (Kota Batu) 出发布罗莫拼团 (Open Trip) 完整攻略：仅需 Rp325.000/人起（含单反跟拍 Rp375.000/人）。天天发团、1人即成行，巴图市酒店/度假村/别墅直接上门接送，含空调专车、4x4吉普与 TNBTS 门票。',
+      '巴图市 (Kota Batu) 出发布罗莫拼团 (Open Trip) 完整攻略：仅需 Rp325.000/人起（含单反跟拍 Rp375.000/人）。天天发团、1人即成行，巴图市酒店/度假村/别墅直接上门接送，含空调专车、4x4吉普与 TNBTS 门票。',
     author: 'WisataBromo.co 编辑团队',
     publishDate: '2026年11月26日',
     readTime: '阅读约 5 分钟',
@@ -508,9 +508,9 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_KOTA_BATU: Record<
       '🚐 巴图市出发布罗莫拼团 — 1人天天发团、巴图酒店别墅直达接送，低至 Rp325.000/人起',
     introduction: [
       '正在凉爽宜人的巴图旅游城 (Kota Wisata Batu) 度假，想以高性价比顺道打卡布罗莫火山金色日出？WisataBromo.co 推出的“巴图市出发布罗莫拼团 (Open Trip)”可直接前往 Jatim Park、巴图广场、Oro-Oro Ombo、Songgoriti 及 Selecta 周边酒店、度假村与别墅上门接驾。周一至周日每晚发车，1人报名也保证发团！',
-      '2026 年透明价格低至 Rp325.000/人起（升级单反/微单摄影跟拍仅 Rp375.000/人），无需自行下山前往玛琅转车。费用包含巴图往返空调专车、油费、4×4 丰田 FJ40 吉普车与 TNBTS 国家公园官方门票（印尼公民）。下面为您详列价格、设施与 23:00–13:00 行程安排。',
+      '年透明价格低至 Rp325.000/人起（升级单反/微单摄影跟拍仅 Rp375.000/人），无需自行下山前往玛琅转车。费用包含巴图往返空调专车、油费、4×4 丰田 FJ40 吉普车与 TNBTS 国家公园官方门票（印尼公民）。下面为您详列价格、设施与 23:00–13:00 行程安排。',
     ],
-    pricingSectionTitle: '💰 2026 巴图市出发拼团价格与方案',
+    pricingSectionTitle: '💰 巴图市出发拼团价格与方案',
     pricingSectionSubtitle:
       '巴图旅游城直发每日拼团——1人即可发团，提供标准版与专业单反跟拍升级版两种选择。',
     heroBadge: '1人保证发团 • 巴图酒店别墅上门接送',
@@ -522,7 +522,7 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_KOTA_BATU: Record<
     docIncludedBannerTitle: '🚐 巴图市天天直发 — 1人报名也保证成行！',
     docIncludedBannerDesc:
       '无需凑人数、也无需提前赶往玛琅集合——巴图出发拼团每晚 23:00–00:30 WIB 准时前往您的巴图酒店、度假村或别墅门口上门接驾！',
-    tiersTableTitle: '📊 2026 巴图市出发拼团详细价目表',
+    tiersTableTitle: '📊 巴图市出发拼团详细价目表',
     tiersTableSubtitle:
       '根据您的出行淡旺季与是否需要专业单反/微单跟拍自由选择：',
     pricingTiers: [
@@ -687,7 +687,7 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_KOTA_BATU: Record<
     ctaButton: '计算费用并预订巴图市出发拼团',
     tags: [
       '巴图市布罗莫拼团',
-      '巴图出发Open Trip 2026',
+      '巴图出发Open Trip',
       '巴图酒店接送布罗莫',
       '布罗莫1人发团',
       '巴图布罗莫一日游价格',

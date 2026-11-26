@@ -73,12 +73,12 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_MALANG: Record<
   LocalizedMalangTripArticleContent
 > = {
   id: {
-    id: 'open-trip-bromo-start-malang-harga-2026',
-    slug: 'private-trip-bromo-start-kota-malang-harga-2026-itinerary-fasilitas',
+    id: 'private-trip-bromo-start-kota-malang',
+    slug: 'private-trip-bromo-start-kota-malang-harga-itinerary-fasilitas',
     bookingPackageId: 'private-jeep-malang',
-    title: 'Private Trip Bromo Start Kota Malang: Harga 2026, Itinerary, dan Fasilitas',
+    title: 'Private Trip Bromo Start Kota Malang: Harga, Itinerary, dan Fasilitas',
     metaDescription:
-      'Panduan lengkap Private Trip Bromo Start Kota Malang Harga 2026 mulai Rp1.700.000 per jeep/grup untuk 1–6 peserta (1 atau 6 orang harga sama saja), lengkap dengan opsi dokumentasi & drone, fasilitas include/exclude, itinerary 23:00–12:30 WIB, lokasi jemput Kota Malang, serta perlengkapan wajib.',
+      'Panduan lengkap Private Trip Bromo Start Kota Malang Harga Terbaru mulai Rp1.700.000 per jeep/grup untuk 1–6 peserta (1 atau 6 orang harga sama saja), lengkap dengan opsi dokumentasi & drone, fasilitas include/exclude, itinerary 23:00–12:30 WIB, lokasi jemput Kota Malang, serta perlengkapan wajib.',
     author: 'Tim Editorial WisataBromo.co',
     publishDate: '26 November 2026',
     readTime: '5 Menit Baca',
@@ -89,10 +89,10 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_MALANG: Record<
     animationCaption:
       '🚐 Private Jeep 4×4 Bromo Start Kota Malang — Harga flat per jeep / per grup untuk 1–6 peserta',
     introduction: [
-      'Merencanakan perjalanan ke Gunung Bromo dari Kota Malang kini jauh lebih nyaman dan eksklusif dengan layanan Private Trip Start Kota Malang yang menjemput langsung di alamat, hotel, homestay, maupun stasiun. Panduan Harga 2026 ini merangkum tarif terbaru per jeep (untuk 1–6 peserta, 1 atau 6 orang harga sama saja), tambahan dokumentasi & drone, fasilitas lengkap, hingga susunan itinerary dari malam hingga siang hari.',
+      'Merencanakan perjalanan ke Gunung Bromo dari Kota Malang kini jauh lebih nyaman dan eksklusif dengan layanan Private Trip Start Kota Malang yang menjemput langsung di alamat, hotel, homestay, maupun stasiun. Panduan Harga Terbaru ini merangkum tarif terbaru per jeep (untuk 1–6 peserta, 1 atau 6 orang harga sama saja), tambahan dokumentasi & drone, fasilitas lengkap, hingga susunan itinerary dari malam hingga siang hari.',
       'Simak rincian paket, lokasi penjemputan resmi, serta daftar perlengkapan wajib menghadapi suhu dingin 2°C – 10°C sebelum melakukan reservasi langsung melalui Kalkulator Private Start Malang.',
     ],
-    pricingSectionTitle: '💰 Harga & Paket Private Trip Start Kota Malang (Update 2026)',
+    pricingSectionTitle: '💰 Harga & Paket Private Trip Start Kota Malang (Terbaru)',
     pricingSectionSubtitle:
       'Harga per jeep / per grup (maksimal 6 peserta) — berangkat 1 orang maupun 6 orang, harganya tetap sama saja!',
     normalPrice: 'Rp2.000.000',
@@ -204,12 +204,12 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_MALANG: Record<
     extraTipContent:
       'Private Trip Start Kota Malang sangat cocok untuk keluarga dengan anak-anak maupun rombongan kantor yang menginginkan privasi maksimal, ritme perjalanan fleksibel, serta penjemputan langsung door-to-door di Kota Malang.',
     conclusion:
-      'Dengan harga promo 2026 Rp1.700.000 per jeep/grup untuk 1–6 peserta (1 atau 6 orang harga sama saja), itinerary terstruktur 23:00 – 12:30 WIB, serta penjemputan langsung di Kota Malang, liburan Bromo Anda jauh lebih privat dan hemat. Hitung estimasi lengkap beserta opsi dokumentasi dan drone langsung di Kalkulator Booking Private Start Malang.',
+      'Dengan harga promo Rp1.700.000 per jeep/grup untuk 1–6 peserta (1 atau 6 orang harga sama saja), itinerary terstruktur 23:00 – 12:30 WIB, serta penjemputan langsung di Kota Malang, liburan Bromo Anda jauh lebih privat dan hemat. Hitung estimasi lengkap beserta opsi dokumentasi dan drone langsung di Kalkulator Booking Private Start Malang.',
     ctaButton: 'Hitung & Booking via Kalkulator Private Start Malang',
     tags: [
       'Private Trip Start Kota Malang',
       'Private Trip Bromo Malang',
-      'Harga Bromo 2026',
+      'Harga Bromo',
       'Sewa Jeep Bromo 1-6 Orang',
       'Itinerary Bromo Malang',
       'Penjemputan Stasiun Malang',
@@ -217,12 +217,12 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_MALANG: Record<
   },
 
   en: {
-    id: 'open-trip-bromo-start-malang-harga-2026',
-    slug: 'private-trip-bromo-start-kota-malang-harga-2026-itinerary-fasilitas',
+    id: 'private-trip-bromo-start-kota-malang',
+    slug: 'private-trip-bromo-start-kota-malang-harga-itinerary-fasilitas',
     bookingPackageId: 'private-jeep-malang',
-    title: 'Private Trip Bromo Start Malang City: 2026 Prices, Itinerary & Facilities',
+    title: 'Private Trip Bromo Start Malang City: Prices, Itinerary & Facilities',
     metaDescription:
-      'Complete 2026 guide for Private Trip Bromo Start Malang City from Rp1.700.000 per jeep/group for 1–6 participants (same flat price for 1 or 6 people), including photo/video & drone add-ons, inclusions/exclusions, 23:00–12:30 WIB itinerary, and Malang pickup points.',
+      'Complete guide for Private Trip Bromo Start Malang City from Rp1.700.000 per jeep/group for 1–6 participants (same flat price for 1 or 6 people), including photo/video & drone add-ons, inclusions/exclusions, 23:00–12:30 WIB itinerary, and Malang pickup points.',
     author: 'WisataBromo.co Editorial Team',
     publishDate: 'November 26, 2026',
     readTime: '5 Min Read',
@@ -233,10 +233,10 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_MALANG: Record<
     animationCaption:
       '🚐 Private 4×4 Bromo Jeep Start Malang City — Flat rate per jeep / per group for 1–6 participants',
     introduction: [
-      'Planning your Mount Bromo sunrise trip from Malang City is effortless with our Private Trip Start Malang City service featuring direct door-to-door pickup from stations, hotels, homestays, or residential addresses. This 2026 guide covers our flat per-jeep/group rate for 1–6 participants (whether 1 or 6 people join, the price is exactly the same), optional photo/video and drone add-ons, full inclusions, and the step-by-step schedule.',
+      'Planning your Mount Bromo sunrise trip from Malang City is effortless with our Private Trip Start Malang City service featuring direct door-to-door pickup from stations, hotels, homestays, or residential addresses. This guide covers our flat per-jeep/group rate for 1–6 participants (whether 1 or 6 people join, the price is exactly the same), optional photo/video and drone add-ons, full inclusions, and the step-by-step schedule.',
       'Review the complete facilities, official Malang pickup spots, and mandatory 2°C – 10°C cold-weather checklist before calculating your trip in our Private Start Malang booking calculator.',
     ],
-    pricingSectionTitle: '💰 2026 Private Trip Start Malang City Prices & Add-Ons',
+    pricingSectionTitle: '💰 Private Trip Start Malang City Prices & Add-Ons',
     pricingSectionSubtitle:
       'Flat price per jeep / per group (max 6 participants) — 1 person or 6 people pay the exact same rate!',
     normalPrice: 'Rp2.000.000',
@@ -348,12 +348,12 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_MALANG: Record<
     extraTipContent:
       'Private Trip Start Malang City is ideal for families traveling with children or office/corporate outings seeking maximum privacy, flexible timing, and direct door-to-door pickup in Malang.',
     conclusion:
-      'Book directly using our Private Start Malang Booking Calculator to customize dates, add photography or drone coverage, and lock in the 2026 flat promo rate of Rp1.700.000 per jeep/group (1–6 participants, same price for 1 or 6 people).',
+      'Book directly using our Private Start Malang Booking Calculator to customize dates, add photography or drone coverage, and lock in the flat promo rate of Rp1.700.000 per jeep/group (1–6 participants, same price for 1 or 6 people).',
     ctaButton: 'Calculate & Book via Private Start Malang Calculator',
     tags: [
       'Private Trip Start Malang City',
       'Private Trip Bromo Malang',
-      'Bromo 2026 Prices',
+      'Bromo Prices',
       'Bromo Jeep 1-6 Pax',
       'Bromo Itinerary Malang',
       'Malang Station Pickup',
@@ -361,12 +361,12 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_MALANG: Record<
   },
 
   zh: {
-    id: 'open-trip-bromo-start-malang-harga-2026',
-    slug: 'private-trip-bromo-start-kota-malang-harga-2026-itinerary-fasilitas',
+    id: 'private-trip-bromo-start-kota-malang',
+    slug: 'private-trip-bromo-start-kota-malang-harga-itinerary-fasilitas',
     bookingPackageId: 'private-jeep-malang',
-    title: 'Private Trip 玛琅市区出发布罗莫：2026 价格、行程与设施完整指南',
+    title: 'Private Trip 玛琅市区出发布罗莫：价格、行程与设施完整指南',
     metaDescription:
-      '2026 玛琅市区出发布罗莫私人团 (Private Trip Start Kota Malang) 攻略：淡季优惠价 Rp1.700.000/辆吉普车（适用 1–6 位团员，1 人或 6 人同价），含摄影跟拍与无人机加购价、费用包含/不含与 23:00–12:30 行程。',
+      '玛琅市区出发布罗莫私人团 (Private Trip Start Kota Malang) 攻略：淡季优惠价 Rp1.700.000/辆吉普车（适用 1–6 位团员，1 人或 6 人同价），含摄影跟拍与无人机加购价、费用包含/不含与 23:00–12:30 行程。',
     author: 'WisataBromo.co 编辑团队',
     publishDate: '2026年11月26日',
     readTime: '5 分钟阅读',
@@ -377,10 +377,10 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_MALANG: Record<
     animationCaption:
       '🚐 玛琅市区出发专属四驱布罗莫吉普 — 每辆 / 每团 1–6 人同价一口价',
     introduction: [
-      '选择玛琅市区出发私人团 (Private Trip Start Kota Malang) 前往布罗莫火山，支持火车站、酒店、民宿及住宅上门接送。本文汇总 2026 最新整车/整团淡季优惠报价（适用 1–6 位团员，1 人或 6 人价格完全相同）、摄影与无人机加购项、完整行程与保暖装备清单。',
+      '选择玛琅市区出发私人团 (Private Trip Start Kota Malang) 前往布罗莫火山，支持火车站、酒店、民宿及住宅上门接送。本文汇总最新整车/整团淡季优惠报价（适用 1–6 位团员，1 人或 6 人价格完全相同）、摄影与无人机加购项、完整行程与保暖装备清单。',
       '点击下方预订按钮即可直接打开玛琅专车出发 (Private Start Malang) 价格计算器完成预订。',
     ],
-    pricingSectionTitle: '💰 2026 玛琅市区出发私人团价格与套餐方案',
+    pricingSectionTitle: '💰 玛琅市区出发私人团价格与套餐方案',
     pricingSectionSubtitle: '按辆吉普车 / 按团计费（最多 6 人）—— 1 人或 6 人出行同价！',
     normalPrice: 'Rp2.000.000',
     promoPrice: 'Rp1.700.000',
@@ -484,11 +484,11 @@ export const ARTICLE_OPEN_TRIP_BROMO_START_MALANG: Record<
     extraTipContent:
       '玛琅市区出发私人团非常推荐携带儿童的家庭出游或追求高度私密性与灵活节奏的企业团建团队选择。',
     conclusion:
-      '立即通过玛琅私人团 (Private Start Malang) 价格计算器选择日期与加购项，锁定 2026 淡季特惠整车价 Rp1.700.000（1–6 人同价）！',
+      '立即通过玛琅私人团 (Private Start Malang) 价格计算器选择日期与加购项，锁定淡季特惠整车价 Rp1.700.000（1–6 人同价）！',
     ctaButton: '打开玛琅专车计算器立即预订',
     tags: [
       'Private Trip Start Kota Malang',
-      '2026布罗莫价格',
+      '布罗莫价格',
       '玛琅出发布罗莫私人团',
       '布罗莫吉普1-6人同价',
       '布罗莫行程攻略',

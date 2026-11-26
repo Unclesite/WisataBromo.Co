@@ -73,12 +73,12 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_SUKAPURA: Record<
   LocalizedSukapuraTripArticleContent
 > = {
   id: {
-    id: 'private-trip-bromo-start-sukapura-harga-2026',
-    slug: 'private-trip-bromo-start-sukapura-probolinggo-harga-2026-itinerary-fasilitas',
+    id: 'private-trip-bromo-start-sukapura',
+    slug: 'private-trip-bromo-start-sukapura-probolinggo-harga-itinerary-fasilitas',
     bookingPackageId: 'private-jeep-sukapura',
-    title: 'Private Trip Bromo Start Sukapura Probolinggo: Harga 2026, Itinerary, dan Fasilitas',
+    title: 'Private Trip Bromo Start Sukapura Probolinggo: Harga, Itinerary, dan Fasilitas',
     metaDescription:
-      'Panduan lengkap Private Trip Bromo Start Sukapura Probolinggo Harga 2026 mulai Rp1.000.000 per jeep/grup untuk 1–6 peserta (1 atau 6 orang harga sama saja), opsi Sunrise 03:00 WIB atau Panorama 11:00 WIB, tambahan dokumentasi +Rp500.000 & drone +Rp1.500.000, meeting point Basecamp Sukapura & hotel Cemoro Lawang.',
+      'Panduan lengkap Private Trip Bromo Start Sukapura Probolinggo Harga Terbaru mulai Rp1.000.000 per jeep/grup untuk 1–6 peserta (1 atau 6 orang harga sama saja), opsi Sunrise 03:00 WIB atau Panorama 11:00 WIB, tambahan dokumentasi +Rp500.000 & drone +Rp1.500.000, meeting point Basecamp Sukapura & hotel Cemoro Lawang.',
     author: 'Tim Editorial WisataBromo.co',
     publishDate: '26 November 2026',
     readTime: '5 Menit Baca',
@@ -90,9 +90,9 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_SUKAPURA: Record<
       '🚐 Private Jeep 4×4 Bromo Start Sukapura Probolinggo — Harga flat per jeep / per grup untuk 1–6 peserta',
     introduction: [
       'Membawa kendaraan pribadi melalui Tol Trans Jawa exit Probolinggo atau sedang menginap di penginapan sekitar Sukapura hingga Cemoro Lawang? Layanan Private Trip Bromo Start Sukapura Probolinggo adalah pilihan paling praktis, dekat, dan hemat! Anda menyewa 1 unit Jeep 4×4 Toyota Land Cruiser FJ40 secara 100% privat tanpa digabung rombongan lain, dengan pilihan keberangkatan setiap hari: Paket Sunrise (03:00 WIB) maupun Paket Panorama Siang (11:00 WIB).',
-      'Panduan Harga 2026 ini merangkum tarif flat per jeep untuk 1–6 peserta (berangkat 1 orang maupun 6 orang harganya tetap sama saja), tambahan dokumentasi & drone, fasilitas lengkap include/exclude, itinerary 02:30 – 10:00 WIB, titik kumpul resmi Basecamp Sukapura, hingga daftar perlengkapan wajib suhu 2°C – 10°C.',
+      'Panduan Harga Terbaru ini merangkum tarif flat per jeep untuk 1–6 peserta (berangkat 1 orang maupun 6 orang harganya tetap sama saja), tambahan dokumentasi & drone, fasilitas lengkap include/exclude, itinerary 02:30 – 10:00 WIB, titik kumpul resmi Basecamp Sukapura, hingga daftar perlengkapan wajib suhu 2°C – 10°C.',
     ],
-    pricingSectionTitle: '💰 Harga & Paket Private Trip Start Sukapura Probolinggo (Update 2026)',
+    pricingSectionTitle: '💰 Harga & Paket Private Trip Start Sukapura Probolinggo (Terbaru)',
     pricingSectionSubtitle:
       'Harga flat per jeep / per grup (maksimal 6 peserta tanpa dokumentasi atau 5 peserta plus fotografer) — berangkat 1 orang maupun 6 orang, harganya sama saja!',
     normalPrice: 'Rp1.200.000',
@@ -204,12 +204,12 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_SUKAPURA: Record<
     extraTipContent:
       'Private Trip Start Sukapura Probolinggo paling ideal bagi keluarga atau rombongan yang road trip membawa mobil pribadi lewat Tol Trans Jawa exit Probolinggo maupun tamu yang sudah menginap di hotel sekitar Sukapura & Cemoro Lawang. Mobil pribadi Anda dapat diparkir aman di rest area resmi Basecamp Sukapura tanpa harus menanjak jalur ekstrem dengan mobil kota.',
     conclusion:
-      'Dengan tarif reguler 2026 Rp1.000.000 per jeep/grup untuk 1–6 peserta (1 atau 6 orang harga sama saja), sudah termasuk tiket masuk TNBTS WNI, BBM, dan driver lokal Sukapura, eksplorasi Bromo Anda jauh lebih ringkas dan hemat. Hitung estimasi lengkap serta opsi dokumentasi dan drone langsung di Kalkulator Private Start Sukapura Probolinggo.',
+      'Dengan tarif reguler Rp1.000.000 per jeep/grup untuk 1–6 peserta (1 atau 6 orang harga sama saja), sudah termasuk tiket masuk TNBTS WNI, BBM, dan driver lokal Sukapura, eksplorasi Bromo Anda jauh lebih ringkas dan hemat. Hitung estimasi lengkap serta opsi dokumentasi dan drone langsung di Kalkulator Private Start Sukapura Probolinggo.',
     ctaButton: 'Hitung & Booking via Kalkulator Private Start Sukapura',
     tags: [
       'Private Trip Start Sukapura',
       'Sewa Jeep Bromo Probolinggo',
-      'Harga Jeep Sukapura 2026',
+      'Harga Jeep Sukapura',
       'Jeep Bromo Cemoro Lawang',
       'Sewa Jeep Bromo 1-6 Orang',
       'Itinerary Bromo Sukapura',
@@ -217,12 +217,12 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_SUKAPURA: Record<
   },
 
   en: {
-    id: 'private-trip-bromo-start-sukapura-harga-2026',
-    slug: 'private-trip-bromo-start-sukapura-probolinggo-harga-2026-itinerary-fasilitas',
+    id: 'private-trip-bromo-start-sukapura',
+    slug: 'private-trip-bromo-start-sukapura-probolinggo-harga-itinerary-fasilitas',
     bookingPackageId: 'private-jeep-sukapura',
-    title: 'Private Trip Bromo Start Sukapura Probolinggo: 2026 Prices, Itinerary & Facilities',
+    title: 'Private Trip Bromo Start Sukapura Probolinggo: Prices, Itinerary & Facilities',
     metaDescription:
-      'Complete 2026 guide for Private Trip Bromo Start Sukapura Probolinggo from Rp1.000.000 per jeep/group for 1–6 participants (same flat rate for 1 or 6 people), daily Sunrise 03:00 WIB or Panorama 11:00 WIB departures, optional photo/video +Rp500.000 & drone +Rp1.500.000.',
+      'Complete guide for Private Trip Bromo Start Sukapura Probolinggo from Rp1.000.000 per jeep/group for 1–6 participants (same flat rate for 1 or 6 people), daily Sunrise 03:00 WIB or Panorama 11:00 WIB departures, optional photo/video +Rp500.000 & drone +Rp1.500.000.',
     author: 'WisataBromo.co Editorial Team',
     publishDate: 'November 26, 2026',
     readTime: '5 Min Read',
@@ -234,9 +234,9 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_SUKAPURA: Record<
       '🚐 Private 4×4 Bromo Jeep Start Sukapura Probolinggo — Flat rate per jeep / per group for 1–6 participants',
     introduction: [
       'Driving your own car via the Trans-Java Probolinggo toll exit or already staying near Sukapura and Cemoro Lawang? Our Private Trip Bromo Start Sukapura Probolinggo is the fastest, closest, and best-value way to explore Mount Bromo. Rent one 100% private Toyota Land Cruiser FJ40 4×4 Jeep with daily departures for either Sunrise (03:00 WIB) or Daytime Panorama (11:00 WIB).',
-      'This 2026 guide breaks down the flat per-jeep price for 1–6 participants (whether 1 or 6 people ride, the rate is identical), optional photography and drone add-ons, inclusions/exclusions, the 02:30–10:00 WIB schedule, and cold-weather packing essentials.',
+      'This guide breaks down the flat per-jeep price for 1–6 participants (whether 1 or 6 people ride, the rate is identical), optional photography and drone add-ons, inclusions/exclusions, the 02:30–10:00 WIB schedule, and cold-weather packing essentials.',
     ],
-    pricingSectionTitle: '💰 2026 Private Trip Start Sukapura Probolinggo Prices & Add-Ons',
+    pricingSectionTitle: '💰 Private Trip Start Sukapura Probolinggo Prices & Add-Ons',
     pricingSectionSubtitle:
       'Flat price per jeep / per group (max 6 guests without photographer, or 5 guests with photographer) — 1 person or 6 people pay the exact same rate!',
     normalPrice: 'Rp1.200.000',
@@ -348,12 +348,12 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_SUKAPURA: Record<
     extraTipContent:
       'Private Trip Start Sukapura is ideal for families driving via the Probolinggo toll road or guests staying near Cemoro Lawang. Leave your city car parked safely at our official Sukapura rest area and let our local 4×4 FJ40 handle the steep caldera terrain.',
     conclusion:
-      'Book directly using our Private Start Sukapura Calculator to choose Sunrise or Panorama departure, add optional photography or drone coverage, and lock in the 2026 flat rate of Rp1.000.000 per jeep/group.',
+      'Book directly using our Private Start Sukapura Calculator to choose Sunrise or Panorama departure, add optional photography or drone coverage, and lock in the flat rate of Rp1.000.000 per jeep/group.',
     ctaButton: 'Calculate & Book via Private Start Sukapura Calculator',
     tags: [
       'Private Trip Start Sukapura',
       'Bromo Jeep Rental Probolinggo',
-      'Sukapura Jeep Prices 2026',
+      'Sukapura Jeep Prices',
       'Bromo Jeep Cemoro Lawang',
       'Bromo Jeep 1-6 Pax',
       'Bromo Itinerary Sukapura',
@@ -361,12 +361,12 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_SUKAPURA: Record<
   },
 
   zh: {
-    id: 'private-trip-bromo-start-sukapura-harga-2026',
-    slug: 'private-trip-bromo-start-sukapura-probolinggo-harga-2026-itinerary-fasilitas',
+    id: 'private-trip-bromo-start-sukapura',
+    slug: 'private-trip-bromo-start-sukapura-probolinggo-harga-itinerary-fasilitas',
     bookingPackageId: 'private-jeep-sukapura',
-    title: 'Private Trip 庞越 Sukapura 出发布罗莫：2026 价格、行程与设施完整指南',
+    title: 'Private Trip 庞越 Sukapura 出发布罗莫：价格、行程与设施完整指南',
     metaDescription:
-      '2026 庞越 Sukapura 大本营出发布罗莫私人吉普团攻略：平季整车价 Rp1.000.000/辆（适用 1–6 人，1 人或 6 人同价），每日可选 03:00 日出团或 11:00 全景团，含摄影与无人机加购价、大本营与 Cemoro Lawang 酒店接送说明。',
+      '庞越 Sukapura 大本营出发布罗莫私人吉普团攻略：平季整车价 Rp1.000.000/辆（适用 1–6 人，1 人或 6 人同价），每日可选 03:00 日出团或 11:00 全景团，含摄影与无人机加购价、大本营与 Cemoro Lawang 酒店接送说明。',
     author: 'WisataBromo.co 编辑团队',
     publishDate: '2026年11月26日',
     readTime: '5 分钟阅读',
@@ -378,9 +378,9 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_SUKAPURA: Record<
       '🚐 庞越 Sukapura 出发专属四驱布罗莫吉普 — 每辆 / 每团 1–6 人同价一口价',
     introduction: [
       '自驾经高速由庞越（Probolinggo）出口前往布罗莫，或已下榻在 Sukapura 及 Cemoro Lawang 周边酒店？选择 Private Trip Start Sukapura Probolinggo 私人吉普包车最快捷实惠！独享 1 辆 100% 独立四驱丰田 FJ40 吉普车，每日可选 03:00 日出团或 11:00 白天全景团。',
-      '本文完整汇总 2026 最新整车一口价（1–6 人同价）、摄影与无人机加购价、费用包含/不含及 02:30–10:00 行程安排。',
+      '本文完整汇总最新整车一口价（1–6 人同价）、摄影与无人机加购价、费用包含/不含及 02:30–10:00 行程安排。',
     ],
-    pricingSectionTitle: '💰 2026 庞越 Sukapura 出发私人吉普价格与方案',
+    pricingSectionTitle: '💰 庞越 Sukapura 出发私人吉普价格与方案',
     pricingSectionSubtitle: '按辆吉普车 / 按团一口价（最多 6 人；含摄影师最多 5 人）—— 1 人或 6 人出行同价！',
     normalPrice: 'Rp1.200.000',
     promoPrice: 'Rp1.000.000',
@@ -484,11 +484,11 @@ export const ARTICLE_PRIVATE_TRIP_BROMO_START_SUKAPURA: Record<
     extraTipContent:
       '自驾经高速前往庞越的家庭及已入住 Sukapura/Cemoro Lawang 的游客最推荐此方案，私家车可直接停在官方休息区安全保管，换乘四驱吉普轻松畅游火山口。',
     conclusion:
-      '立即打开 Sukapura 私人吉普计算器选择日期与摄影/无人机加购项，锁定 2026 平季整车价 Rp1.000.000（1–6 人同价）！',
+      '立即打开 Sukapura 私人吉普计算器选择日期与摄影/无人机加购项，锁定平季整车价 Rp1.000.000（1–6 人同价）！',
     ctaButton: '打开 Sukapura 专车计算器立即预订',
     tags: [
       'Private Trip Sukapura 出发',
-      '2026庞越布罗莫吉普价格',
+      '庞越布罗莫吉普价格',
       'Cemoro Lawang 租吉普',
       '布罗莫吉普1-6人同价',
       '布罗莫自驾攻略',
