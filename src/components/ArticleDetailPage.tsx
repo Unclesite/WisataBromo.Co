@@ -3,7 +3,7 @@ import {
   ArrowLeft, Share2, Check, Calendar, Clock, User, Sparkles, 
   Shield, Layers, Flame, Wind, Footprints, BatteryCharging, HeartPulse,
   MessageCircle, Camera, CheckCircle2, ArrowRight, Play, ExternalLink,
-  Users, AlertCircle, Luggage, Compass, Car, Leaf, CloudFog, Cloud
+  Users, AlertCircle, Luggage, Compass, Car, Leaf, CloudFog, Cloud, Link2
 } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { ARTICLE_BARANG_WAJIB_BROMO } from '../data/articles/barang-wajib-bromo';
@@ -370,6 +370,72 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
     }
   };
 
+  const renderBottomShareSection = (heading: string) => (
+    <div className="p-5 sm:p-6 bg-gradient-to-br from-slate-50 via-white to-[#F2F8FF] border border-slate-200/90 rounded-2xl shadow-xs">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 sm:gap-5">
+        <div className="flex flex-col items-center md:flex-row md:items-center gap-3 text-center md:text-left min-w-0">
+          <div className="w-10 h-10 rounded-xl bg-[#EAF6FF] text-[#0996f5] border border-[#0996f5]/15 flex items-center justify-center shrink-0">
+            <Share2 className="w-4 h-4" />
+          </div>
+          <div className="min-w-0">
+            <h4 className="text-[15px] sm:text-base font-extrabold text-[#0B1220] leading-snug text-balance">
+              {heading}
+            </h4>
+            <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+              {language === 'en'
+                ? 'Send instantly via WhatsApp, Facebook, or copy link'
+                : language === 'zh'
+                ? '一键转发至 WhatsApp、Facebook 或复制链接'
+                : 'Bagikan lewat WhatsApp, Facebook, atau salin tautan'}
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-2.5 w-full md:w-auto md:flex md:items-center md:gap-2.5 md:shrink-0">
+          <button
+            type="button"
+            onClick={() => handleShareSocial('wa')}
+            className="col-span-2 md:col-span-1 min-h-[44px] md:min-h-[40px] px-4 py-2.5 bg-[#25D366] hover:bg-[#1fb858] active:scale-[0.98] text-white text-xs sm:text-[13px] font-bold rounded-xl shadow-xs shadow-[#25D366]/20 transition-all flex items-center justify-center gap-2 whitespace-nowrap cursor-pointer"
+          >
+            <MessageCircle className="w-4 h-4 shrink-0" />
+            <span>WhatsApp</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => handleShareSocial('fb')}
+            className="min-h-[44px] md:min-h-[40px] px-4 py-2.5 bg-[#1877F2] hover:bg-[#1567d3] active:scale-[0.98] text-white text-xs sm:text-[13px] font-bold rounded-xl shadow-xs shadow-[#1877F2]/20 transition-all flex items-center justify-center gap-2 whitespace-nowrap cursor-pointer"
+          >
+            <Share2 className="w-4 h-4 shrink-0" />
+            <span>Facebook</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={handleCopyLink}
+            className={`min-h-[44px] md:min-h-[40px] px-4 py-2.5 text-xs sm:text-[13px] font-bold rounded-xl border transition-all active:scale-[0.98] flex items-center justify-center gap-2 whitespace-nowrap cursor-pointer ${
+              copiedShare
+                ? 'bg-emerald-50 border-emerald-300 text-emerald-700'
+                : 'bg-white border-slate-200/90 text-slate-800 hover:bg-slate-100 hover:border-slate-300 shadow-2xs'
+            }`}
+          >
+            {copiedShare ? (
+              <>
+                <Check className="w-4 h-4 shrink-0 text-emerald-600" />
+                <span>{language === 'en' ? 'Copied!' : language === 'zh' ? '已复制!' : 'Tersalin!'}</span>
+              </>
+            ) : (
+              <>
+                <Link2 className="w-4 h-4 shrink-0 text-slate-500" />
+                <span>{language === 'en' ? 'Copy Link' : language === 'zh' ? '复制链接' : 'Salin Link'}</span>
+              </>
+            )}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
   const getItemIcon = (iconName: string) => {
     switch (iconName) {
       case 'Shield':
@@ -513,10 +579,10 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
                 <button
                   type="button"
                   onClick={() => handleShareSocial('wa')}
-                  className="inline-flex items-center gap-1 px-3 py-1.5 bg-[#25D366]/10 hover:bg-[#25D366]/20 text-[#128C7E] rounded-xl font-bold transition-all cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#25D366]/10 hover:bg-[#25D366]/20 text-[#128C7E] rounded-xl font-bold transition-all cursor-pointer whitespace-nowrap shrink-0"
                   title="Share to WhatsApp"
                 >
-                  <MessageCircle className="w-3.5 h-3.5" />
+                  <MessageCircle className="w-3.5 h-3.5 shrink-0" />
                   <span>WhatsApp</span>
                 </button>
 
@@ -524,10 +590,10 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
                 <button
                   type="button"
                   onClick={() => handleShareSocial('fb')}
-                  className="inline-flex items-center gap-1 px-3 py-1.5 bg-[#1877F2]/10 hover:bg-[#1877F2]/20 text-[#1877F2] rounded-xl font-bold transition-all cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#1877F2]/10 hover:bg-[#1877F2]/20 text-[#1877F2] rounded-xl font-bold transition-all cursor-pointer whitespace-nowrap shrink-0"
                   title="Share to Facebook"
                 >
-                  <Share2 className="w-3.5 h-3.5" />
+                  <Share2 className="w-3.5 h-3.5 shrink-0" />
                   <span>Facebook</span>
                 </button>
 
@@ -535,7 +601,7 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
                 <button
                   type="button"
                   onClick={() => handleShareSocial('x')}
-                  className="inline-flex items-center gap-1 px-3 py-1.5 bg-slate-900/10 hover:bg-slate-900/20 text-[#0B1220] rounded-xl font-bold transition-all cursor-pointer"
+                  className="inline-flex items-center gap-1 px-3 py-1.5 bg-slate-900/10 hover:bg-slate-900/20 text-[#0B1220] rounded-xl font-bold transition-all cursor-pointer whitespace-nowrap shrink-0"
                   title="Share to X"
                 >
                   <span>𝕏</span>
@@ -545,17 +611,17 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
                 <button
                   type="button"
                   onClick={handleCopyLink}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-[#EAF6FF] text-slate-700 hover:text-[#0996f5] rounded-xl transition-colors cursor-pointer font-extrabold"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-[#EAF6FF] text-slate-700 hover:text-[#0996f5] rounded-xl transition-colors cursor-pointer font-extrabold whitespace-nowrap shrink-0"
                   title="Copy link"
                 >
                   {copiedShare ? (
                     <>
-                      <Check className="w-3.5 h-3.5 text-emerald-600" />
+                      <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                       <span className="text-emerald-600 font-bold">{language === 'en' ? 'Copied!' : language === 'zh' ? '已复制!' : 'Tersalin!'}</span>
                     </>
                   ) : (
                     <>
-                      <Share2 className="w-3.5 h-3.5" />
+                      <Link2 className="w-3.5 h-3.5 shrink-0" />
                       <span>{language === 'en' ? 'Copy Link' : language === 'zh' ? '复制链接' : 'Salin Link'}</span>
                     </>
                   )}
@@ -964,71 +1030,31 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
               </div>
 
               {/* Social Share Buttons Bottom Section */}
-              <div className="p-6 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="text-center sm:text-left">
-                  <h4 className="text-sm font-extrabold text-[#0B1220]">
-                    {isOpenTripBatuArticle
-                      ? language === 'en'
-                        ? 'Share this Open Trip Start Batu City guide'
-                        : language === 'zh'
-                        ? '分享这份巴图市出发拼团指南'
-                        : 'Bagikan panduan Open Trip Start Kota Batu ini'
-                      : isOpenTripMalangArticle
-                      ? language === 'en'
-                        ? 'Share this Open Trip Start Malang City guide'
-                        : language === 'zh'
-                        ? '分享这份玛琅市区出发拼团指南'
-                        : 'Bagikan panduan Open Trip Start Kota Malang ini'
-                      : isOpenTripSurabayaArticle
-                      ? language === 'en'
-                        ? 'Share this Open Trip Start Surabaya City guide'
-                        : language === 'zh'
-                        ? '分享这份泗水市区出发拼团指南'
-                        : 'Bagikan panduan Open Trip Start Kota Surabaya ini'
-                      : language === 'en'
-                      ? 'Share this Private Trip Start Surabaya guide'
-                      : language === 'zh'
-                      ? '分享这份泗水出发私人团指南'
-                      : 'Bagikan panduan Private Trip Start Surabaya ini'}
-                  </h4>
-                  <p className="text-xs text-slate-500">
-                    {language === 'en'
-                      ? 'Share via WhatsApp, Facebook, or copy link'
-                      : language === 'zh'
-                      ? '一键分享至 WhatsApp、Facebook 或复制链接'
-                      : 'Bagikan melalui WhatsApp, Facebook, atau salin link'}
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => handleShareSocial('wa')}
-                    className="px-3.5 py-2 bg-[#25D366] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#20ba5a] transition-all flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <MessageCircle className="w-3.5 h-3.5" />
-                    <span>WhatsApp</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => handleShareSocial('fb')}
-                    className="px-3.5 py-2 bg-[#1877F2] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#1567d3] transition-all flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <Share2 className="w-3.5 h-3.5" />
-                    <span>Facebook</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={handleCopyLink}
-                    className="px-3.5 py-2 bg-slate-200 text-slate-800 hover:bg-slate-300 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <CheckCircle2 className="w-3.5 h-3.5" />
-                    <span>{language === 'en' ? 'Copy Link' : language === 'zh' ? '复制链接' : 'Salin Link'}</span>
-                  </button>
-                </div>
-              </div>
+              {renderBottomShareSection(
+                isOpenTripBatuArticle
+                  ? language === 'en'
+                    ? 'Share this Open Trip Start Batu City guide'
+                    : language === 'zh'
+                    ? '分享这份巴图市出发拼团指南'
+                    : 'Bagikan panduan Open Trip Start Kota Batu ini'
+                  : isOpenTripMalangArticle
+                  ? language === 'en'
+                    ? 'Share this Open Trip Start Malang City guide'
+                    : language === 'zh'
+                    ? '分享这份玛琅市区出发拼团指南'
+                    : 'Bagikan panduan Open Trip Start Kota Malang ini'
+                  : isOpenTripSurabayaArticle
+                  ? language === 'en'
+                    ? 'Share this Open Trip Start Surabaya City guide'
+                    : language === 'zh'
+                    ? '分享这份泗水市区出发拼团指南'
+                    : 'Bagikan panduan Open Trip Start Kota Surabaya ini'
+                  : language === 'en'
+                  ? 'Share this Private Trip Start Surabaya guide'
+                  : language === 'zh'
+                  ? '分享这份泗水出发私人团指南'
+                  : 'Bagikan panduan Private Trip Start Surabaya ini'
+              )}
 
               {/* Article Tags */}
               <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center gap-2 text-xs text-slate-600">
@@ -1399,77 +1425,37 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
               </div>
 
               {/* Social Share Buttons Bottom Section */}
-              <div className="p-6 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="text-center sm:text-left">
-                  <h4 className="text-sm font-extrabold text-[#0B1220]">
-                    {isGubugklakahTripArticle
-                      ? language === 'en'
-                        ? 'Share this Private Trip Start Gubugklakah Malang guide'
-                        : language === 'zh'
-                        ? '分享这份玛琅县 Gubugklakah 出发私人团指南'
-                        : 'Bagikan panduan Private Trip Start Gubugklakah Kab. Malang ini'
-                      : isTosariTripArticle
-                      ? language === 'en'
-                        ? 'Share this Private Trip Start Tosari Pasuruan guide'
-                        : language === 'zh'
-                        ? '分享这份岩望 Tosari 出发私人团指南'
-                        : 'Bagikan panduan Private Trip Start Tosari Pasuruan ini'
-                      : isSukapuraTripArticle
-                      ? language === 'en'
-                        ? 'Share this Private Trip Start Sukapura Probolinggo guide'
-                        : language === 'zh'
-                        ? '分享这份庞越 Sukapura 出发私人团指南'
-                        : 'Bagikan panduan Private Trip Start Sukapura Probolinggo ini'
-                      : isBatuTripArticle
-                      ? language === 'en'
-                        ? 'Share this Private Trip Start Batu City guide'
-                        : language === 'zh'
-                        ? '分享这份巴图市出发私人团指南'
-                        : 'Bagikan panduan Private Trip Start Kota Batu ini'
-                      : language === 'en'
-                      ? 'Share this Private Trip Start Malang City guide'
-                      : language === 'zh'
-                      ? '分享这份玛琅市区出发私人团指南'
-                      : 'Bagikan panduan Private Trip Start Kota Malang ini'}
-                  </h4>
-                  <p className="text-xs text-slate-500">
-                    {language === 'en'
-                      ? 'Share via WhatsApp, Facebook, or copy link'
-                      : language === 'zh'
-                      ? '一键分享至 WhatsApp、Facebook 或复制链接'
-                      : 'Bagikan melalui WhatsApp, Facebook, atau salin link'}
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => handleShareSocial('wa')}
-                    className="px-3.5 py-2 bg-[#25D366] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#20ba5a] transition-all flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <MessageCircle className="w-3.5 h-3.5" />
-                    <span>WhatsApp</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => handleShareSocial('fb')}
-                    className="px-3.5 py-2 bg-[#1877F2] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#1567d3] transition-all flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <Share2 className="w-3.5 h-3.5" />
-                    <span>Facebook</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={handleCopyLink}
-                    className="px-3.5 py-2 bg-slate-200 text-slate-800 hover:bg-slate-300 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <CheckCircle2 className="w-3.5 h-3.5" />
-                    <span>{language === 'en' ? 'Copy Link' : language === 'zh' ? '复制链接' : 'Salin Link'}</span>
-                  </button>
-                </div>
-              </div>
+              {renderBottomShareSection(
+                isGubugklakahTripArticle
+                  ? language === 'en'
+                    ? 'Share this Private Trip Start Gubugklakah Malang guide'
+                    : language === 'zh'
+                    ? '分享这份玛琅县 Gubugklakah 出发私人团指南'
+                    : 'Bagikan panduan Private Trip Start Gubugklakah Kab. Malang ini'
+                  : isTosariTripArticle
+                  ? language === 'en'
+                    ? 'Share this Private Trip Start Tosari Pasuruan guide'
+                    : language === 'zh'
+                    ? '分享这份岩望 Tosari 出发私人团指南'
+                    : 'Bagikan panduan Private Trip Start Tosari Pasuruan ini'
+                  : isSukapuraTripArticle
+                  ? language === 'en'
+                    ? 'Share this Private Trip Start Sukapura Probolinggo guide'
+                    : language === 'zh'
+                    ? '分享这份庞越 Sukapura 出发私人团指南'
+                    : 'Bagikan panduan Private Trip Start Sukapura Probolinggo ini'
+                  : isBatuTripArticle
+                  ? language === 'en'
+                    ? 'Share this Private Trip Start Batu City guide'
+                    : language === 'zh'
+                    ? '分享这份巴图市出发私人团指南'
+                    : 'Bagikan panduan Private Trip Start Kota Batu ini'
+                  : language === 'en'
+                  ? 'Share this Private Trip Start Malang City guide'
+                  : language === 'zh'
+                  ? '分享这份玛琅市区出发私人团指南'
+                  : 'Bagikan panduan Private Trip Start Kota Malang ini'
+              )}
 
               {/* Article Tags */}
               <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center gap-2 text-xs text-slate-600">
@@ -1765,53 +1751,13 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
               </div>
 
               {/* Social Share Buttons Bottom Section */}
-              <div className="p-6 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="text-center sm:text-left">
-                  <h4 className="text-sm font-extrabold text-[#0B1220]">
-                    {language === 'en'
-                      ? 'Share this Bromo entrance & jeep price guide'
-                      : language === 'zh'
-                      ? '分享这份布罗莫入口与吉普车价格指南'
-                      : 'Bagikan panduan pintu masuk & harga sewa jeep Bromo ini'}
-                  </h4>
-                  <p className="text-xs text-slate-500">
-                    {language === 'en'
-                      ? 'Share via WhatsApp, Facebook, or copy link'
-                      : language === 'zh'
-                      ? '一键分享至 WhatsApp、Facebook 或复制链接'
-                      : 'Bagikan melalui WhatsApp, Facebook, atau salin link'}
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => handleShareSocial('wa')}
-                    className="px-3.5 py-2 bg-[#25D366] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#20ba5a] transition-all flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <MessageCircle className="w-3.5 h-3.5" />
-                    <span>WhatsApp</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => handleShareSocial('fb')}
-                    className="px-3.5 py-2 bg-[#1877F2] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#1567d3] transition-all flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <Share2 className="w-3.5 h-3.5" />
-                    <span>Facebook</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={handleCopyLink}
-                    className="px-3.5 py-2 bg-slate-200 text-slate-800 hover:bg-slate-300 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <CheckCircle2 className="w-3.5 h-3.5" />
-                    <span>{language === 'en' ? 'Copy Link' : language === 'zh' ? '复制链接' : 'Salin Link'}</span>
-                  </button>
-                </div>
-              </div>
+              {renderBottomShareSection(
+                language === 'en'
+                  ? 'Share this Bromo entrance & jeep price guide'
+                  : language === 'zh'
+                  ? '分享这份布罗莫入口与吉普车价格指南'
+                  : 'Bagikan panduan pintu masuk & harga sewa jeep Bromo ini'
+              )}
 
               {/* Article Tags */}
               <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center gap-2 text-xs text-slate-600">
@@ -2205,53 +2151,13 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
               </div>
 
               {/* Social Share Buttons Bottom Section */}
-              <div className="p-6 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="text-center sm:text-left">
-                  <h4 className="text-sm font-extrabold text-[#0B1220]">
-                    {language === 'en'
-                      ? 'Share this Bromo train & open trip guide'
-                      : language === 'zh'
-                      ? '分享这份布罗莫火车与拼团指南'
-                      : 'Bagikan panduan naik kereta & open trip Bromo ini'}
-                  </h4>
-                  <p className="text-xs text-slate-500">
-                    {language === 'en'
-                      ? 'Share via WhatsApp, Facebook, or copy link'
-                      : language === 'zh'
-                      ? '一键分享至 WhatsApp、Facebook 或复制链接'
-                      : 'Bagikan melalui WhatsApp, Facebook, atau salin link'}
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => handleShareSocial('wa')}
-                    className="px-3.5 py-2 bg-[#25D366] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#20ba5a] transition-all flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <MessageCircle className="w-3.5 h-3.5" />
-                    <span>WhatsApp</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => handleShareSocial('fb')}
-                    className="px-3.5 py-2 bg-[#1877F2] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#1567d3] transition-all flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <Share2 className="w-3.5 h-3.5" />
-                    <span>Facebook</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={handleCopyLink}
-                    className="px-3.5 py-2 bg-slate-200 text-slate-800 hover:bg-slate-300 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <CheckCircle2 className="w-3.5 h-3.5" />
-                    <span>{language === 'en' ? 'Copy Link' : language === 'zh' ? '复制链接' : 'Salin Link'}</span>
-                  </button>
-                </div>
-              </div>
+              {renderBottomShareSection(
+                language === 'en'
+                  ? 'Share this Bromo train & open trip guide'
+                  : language === 'zh'
+                  ? '分享这份布罗莫火车与拼团指南'
+                  : 'Bagikan panduan naik kereta & open trip Bromo ini'
+              )}
 
               {/* Article Tags */}
               <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center gap-2 text-xs text-slate-600">
@@ -2500,53 +2406,13 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
               </div>
 
               {/* Social Share Buttons Bottom Section */}
-              <div className="p-6 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="text-center sm:text-left">
-                  <h4 className="text-sm font-extrabold text-[#0B1220]">
-                    {language === 'en'
-                      ? 'Share this Bromo horse price guide with your travel buddies'
-                      : language === 'zh'
-                      ? '把这份布罗莫骑马价格攻略分享给同行伙伴'
-                      : 'Bagikan panduan biaya kuda Bromo ini ke teman perjalanan Anda'}
-                  </h4>
-                  <p className="text-xs text-slate-500">
-                    {language === 'en'
-                      ? 'Share via WhatsApp, Facebook, or copy link'
-                      : language === 'zh'
-                      ? '一键分享至 WhatsApp、Facebook 或复制链接'
-                      : 'Bagikan melalui WhatsApp, Facebook, atau salin link'}
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => handleShareSocial('wa')}
-                    className="px-3.5 py-2 bg-[#25D366] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#20ba5a] transition-all flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <MessageCircle className="w-3.5 h-3.5" />
-                    <span>WhatsApp</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => handleShareSocial('fb')}
-                    className="px-3.5 py-2 bg-[#1877F2] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#1567d3] transition-all flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <Share2 className="w-3.5 h-3.5" />
-                    <span>Facebook</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={handleCopyLink}
-                    className="px-3.5 py-2 bg-slate-200 text-slate-800 hover:bg-slate-300 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <CheckCircle2 className="w-3.5 h-3.5" />
-                    <span>{language === 'en' ? 'Copy Link' : language === 'zh' ? '复制链接' : 'Salin Link'}</span>
-                  </button>
-                </div>
-              </div>
+              {renderBottomShareSection(
+                language === 'en'
+                  ? 'Share this Bromo horse price guide with your travel buddies'
+                  : language === 'zh'
+                  ? '把这份布罗莫骑马价格攻略分享给同行伙伴'
+                  : 'Bagikan panduan biaya kuda Bromo ini ke teman perjalanan Anda'
+              )}
 
               {/* Article Tags */}
               <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center gap-2 text-xs text-slate-600">
@@ -2723,45 +2589,13 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
               </div>
 
               {/* Social Share Buttons Bottom Section */}
-              <div className="p-6 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="text-center sm:text-left">
-                  <h4 className="text-sm font-extrabold text-[#0B1220]">
-                    {language === 'en' ? 'Help friends plan their Bromo trip' : language === 'zh' ? '分享给计划前往布罗莫的朋友' : 'Bagikan panduan ini ke teman perjalanan Anda'}
-                  </h4>
-                  <p className="text-xs text-slate-500">
-                    {language === 'en' ? 'Share this flagship guide via WhatsApp, Facebook, or X' : language === 'zh' ? '通过微信/WhatsApp、社交媒体一键分享' : 'Bagikan melalui WhatsApp, Facebook, atau X'}
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => handleShareSocial('wa')}
-                    className="px-3.5 py-2 bg-[#25D366] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#20ba5a] transition-all flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <MessageCircle className="w-3.5 h-3.5" />
-                    <span>WhatsApp</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => handleShareSocial('fb')}
-                    className="px-3.5 py-2 bg-[#1877F2] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#1567d3] transition-all flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <Share2 className="w-3.5 h-3.5" />
-                    <span>Facebook</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={handleCopyLink}
-                    className="px-3.5 py-2 bg-slate-200 text-slate-800 hover:bg-slate-300 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <CheckCircle2 className="w-3.5 h-3.5" />
-                    <span>{language === 'en' ? 'Copy Link' : language === 'zh' ? '复制链接' : 'Salin Link'}</span>
-                  </button>
-                </div>
-              </div>
+              {renderBottomShareSection(
+                language === 'en'
+                  ? 'Help friends plan their Bromo trip'
+                  : language === 'zh'
+                  ? '分享给计划前往布罗莫的朋友'
+                  : 'Bagikan panduan ini ke teman perjalanan Anda'
+              )}
 
               {/* Article Tags */}
               <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center gap-2 text-xs text-slate-600">
@@ -2902,45 +2736,13 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
               </div>
 
               {/* Social Share Buttons Bottom Section */}
-              <div className="p-6 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="text-center sm:text-left">
-                  <h4 className="text-sm font-extrabold text-[#0B1220]">
-                    {language === 'en' ? 'Help friends plan their Bromo trip' : language === 'zh' ? '分享给计划前往布罗莫的朋友' : 'Bagikan panduan ini ke teman perjalanan Anda'}
-                  </h4>
-                  <p className="text-xs text-slate-500">
-                    {language === 'en' ? 'Share this guide via WhatsApp, Facebook, or X' : language === 'zh' ? '通过微信/WhatsApp、社交媒体一键分享' : 'Bagikan melalui WhatsApp, Facebook, atau X'}
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => handleShareSocial('wa')}
-                    className="px-3.5 py-2 bg-[#25D366] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#20ba5a] transition-all flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <MessageCircle className="w-3.5 h-3.5" />
-                    <span>WhatsApp</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => handleShareSocial('fb')}
-                    className="px-3.5 py-2 bg-[#1877F2] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#1567d3] transition-all flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <Share2 className="w-3.5 h-3.5" />
-                    <span>Facebook</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={handleCopyLink}
-                    className="px-3.5 py-2 bg-slate-200 text-slate-800 hover:bg-slate-300 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <CheckCircle2 className="w-3.5 h-3.5" />
-                    <span>{language === 'en' ? 'Copy Link' : language === 'zh' ? '复制链接' : 'Salin Link'}</span>
-                  </button>
-                </div>
-              </div>
+              {renderBottomShareSection(
+                language === 'en'
+                  ? 'Help friends plan their Bromo trip'
+                  : language === 'zh'
+                  ? '分享给计划前往布罗莫的朋友'
+                  : 'Bagikan panduan ini ke teman perjalanan Anda'
+              )}
 
               {/* Article Tags */}
               <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center gap-2 text-xs text-slate-600">
@@ -3105,45 +2907,13 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
               </div>
 
               {/* Social Share Buttons Bottom Section */}
-              <div className="p-6 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="text-center sm:text-left">
-                  <h4 className="text-sm font-extrabold text-[#0B1220]">
-                    {language === 'en' ? 'Help friends pack properly for Bromo' : language === 'zh' ? '分享行囊清单给计划前往布罗莫的朋友' : 'Bagikan daftar perlengkapan ini ke teman perjalanan Anda'}
-                  </h4>
-                  <p className="text-xs text-slate-500">
-                    {language === 'en' ? 'Share this essential checklist via WhatsApp, Facebook, or X' : language === 'zh' ? '通过微信/WhatsApp、社交媒体一键分享' : 'Bagikan melalui WhatsApp, Facebook, atau X'}
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => handleShareSocial('wa')}
-                    className="px-3.5 py-2 bg-[#25D366] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#20ba5a] transition-all flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <MessageCircle className="w-3.5 h-3.5" />
-                    <span>WhatsApp</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => handleShareSocial('fb')}
-                    className="px-3.5 py-2 bg-[#1877F2] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#1567d3] transition-all flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <Share2 className="w-3.5 h-3.5" />
-                    <span>Facebook</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={handleCopyLink}
-                    className="px-3.5 py-2 bg-slate-200 text-slate-800 hover:bg-slate-300 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <CheckCircle2 className="w-3.5 h-3.5" />
-                    <span>{language === 'en' ? 'Copy Link' : language === 'zh' ? '复制链接' : 'Salin Link'}</span>
-                  </button>
-                </div>
-              </div>
+              {renderBottomShareSection(
+                language === 'en'
+                  ? 'Help friends pack properly for Bromo'
+                  : language === 'zh'
+                  ? '分享行囊清单给计划前往布罗莫的朋友'
+                  : 'Bagikan daftar perlengkapan ini ke teman perjalanan Anda'
+              )}
 
               {/* Article Tags */}
               <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center gap-2 text-xs text-slate-600">

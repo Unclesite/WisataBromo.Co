@@ -123,7 +123,7 @@ define(['./workbox-afac4cd2'], (function (workbox) { 'use strict';
     "revision": "ef557259d8c3e50ab4d15acef6c2a1e7"
   }, {
     "url": "index.html",
-    "revision": "92345a02d053630eb03f10c51a8ab05b"
+    "revision": "24a5528de8ae5b5555667ecb50dda888"
   }, {
     "url": "icon.svg",
     "revision": "3da407506d2fb31298c59d4678e58cf1"
@@ -314,13 +314,13 @@ define(['./workbox-afac4cd2'], (function (workbox) { 'use strict';
     "url": "assets/lokasi_bromo_picnic-D3WvrT2S.png",
     "revision": null
   }, {
-    "url": "assets/index.es-JVLc73jT.js",
+    "url": "assets/index.es-DbY4S2B5.js",
     "revision": null
   }, {
-    "url": "assets/index-CAIXKR6d.css",
+    "url": "assets/index-CRM_cAhH.js",
     "revision": null
   }, {
-    "url": "assets/index-BlYx5uyG.js",
+    "url": "assets/index-Bp7HERgj.css",
     "revision": null
   }, {
     "url": "assets/imgtoiletbromo_wisatabromo-Cdjk32fT.png",
