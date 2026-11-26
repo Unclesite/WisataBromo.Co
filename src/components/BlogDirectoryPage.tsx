@@ -66,7 +66,7 @@ export const BlogDirectoryPage: React.FC<BlogDirectoryPageProps> = ({
           setIsReadingArticle(false);
           window.history.pushState({}, '', '/journal');
         }}
-        onOpenBooking={() => onOpenBooking()}
+        onOpenBooking={(packageId) => onOpenBooking(packageId)}
         onSelectArticle={(id) => {
           setSelectedPostId(id);
           const targetPost = activeBlogPosts.find(p => p.id === id || p.slug === id);

@@ -96,7 +96,7 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
   const modalContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (initialPackageId) {
+    if (isOpen && initialPackageId) {
       setSelectedPkgId(initialPackageId);
       const chosen = safePackages.find((p) => p.id === initialPackageId);
       const isSby = initialPackageId === 'open-trip-surabaya';
@@ -111,7 +111,7 @@ export const BookingCalculatorModal: React.FC<BookingCalculatorModalProps> = ({
         includeDrone: isPrivate ? prev.includeDrone : false,
       }));
     }
-  }, [initialPackageId]);
+  }, [isOpen, initialPackageId]);
 
   useEffect(() => {
     if (!bookingCode) {

@@ -63,7 +63,16 @@ const parseInitialRoute = (): { view: AppView; pkg: TourPackage | null; adminLog
     hash === '#journal'
   ) {
     let artId: string | undefined = undefined;
-    if (pathname.includes('pintu-masuk') || pathname.includes('harga-sewa-jeep') || hash.includes('pintu-masuk')) {
+    if (
+      pathname.includes('open-trip-bromo-start-malang') ||
+      pathname.includes('private-trip-bromo-start') ||
+      pathname.includes('start-kota-malang') ||
+      hash.includes('open-trip-bromo-start-malang') ||
+      hash.includes('private-trip-bromo-start') ||
+      hash.includes('start-kota-malang')
+    ) {
+      artId = 'open-trip-bromo-start-malang-harga-2026';
+    } else if (pathname.includes('pintu-masuk') || pathname.includes('harga-sewa-jeep') || hash.includes('pintu-masuk')) {
       artId = 'pintu-masuk-bromo-harga-jeep';
     } else if (pathname.includes('kereta') || pathname.includes('train') || hash.includes('kereta') || hash.includes('train')) {
       artId = 'naik-kereta-ke-bromo';
@@ -182,7 +191,16 @@ export default function App() {
         hash === '#panduan' ||
         hash === '#journal'
       ) {
-        if (pathname.includes('pintu-masuk') || pathname.includes('harga-sewa-jeep') || hash.includes('pintu-masuk')) {
+        if (
+          pathname.includes('open-trip-bromo-start-malang') ||
+          pathname.includes('private-trip-bromo-start') ||
+          pathname.includes('start-kota-malang') ||
+          hash.includes('open-trip-bromo-start-malang') ||
+          hash.includes('private-trip-bromo-start') ||
+          hash.includes('start-kota-malang')
+        ) {
+          setSelectedArticlePostId('open-trip-bromo-start-malang-harga-2026');
+        } else if (pathname.includes('pintu-masuk') || pathname.includes('harga-sewa-jeep') || hash.includes('pintu-masuk')) {
           setSelectedArticlePostId('pintu-masuk-bromo-harga-jeep');
         } else if (pathname.includes('kereta') || pathname.includes('train') || hash.includes('kereta') || hash.includes('train')) {
           setSelectedArticlePostId('naik-kereta-ke-bromo');
@@ -652,7 +670,13 @@ export default function App() {
           }}
           onSelectArticle={(artSlugOrId) => {
             let matchedId = artSlugOrId;
-            if (artSlugOrId.includes('pintu-masuk') || artSlugOrId.includes('harga-sewa-jeep')) {
+            if (
+              artSlugOrId.includes('open-trip-bromo-start-malang') ||
+              artSlugOrId.includes('private-trip-bromo-start') ||
+              artSlugOrId.includes('start-kota-malang')
+            ) {
+              matchedId = 'open-trip-bromo-start-malang-harga-2026';
+            } else if (artSlugOrId.includes('pintu-masuk') || artSlugOrId.includes('harga-sewa-jeep')) {
               matchedId = 'pintu-masuk-bromo-harga-jeep';
             } else if (artSlugOrId.includes('kereta') || artSlugOrId.includes('train')) {
               matchedId = 'naik-kereta-ke-bromo';

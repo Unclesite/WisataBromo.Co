@@ -6,6 +6,10 @@ import { ARTICLE_WAKTU_TERBAIK_BROMO, LocalizedSeasonArticleContent } from './ar
 import { ARTICLE_BIAYA_KUDA_BROMO, LocalizedHorseArticleContent } from './articles/biaya-kuda-bromo';
 import { ARTICLE_NAIK_KERETA_BROMO, LocalizedTrainArticleContent } from './articles/naik-kereta-ke-bromo';
 import { ARTICLE_PINTU_MASUK_HARGA_JEEP, LocalizedGateJeepArticleContent } from './articles/pintu-masuk-bromo-harga-jeep';
+import {
+  ARTICLE_OPEN_TRIP_BROMO_START_MALANG,
+  LocalizedMalangTripArticleContent,
+} from './articles/open-trip-bromo-start-malang';
 
 export {
   ARTICLE_BARANG_WAJIB_BROMO,
@@ -14,6 +18,7 @@ export {
   ARTICLE_BIAYA_KUDA_BROMO,
   ARTICLE_NAIK_KERETA_BROMO,
   ARTICLE_PINTU_MASUK_HARGA_JEEP,
+  ARTICLE_OPEN_TRIP_BROMO_START_MALANG,
 };
 export type {
   LocalizedArticleContent,
@@ -22,6 +27,7 @@ export type {
   LocalizedHorseArticleContent,
   LocalizedTrainArticleContent,
   LocalizedGateJeepArticleContent,
+  LocalizedMalangTripArticleContent,
 };
 
 // Helper to convert LocalizedArticleContent to standard BlogPost type
@@ -32,6 +38,8 @@ export const getLocalizedBlogPosts = (lang: SupportedLanguage = 'id'): BlogPost[
   const currentHorseArt = ARTICLE_BIAYA_KUDA_BROMO[lang] || ARTICLE_BIAYA_KUDA_BROMO.id;
   const currentTrainArt = ARTICLE_NAIK_KERETA_BROMO[lang] || ARTICLE_NAIK_KERETA_BROMO.id;
   const currentGateJeepArt = ARTICLE_PINTU_MASUK_HARGA_JEEP[lang] || ARTICLE_PINTU_MASUK_HARGA_JEEP.id;
+  const currentMalangTripArt =
+    ARTICLE_OPEN_TRIP_BROMO_START_MALANG[lang] || ARTICLE_OPEN_TRIP_BROMO_START_MALANG.id;
 
   const jeepPost: BlogPost = {
     id: currentJeepArt.id,
@@ -232,7 +240,42 @@ export const getLocalizedBlogPosts = (lang: SupportedLanguage = 'id'): BlogPost[
     ],
   };
 
-  return [jeepPost, gearPost, seasonPost, horsePost, trainPost, gateJeepPost];
+  const malangTripPost: BlogPost = {
+    id: currentMalangTripArt.id,
+    slug: currentMalangTripArt.slug,
+    title: currentMalangTripArt.title,
+    subtitle: currentMalangTripArt.metaDescription,
+    summary: currentMalangTripArt.metaDescription,
+    excerpt: currentMalangTripArt.introduction[0] || currentMalangTripArt.metaDescription,
+    date: currentMalangTripArt.publishDate,
+    publishDate: currentMalangTripArt.publishDate,
+    author: currentMalangTripArt.author,
+    tag: currentMalangTripArt.categoryLabel,
+    tags: currentMalangTripArt.tags,
+    category: currentMalangTripArt.category,
+    categoryLabel: currentMalangTripArt.categoryLabel,
+    readTime: currentMalangTripArt.readTime,
+    imageUrl: currentMalangTripArt.heroImage,
+    content: [
+      ...currentMalangTripArt.introduction,
+      ...currentMalangTripArt.itinerarySteps.map(s => `${s.time} ${s.title}: ${s.description}`),
+      currentMalangTripArt.conclusion,
+    ],
+    keyTakeaways: [
+      lang === 'en'
+        ? '💰 Rp1.700.000 / jeep (1–6 pax, same price for 1 or 6 people) | 📸 +Rp500k | 🚁 +Rp1.5M'
+        : lang === 'zh'
+        ? '💰 Rp1.700.000 / 辆吉普（1–6人同价，1人或6人价格相同）| 📸 +Rp50万 | 🚁 +Rp150万'
+        : '💰 Rp1.700.000 / jeep (1–6 peserta, 1 atau 6 orang harga sama) | 📸 +Rp500rb | 🚁 +Rp1,5jt',
+      lang === 'en'
+        ? '📍 Private Trip Start Malang City — Direct Station & Hotel pickup (23:00–12:30 WIB)'
+        : lang === 'zh'
+        ? '📍 玛琅市区私人团 — 火车站/酒店上门接送（23:00–12:30 WIB）'
+        : '📍 Private Trip Start Kota Malang — Jemput Stasiun & Hotel (23:00–12:30 WIB)',
+    ],
+  };
+
+  return [jeepPost, gearPost, seasonPost, horsePost, trainPost, gateJeepPost, malangTripPost];
 };
 
 // Default ID export for fallback
