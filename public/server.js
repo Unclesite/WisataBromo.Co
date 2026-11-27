@@ -774,10 +774,20 @@ if (fs.existsSync(assetsDir)) {
   }));
 }
 
-// 2. Serve static files from folder public
-app.use(express.static(path.join(__dirname, 'public')));
+// 2. Serve static files from folder public (never cache index.html / service worker so updates load immediately)
+const staticOptions = {
+  setHeaders: (res, filePath) => {
+    const base = path.basename(filePath);
+    if (base === 'index.html' || base === 'sw.js' || base === 'registerSW.js') {
+      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
+    }
+  }
+};
+app.use(express.static(path.join(__dirname, 'public'), staticOptions));
 if (publicDir !== path.join(__dirname, 'public')) {
-  app.use(express.static(publicDir));
+  app.use(express.static(publicDir, staticOptions));
 }
 
 // 3. Catch-all 404 for unknown /api routes
@@ -798,6 +808,9 @@ app.get('*', (req, res) => {
   const indexPath = fs.existsSync(path.join(__dirname, 'public', 'index.html'))
     ? path.join(__dirname, 'public', 'index.html')
     : path.join(__dirname, 'index.html');
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
   res.sendFile(indexPath, (err) => {
     if (err) {
       console.error("Error serving index.html:", err);
