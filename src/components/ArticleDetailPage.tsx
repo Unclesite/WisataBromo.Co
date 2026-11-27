@@ -21,6 +21,8 @@ import { ARTICLE_PRIVATE_TRIP_BROMO_START_GUBUGKLAKAH } from '../data/articles/p
 import { ARTICLE_OPEN_TRIP_BROMO_START_SURABAYA } from '../data/articles/open-trip-bromo-start-surabaya';
 import { ARTICLE_OPEN_TRIP_BROMO_START_KOTA_MALANG } from '../data/articles/open-trip-bromo-start-kota-malang';
 import { ARTICLE_OPEN_TRIP_BROMO_START_KOTA_BATU } from '../data/articles/open-trip-bromo-start-kota-batu';
+import { ARTICLE_TOILET_DI_BROMO } from '../data/articles/toilet-di-bromo';
+import { ARTICLE_AMAN_BROMO_KELUARGA } from '../data/articles/aman-ke-bromo-balita-difabel-lansia';
 import { HorseCuteVector } from './HorseArticleVectors';
 import imgCustom from '../assets/images/633b7b65-1f37-4dbd-9714-6a4197e04480.png';
 import imgJeepGroup from '../assets/images/volcanic_jeep_expedition_group_portrait.png';
@@ -45,14 +47,30 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   // Determine active article type
+  const isFamilySafetyArticle =
+    articleId === 'aman-ke-bromo-balita-difabel-lansia' ||
+    articleId?.includes('balita-difabel-lansia') ||
+    articleId?.includes('aman-ke-bromo') ||
+    articleSlug?.includes('balita-difabel-lansia') ||
+    articleSlug?.includes('aman-nggak-ke-bromo');
+
+  const isToiletArticle =
+    !isFamilySafetyArticle &&
+    (articleId === 'toilet-di-bromo' ||
+      articleId?.includes('toilet-di-bromo') ||
+      articleId?.includes('toilet') ||
+      articleSlug?.includes('toilet-di-bromo') ||
+      articleSlug?.includes('toilet'));
+
   const isOpenTripBatuArticle =
-    articleId === 'open-trip-bromo-start-kota-batu' ||
-    articleId?.includes('open-trip-bromo-start-kota-batu') ||
-    articleId?.includes('open-trip-bromo-start-batu') ||
-    articleId?.includes('open-trip-start-kota-batu') ||
-    articleSlug?.includes('open-trip-bromo-start-kota-batu') ||
-    articleSlug?.includes('open-trip-bromo-start-batu') ||
-    articleSlug?.includes('open-trip-start-kota-batu');
+    !isToiletArticle &&
+    (articleId === 'open-trip-bromo-start-kota-batu' ||
+      articleId?.includes('open-trip-bromo-start-kota-batu') ||
+      articleId?.includes('open-trip-bromo-start-batu') ||
+      articleId?.includes('open-trip-start-kota-batu') ||
+      articleSlug?.includes('open-trip-bromo-start-kota-batu') ||
+      articleSlug?.includes('open-trip-bromo-start-batu') ||
+      articleSlug?.includes('open-trip-start-kota-batu'));
 
   const isOpenTripMalangArticle =
     !isOpenTripBatuArticle &&
@@ -229,6 +247,10 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
       articleSlug?.includes('kapasitas') ||
       articleSlug?.includes('jeep'));
 
+  const familySafetyArticle =
+    ARTICLE_AMAN_BROMO_KELUARGA[language] || ARTICLE_AMAN_BROMO_KELUARGA.id;
+  const toiletArticle =
+    ARTICLE_TOILET_DI_BROMO[language] || ARTICLE_TOILET_DI_BROMO.id;
   const openTripBatuArticle =
     ARTICLE_OPEN_TRIP_BROMO_START_KOTA_BATU[language] || ARTICLE_OPEN_TRIP_BROMO_START_KOTA_BATU.id;
   const openTripMalangArticle =
@@ -271,7 +293,11 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
   const jeepArticle = ARTICLE_KAPASITAS_JEEP_BROMO[language] || ARTICLE_KAPASITAS_JEEP_BROMO.id;
   const gearArticle = ARTICLE_BARANG_WAJIB_BROMO[language] || ARTICLE_BARANG_WAJIB_BROMO.id;
 
-  const currentTitle = isOpenTripBatuArticle
+  const currentTitle = isFamilySafetyArticle
+    ? familySafetyArticle.title
+    : isToiletArticle
+    ? toiletArticle.title
+    : isOpenTripBatuArticle
     ? openTripBatuArticle.title
     : isOpenTripMalangArticle
     ? openTripMalangArticle.title
@@ -300,7 +326,11 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
     : isJeepArticle
     ? jeepArticle.title
     : gearArticle.title;
-  const currentCategory = isOpenTripBatuArticle
+  const currentCategory = isFamilySafetyArticle
+    ? familySafetyArticle.categoryLabel
+    : isToiletArticle
+    ? toiletArticle.categoryLabel
+    : isOpenTripBatuArticle
     ? openTripBatuArticle.categoryLabel
     : isOpenTripMalangArticle
     ? openTripMalangArticle.categoryLabel
@@ -501,7 +531,11 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
           <div className="relative h-72 sm:h-96 w-full overflow-hidden bg-slate-900">
             <img
               src={
-                isOpenTripBatuArticle
+                isFamilySafetyArticle
+                  ? familySafetyArticle.heroImage
+                  : isToiletArticle
+                  ? toiletArticle.heroImage
+                  : isOpenTripBatuArticle
                   ? openTripBatuArticle.heroImage
                   : isOpenTripMalangArticle
                   ? openTripMalangArticle.heroImage
@@ -538,15 +572,15 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
               <div className="flex flex-wrap items-center gap-3 text-xs text-slate-200 mb-2 font-medium">
                 <span className="flex items-center gap-1 bg-black/40 backdrop-blur-xs px-2.5 py-1 rounded-md">
                   <Calendar className="w-3.5 h-3.5 text-[#FFF700]" />
-                  {isOpenTripBatuArticle ? openTripBatuArticle.publishDate : isOpenTripMalangArticle ? openTripMalangArticle.publishDate : isOpenTripSurabayaArticle ? openTripSurabayaArticle.publishDate : isGubugklakahTripArticle ? gubugklakahTripArticle.publishDate : isTosariTripArticle ? tosariTripArticle.publishDate : isSukapuraTripArticle ? sukapuraTripArticle.publishDate : isBatuTripArticle ? batuTripArticle.publishDate : isSurabayaTripArticle ? surabayaTripArticle.publishDate : isMalangTripArticle ? malangTripArticle.publishDate : isGateJeepArticle ? gateJeepArticle.publishDate : isTrainArticle ? trainArticle.publishDate : isHorseArticle ? horseArticle.publishDate : isSeasonArticle ? seasonArticle.publishDate : isJeepArticle ? jeepArticle.publishDate : gearArticle.publishDate}
+                  {isFamilySafetyArticle ? familySafetyArticle.publishDate : isToiletArticle ? toiletArticle.publishDate : isOpenTripBatuArticle ? openTripBatuArticle.publishDate : isOpenTripMalangArticle ? openTripMalangArticle.publishDate : isOpenTripSurabayaArticle ? openTripSurabayaArticle.publishDate : isGubugklakahTripArticle ? gubugklakahTripArticle.publishDate : isTosariTripArticle ? tosariTripArticle.publishDate : isSukapuraTripArticle ? sukapuraTripArticle.publishDate : isBatuTripArticle ? batuTripArticle.publishDate : isSurabayaTripArticle ? surabayaTripArticle.publishDate : isMalangTripArticle ? malangTripArticle.publishDate : isGateJeepArticle ? gateJeepArticle.publishDate : isTrainArticle ? trainArticle.publishDate : isHorseArticle ? horseArticle.publishDate : isSeasonArticle ? seasonArticle.publishDate : isJeepArticle ? jeepArticle.publishDate : gearArticle.publishDate}
                 </span>
                 <span className="flex items-center gap-1 bg-black/40 backdrop-blur-xs px-2.5 py-1 rounded-md">
                   <Clock className="w-3.5 h-3.5 text-[#FFF700]" />
-                  {isOpenTripBatuArticle ? openTripBatuArticle.readTime : isOpenTripMalangArticle ? openTripMalangArticle.readTime : isOpenTripSurabayaArticle ? openTripSurabayaArticle.readTime : isGubugklakahTripArticle ? gubugklakahTripArticle.readTime : isTosariTripArticle ? tosariTripArticle.readTime : isSukapuraTripArticle ? sukapuraTripArticle.readTime : isBatuTripArticle ? batuTripArticle.readTime : isSurabayaTripArticle ? surabayaTripArticle.readTime : isMalangTripArticle ? malangTripArticle.readTime : isGateJeepArticle ? gateJeepArticle.readTime : isTrainArticle ? trainArticle.readTime : isHorseArticle ? horseArticle.readTime : isSeasonArticle ? seasonArticle.readTime : isJeepArticle ? jeepArticle.readTime : gearArticle.readTime}
+                  {isFamilySafetyArticle ? familySafetyArticle.readTime : isToiletArticle ? toiletArticle.readTime : isOpenTripBatuArticle ? openTripBatuArticle.readTime : isOpenTripMalangArticle ? openTripMalangArticle.readTime : isOpenTripSurabayaArticle ? openTripSurabayaArticle.readTime : isGubugklakahTripArticle ? gubugklakahTripArticle.readTime : isTosariTripArticle ? tosariTripArticle.readTime : isSukapuraTripArticle ? sukapuraTripArticle.readTime : isBatuTripArticle ? batuTripArticle.readTime : isSurabayaTripArticle ? surabayaTripArticle.readTime : isMalangTripArticle ? malangTripArticle.readTime : isGateJeepArticle ? gateJeepArticle.readTime : isTrainArticle ? trainArticle.readTime : isHorseArticle ? horseArticle.readTime : isSeasonArticle ? seasonArticle.readTime : isJeepArticle ? jeepArticle.readTime : gearArticle.readTime}
                 </span>
                 <span className="flex items-center gap-1 bg-black/40 backdrop-blur-xs px-2.5 py-1 rounded-md">
                   <User className="w-3.5 h-3.5 text-[#FFF700]" />
-                  {isOpenTripBatuArticle ? openTripBatuArticle.author : isOpenTripMalangArticle ? openTripMalangArticle.author : isOpenTripSurabayaArticle ? openTripSurabayaArticle.author : isGubugklakahTripArticle ? gubugklakahTripArticle.author : isTosariTripArticle ? tosariTripArticle.author : isSukapuraTripArticle ? sukapuraTripArticle.author : isBatuTripArticle ? batuTripArticle.author : isSurabayaTripArticle ? surabayaTripArticle.author : isMalangTripArticle ? malangTripArticle.author : isGateJeepArticle ? gateJeepArticle.author : isTrainArticle ? trainArticle.author : isHorseArticle ? horseArticle.author : isSeasonArticle ? seasonArticle.author : isJeepArticle ? jeepArticle.author : gearArticle.author}
+                  {isFamilySafetyArticle ? familySafetyArticle.author : isToiletArticle ? toiletArticle.author : isOpenTripBatuArticle ? openTripBatuArticle.author : isOpenTripMalangArticle ? openTripMalangArticle.author : isOpenTripSurabayaArticle ? openTripSurabayaArticle.author : isGubugklakahTripArticle ? gubugklakahTripArticle.author : isTosariTripArticle ? tosariTripArticle.author : isSukapuraTripArticle ? sukapuraTripArticle.author : isBatuTripArticle ? batuTripArticle.author : isSurabayaTripArticle ? surabayaTripArticle.author : isMalangTripArticle ? malangTripArticle.author : isGateJeepArticle ? gateJeepArticle.author : isTrainArticle ? trainArticle.author : isHorseArticle ? horseArticle.author : isSeasonArticle ? seasonArticle.author : isJeepArticle ? jeepArticle.author : gearArticle.author}
                 </span>
               </div>
             </div>
@@ -559,14 +593,14 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
             </h1>
 
             <p className="text-base sm:text-lg text-slate-600 leading-relaxed font-normal bg-[#EAF6FF]/60 p-4 sm:p-5 rounded-2xl border-l-4 border-[#0996f5]">
-              {isOpenTripBatuArticle ? openTripBatuArticle.metaDescription : isOpenTripMalangArticle ? openTripMalangArticle.metaDescription : isOpenTripSurabayaArticle ? openTripSurabayaArticle.metaDescription : isGubugklakahTripArticle ? gubugklakahTripArticle.metaDescription : isTosariTripArticle ? tosariTripArticle.metaDescription : isSukapuraTripArticle ? sukapuraTripArticle.metaDescription : isBatuTripArticle ? batuTripArticle.metaDescription : isSurabayaTripArticle ? surabayaTripArticle.metaDescription : isMalangTripArticle ? malangTripArticle.metaDescription : isGateJeepArticle ? gateJeepArticle.metaDescription : isTrainArticle ? trainArticle.metaDescription : isHorseArticle ? horseArticle.metaDescription : isSeasonArticle ? seasonArticle.metaDescription : isJeepArticle ? jeepArticle.metaDescription : gearArticle.metaDescription}
+              {isFamilySafetyArticle ? familySafetyArticle.metaDescription : isToiletArticle ? toiletArticle.metaDescription : isOpenTripBatuArticle ? openTripBatuArticle.metaDescription : isOpenTripMalangArticle ? openTripMalangArticle.metaDescription : isOpenTripSurabayaArticle ? openTripSurabayaArticle.metaDescription : isGubugklakahTripArticle ? gubugklakahTripArticle.metaDescription : isTosariTripArticle ? tosariTripArticle.metaDescription : isSukapuraTripArticle ? sukapuraTripArticle.metaDescription : isBatuTripArticle ? batuTripArticle.metaDescription : isSurabayaTripArticle ? surabayaTripArticle.metaDescription : isMalangTripArticle ? malangTripArticle.metaDescription : isGateJeepArticle ? gateJeepArticle.metaDescription : isTrainArticle ? trainArticle.metaDescription : isHorseArticle ? horseArticle.metaDescription : isSeasonArticle ? seasonArticle.metaDescription : isJeepArticle ? jeepArticle.metaDescription : gearArticle.metaDescription}
             </p>
 
             {/* Author & Share row */}
             <div className="flex flex-wrap items-center justify-between gap-4 pt-6 mt-6 border-t border-slate-100 text-xs">
               <div className="flex items-center gap-2 text-slate-600 font-medium">
                 <User className="w-4 h-4 text-[#0996f5]" />
-                <span>{language === 'en' ? 'By' : language === 'zh' ? '撰写:' : 'Penulis:'} <strong>{isOpenTripBatuArticle ? openTripBatuArticle.author : isOpenTripMalangArticle ? openTripMalangArticle.author : isOpenTripSurabayaArticle ? openTripSurabayaArticle.author : isGubugklakahTripArticle ? gubugklakahTripArticle.author : isTosariTripArticle ? tosariTripArticle.author : isSukapuraTripArticle ? sukapuraTripArticle.author : isBatuTripArticle ? batuTripArticle.author : isSurabayaTripArticle ? surabayaTripArticle.author : isMalangTripArticle ? malangTripArticle.author : isGateJeepArticle ? gateJeepArticle.author : isTrainArticle ? trainArticle.author : isHorseArticle ? horseArticle.author : isSeasonArticle ? seasonArticle.author : isJeepArticle ? jeepArticle.author : gearArticle.author}</strong></span>
+                <span>{language === 'en' ? 'By' : language === 'zh' ? '撰写:' : 'Penulis:'} <strong>{isFamilySafetyArticle ? familySafetyArticle.author : isToiletArticle ? toiletArticle.author : isOpenTripBatuArticle ? openTripBatuArticle.author : isOpenTripMalangArticle ? openTripMalangArticle.author : isOpenTripSurabayaArticle ? openTripSurabayaArticle.author : isGubugklakahTripArticle ? gubugklakahTripArticle.author : isTosariTripArticle ? tosariTripArticle.author : isSukapuraTripArticle ? sukapuraTripArticle.author : isBatuTripArticle ? batuTripArticle.author : isSurabayaTripArticle ? surabayaTripArticle.author : isMalangTripArticle ? malangTripArticle.author : isGateJeepArticle ? gateJeepArticle.author : isTrainArticle ? trainArticle.author : isHorseArticle ? horseArticle.author : isSeasonArticle ? seasonArticle.author : isJeepArticle ? jeepArticle.author : gearArticle.author}</strong></span>
               </div>
 
               {/* Share Actions Suite */}
@@ -631,7 +665,877 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
           </div>
 
           {/* ARTICLE BODY CONTENT */}
-          {isSurabayaTripArticle || isOpenTripSurabayaArticle || isOpenTripMalangArticle || isOpenTripBatuArticle ? (
+          {isFamilySafetyArticle ? (
+            /* AMAN NGGAK KE BROMO? PANDUAN BALITA, DIFABEL & LANSIA ARTICLE BODY */
+            <div className="p-6 sm:p-10 lg:p-12 space-y-10">
+              {/* 1. Penilaian Umum (Wajib Tegas) + Intro */}
+              <div className="space-y-6">
+                <div className="p-5 sm:p-7 rounded-3xl bg-gradient-to-br from-[#102a56] via-[#0B1F42] to-[#0d3b66] text-white border-2 border-[#0996f5]/40 shadow-lg space-y-4">
+                  <span className="inline-block px-3 py-1 rounded-lg bg-[#fff700] text-[#0B1220] text-[11px] font-black uppercase tracking-wider">
+                    {familySafetyArticle.verdictBox.eyebrow}
+                  </span>
+                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-black font-serif leading-snug text-white">
+                    {familySafetyArticle.verdictBox.headline}
+                  </h2>
+                  <p className="text-sm sm:text-base text-sky-100/95 leading-relaxed">
+                    {familySafetyArticle.verdictBox.statement}
+                  </p>
+                  <div className="grid grid-cols-1 gap-2.5 pt-1">
+                    {familySafetyArticle.verdictBox.highlights.map((item, idx) => (
+                      <div
+                        key={idx}
+                        className="px-4 py-2.5 rounded-2xl bg-white/10 border border-white/15 text-xs sm:text-sm font-semibold text-white leading-relaxed"
+                      >
+                        {item}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="space-y-4 text-slate-700 text-base sm:text-lg leading-relaxed">
+                  {familySafetyArticle.introduction.map((para, idx) => (
+                    <p key={idx}>{para}</p>
+                  ))}
+                </div>
+              </div>
+
+              {/* Spot Accessibility Matrix */}
+              <div className="bg-white border-2 border-[#0996f5]/20 rounded-3xl overflow-hidden shadow-sm">
+                <div className="p-5 sm:p-6 bg-gradient-to-r from-[#0996f5]/10 via-[#EAF6FF] to-white border-b border-slate-200/80">
+                  <h2 className="text-lg sm:text-xl lg:text-2xl font-black font-serif text-[#102a56]">
+                    {familySafetyArticle.spotMatrixTitle}
+                  </h2>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-1">
+                    {familySafetyArticle.spotMatrixSubtitle}
+                  </p>
+                </div>
+
+                {/* Mobile Stacked Cards (No Horizontal Scroll) */}
+                <div className="md:hidden divide-y divide-slate-200/80">
+                  {familySafetyArticle.spotMatrixRows.map((row, rIdx) => {
+                    const groups = [
+                      {
+                        label: familySafetyArticle.spotMatrixHeaders.toddlerBaby,
+                        value: row.toddlerBaby,
+                      },
+                      {
+                        label: familySafetyArticle.spotMatrixHeaders.disability,
+                        value: row.disability,
+                      },
+                      {
+                        label: familySafetyArticle.spotMatrixHeaders.senior,
+                        value: row.senior,
+                      },
+                    ];
+
+                    return (
+                      <div key={rIdx} className="p-4 sm:p-5 space-y-3 bg-white">
+                        <div className="flex items-center gap-2.5 pb-2 border-b border-slate-100">
+                          <span className="w-6 h-6 rounded-lg bg-[#102a56] text-[#fff700] text-[11px] font-black flex items-center justify-center shrink-0">
+                            {rIdx + 1}
+                          </span>
+                          <h3 className="text-sm font-black text-[#102a56] leading-snug">
+                            {row.spot}
+                          </h3>
+                        </div>
+
+                        <div className="space-y-2.5">
+                          {groups.map((item, gIdx) => {
+                            const isSafe = item.value.trim().startsWith('✅');
+                            return (
+                              <div
+                                key={gIdx}
+                                className={`p-3 rounded-2xl border ${
+                                  isSafe
+                                    ? 'bg-emerald-50/70 border-emerald-200/80'
+                                    : 'bg-amber-50/70 border-amber-200/80'
+                                } space-y-1`}
+                              >
+                                <div className="text-[11px] font-black uppercase tracking-wider text-[#102a56]">
+                                  {item.label}
+                                </div>
+                                <p className="text-xs text-slate-700 leading-relaxed">
+                                  {item.value}
+                                </p>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Desktop Table */}
+                <div className="hidden md:block">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="bg-slate-50 border-b border-slate-200 text-xs font-black uppercase tracking-wider text-slate-500">
+                        <th className="py-3.5 px-4 w-[22%]">{familySafetyArticle.spotMatrixHeaders.spot}</th>
+                        <th className="py-3.5 px-4 w-[26%]">{familySafetyArticle.spotMatrixHeaders.toddlerBaby}</th>
+                        <th className="py-3.5 px-4 w-[26%]">{familySafetyArticle.spotMatrixHeaders.disability}</th>
+                        <th className="py-3.5 px-4 w-[26%]">{familySafetyArticle.spotMatrixHeaders.senior}</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 text-sm">
+                      {familySafetyArticle.spotMatrixRows.map((row, rIdx) => (
+                        <tr key={rIdx} className="hover:bg-[#EAF6FF]/35 transition-colors align-top">
+                          <td className="py-4 px-4 font-extrabold text-[#102a56]">{row.spot}</td>
+                          <td className="py-4 px-4 text-slate-700 leading-relaxed">{row.toddlerBaby}</td>
+                          <td className="py-4 px-4 text-slate-700 leading-relaxed">{row.disability}</td>
+                          <td className="py-4 px-4 text-slate-700 leading-relaxed">{row.senior}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* 2. PANDUAN DETAIL PER KELOMPOK */}
+              <div className="space-y-7">
+                <div className="pb-2 border-b border-slate-200">
+                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-black font-serif text-[#102a56]">
+                    {familySafetyArticle.groupsSectionTitle}
+                  </h2>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-1">
+                    {familySafetyArticle.groupsSectionSubtitle}
+                  </p>
+                </div>
+
+                {/* Group 1: BALITA / BATITA */}
+                {[familySafetyArticle.toddlerBlock].map((grp) => (
+                  <div
+                    key={grp.id}
+                    id={grp.id}
+                    className="p-5 sm:p-7 rounded-3xl border border-emerald-200 bg-emerald-50/55 shadow-2xs space-y-5"
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className="w-13 h-13 rounded-2xl bg-emerald-600 text-white flex items-center justify-center text-2xl shrink-0 shadow-xs">
+                        {grp.emoji}
+                      </div>
+                      <div className="space-y-1">
+                        <span className="inline-block px-2.5 py-0.5 bg-emerald-600 text-white text-[10px] sm:text-[11px] font-black uppercase tracking-wider rounded-md">
+                          {grp.badge}
+                        </span>
+                        <h3 className="text-lg sm:text-2xl font-serif font-black text-[#102a56] leading-snug">
+                          {grp.title}
+                        </h3>
+                        <p className="text-xs sm:text-sm font-semibold text-slate-600">{grp.subtitle}</p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      <div className="p-4 rounded-2xl bg-white/95 border border-emerald-200/80 space-y-1">
+                        <div className="text-xs sm:text-sm font-black text-emerald-800">
+                          {grp.safePoint.symbol} {grp.safePoint.label}
+                        </div>
+                        <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">{grp.safePoint.text}</p>
+                      </div>
+                      <div className="p-4 rounded-2xl bg-amber-50/90 border border-amber-300/70 space-y-1">
+                        <div className="text-xs sm:text-sm font-black text-amber-900">
+                          {grp.riskPoint.symbol} {grp.riskPoint.label}
+                        </div>
+                        <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">{grp.riskPoint.text}</p>
+                      </div>
+                      <div className="p-4 rounded-2xl bg-[#EAF6FF]/85 border border-[#0996f5]/25 space-y-1">
+                        <div className="text-xs sm:text-sm font-black text-[#102a56]">
+                          {grp.jeepTipPoint.symbol} {grp.jeepTipPoint.label}
+                        </div>
+                        <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">{grp.jeepTipPoint.text}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+
+                {/* SPECIAL SECTION: 🍼 BAYI (< 1 TAHUN) */}
+                <div
+                  id="panduan-bayi"
+                  className="p-5 sm:p-7 rounded-3xl border-2 border-[#0996f5]/35 bg-gradient-to-br from-[#EAF6FF]/80 via-white to-sky-50/70 shadow-sm space-y-5"
+                >
+                  <div className="space-y-1.5">
+                    <span className="inline-block px-3 py-1 bg-[#102a56] text-[#fff700] text-[10px] sm:text-[11px] font-black uppercase tracking-wider rounded-md">
+                      {familySafetyArticle.babySection.badge}
+                    </span>
+                    <h3 className="text-lg sm:text-2xl font-serif font-black text-[#102a56] leading-snug">
+                      {familySafetyArticle.babySection.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-slate-600">
+                      {familySafetyArticle.babySection.subtitle}
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-3.5">
+                    {familySafetyArticle.babySection.items.map((item) => (
+                      <div
+                        key={item.id}
+                        className="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex items-start gap-3.5"
+                      >
+                        <div className="w-11 h-11 rounded-xl bg-[#EAF6FF] border border-[#0996f5]/20 flex items-center justify-center text-xl shrink-0">
+                          {item.symbol}
+                        </div>
+                        <div className="space-y-1 flex-1">
+                          <span className="inline-block text-[10px] font-black uppercase tracking-wider text-[#0996f5]">
+                            {item.badge}
+                          </span>
+                          <h4 className="text-sm sm:text-base font-extrabold text-[#102a56]">
+                            {item.title}
+                          </h4>
+                          <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                            {item.description}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Inline Photo 1 */}
+                <figure className="rounded-3xl overflow-hidden border border-slate-200 shadow-sm bg-slate-50">
+                  <img
+                    src={familySafetyArticle.inlineImage1}
+                    alt={familySafetyArticle.inlineImage1Caption}
+                    className="w-full max-h-[420px] object-cover object-center"
+                    loading="lazy"
+                  />
+                  <figcaption className="px-5 py-3 text-xs sm:text-sm text-slate-600 italic flex items-center gap-2 bg-white border-t border-slate-100">
+                    <Camera className="w-4 h-4 text-[#0996f5] shrink-0" />
+                    <span>{familySafetyArticle.inlineImage1Caption}</span>
+                  </figcaption>
+                </figure>
+
+                {/* Group 2: DIFABEL */}
+                {[familySafetyArticle.disabilityBlock].map((grp) => (
+                  <div
+                    key={grp.id}
+                    id={grp.id}
+                    className="p-5 sm:p-7 rounded-3xl border border-[#0996f5]/30 bg-[#EAF6FF]/55 shadow-2xs space-y-5"
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className="w-13 h-13 rounded-2xl bg-[#0996f5] text-white flex items-center justify-center text-2xl shrink-0 shadow-xs">
+                        {grp.emoji}
+                      </div>
+                      <div className="space-y-1">
+                        <span className="inline-block px-2.5 py-0.5 bg-[#0996f5] text-white text-[10px] sm:text-[11px] font-black uppercase tracking-wider rounded-md">
+                          {grp.badge}
+                        </span>
+                        <h3 className="text-lg sm:text-2xl font-serif font-black text-[#102a56] leading-snug">
+                          {grp.title}
+                        </h3>
+                        <p className="text-xs sm:text-sm font-semibold text-slate-600">{grp.subtitle}</p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      <div className="p-4 rounded-2xl bg-white/95 border border-emerald-200/80 space-y-1">
+                        <div className="text-xs sm:text-sm font-black text-emerald-800">
+                          {grp.safePoint.symbol} {grp.safePoint.label}
+                        </div>
+                        <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">{grp.safePoint.text}</p>
+                      </div>
+                      <div className="p-4 rounded-2xl bg-rose-50/90 border border-rose-200 space-y-1">
+                        <div className="text-xs sm:text-sm font-black text-rose-800">
+                          {grp.riskPoint.symbol} {grp.riskPoint.label}
+                        </div>
+                        <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">{grp.riskPoint.text}</p>
+                      </div>
+                      <div className="p-4 rounded-2xl bg-white/95 border border-[#0996f5]/25 space-y-1">
+                        <div className="text-xs sm:text-sm font-black text-[#102a56]">
+                          {grp.jeepTipPoint.symbol} {grp.jeepTipPoint.label}
+                        </div>
+                        <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">{grp.jeepTipPoint.text}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+
+                {/* Group 3: LANSIA */}
+                {[familySafetyArticle.seniorBlock].map((grp) => (
+                  <div
+                    key={grp.id}
+                    id={grp.id}
+                    className="p-5 sm:p-7 rounded-3xl border border-amber-300/70 bg-amber-50/60 shadow-2xs space-y-5"
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className="w-13 h-13 rounded-2xl bg-amber-500 text-white flex items-center justify-center text-2xl shrink-0 shadow-xs">
+                        {grp.emoji}
+                      </div>
+                      <div className="space-y-1">
+                        <span className="inline-block px-2.5 py-0.5 bg-amber-500 text-[#0B1220] text-[10px] sm:text-[11px] font-black uppercase tracking-wider rounded-md">
+                          {grp.badge}
+                        </span>
+                        <h3 className="text-lg sm:text-2xl font-serif font-black text-[#102a56] leading-snug">
+                          {grp.title}
+                        </h3>
+                        <p className="text-xs sm:text-sm font-semibold text-slate-600">{grp.subtitle}</p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      <div className="p-4 rounded-2xl bg-rose-50/90 border border-rose-200 space-y-1">
+                        <div className="text-xs sm:text-sm font-black text-rose-800">
+                          {grp.riskPoint.symbol} {grp.riskPoint.label}
+                        </div>
+                        <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">{grp.riskPoint.text}</p>
+                      </div>
+                      <div className="p-4 rounded-2xl bg-white/95 border border-emerald-200/80 space-y-1">
+                        <div className="text-xs sm:text-sm font-black text-emerald-800">
+                          {grp.safePoint.symbol} {grp.safePoint.label}
+                        </div>
+                        <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">{grp.safePoint.text}</p>
+                      </div>
+                      <div className="p-4 rounded-2xl bg-[#EAF6FF]/85 border border-[#0996f5]/25 space-y-1">
+                        <div className="text-xs sm:text-sm font-black text-[#102a56]">
+                          {grp.jeepTipPoint.symbol} {grp.jeepTipPoint.label}
+                        </div>
+                        <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">{grp.jeepTipPoint.text}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Inline Photo 2 */}
+              <figure className="rounded-3xl overflow-hidden border border-slate-200 shadow-sm bg-slate-50">
+                <img
+                  src={familySafetyArticle.inlineImage2}
+                  alt={familySafetyArticle.inlineImage2Caption}
+                  className="w-full max-h-[420px] object-cover object-center"
+                  loading="lazy"
+                />
+                <figcaption className="px-5 py-3 text-xs sm:text-sm text-slate-600 italic flex items-center gap-2 bg-white border-t border-slate-100">
+                  <Camera className="w-4 h-4 text-[#0996f5] shrink-0" />
+                  <span>{familySafetyArticle.inlineImage2Caption}</span>
+                </figcaption>
+              </figure>
+
+              {/* 3. PERSIAPAN WAJIB UNTUK SEMUA */}
+              <div className="space-y-5">
+                <div className="pb-2 border-b border-slate-200">
+                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-black font-serif text-[#102a56]">
+                    {familySafetyArticle.universalPrepTitle}
+                  </h2>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-1">
+                    {familySafetyArticle.universalPrepSubtitle}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {familySafetyArticle.universalPrepItems.map((prep, pIdx) => (
+                    <div
+                      key={pIdx}
+                      className="p-5 rounded-3xl bg-slate-50 border border-slate-200/90 space-y-2.5 hover:border-[#0996f5]/40 transition-colors"
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-xl shadow-2xs shrink-0">
+                          {prep.symbol}
+                        </span>
+                        <h3 className="text-sm sm:text-base font-extrabold text-[#102a56]">
+                          {prep.title}
+                        </h3>
+                      </div>
+                      <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                        {prep.description}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* 4. PERINGATAN PENTING */}
+              <div className="p-5 sm:p-7 rounded-3xl bg-rose-50/90 border-2 border-rose-300 shadow-sm space-y-4">
+                <div>
+                  <h2 className="text-lg sm:text-xl lg:text-2xl font-black font-serif text-rose-900">
+                    {familySafetyArticle.warningsTitle}
+                  </h2>
+                  <p className="text-xs sm:text-sm text-rose-800/90 mt-1">
+                    {familySafetyArticle.warningsSubtitle}
+                  </p>
+                </div>
+
+                <ul className="space-y-3">
+                  {familySafetyArticle.warnings.map((warn, wIdx) => (
+                    <li
+                      key={wIdx}
+                      className="p-4 rounded-2xl bg-white/95 border border-rose-200 text-xs sm:text-sm font-semibold text-slate-800 leading-relaxed shadow-2xs"
+                    >
+                      {warn}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Pro Tip Box */}
+              <div className="p-6 sm:p-8 bg-[#fff700]/15 border-2 border-[#fff700] rounded-3xl shadow-sm space-y-3">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#fff700] text-black font-black rounded-full text-xs uppercase tracking-wider">
+                  <Sparkles className="w-4 h-4 text-black" />
+                  <span>{familySafetyArticle.proTipBox.title}</span>
+                </div>
+                <p className="text-sm sm:text-base text-slate-900 font-medium leading-relaxed">
+                  {familySafetyArticle.proTipBox.content}
+                </p>
+              </div>
+
+              {/* Conclusion & Booking CTA */}
+              <div className="p-6 sm:p-8 bg-[#EAF6FF] border border-[#0996f5]/30 rounded-3xl space-y-4">
+                <h3 className="text-xl font-extrabold text-[#0B1220]">
+                  {familySafetyArticle.conclusionTitle}
+                </h3>
+                <p className="text-sm sm:text-base text-slate-700 leading-relaxed">
+                  {familySafetyArticle.conclusion}
+                </p>
+
+                <div className="pt-2 flex flex-col sm:flex-row items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => onOpenBooking()}
+                    className="w-full sm:w-auto px-6 py-3.5 bg-[#0996f5] hover:bg-[#071A2B] text-white text-xs sm:text-sm font-black rounded-2xl shadow-lg shadow-[#0996f5]/25 transition-all cursor-pointer flex items-center justify-center gap-2 group"
+                  >
+                    <span>{familySafetyArticle.ctaButton}</span>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </button>
+
+                  <a
+                    href={`https://wa.me/6281222290318?text=${encodeURIComponent(familySafetyArticle.whatsappText)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full sm:w-auto px-5 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold rounded-2xl transition-colors flex items-center justify-center gap-2"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    <span>WhatsApp Hotline (+62 812-2229-0318)</span>
+                  </a>
+                </div>
+              </div>
+
+              {/* Social Share Buttons Bottom Section */}
+              {renderBottomShareSection(familySafetyArticle.sharePrompt)}
+
+              {/* Article Tags */}
+              <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center gap-2 text-xs text-slate-600">
+                <span className="font-bold text-slate-400 mr-1">Tags:</span>
+                {familySafetyArticle.tags.map((tag, idx) => (
+                  <span
+                    key={idx}
+                    className="px-3 py-1 bg-slate-100 hover:bg-[#EAF6FF] text-slate-700 hover:text-[#0996f5] rounded-xl font-medium transition-colors cursor-pointer"
+                  >
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ) : isToiletArticle ? (
+            /* TOILET DI BROMO: LOKASI, KONDISI, DAN BIAYA ARTICLE BODY */
+            <div className="p-6 sm:p-10 lg:p-12 space-y-10">
+              {/* Quick Summary Banner + Intro Paragraphs */}
+              <div className="space-y-5">
+                <div className="p-4 sm:p-5 bg-gradient-to-r from-[#EAF6FF] via-white to-[#FEFCE8] border border-[#0996f5]/25 rounded-2xl flex items-start gap-4 shadow-2xs">
+                  <div className="w-12 h-12 rounded-2xl bg-[#102a56] text-white flex items-center justify-center text-2xl shrink-0 shadow-sm">
+                    🚻
+                  </div>
+                  <div className="space-y-1">
+                    <span className="inline-block text-[11px] font-black uppercase tracking-wider text-[#0996f5]">
+                      {toiletArticle.quickSummaryBanner.eyebrow}
+                    </span>
+                    <p className="text-xs sm:text-sm font-bold text-[#102a56] leading-relaxed">
+                      {toiletArticle.quickSummaryBanner.text}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-4 text-slate-700 text-base sm:text-lg leading-relaxed">
+                  {toiletArticle.introduction.map((para, idx) => (
+                    <p key={idx}>{para}</p>
+                  ))}
+                </div>
+              </div>
+
+              {/* 1. LOKASI TOILET DI BROMO */}
+              <div className="space-y-5">
+                <div className="pb-2 border-b border-slate-200">
+                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-black font-serif text-[#102a56]">
+                    {toiletArticle.locationsSectionTitle}
+                  </h2>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-1">
+                    {toiletArticle.locationsSectionSubtitle}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 gap-5">
+                  {toiletArticle.locations.map((loc) => {
+                    const toneStyles =
+                      loc.statusTone === 'emerald'
+                        ? {
+                            card: 'bg-emerald-50/60 border-emerald-200',
+                            badge: 'bg-emerald-600 text-white',
+                            iconBg: 'bg-emerald-600 text-white',
+                          }
+                        : loc.statusTone === 'sky'
+                        ? {
+                            card: 'bg-[#EAF6FF]/70 border-[#0996f5]/25',
+                            badge: 'bg-[#0996f5] text-white',
+                            iconBg: 'bg-[#0996f5] text-white',
+                          }
+                        : loc.statusTone === 'amber'
+                        ? {
+                            card: 'bg-amber-50/70 border-amber-300/70',
+                            badge: 'bg-amber-500 text-[#0B1220]',
+                            iconBg: 'bg-amber-500 text-white',
+                          }
+                        : {
+                            card: 'bg-rose-50/70 border-rose-200',
+                            badge: 'bg-rose-600 text-white',
+                            iconBg: 'bg-rose-600 text-white',
+                          };
+
+                    return (
+                      <div
+                        key={loc.id}
+                        id={loc.id}
+                        className={`p-5 sm:p-6 rounded-3xl border ${toneStyles.card} shadow-2xs space-y-4`}
+                      >
+                        <div className="flex flex-col sm:flex-row sm:items-start gap-4">
+                          <div
+                            className={`w-12 h-12 rounded-2xl ${toneStyles.iconBg} flex items-center justify-center text-2xl shrink-0 shadow-xs`}
+                          >
+                            {loc.symbol}
+                          </div>
+                          <div className="flex-1 space-y-1.5">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span
+                                className={`px-2.5 py-0.5 text-[11px] font-black uppercase tracking-wider rounded-md ${toneStyles.badge}`}
+                              >
+                                {loc.statusBadge}
+                              </span>
+                              <span className="px-2.5 py-0.5 bg-white border border-slate-200 text-[#102a56] text-[11px] font-extrabold rounded-md">
+                                💰 {loc.feeEstimate}
+                              </span>
+                            </div>
+                            <h3 className="text-lg sm:text-xl font-serif font-black text-[#102a56] leading-snug">
+                              {loc.name}
+                            </h3>
+                            <p className="text-xs sm:text-sm font-bold text-slate-600">
+                              {loc.subtitle}
+                            </p>
+                          </div>
+                        </div>
+
+                        <p className="text-slate-700 text-sm sm:text-base leading-relaxed bg-white/85 p-4 rounded-2xl border border-white">
+                          {loc.description}
+                        </p>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+                          <div className="px-3.5 py-2.5 rounded-xl bg-white/90 border border-slate-200/70 flex items-center justify-between gap-2">
+                            <span className="font-bold text-slate-500">
+                              {language === 'en' ? 'Water Supply' : language === 'zh' ? '水源状况' : 'Kondisi Air'}
+                            </span>
+                            <span className="font-extrabold text-[#102a56] text-right">{loc.waterStatus}</span>
+                          </div>
+                          <div className="px-3.5 py-2.5 rounded-xl bg-white/90 border border-slate-200/70 flex items-center justify-between gap-2">
+                            <span className="font-bold text-slate-500">
+                              {language === 'en' ? 'Crowd Level' : language === 'zh' ? '拥挤程度' : 'Kepadatan'}
+                            </span>
+                            <span className="font-extrabold text-[#102a56] text-right">{loc.crowdLevel}</span>
+                          </div>
+                        </div>
+
+                        <ul className="space-y-2 pl-1">
+                          {loc.highlights.map((hl, hIdx) => (
+                            <li
+                              key={hIdx}
+                              className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700 leading-relaxed"
+                            >
+                              <span className="w-5 h-5 rounded-full bg-[#102a56] text-white flex items-center justify-center shrink-0 mt-0.5">
+                                <Check className="w-3 h-3 stroke-[3]" />
+                              </span>
+                              <span>{hl}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Peta Toilet Kaldera Embed */}
+              <figure className="rounded-3xl overflow-hidden border border-slate-200 shadow-sm bg-[#0a0f0c]">
+                <div className="w-full aspect-[2048/1235] bg-[#0a0f0c]">
+                  <iframe
+                    src={toiletArticle.mapEmbedUrl}
+                    title={toiletArticle.mapCaption}
+                    className="w-full h-full border-0 block"
+                    scrolling="no"
+                    loading="lazy"
+                  />
+                </div>
+                <figcaption className="px-5 py-3 text-xs sm:text-sm text-slate-600 italic flex items-center gap-2 bg-white border-t border-slate-100">
+                  <Compass className="w-4 h-4 text-[#0996f5] shrink-0" />
+                  <span>{toiletArticle.mapCaption}</span>
+                </figcaption>
+              </figure>
+
+              {/* 2. BIAYA TOILET DI BROMO */}
+              <div className="bg-white border-2 border-[#0996f5]/20 rounded-3xl overflow-hidden shadow-sm">
+                <div className="p-5 sm:p-6 bg-gradient-to-r from-[#0996f5]/10 via-[#EAF6FF] to-white border-b border-slate-200/80">
+                  <h2 className="text-lg sm:text-xl lg:text-2xl font-black font-serif text-[#102a56]">
+                    {toiletArticle.feesSectionTitle}
+                  </h2>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-1">
+                    {toiletArticle.feesSectionSubtitle}
+                  </p>
+                </div>
+
+                {/* Mobile Stacked Cards (No Horizontal Scroll) */}
+                <div className="md:hidden divide-y divide-slate-100">
+                  {toiletArticle.feeRows.map((row, rIdx) => (
+                    <div key={rIdx} className="p-4 sm:p-5 space-y-2.5 bg-white">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <div className="text-sm font-extrabold text-[#102a56]">
+                          {row.symbol} {row.type}
+                        </div>
+                        <span className="inline-block px-3 py-1 bg-[#fff700]/45 border border-amber-300 text-[#102a56] text-xs font-black rounded-lg">
+                          {row.priceRange}
+                        </span>
+                      </div>
+                      <div className="text-xs font-semibold text-[#0996f5]">
+                        {row.location}
+                      </div>
+                      <p className="text-xs text-slate-600 leading-relaxed">
+                        {row.notes}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Desktop Table */}
+                <div className="hidden md:block">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="bg-slate-50 border-b border-slate-200 text-xs font-black uppercase tracking-wider text-slate-500">
+                        <th className="py-3.5 px-5">{toiletArticle.feeHeaders.type}</th>
+                        <th className="py-3.5 px-5">{toiletArticle.feeHeaders.location}</th>
+                        <th className="py-3.5 px-5">{toiletArticle.feeHeaders.price}</th>
+                        <th className="py-3.5 px-5">{toiletArticle.feeHeaders.notes}</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 text-sm">
+                      {toiletArticle.feeRows.map((row, rIdx) => (
+                        <tr key={rIdx} className="hover:bg-[#EAF6FF]/40 transition-colors">
+                          <td className="py-4 px-5 font-extrabold text-[#102a56]">
+                            {row.symbol} {row.type}
+                          </td>
+                          <td className="py-4 px-5 text-slate-600">{row.location}</td>
+                          <td className="py-4 px-5">
+                            <span className="inline-block px-3 py-1 bg-[#fff700]/45 border border-amber-300 text-[#102a56] font-black rounded-lg whitespace-nowrap">
+                              {row.priceRange}
+                            </span>
+                          </td>
+                          <td className="py-4 px-5 text-slate-600 leading-relaxed">
+                            {row.notes}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="px-5 py-3.5 bg-amber-50/70 border-t border-amber-200/70 text-xs sm:text-sm text-amber-950 font-medium">
+                  💰 {toiletArticle.feeNote}
+                </div>
+              </div>
+
+              {/* 3. KONDISI REALITA (JUJUR & INFORMATIF) */}
+              <div className="space-y-5">
+                <div className="pb-2 border-b border-slate-200">
+                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-black font-serif text-[#102a56]">
+                    {toiletArticle.realitySectionTitle}
+                  </h2>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-1">
+                    {toiletArticle.realitySectionSubtitle}
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  {toiletArticle.realities.map((item) => {
+                    const rStyle =
+                      item.tone === 'amber'
+                        ? {
+                            box: 'bg-amber-50/80 border-amber-300/80',
+                            badge: 'bg-amber-500 text-[#0B1220]',
+                          }
+                        : item.tone === 'rose'
+                        ? {
+                            box: 'bg-rose-50/80 border-rose-300/70',
+                            badge: 'bg-rose-600 text-white',
+                          }
+                        : {
+                            box: 'bg-[#EAF6FF]/80 border-[#0996f5]/30',
+                            badge: 'bg-[#102a56] text-white',
+                          };
+
+                    return (
+                      <div
+                        key={item.id}
+                        className={`p-5 sm:p-6 rounded-3xl border ${rStyle.box} space-y-3.5 shadow-2xs`}
+                      >
+                        <div className="flex items-start gap-3.5">
+                          <span className="text-2xl sm:text-3xl leading-none shrink-0 mt-0.5">
+                            {item.symbol}
+                          </span>
+                          <div className="space-y-1">
+                            <span
+                              className={`inline-block px-2.5 py-0.5 text-[10px] sm:text-[11px] font-black uppercase tracking-wider rounded-md ${rStyle.badge}`}
+                            >
+                              {item.badge}
+                            </span>
+                            <h3 className="text-base sm:text-xl font-serif font-black text-[#102a56]">
+                              {item.title}
+                            </h3>
+                          </div>
+                        </div>
+
+                        <p className="text-sm sm:text-base text-slate-700 leading-relaxed bg-white/85 p-4 rounded-2xl border border-white">
+                          {item.description}
+                        </p>
+
+                        <ul className="space-y-2 pl-1">
+                          {item.details.map((det, dIdx) => (
+                            <li
+                              key={dIdx}
+                              className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700 leading-relaxed"
+                            >
+                              <AlertCircle className="w-4 h-4 text-[#102a56] shrink-0 mt-0.5" />
+                              <span>{det}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Personal Toilet Essentials Kit Box */}
+                <div className="p-5 sm:p-7 rounded-3xl bg-[#0B1F42] text-white border border-[#0996f5]/40 shadow-md space-y-4">
+                  <div>
+                    <h3 className="text-lg sm:text-xl font-black font-serif text-[#fff700]">
+                      {toiletArticle.essentialsBox.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-sky-100/90 mt-1">
+                      {toiletArticle.essentialsBox.subtitle}
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {toiletArticle.essentialsBox.items.map((kitItem, kIdx) => (
+                      <div
+                        key={kIdx}
+                        className="px-4 py-3 rounded-2xl bg-white/10 border border-white/15 text-xs sm:text-sm font-bold text-white flex items-center gap-2.5"
+                      >
+                        <CheckCircle2 className="w-4 h-4 text-[#fff700] shrink-0" />
+                        <span>{kitItem}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+
+              {/* 4. TIPS MENGGUNAKAN TOILET DI BROMO */}
+              <div className="space-y-5">
+                <div className="pb-2 border-b border-slate-200">
+                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-black font-serif text-[#102a56]">
+                    {toiletArticle.tipsSectionTitle}
+                  </h2>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-1">
+                    {toiletArticle.tipsSectionSubtitle}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {toiletArticle.tips.map((tip) => (
+                    <div
+                      key={tip.id}
+                      className="p-5 rounded-3xl bg-slate-50 border border-slate-200/90 hover:border-[#0996f5]/40 hover:shadow-sm transition-all flex flex-col justify-between space-y-3"
+                    >
+                      <div className="space-y-2.5">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="px-2.5 py-0.5 bg-[#102a56] text-white text-[10px] font-black uppercase tracking-wider rounded-md">
+                            {tip.numberBadge}
+                          </span>
+                          <span className="text-xl leading-none">{tip.symbol}</span>
+                        </div>
+                        <h3 className="text-base sm:text-lg font-serif font-black text-[#102a56] leading-snug">
+                          {tip.title}
+                        </h3>
+                        <span className="inline-block px-2.5 py-1 bg-[#EAF6FF] text-[#0996f5] text-[11px] font-extrabold rounded-lg">
+                          {tip.timingOrTag}
+                        </span>
+                        <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                          {tip.description}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Pro Tip Box */}
+              <div className="p-6 sm:p-8 bg-[#fff700]/15 border-2 border-[#fff700] rounded-3xl shadow-sm space-y-3">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#fff700] text-black font-black rounded-full text-xs uppercase tracking-wider">
+                  <Sparkles className="w-4 h-4 text-black" />
+                  <span>{toiletArticle.proTipBox.title}</span>
+                </div>
+                <p className="text-sm sm:text-base text-slate-900 font-medium leading-relaxed">
+                  {toiletArticle.proTipBox.content}
+                </p>
+              </div>
+
+              {/* Conclusion & Booking CTA */}
+              <div className="p-6 sm:p-8 bg-[#EAF6FF] border border-[#0996f5]/30 rounded-3xl space-y-4">
+                <h3 className="text-xl font-extrabold text-[#0B1220]">
+                  {toiletArticle.conclusionTitle}
+                </h3>
+                <p className="text-sm sm:text-base text-slate-700 leading-relaxed">
+                  {toiletArticle.conclusion}
+                </p>
+
+                <div className="pt-2 flex flex-col sm:flex-row items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => onOpenBooking()}
+                    className="w-full sm:w-auto px-6 py-3.5 bg-[#0996f5] hover:bg-[#071A2B] text-white text-xs sm:text-sm font-black rounded-2xl shadow-lg shadow-[#0996f5]/25 transition-all cursor-pointer flex items-center justify-center gap-2 group"
+                  >
+                    <span>{toiletArticle.ctaButton}</span>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </button>
+
+                  <a
+                    href={`https://wa.me/6281222290318?text=${encodeURIComponent(toiletArticle.whatsappText)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full sm:w-auto px-5 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold rounded-2xl transition-colors flex items-center justify-center gap-2"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    <span>WhatsApp Hotline (+62 812-2229-0318)</span>
+                  </a>
+                </div>
+              </div>
+
+              {/* Social Share Buttons Bottom Section */}
+              {renderBottomShareSection(toiletArticle.sharePrompt)}
+
+              {/* Article Tags */}
+              <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center gap-2 text-xs text-slate-600">
+                <span className="font-bold text-slate-400 mr-1">Tags:</span>
+                {toiletArticle.tags.map((tag, idx) => (
+                  <span
+                    key={idx}
+                    className="px-3 py-1 bg-slate-100 hover:bg-[#EAF6FF] text-slate-700 hover:text-[#0996f5] rounded-xl font-medium transition-colors cursor-pointer"
+                  >
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ) : isSurabayaTripArticle || isOpenTripSurabayaArticle || isOpenTripMalangArticle || isOpenTripBatuArticle ? (
             /* PRIVATE TRIP SURABAYA / OPEN TRIP SURABAYA / OPEN TRIP MALANG / OPEN TRIP BATU HARGA 2026 ARTICLE BODY */
             <div className="p-6 sm:p-10 lg:p-12 space-y-10">
               {/* Intro Paragraphs */}

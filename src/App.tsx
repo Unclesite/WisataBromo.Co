@@ -64,6 +64,21 @@ const parseInitialRoute = (): { view: AppView; pkg: TourPackage | null; adminLog
   ) {
     let artId: string | undefined = undefined;
     if (
+      pathname.includes('balita-difabel-lansia') ||
+      pathname.includes('aman-ke-bromo') ||
+      pathname.includes('aman-nggak-ke-bromo') ||
+      hash.includes('balita-difabel-lansia') ||
+      hash.includes('aman-ke-bromo')
+    ) {
+      artId = 'aman-ke-bromo-balita-difabel-lansia';
+    } else if (
+      pathname.includes('toilet-di-bromo') ||
+      pathname.includes('toilet') ||
+      hash.includes('toilet-di-bromo') ||
+      hash.includes('toilet')
+    ) {
+      artId = 'toilet-di-bromo';
+    } else if (
       pathname.includes('open-trip-bromo-start-kota-batu') ||
       pathname.includes('open-trip-bromo-start-batu') ||
       pathname.includes('open-trip-start-kota-batu') ||
@@ -250,6 +265,21 @@ export default function App() {
         hash === '#journal'
       ) {
         if (
+          pathname.includes('balita-difabel-lansia') ||
+          pathname.includes('aman-ke-bromo') ||
+          pathname.includes('aman-nggak-ke-bromo') ||
+          hash.includes('balita-difabel-lansia') ||
+          hash.includes('aman-ke-bromo')
+        ) {
+          setSelectedArticlePostId('aman-ke-bromo-balita-difabel-lansia');
+        } else if (
+          pathname.includes('toilet-di-bromo') ||
+          pathname.includes('toilet') ||
+          hash.includes('toilet-di-bromo') ||
+          hash.includes('toilet')
+        ) {
+          setSelectedArticlePostId('toilet-di-bromo');
+        } else if (
           pathname.includes('open-trip-bromo-start-kota-batu') ||
           pathname.includes('open-trip-bromo-start-batu') ||
           pathname.includes('open-trip-start-kota-batu') ||
@@ -787,6 +817,14 @@ export default function App() {
           onSelectArticle={(artSlugOrId) => {
             let matchedId = artSlugOrId;
             if (
+              artSlugOrId.includes('balita-difabel-lansia') ||
+              artSlugOrId.includes('aman-ke-bromo') ||
+              artSlugOrId.includes('aman-nggak-ke-bromo')
+            ) {
+              matchedId = 'aman-ke-bromo-balita-difabel-lansia';
+            } else if (artSlugOrId.includes('toilet-di-bromo') || artSlugOrId.includes('toilet')) {
+              matchedId = 'toilet-di-bromo';
+            } else if (
               artSlugOrId.includes('open-trip-bromo-start-kota-batu') ||
               artSlugOrId.includes('open-trip-bromo-start-batu') ||
               artSlugOrId.includes('open-trip-start-kota-batu')

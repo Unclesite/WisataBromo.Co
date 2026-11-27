@@ -42,6 +42,14 @@ import {
   ARTICLE_OPEN_TRIP_BROMO_START_KOTA_BATU,
   LocalizedOpenTripBatuArticleContent,
 } from './articles/open-trip-bromo-start-kota-batu';
+import {
+  ARTICLE_TOILET_DI_BROMO,
+  LocalizedToiletArticleContent,
+} from './articles/toilet-di-bromo';
+import {
+  ARTICLE_AMAN_BROMO_KELUARGA,
+  LocalizedFamilySafetyArticleContent,
+} from './articles/aman-ke-bromo-balita-difabel-lansia';
 
 export {
   ARTICLE_BARANG_WAJIB_BROMO,
@@ -59,6 +67,8 @@ export {
   ARTICLE_OPEN_TRIP_BROMO_START_SURABAYA,
   ARTICLE_OPEN_TRIP_BROMO_START_KOTA_MALANG,
   ARTICLE_OPEN_TRIP_BROMO_START_KOTA_BATU,
+  ARTICLE_TOILET_DI_BROMO,
+  ARTICLE_AMAN_BROMO_KELUARGA,
 };
 export type {
   LocalizedArticleContent,
@@ -76,6 +86,8 @@ export type {
   LocalizedOpenTripSurabayaArticleContent,
   LocalizedOpenTripMalangArticleContent,
   LocalizedOpenTripBatuArticleContent,
+  LocalizedToiletArticleContent,
+  LocalizedFamilySafetyArticleContent,
 };
 
 // Helper to convert LocalizedArticleContent to standard BlogPost type
@@ -104,6 +116,10 @@ export const getLocalizedBlogPosts = (lang: SupportedLanguage = 'id'): BlogPost[
     ARTICLE_OPEN_TRIP_BROMO_START_KOTA_MALANG[lang] || ARTICLE_OPEN_TRIP_BROMO_START_KOTA_MALANG.id;
   const currentOpenTripBatuArt =
     ARTICLE_OPEN_TRIP_BROMO_START_KOTA_BATU[lang] || ARTICLE_OPEN_TRIP_BROMO_START_KOTA_BATU.id;
+  const currentToiletArt =
+    ARTICLE_TOILET_DI_BROMO[lang] || ARTICLE_TOILET_DI_BROMO.id;
+  const currentFamilySafetyArt =
+    ARTICLE_AMAN_BROMO_KELUARGA[lang] || ARTICLE_AMAN_BROMO_KELUARGA.id;
 
   const jeepPost: BlogPost = {
     id: currentJeepArt.id,
@@ -619,7 +635,77 @@ export const getLocalizedBlogPosts = (lang: SupportedLanguage = 'id'): BlogPost[
     ],
   };
 
-  return [jeepPost, gearPost, seasonPost, horsePost, trainPost, gateJeepPost, malangTripPost, surabayaTripPost, batuTripPost, sukapuraTripPost, tosariTripPost, gubugklakahTripPost, openTripSurabayaPost, openTripMalangPost, openTripBatuPost];
+  const toiletPost: BlogPost = {
+    id: currentToiletArt.id,
+    slug: currentToiletArt.slug,
+    title: currentToiletArt.title,
+    subtitle: currentToiletArt.metaDescription,
+    summary: currentToiletArt.metaDescription,
+    excerpt: currentToiletArt.introduction[0] || currentToiletArt.metaDescription,
+    date: currentToiletArt.publishDate,
+    publishDate: currentToiletArt.publishDate,
+    author: currentToiletArt.author,
+    tag: currentToiletArt.categoryLabel,
+    tags: currentToiletArt.tags,
+    category: currentToiletArt.category,
+    categoryLabel: currentToiletArt.categoryLabel,
+    readTime: currentToiletArt.readTime,
+    imageUrl: currentToiletArt.heroImage,
+    content: [
+      ...currentToiletArt.introduction,
+      ...currentToiletArt.locations.map(l => `${l.symbol} ${l.name}: ${l.description}`),
+      currentToiletArt.conclusion,
+    ],
+    keyTakeaways: [
+      lang === 'en'
+        ? '🚻 4 Locations: Transit Rest Areas (Best), Sunrise Point, Sea of Sand Jeep Parking & Crater Stairs'
+        : lang === 'zh'
+        ? '🚻 4大厕所点位：入口中转休息区（最佳）、日出观景台、沙海停车场与火山口台阶'
+        : '🚻 4 Lokasi: Rest Area Transit (Terbaik), Sunrise Point, Parkir Jeep Lautan Pasir & Tangga Kawah',
+      lang === 'en'
+        ? '💰 Cash Fee: Rp2,000–Rp5,000 | ⚠️ 10–20 min sunrise queues & scarce water — pack 🧻 wipes & sanitizer'
+        : lang === 'zh'
+        ? '💰 现金费用：Rp2,000–Rp5,000 | ⚠️ 日出排队10–20分钟且易缺水 — 必带 🧻 干湿纸巾与免洗洗手液'
+        : '💰 Biaya Tunai: Rp2.000–Rp5.000 | ⚠️ Antre 10–20 mnt saat sunrise & air terbatas — bawa 🧻 tisu & sanitizer',
+    ],
+  };
+
+  const familySafetyPost: BlogPost = {
+    id: currentFamilySafetyArt.id,
+    slug: currentFamilySafetyArt.slug,
+    title: currentFamilySafetyArt.title,
+    subtitle: currentFamilySafetyArt.metaDescription,
+    summary: currentFamilySafetyArt.metaDescription,
+    excerpt: currentFamilySafetyArt.introduction[0] || currentFamilySafetyArt.metaDescription,
+    date: currentFamilySafetyArt.publishDate,
+    publishDate: currentFamilySafetyArt.publishDate,
+    author: currentFamilySafetyArt.author,
+    tag: currentFamilySafetyArt.categoryLabel,
+    tags: currentFamilySafetyArt.tags,
+    category: currentFamilySafetyArt.category,
+    categoryLabel: currentFamilySafetyArt.categoryLabel,
+    readTime: currentFamilySafetyArt.readTime,
+    imageUrl: currentFamilySafetyArt.heroImage,
+    content: [
+      ...currentFamilySafetyArt.introduction,
+      currentFamilySafetyArt.verdictBox.statement,
+      currentFamilySafetyArt.conclusion,
+    ],
+    keyTakeaways: [
+      lang === 'en'
+        ? '✅ Safe at Viewpoints & Sea of Sand with route adjustments | ⚠️ Skip 250 steep crater stairs'
+        : lang === 'zh'
+        ? '✅ 观景台与沙海调整路线后相对安全 | ⚠️ 切勿勉强攀爬250级陡峭火山口台阶'
+        : '✅ Aman di Viewpoint & Lautan Pasir dengan penyesuaian rute | ⚠️ Hindari 250 tangga curam kawah',
+      lang === 'en'
+        ? '🚐 Private Jeep mandatory for babies, wheelchairs & seniors | 🍼 Baby carrier, 🧥 layers & 💊 meds'
+        : lang === 'zh'
+        ? '🚐 带婴儿、轮椅与老人必选私人吉普 | 🍼 婴儿背带、🧥 保暖多层与 💊 常备药'
+        : '🚐 Wajib Jeep Private untuk bayi, difabel & lansia | 🍼 Baby carrier, 🧥 baju berlapis & 💊 obat pribadi',
+    ],
+  };
+
+  return [jeepPost, gearPost, seasonPost, horsePost, trainPost, gateJeepPost, malangTripPost, surabayaTripPost, batuTripPost, sukapuraTripPost, tosariTripPost, gubugklakahTripPost, openTripSurabayaPost, openTripMalangPost, openTripBatuPost, toiletPost, familySafetyPost];
 };
 
 // Default ID export for fallback
