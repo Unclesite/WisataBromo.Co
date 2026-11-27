@@ -52,11 +52,41 @@ html,body{ margin:0; padding:0; overflow:hidden; background:transparent; }
   flex:none; width:calc(var(--gap) + 31.0cqw); height:12cqw; margin-left:calc(var(--gap) * -1);
 }
 @keyframes jeep-travel{ from{ transform:translateX(102cqw); } to{ transform:translateX(-101cqw); } }
+@keyframes jeep-travel-mobile{ from{ transform:translateX(102cqw); } to{ transform:translateX(-248cqw); } }
 @keyframes jeep-spin{ to{ transform:rotate(-360deg); } }
 @keyframes jeep-bob{ from{ transform:translateY(0); } to{ transform:translateY(-.5%); } }
+@media (max-width: 620px) and (max-aspect-ratio: 35/10){
+  html,body{ width:100%; height:100%; }
+  .jeep-scene{
+    --drive: 40s;
+    --jeep: 32.5cqw;
+    --gap: 8.75cqw;
+    aspect-ratio: auto;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+  .jeep-convoy{
+    position: relative;
+    top: auto !important;
+    flex: none;
+    animation-name: jeep-travel-mobile;
+    animation-delay: calc(var(--drive) * -0.60);
+  }
+  .jeep-wheel{
+    animation-duration: calc(var(--drive) / 15.68);
+  }
+  .jeep-flag{
+    width: calc(var(--gap) + 77.5cqw);
+    height: 30cqw;
+  }
+}
 @media (prefers-reduced-motion: reduce){
   .jeep-convoy,.jeep-wheel,.jeep-body{ animation:none; }
   .jeep-convoy{ transform:translateX(1.5cqw); }
+}
+@media (max-width: 620px) and (max-aspect-ratio: 35/10) and (prefers-reduced-motion: reduce){
+  .jeep-convoy{ transform:translateX(-145cqw); }
 }
 </style>
 
@@ -99,14 +129,14 @@ html,body{ margin:0; padding:0; overflow:hidden; background:transparent; }
         s.fillStyle = '#c9ced3'; s.beginPath(); s.arc(sleeve/2, gy, ch*.055, 0, 7); s.fill();
         s.fillStyle = '#2a2d31'; s.beginPath(); s.arc(sleeve/2, gy, ch*.03, 0, 7); s.fill();
       });
-      var cx = sleeve + (L - n - sleeve)/2, maxW = (L - n - sleeve) * 0.9;
+      var cx = sleeve + (L - n - sleeve)/2, maxW = (L - n - sleeve) * 0.93;
       function fit(txt, px, wt){ var f = px;
         s.font = wt+' '+f+'px system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif';
         while (s.measureText(txt).width > maxW && f > 8){ f -= 1; s.font = wt+' '+f+'px system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif'; } }
       s.textAlign = 'center'; s.textBaseline = 'middle';
       s.shadowColor = 'rgba(0,0,0,.45)'; s.shadowBlur = ch*.03; s.shadowOffsetY = ch*.015;
-      fit(L1, ch*.30, 800); s.fillStyle = '#ffd23f'; s.fillText(L1, cx, ch*.40);
-      fit(L2, ch*.21, 600); s.fillStyle = '#ffffff'; s.fillText(L2, cx, ch*.68);
+      fit(L1, ch*.33, 800); s.fillStyle = '#ffd23f'; s.fillText(L1, cx, ch*.39);
+      fit(L2, ch*.23, 600); s.fillStyle = '#ffffff'; s.fillText(L2, cx, ch*.68);
     }
 
     function draw(t){

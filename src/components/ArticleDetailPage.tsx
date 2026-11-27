@@ -643,7 +643,7 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
 
               {/* Embedded Animated Convoy Bromo Jeep (Full Width, No Card/Border) */}
               <div className="-mx-6 sm:-mx-10 lg:-mx-12 overflow-hidden">
-                <div className="w-full aspect-[4/1] overflow-hidden">
+                <div className="w-full aspect-[5/2] sm:aspect-[4/1] overflow-hidden">
                   <iframe
                     src={activeTieredTripArticle.animationEmbedUrl}
                     title={activeTieredTripArticle.animationCaption}
@@ -1081,7 +1081,7 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({
 
               {/* Embedded Animated Convoy Bromo Jeep (Full Width, No Card/Border) */}
               <div className="-mx-6 sm:-mx-10 lg:-mx-12 overflow-hidden">
-                <div className="w-full aspect-[4/1] overflow-hidden">
+                <div className="w-full aspect-[5/2] sm:aspect-[4/1] overflow-hidden">
                   <iframe
                     src={activeFlatJeepArticle.animationEmbedUrl}
                     title={activeFlatJeepArticle.animationCaption}
